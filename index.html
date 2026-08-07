@@ -45,11 +45,12 @@
   header{
     position:sticky; top:0; z-index:50;
     display:flex; align-items:center; justify-content:space-between;
-    padding:20px 6%; border-bottom:2px solid var(--darkred);
+    padding:12px 6%; border-bottom:2px solid var(--darkred);
     background:rgba(22,22,22,0.92); backdrop-filter:blur(4px);
   }
-  .logo{font-size:1rem; letter-spacing:2px; color:var(--red); text-shadow:2px 2px 0 #000;}
-  .logo span{color:var(--yellow); font-size:0.6rem; display:block; margin-top:4px; letter-spacing:1px;}
+  .logo-group{display:flex; align-items:center; gap:14px; cursor:pointer; transition:opacity .15s;}
+  .logo-group:hover{opacity:0.85;}
+  .logo-group img.kodecco-mark{height:52px; width:auto; display:block; filter:drop-shadow(3px 3px 0 #000) drop-shadow(0 0 10px rgba(0,0,0,0.6));}
   nav a{
     color:var(--grey); text-decoration:none; margin-left:22px; font-size:0.6rem;
     text-transform:uppercase; border-bottom:2px solid transparent; padding-bottom:4px;
@@ -59,7 +60,7 @@
 
   /* ---------- HERO ---------- */
   .hero{
-    position:relative; padding:110px 6% 90px; text-align:center; overflow:hidden;
+    position:relative; padding:100px 6% 90px; text-align:center; overflow:hidden;
     background:
       linear-gradient(rgba(8,8,8,0.88),rgba(8,8,8,0.94)),
       repeating-linear-gradient(135deg, #1a1a1a 0 40px, #141414 40px 80px);
@@ -71,15 +72,15 @@
   }
   .hero-inner{position:relative; z-index:2;}
   .hero .tag{
-    display:inline-block; color:var(--yellow); border:2px solid var(--yellow);
-    padding:8px 14px; font-size:0.5rem; letter-spacing:1px; margin-bottom:28px;
+    display:block; width:fit-content; margin:0 auto 28px; color:var(--yellow); border:2px solid var(--yellow);
+    padding:8px 14px; font-size:0.5rem; letter-spacing:1px;
     animation: flicker 3.5s infinite;
   }
   @keyframes flicker{0%,92%,100%{opacity:1;} 94%{opacity:0.4;} 96%{opacity:1;} 98%{opacity:0.5;}}
-  .hero h1{
-    font-size:clamp(2rem,6vw,3.2rem); color:var(--brightred); letter-spacing:5px;
-    text-shadow:4px 4px 0 #000, 0 0 30px rgba(200,29,29,0.4);
-    margin-bottom:22px; line-height:1.4;
+  .hero img.hero-logo{
+    max-width:min(90%,560px); width:100%; height:auto; image-rendering:pixelated;
+    filter: drop-shadow(6px 6px 0 #000) drop-shadow(0 0 40px rgba(200,29,29,0.5));
+    margin-bottom:26px;
   }
   .hero p{max-width:600px; margin:0 auto 34px; color:var(--grey); font-size:1.1rem;}
   .btn{
@@ -200,7 +201,7 @@
   footer{text-align:center; padding:38px 6%; color:#5a5a5a; font-size:0.85rem; border-top:2px solid var(--darkred);}
   footer .socials a{margin:0 10px; color:var(--grey); text-decoration:none; font-weight:700;}
   footer .socials a:hover{color:var(--red);}
-  footer .brand{color:var(--grey); font-size:0.6rem; letter-spacing:1px; margin-top:14px; font-family:'Press Start 2P',monospace;}
+  footer img.kodecco-footer{height:40px; margin-top:18px; opacity:0.9; filter:drop-shadow(2px 2px 0 #000);}
 
   #topBtn{
     position:fixed; bottom:24px; right:24px; background:var(--red); color:#fff;
@@ -218,7 +219,9 @@
 
 <div class="hazard"></div>
 <header>
-  <div class="logo">CARRIER <span>KODECCO GAMES</span></div>
+  <a href="#" class="logo-group" onclick="window.scrollTo({top:0,behavior:'smooth'}); return false;">
+    <img class="kodecco-mark" src="images/kodecco-icon.png" alt="Kodecco Games">
+  </a>
   <nav>
     <a href="#brief">Mission Brief</a>
     <a href="#gallery">Gallery</a>
@@ -231,7 +234,7 @@
 <section class="hero">
   <div class="hero-inner">
     <span class="tag">⚠ DEVELOPMENT LOG — ONGOING</span>
-    <h1>CARRIER</h1>
+    <img class="hero-logo" src="images/carrier-icon.png" alt="CARRIER">
     <p>A survival board game about outlasting the horde. This is the record of building it — the design decisions, the failed prototypes, and everything still being figured out.</p>
     <a class="btn" href="#journal">Read the Journal</a>
     <a class="btn ghost" href="#signal">Get Alerts</a>
@@ -372,7 +375,7 @@
     <a href="#">Instagram</a> · <a href="#">BoardGameGeek</a> · <a href="#">Email</a>
   </div>
   <p style="margin-top:12px;">© 2026 CARRIER — a survival board game in development.</p>
-  <div class="brand">KODECCO GAMES</div>
+  <img class="kodecco-footer" src="images/kodecco-icon.png" alt="Kodecco Games">
 </footer>
 
 <button id="topBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
