@@ -96,12 +96,19 @@
   }
   .hero-marquee:hover .hero-marquee-track{ animation-play-state:paused; }
   @keyframes marqueeRight{ from{ transform:translateX(-50%); } to{ transform:translateX(0); } }
-  .hero-marquee-track img{
-    width:160px; height:160px; object-fit:cover; flex-shrink:0; cursor:pointer;
+  .mq-item{
+    position:relative; width:160px; height:160px; flex-shrink:0; cursor:pointer; overflow:hidden;
     border:2px solid var(--darkred); box-shadow:3px 3px 0 rgba(0,0,0,0.6);
     transition:border-color .2s, transform .2s;
   }
-  .hero-marquee-track img:hover{ border-color:var(--yellow); transform:scale(1.04); }
+  .mq-item:hover{ border-color:var(--yellow); transform:scale(1.04); }
+  .mq-item img{ width:100%; height:100%; object-fit:cover; display:block; }
+  .mq-tag{
+    position:absolute; bottom:0; left:0; right:0; padding:14px 6px 6px;
+    background:linear-gradient(180deg, transparent, rgba(0,0,0,0.92) 65%);
+    color:var(--yellow); font-family:'DotGothic16',monospace; font-size:0.48rem;
+    letter-spacing:0.5px; text-transform:uppercase; text-align:center; line-height:1.3;
+  }
   .btn{
     display:inline-block; background:var(--red); color:#fff;
     padding:15px 24px; text-decoration:none; font-size:0.62rem;
@@ -406,24 +413,7 @@
     <span class="tag">⚠ DEVELOPMENT LOG — ONGOING</span>
 
     <div class="hero-marquee">
-      <div class="hero-marquee-track">
-        <img src="images/concept-core-loop/concept-1.webp" alt="First draft of Carrier concept art">
-        <img src="images/concept-core-loop/concept-2.webp" alt="Idealisation phase concept art">
-        <img src="images/concept-core-loop/concept-3.webp" alt="Support kits built from Midjourney assets">
-        <img src="images/concept-core-loop/concept-4.webp" alt="Border design and early zombie drafts">
-        <img src="images/early-prototypes/phase2-1.webp" alt="Printing cards at home">
-        <img src="images/early-prototypes/phase2-2.webp" alt="Cards sleeved with TCG sleeves">
-        <img src="images/early-prototypes/phase2-3.webp" alt="Cards printed at a local print shop">
-        <img src="images/early-prototypes/phase2-4.webp" alt="Introducing character cards">
-        <img src="images/concept-core-loop/concept-1.webp" alt="First draft of Carrier concept art">
-        <img src="images/concept-core-loop/concept-2.webp" alt="Idealisation phase concept art">
-        <img src="images/concept-core-loop/concept-3.webp" alt="Support kits built from Midjourney assets">
-        <img src="images/concept-core-loop/concept-4.webp" alt="Border design and early zombie drafts">
-        <img src="images/early-prototypes/phase2-1.webp" alt="Printing cards at home">
-        <img src="images/early-prototypes/phase2-2.webp" alt="Cards sleeved with TCG sleeves">
-        <img src="images/early-prototypes/phase2-3.webp" alt="Cards printed at a local print shop">
-        <img src="images/early-prototypes/phase2-4.webp" alt="Introducing character cards">
-      </div>
+      <div class="hero-marquee-track" id="heroMarqueeTrack"></div>
     </div>
 
     <p>A survival board game about outlasting the horde. This is the record of building it — the design decisions, the failed prototypes, and everything still being figured out.</p>
@@ -473,7 +463,7 @@
   <h2 class="section-title">Gallery</h2>
   <p class="section-sub">Prototype shots, card art, and table setups — replace these placeholders with real photos.</p>
   <div class="gallery-grid">
-    <div class="shot">🃏<div class="cap"><b class="cap-title">Latest Designs</b><span class="cap-desc">The newest card and component art, fresh off the design table. Updated as soon as new pieces are finalized. This is where the current look of Carrier lives.</span></div></div>
+    <div class="shot gallery-art" id="latestDesignsShot" style="background-image:url('images/latest-designs/executioner.webp'); background-size:cover; background-position:center;"><div class="cap"><b class="cap-title">Latest Designs</b><span class="cap-desc">The newest card and component art, fresh off the design table. Updated as soon as new pieces are finalized. This is where the current look of Carrier lives.</span></div></div>
     <div class="shot gallery-art" id="galleryArtShot" style="background-image:url('images/early-prototypes/phase2-1.webp'); background-size:cover; background-position:center;"><div class="cap"><b class="cap-title">Early Prototypes</b><span class="cap-desc">Where it all started — rough shapes, testing what worked. Concept sketches, home prints, and the first sleeved decks. A look back at how far the design has come.</span></div></div>
     <div class="shot gallery-art" id="characterArchiveShot" style="background-image:url('images/character-archives/survivalist.webp'); background-size:cover; background-position:center;"><div class="cap"><b class="cap-title">Cutting Room</b><span class="cap-desc">Characters and secret roles we pulled from the deck. Some were too overpowered, others just unfair. The rest simply didn't make the final cut.</span></div></div>
     <div class="shot">🧑‍🤝‍🧑<div class="cap"><b class="cap-title">Playtest Sessions</b><span class="cap-desc">Snapshots from the table, where the real testing happens. Every session shapes balance, pacing, and rules. This is Carrier being pressure-tested by real players.</span></div></div>
@@ -701,7 +691,8 @@
         !sidePreview.contains(e.target) &&
         !e.target.closest('.concept-grid img') &&
         !e.target.closest('#galleryArtShot') &&
-        !e.target.closest('#characterArchiveShot')){
+        !e.target.closest('#characterArchiveShot') &&
+        !e.target.closest('#latestDesignsShot')){
       closeSidePreview();
     }
   });
@@ -738,13 +729,53 @@
     });
   }
 
-  document.querySelectorAll('.hero-marquee-track img').forEach(img=>{
-    img.addEventListener('click', (e)=>{
+  const latestDesignsItems = [
+    { src:'images/latest-designs/executioner.webp', alt:'Executioner card, renamed from Carrier', caption:"The Carrier role card is now called Executioner — a clearer, more recognizable name for new players than the old naming, which could get confused with the game's own title. If you're the Executioner, your ability is to kill whoever you think the Curefinder is." }
+  ];
+  const latestDesignsShot = document.getElementById('latestDesignsShot');
+  if (latestDesignsShot){
+    latestDesignsShot.addEventListener('click', (e)=>{
       e.stopPropagation();
-      const idx = artDirectionItems.findIndex(it => it.src === img.getAttribute('src'));
-      openGalleryPreview(artDirectionItems, idx >= 0 ? idx : 0);
+      if (latestDesignsItems.length > 1){
+        openGalleryPreview(latestDesignsItems, 0);
+      } else {
+        const it = latestDesignsItems[0];
+        openSidePreview(it.src, it.alt, it.caption);
+      }
     });
-  });
+  }
+
+  // Latest 10 items across the site, newest first. Add new entries to the TOP
+  // and drop the oldest to keep this at 10 whenever something new goes live.
+  const siteFeed = [
+    { src:'images/latest-designs/executioner.webp', alt:'Executioner card, renamed from Carrier', caption:"The Carrier role card is now called Executioner — a clearer, more recognizable name for new players than the old naming, which could get confused with the game's own title. If you're the Executioner, your ability is to kill whoever you think the Curefinder is.", tag:'Latest Design' },
+    { src:'images/character-archives/watchman.webp', alt:'Watchman character card', caption:'Watchman — tested with a group of regulars, some of our earliest testers, and we found it too overpowered. The lesson: once a secret role gets revealed, their word becomes law. That’s far too powerful for a social deduction game built on doubt.', tag:'Cutting Room' },
+    { src:'images/character-archives/survivalist.webp', alt:'Survivalist character card', caption:"Survivalist (V3) — we're actually cutting down the total roster size. A lot of characters didn't have meaningful abilities; they were just there to fill up space. Going forward we'd rather have fewer, more meaningful characters, with room to add more later in future expansions.", tag:'Cutting Room' },
+    { src:'images/origins/latest-cover-art.avif', alt:'The Origins of Carrier cover art', caption:'The Origins of Carrier — a behind-the-scenes story about how Carrier began, what inspired it, and where it\'s headed.', tag:'Dev Journal' },
+    { src:'images/curefinder-card.avif', alt:'Curefinder role card', caption:"We're Coming Back, Soon. — a mini retrospective on the break, and what's next for development.", tag:'Dev Journal' },
+    { src:'images/early-prototypes/phase2-4.webp', alt:'Introducing character cards', caption:'We also introduced Characters — the public identity of a player. Carrier has secret roles and public roles.', tag:'Early Prototypes' },
+    { src:'images/early-prototypes/phase2-3.webp', alt:'Cards printed at a local print shop', caption:'Later, we brought the game to a local print shop — the first time we saw glossy and matte finishes on our own cards.', tag:'Early Prototypes' },
+    { src:'images/early-prototypes/phase2-2.webp', alt:'Cards sleeved with TCG sleeves', caption:'Then we sleeved everything with TCG sleeves, just to make it feel a little more like a real game.', tag:'Early Prototypes' },
+    { src:'images/early-prototypes/phase2-1.webp', alt:'Printing cards at home', caption:"First, we purchased a printer to print at home — the ink wasn't the highest quality, but it helped us get moving.", tag:'Early Prototypes' },
+    { src:'images/concept-core-loop/concept-4.webp', alt:'Border design and early zombie drafts', caption:'Getting the border design right, and drafting the first zombies with Midjourney.', tag:'Concept & Core Loop' }
+  ].slice(0, 10);
+
+  const heroMarqueeTrack = document.getElementById('heroMarqueeTrack');
+  if (heroMarqueeTrack){
+    const renderMqItem = (item)=>{
+      const el = document.createElement('div');
+      el.className = 'mq-item';
+      el.innerHTML = `<img src="${item.src}" alt="${item.alt}"><span class="mq-tag">${item.tag}</span>`;
+      el.addEventListener('click', (e)=>{
+        e.stopPropagation();
+        const idx = siteFeed.indexOf(item);
+        openGalleryPreview(siteFeed, idx >= 0 ? idx : 0);
+      });
+      return el;
+    };
+    // duplicate the set once so the marquee loop is seamless
+    siteFeed.concat(siteFeed).forEach(item=> heroMarqueeTrack.appendChild(renderMqItem(item)));
+  }
 
   document.querySelectorAll('.concept-grid').forEach(grid=>{
     const gridImgs = Array.from(grid.querySelectorAll('img[data-caption]'));
