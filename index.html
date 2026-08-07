@@ -142,7 +142,7 @@
   }
 
   /* ---------- TIMELINE / ROADMAP ---------- */
-  .timeline{position:relative; max-width:720px; margin:0 auto;}
+  .timeline{position:relative; max-width:720px;}
   .timeline::before{
     content:""; position:absolute; left:14px; top:0; bottom:0; width:2px; background:var(--darkred);
   }
@@ -155,8 +155,60 @@
   .t-item.done::before{background:var(--green);}
   .t-item.active::before{background:var(--red); box-shadow:0 0 0 4px rgba(200,29,29,0.25);}
   .timeline-year{font-size:0.6rem; color:var(--yellow); margin-bottom:8px; letter-spacing:1px;}
-  .t-item h4{color:var(--white); font-size:0.85rem; margin-bottom:8px; font-family:'DotGothic16',monospace;}
+  .t-item{cursor:pointer; transition:transform .2s;}
+  .t-item:hover{transform:translateX(8px);}
+  .t-item:hover::before{box-shadow:0 0 0 4px rgba(242,193,78,0.25);}
+  .t-item:hover h4{color:var(--yellow); animation:navglitch .3s steps(2,end) infinite;}
+  .t-item.expanded:hover h4{animation:none; text-shadow:none;}
+  .t-item h4{color:var(--white); font-size:0.85rem; margin-bottom:8px; font-family:'DotGothic16',monospace; display:flex; align-items:center; gap:8px;}
   .t-item p{color:var(--grey); font-size:0.95rem;}
+  .t-toggle{font-size:0.7rem; color:var(--grey); transition:transform .2s;}
+  .t-item.expanded .t-toggle{transform:rotate(180deg); color:var(--yellow);}
+  .t-detail{
+    max-height:0; overflow:hidden; opacity:0;
+    transition:max-height .4s ease, opacity .3s ease, margin-top .35s ease;
+  }
+  .t-item.expanded .t-detail{max-height:380px; opacity:1; margin-top:18px;}
+  .concept-grid{
+    display:grid; grid-template-columns:repeat(4,1fr); gap:14px;
+  }
+  .concept-grid img{
+    width:100%; aspect-ratio:1/1; object-fit:cover; display:block;
+    border:2px solid #2b2b2b; cursor:pointer;
+    opacity:0; transform:scale(.9);
+    transition:border-color .2s, transform .2s, opacity .4s ease;
+  }
+  .t-item.expanded .concept-grid img{ opacity:1; transform:scale(1); }
+  .t-item.expanded .concept-grid img:nth-child(1){ transition-delay:.05s; }
+  .t-item.expanded .concept-grid img:nth-child(2){ transition-delay:.1s; }
+  .t-item.expanded .concept-grid img:nth-child(3){ transition-delay:.15s; }
+  .t-item.expanded .concept-grid img:nth-child(4){ transition-delay:.2s; }
+  .concept-grid img:hover{ border-color:var(--yellow); transform:scale(1.04) !important; }
+  .t-detail .shot-sq{
+    width:100%; aspect-ratio:1/1; border:2px solid #2b2b2b;
+    background:
+      linear-gradient(135deg,#241010,#111),
+      repeating-linear-gradient(90deg, rgba(255,255,255,0.04) 0 8px, transparent 8px 16px),
+      repeating-linear-gradient(0deg, rgba(255,255,255,0.04) 0 8px, transparent 8px 16px);
+    display:flex; align-items:center; justify-content:center; font-size:2rem; color:var(--red);
+  }
+  .t-detail .update-box{
+    margin-top:10px; background:var(--panel); border:2px solid var(--darkred); padding:12px 14px;
+    color:var(--grey); font-size:0.85rem; line-height:1.5; overflow:hidden;
+  }
+  .t-detail .update-box p{
+    opacity:0; transform:translateX(70px); white-space:pre-wrap;
+  }
+  .t-item.expanded .update-box p{
+    animation:updateSlideIn .55s ease forwards;
+    animation-delay:.15s;
+  }
+  @keyframes updateSlideIn{
+    0%{ opacity:0; transform:translateX(70px); text-shadow:2px 0 var(--red), -2px 0 var(--yellow); }
+    55%{ opacity:1; transform:translateX(-5px); text-shadow:-2px 0 var(--red), 2px 0 var(--yellow); }
+    80%{ transform:translateX(2px); text-shadow:1px 0 var(--red), -1px 0 var(--yellow); }
+    100%{ opacity:1; transform:translateX(0); text-shadow:none; }
+  }
 
   /* ---------- JOURNAL ---------- */
   .journal{background:var(--panel2); border-top:2px solid var(--darkred); border-bottom:2px solid var(--darkred);}
@@ -323,28 +375,53 @@
   <div class="timeline">
     <div class="t-item done">
       <div class="timeline-year">PHASE 1</div>
-      <h4>Concept &amp; Core Loop</h4>
+      <h4>Concept &amp; Core Loop <span class="t-toggle">▾</span></h4>
       <p>Defined the horde mechanic and core survival loop. Completed.</p>
+      <div class="t-detail">
+        <div class="concept-grid">
+          <img src="images/roadmap/phase1/concept-1.webp" alt="First draft of Carrier concept art" data-caption="The very first draft — messy, but the first time Carrier looked like something real.">
+          <img src="images/roadmap/phase1/concept-2.webp" alt="Idealisation phase concept art" data-caption="Idealisation phase — Midjourney helped generate assets quickly so we could iterate fast.">
+          <img src="images/roadmap/phase1/concept-3.webp" alt="Support kits built from Midjourney assets found on itch.io" data-caption="Support kits built from Midjourney backgrounds and asset packs found on itch.io.">
+          <img src="images/roadmap/phase1/concept-4.webp" alt="Border design and early zombie drafts" data-caption="Getting the border design right, and drafting the first zombies with Midjourney.">
+        </div>
+        <div class="update-box"><p>Midjourney was still pretty new back then, and I was curious enough to test it out on these early concepts — some of these backgrounds and assets are AI-generated because I simply couldn't paint scenes like this myself yet. It is what it is; just part of the trail that led to where Carrier's art is now. Our early playtests also ran WAY too long — each game dragged on forever, and that's when we knew we had to go back to the drawing board.</p></div>
+      </div>
     </div>
     <div class="t-item done">
       <div class="timeline-year">PHASE 2</div>
-      <h4>Paper Prototype</h4>
+      <h4>Paper Prototype <span class="t-toggle">▾</span></h4>
       <p>First playable version built and tested with friends. Completed.</p>
+      <div class="t-detail">
+        <div class="shot-sq">🃏</div>
+        <div class="update-box"><p>Update placeholder — swap in a real photo and a short note from the first prototype tests.</p></div>
+      </div>
     </div>
     <div class="t-item active">
       <div class="timeline-year">PHASE 3 — NOW</div>
-      <h4>Balancing &amp; Playtesting</h4>
+      <h4>Balancing &amp; Playtesting <span class="t-toggle">▾</span></h4>
       <p>Running structured playtests to tune difficulty and pacing.</p>
+      <div class="t-detail">
+        <div class="shot-sq">🎲</div>
+        <div class="update-box"><p>Update placeholder — swap in a real photo and the latest playtest notes.</p></div>
+      </div>
     </div>
     <div class="t-item">
       <div class="timeline-year">PHASE 4</div>
-      <h4>Art &amp; Component Design</h4>
+      <h4>Art &amp; Component Design <span class="t-toggle">▾</span></h4>
       <p>Locking the visual identity and final component list.</p>
+      <div class="t-detail">
+        <div class="shot-sq">🎨</div>
+        <div class="update-box"><p>Update placeholder — swap in a real photo and a note on the art direction once it's locked.</p></div>
+      </div>
     </div>
     <div class="t-item">
       <div class="timeline-year">PHASE 5</div>
-      <h4>Publishing / Crowdfunding</h4>
+      <h4>Publishing / Crowdfunding <span class="t-toggle">▾</span></h4>
       <p>TBD — placeholder for launch plans.</p>
+      <div class="t-detail">
+        <div class="shot-sq">📦</div>
+        <div class="update-box"><p>Update placeholder — swap in a real photo and launch details once they're confirmed.</p></div>
+      </div>
     </div>
   </div>
 </section>
@@ -418,6 +495,28 @@
   const topBtn = document.getElementById('topBtn');
   window.addEventListener('scroll', ()=>{
     topBtn.style.display = window.scrollY > 500 ? 'flex' : 'none';
+  });
+
+  document.querySelectorAll('.t-item').forEach(item=>{
+    item.addEventListener('click', ()=>{
+      item.classList.toggle('expanded');
+    });
+  });
+
+  document.querySelectorAll('.concept-grid img[data-caption]').forEach(img=>{
+    img.addEventListener('click', (e)=> e.stopPropagation());
+    const box = img.closest('.t-detail').querySelector('.update-box p');
+    if (box && !box.dataset.default) box.dataset.default = box.textContent;
+
+    const swapText = (text)=>{
+      if(!box) return;
+      box.textContent = text;
+      box.style.animation = 'none';
+      void box.offsetWidth;
+      box.style.animation = '';
+    };
+    img.addEventListener('mouseenter', ()=> swapText(img.dataset.caption));
+    img.addEventListener('mouseleave', ()=> swapText(box.dataset.default));
   });
 </script>
 
