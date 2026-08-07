@@ -466,7 +466,7 @@
     <div class="shot gallery-art" id="latestDesignsShot" style="background-image:url('images/latest-designs/executioner.webp'); background-size:cover; background-position:center;"><div class="cap"><b class="cap-title">Latest Designs</b><span class="cap-desc">The newest card and component art, fresh off the design table. Updated as soon as new pieces are finalized. This is where the current look of Carrier lives.</span></div></div>
     <div class="shot gallery-art" id="galleryArtShot" style="background-image:url('images/early-prototypes/phase2-1.webp'); background-size:cover; background-position:center;"><div class="cap"><b class="cap-title">Early Prototypes</b><span class="cap-desc">Where it all started — rough shapes, testing what worked. Concept sketches, home prints, and the first sleeved decks. A look back at how far the design has come.</span></div></div>
     <div class="shot gallery-art" id="characterArchiveShot" style="background-image:url('images/character-archives/survivalist.webp'); background-size:cover; background-position:center;"><div class="cap"><b class="cap-title">Cutting Room</b><span class="cap-desc">Characters and secret roles we pulled from the deck. Some were too overpowered, others just unfair. The rest simply didn't make the final cut.</span></div></div>
-    <div class="shot">🧑‍🤝‍🧑<div class="cap"><b class="cap-title">Playtest Sessions</b><span class="cap-desc">Snapshots from the table, where the real testing happens. Every session shapes balance, pacing, and rules. This is Carrier being pressure-tested by real players.</span></div></div>
+    <div class="shot gallery-art" id="playtestSessionsShot" style="background-image:url('images/playtest-sessions/pt2.webp'); background-size:cover; background-position:center;"><div class="cap"><b class="cap-title">Playtest Sessions</b><span class="cap-desc">Snapshots from the table, where the real testing happens. Every session shapes balance, pacing, and rules. This is Carrier being pressure-tested by real players.</span></div></div>
   </div>
 </section>
 
@@ -692,7 +692,8 @@
         !e.target.closest('.concept-grid img') &&
         !e.target.closest('#galleryArtShot') &&
         !e.target.closest('#characterArchiveShot') &&
-        !e.target.closest('#latestDesignsShot')){
+        !e.target.closest('#latestDesignsShot') &&
+        !e.target.closest('#playtestSessionsShot')){
       closeSidePreview();
     }
   });
@@ -742,6 +743,21 @@
         const it = latestDesignsItems[0];
         openSidePreview(it.src, it.alt, it.caption);
       }
+    });
+  }
+
+  const playtestSessionsItems = [
+    { src:'images/playtest-sessions/pt1.webp', alt:'Playtest session 1, May 21 2024', caption:"PT1 — May 21, 2024. This was the first time we brought someone else on board to help pull in players we didn't already know. New faces meant new blind spots — the kind of honest, unfiltered feedback you just can't get from friends. Rough as it was, this was the first real test of whether Carrier could stand on its own." },
+    { src:'images/playtest-sessions/pt2.webp', alt:'Playtest session 2, May 27 2024, at The Mind Cafe', caption:"PT2 — May 27, 2024. Held at The Mind Cafe, a well-known board game spot, this was our first major session in front of a crowd that actually lived and breathed tabletop games. The pressure was real, and so was the feedback. It pushed us to think a lot harder about pacing and balance." },
+    { src:'images/playtest-sessions/pt3.webp', alt:'Playtest session 3, May 30 2024, at a local church', caption:"PT3 — May 30, 2024. A smaller, more relaxed session held at a local church with friends. Sometimes the best feedback comes from people who have no problem telling you what isn't working. A lot of the small quality-of-life fixes that followed trace back to this night." },
+    { src:'images/playtest-sessions/pt4.webp', alt:'Playtest session 4, June 1 2024', caption:"PT4 — June 1, 2024. June turned out to be one of our busiest months yet, packed with events and back-to-back testing. We ran through the game more times than we could count, and it exposed just how many flaws were still hiding under the surface. Painful, but exactly the kind of pressure the design needed." },
+    { src:'images/playtest-sessions/pt5.webp', alt:'Playtest session, June 6 2024, regular church meetup', caption:"June 6, 2024 — back to our regular church board game meetup, the group that's tested Carrier more than anyone else at this point. There's real value in testing with the same people again and again; they catch things new players never would. This session felt less like a test and more like fine-tuning with old friends." }
+  ];
+  const playtestSessionsShot = document.getElementById('playtestSessionsShot');
+  if (playtestSessionsShot){
+    playtestSessionsShot.addEventListener('click', (e)=>{
+      e.stopPropagation();
+      openGalleryPreview(playtestSessionsItems, 1);
     });
   }
 
