@@ -644,22 +644,28 @@
     galleryArtShot.addEventListener('click', ()=> openGalleryPreview(artDirectionItems, 4));
   }
 
-  document.querySelectorAll('.concept-grid img[data-caption]').forEach(img=>{
-    const box = img.closest('.t-detail').querySelector('.update-box p');
-    if (box && !box.dataset.default) box.dataset.default = box.textContent;
+  document.querySelectorAll('.concept-grid').forEach(grid=>{
+    const gridImgs = Array.from(grid.querySelectorAll('img[data-caption]'));
+    const items = gridImgs.map(img=>({
+      src: img.getAttribute('src'), alt: img.alt, caption: img.dataset.caption
+    }));
+    gridImgs.forEach((img, idx)=>{
+      const box = img.closest('.t-detail').querySelector('.update-box p');
+      if (box && !box.dataset.default) box.dataset.default = box.textContent;
 
-    const swapText = (text)=>{
-      if(!box) return;
-      box.textContent = text;
-      box.style.animation = 'none';
-      void box.offsetWidth;
-      box.style.animation = '';
-    };
-    img.addEventListener('mouseenter', ()=> swapText(img.dataset.caption));
-    img.addEventListener('mouseleave', ()=> swapText(box.dataset.default));
-    img.addEventListener('click', (e)=>{
-      e.stopPropagation();
-      openSidePreview(img.src, img.alt, img.dataset.caption);
+      const swapText = (text)=>{
+        if(!box) return;
+        box.textContent = text;
+        box.style.animation = 'none';
+        void box.offsetWidth;
+        box.style.animation = '';
+      };
+      img.addEventListener('mouseenter', ()=> swapText(img.dataset.caption));
+      img.addEventListener('mouseleave', ()=> swapText(box.dataset.default));
+      img.addEventListener('click', (e)=>{
+        e.stopPropagation();
+        openGalleryPreview(items, idx);
+      });
     });
   });
 </script>
