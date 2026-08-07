@@ -43,7 +43,7 @@
 
   /* ---------- HEADER ---------- */
   header{
-    position:sticky; top:0; z-index:50;
+    position:sticky; top:0; z-index:10001;
     display:flex; align-items:center; justify-content:space-between;
     padding:12px 6%; border-bottom:2px solid var(--darkred);
     background:rgba(22,22,22,0.92); backdrop-filter:blur(4px);
@@ -127,7 +127,7 @@
   .gallery{background:var(--panel2); border-top:2px solid var(--darkred); border-bottom:2px solid var(--darkred);}
   .gallery-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:18px;}
   .shot{
-    aspect-ratio:4/3; border:2px solid #2b2b2b; position:relative; overflow:hidden;
+    aspect-ratio:1/1; border:2px solid #2b2b2b; position:relative; overflow:hidden;
     background:
       linear-gradient(135deg,#241010,#111),
       repeating-linear-gradient(90deg, rgba(255,255,255,0.04) 0 8px, transparent 8px 16px),
@@ -136,10 +136,16 @@
     transition:border-color .2s, transform .2s;
   }
   .shot:hover{border-color:var(--yellow); transform:scale(1.03);}
+  .shot.gallery-art{cursor:pointer;}
   .shot .cap{
-    position:absolute; bottom:0; left:0; right:0; background:rgba(0,0,0,0.75);
-    font-family:'VT323',monospace; font-size:0.85rem; color:var(--grey); padding:6px 10px;
+    position:absolute; bottom:0; left:0; right:0; background:rgba(0,0,0,0.8);
+    font-family:'VT323',monospace; font-size:0.85rem; color:var(--grey); padding:10px 12px;
   }
+  .shot .cap-title{
+    display:block; color:var(--yellow); font-family:'DotGothic16',monospace;
+    font-size:0.72rem; letter-spacing:0.5px; text-transform:uppercase; margin-bottom:4px;
+  }
+  .shot .cap-desc{ display:block; color:var(--grey); font-size:0.85rem; line-height:1.35; }
 
   /* ---------- TIMELINE / ROADMAP ---------- */
   .timeline{position:relative; max-width:720px;}
@@ -174,7 +180,7 @@
   }
   .concept-grid img{
     width:100%; aspect-ratio:1/1; object-fit:cover; display:block;
-    border:2px solid #2b2b2b; cursor:pointer;
+    border:2px solid #2b2b2b; cursor:pointer; z-index:10000;
     opacity:0; transform:scale(.9);
     transition:border-color .2s, transform .2s, opacity .4s ease;
   }
@@ -184,6 +190,47 @@
   .t-item.expanded .concept-grid img:nth-child(3){ transition-delay:.15s; }
   .t-item.expanded .concept-grid img:nth-child(4){ transition-delay:.2s; }
   .concept-grid img:hover{ border-color:var(--yellow); transform:scale(1.04) !important; }
+
+  /* ---------- SIDE PREVIEW ---------- */
+  .side-preview-backdrop{
+    position:fixed; inset:0; z-index:9999; background:rgba(0,0,0,0.78);
+    opacity:0; pointer-events:none; transition:opacity .3s ease;
+  }
+  .side-preview-backdrop.active{ opacity:1; pointer-events:auto; }
+  .side-preview{
+    position:fixed; top:50%; left:50%; z-index:10000;
+    width:min(90vw,420px);
+    opacity:0; pointer-events:none;
+    transform:translate(-50%,-50%) scale(.96);
+    transition:opacity .3s ease, transform .3s ease;
+  }
+  .side-preview.active{ opacity:1; transform:translate(-50%,-50%) scale(1); pointer-events:auto; }
+  .side-preview-frame{ position:relative; }
+  .side-preview img{
+    display:block; width:100%; height:auto; max-height:64vh; object-fit:contain;
+    border:none; filter:drop-shadow(0 14px 28px rgba(0,0,0,0.6));
+  }
+  .side-preview-cap{
+    margin-top:14px; color:var(--grey); font-size:0.9rem; line-height:1.5;
+    background:var(--panel); border:2px solid var(--darkred); padding:12px 14px;
+  }
+  .side-preview-close{
+    position:absolute; top:10px; right:10px; width:26px; height:26px; z-index:1;
+    background:transparent; border:none; box-shadow:none;
+    color:#000; font-family:'DotGothic16',monospace; font-size:1.1rem;
+    cursor:pointer; opacity:0.8; transition:opacity .2s, color .2s;
+  }
+  .side-preview-close:hover{ opacity:1; color:var(--red); }
+  .side-preview-nav{
+    position:absolute; top:50%; transform:translateY(-50%); z-index:1;
+    background:rgba(0,0,0,0.55); color:#fff; border:2px solid #000; width:34px; height:34px;
+    font-size:1.1rem; cursor:pointer; display:none; align-items:center; justify-content:center;
+    font-family:'DotGothic16',monospace;
+  }
+  .side-preview-nav:hover{ background:var(--red); }
+  .side-preview-prev{ left:10px; }
+  .side-preview-next{ right:10px; }
+  .side-preview.gallery-mode .side-preview-nav{ display:flex; }
   .t-detail .shot-sq{
     width:100%; aspect-ratio:1/1; border:2px solid #2b2b2b;
     background:
@@ -320,10 +367,11 @@
     <a class="btn ghost" href="#signal">Get Alerts</a>
 
     <div class="stat-bar">
-      <div class="stat"><b>2–4</b><span>Players</span></div>
+      <div class="stat"><b>5–8</b><span>Players</span></div>
       <div class="stat"><b>45m</b><span>Playtime</span></div>
-      <div class="stat"><b>v0.6</b><span>Prototype</span></div>
-      <div class="stat"><b>12+</b><span>Playtests</span></div>
+      <div class="stat"><b>v4.0</b><span>Prototype</span></div>
+      <div class="stat"><b>60+</b><span>Sessions</span></div>
+      <div class="stat"><b>300+</b><span>Participants</span></div>
     </div>
   </div>
 </section>
@@ -361,10 +409,10 @@
   <h2 class="section-title">Gallery</h2>
   <p class="section-sub">Prototype shots, card art, and table setups — replace these placeholders with real photos.</p>
   <div class="gallery-grid">
-    <div class="shot">🃏<span class="cap">Card prototype v3</span></div>
-    <div class="shot">🗺️<span class="cap">Board layout draft</span></div>
-    <div class="shot">🎨<span class="cap">Early art direction</span></div>
-    <div class="shot">🧑‍🤝‍🧑<span class="cap">Playtest night #7</span></div>
+    <div class="shot">🃏<div class="cap"><b class="cap-title">Latest Designs</b><span class="cap-desc">The newest card and component art, fresh off the design table.</span></div></div>
+    <div class="shot gallery-art" id="galleryArtShot" style="background-image:url('images/roadmap/phase2/phase2-1.webp'); background-size:cover; background-position:center;"><div class="cap"><b class="cap-title">Early Prototypes</b><span class="cap-desc">Where it all started — rough shapes, testing what worked.</span></div></div>
+    <div class="shot">🚫<div class="cap"><b class="cap-title">Character Archives</b><span class="cap-desc">Cards we pulled from the deck — too overpowered, too unfair, or just broke the game in ways we didn't want.</span></div></div>
+    <div class="shot">🧑‍🤝‍🧑<div class="cap"><b class="cap-title">Playtest Sessions</b><span class="cap-desc">Snapshots from the table, where the real testing happens.</span></div></div>
   </div>
 </section>
 
@@ -392,8 +440,13 @@
       <h4>Paper Prototype <span class="t-toggle">▾</span></h4>
       <p>First playable version built and tested with friends. Completed.</p>
       <div class="t-detail">
-        <div class="shot-sq">🃏</div>
-        <div class="update-box"><p>Update placeholder — swap in a real photo and a short note from the first prototype tests.</p></div>
+        <div class="concept-grid">
+          <img src="images/roadmap/phase2/phase2-1.webp" alt="Printing cards at home" data-caption="First, we purchased a printer to print at home — the ink wasn't the highest quality, but it helped us get moving.">
+          <img src="images/roadmap/phase2/phase2-2.webp" alt="Cards sleeved with TCG sleeves" data-caption="Then we sleeved everything with TCG sleeves, just to make it feel a little more like a real game.">
+          <img src="images/roadmap/phase2/phase2-3.webp" alt="Cards printed at a local print shop with glossy and matte finishes" data-caption="Later, we brought the game to a local print shop — the first time we saw glossy and matte finishes on our own cards.">
+          <img src="images/roadmap/phase2/phase2-4.webp" alt="Introducing character cards with public and secret roles" data-caption="We also introduced Characters — the public identity of a player. Carrier has secret roles and public roles.">
+        </div>
+        <div class="update-box"><p>This is also around when we started moving away from Midjourney and began drawing things ourselves — squeezing in art sessions during whatever free time we had. We still cut corners where we could (outfits especially), but from here on, the art was ours.</p></div>
       </div>
     </div>
     <div class="t-item active">
@@ -485,6 +538,17 @@
 
 <button id="topBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
 
+<div class="side-preview-backdrop" id="sidePreviewBackdrop"></div>
+<div class="side-preview" id="sidePreview">
+  <div class="side-preview-frame">
+    <button class="side-preview-close" id="sidePreviewClose">✕</button>
+    <button class="side-preview-nav side-preview-prev" id="sidePreviewPrev">‹</button>
+    <button class="side-preview-nav side-preview-next" id="sidePreviewNext">›</button>
+    <img id="sidePreviewImg" src="" alt="">
+  </div>
+  <div class="side-preview-cap" id="sidePreviewCap"></div>
+</div>
+
 <script>
   const reveals = document.querySelectorAll('.reveal');
   const io = new IntersectionObserver((entries)=>{
@@ -503,8 +567,84 @@
     });
   });
 
+  const sidePreview = document.getElementById('sidePreview');
+  const sidePreviewImg = document.getElementById('sidePreviewImg');
+  const sidePreviewCap = document.getElementById('sidePreviewCap');
+  const sidePreviewBackdrop = document.getElementById('sidePreviewBackdrop');
+  let galleryItems = null;
+  let galleryIndex = 0;
+
+  function renderSidePreview(item){
+    sidePreviewImg.src = item.src;
+    sidePreviewImg.alt = item.alt || '';
+    sidePreviewCap.textContent = item.caption || '';
+    sidePreviewCap.style.display = item.caption ? 'block' : 'none';
+  }
+  function openSidePreview(src, alt, caption){
+    galleryItems = null;
+    sidePreview.classList.remove('gallery-mode');
+    renderSidePreview({src, alt, caption});
+    sidePreview.classList.add('active');
+    sidePreviewBackdrop.classList.add('active');
+  }
+  function openGalleryPreview(items, startIndex){
+    galleryItems = items;
+    galleryIndex = startIndex || 0;
+    sidePreview.classList.add('gallery-mode');
+    renderSidePreview(galleryItems[galleryIndex]);
+    sidePreview.classList.add('active');
+    sidePreviewBackdrop.classList.add('active');
+  }
+  function closeSidePreview(){
+    sidePreview.classList.remove('active');
+    sidePreview.classList.remove('gallery-mode');
+    sidePreviewBackdrop.classList.remove('active');
+    galleryItems = null;
+  }
+  sidePreviewBackdrop.addEventListener('click', closeSidePreview);
+  document.getElementById('sidePreviewClose').addEventListener('click', closeSidePreview);
+  document.getElementById('sidePreviewPrev').addEventListener('click', (e)=>{
+    e.stopPropagation();
+    if(!galleryItems) return;
+    galleryIndex = (galleryIndex - 1 + galleryItems.length) % galleryItems.length;
+    renderSidePreview(galleryItems[galleryIndex]);
+  });
+  document.getElementById('sidePreviewNext').addEventListener('click', (e)=>{
+    e.stopPropagation();
+    if(!galleryItems) return;
+    galleryIndex = (galleryIndex + 1) % galleryItems.length;
+    renderSidePreview(galleryItems[galleryIndex]);
+  });
+  window.addEventListener('keydown', (e)=>{
+    if(e.key === 'Escape') closeSidePreview();
+    if(galleryItems && e.key === 'ArrowRight') document.getElementById('sidePreviewNext').click();
+    if(galleryItems && e.key === 'ArrowLeft') document.getElementById('sidePreviewPrev').click();
+  });
+  document.addEventListener('click', (e)=>{
+    if (sidePreview.classList.contains('active') &&
+        !sidePreview.contains(e.target) &&
+        !e.target.closest('.concept-grid img') &&
+        !e.target.closest('#galleryArtShot')){
+      closeSidePreview();
+    }
+  });
+
+  const artDirectionItems = [
+    { src:'images/roadmap/phase1/concept-1.webp', alt:'First draft of Carrier concept art', caption:'The very first draft — messy, but the first time Carrier looked like something real.' },
+    { src:'images/roadmap/phase1/concept-2.webp', alt:'Idealisation phase concept art', caption:'Idealisation phase — Midjourney helped generate assets quickly so we could iterate fast.' },
+    { src:'images/roadmap/phase1/concept-3.webp', alt:'Support kits built from Midjourney assets', caption:'Support kits built from Midjourney backgrounds and asset packs found on itch.io.' },
+    { src:'images/roadmap/phase1/concept-4.webp', alt:'Border design and early zombie drafts', caption:'Getting the border design right, and drafting the first zombies with Midjourney.' },
+    { src:'images/roadmap/phase2/phase2-1.webp', alt:'Printing cards at home', caption:"First, we purchased a printer to print at home — the ink wasn't the highest quality, but it helped us get moving." },
+    { src:'images/roadmap/phase2/phase2-2.webp', alt:'Cards sleeved with TCG sleeves', caption:'Then we sleeved everything with TCG sleeves, just to make it feel a little more like a real game.' },
+    { src:'images/roadmap/phase2/phase2-3.webp', alt:'Cards printed at a local print shop', caption:'Later, we brought the game to a local print shop — the first time we saw glossy and matte finishes on our own cards.' },
+    { src:'images/roadmap/phase2/phase2-4.webp', alt:'Introducing character cards', caption:'We also introduced Characters — the public identity of a player. Carrier has secret roles and public roles.' }
+  ];
+  const galleryArtShot = document.getElementById('galleryArtShot');
+  if (galleryArtShot){
+    galleryArtShot.addEventListener('click', ()=> openGalleryPreview(artDirectionItems, 4));
+  }
+
   document.querySelectorAll('.concept-grid img[data-caption]').forEach(img=>{
-    img.addEventListener('click', (e)=> e.stopPropagation());
     const box = img.closest('.t-detail').querySelector('.update-box p');
     if (box && !box.dataset.default) box.dataset.default = box.textContent;
 
@@ -517,6 +657,10 @@
     };
     img.addEventListener('mouseenter', ()=> swapText(img.dataset.caption));
     img.addEventListener('mouseleave', ()=> swapText(box.dataset.default));
+    img.addEventListener('click', (e)=>{
+      e.stopPropagation();
+      openSidePreview(img.src, img.alt, img.dataset.caption);
+    });
   });
 </script>
 
