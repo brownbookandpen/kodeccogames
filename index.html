@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>CARRIER — Kodecco Games</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DotGothic16&family=VT323&display=swap" rel="stylesheet">
 <style>
   :root{
     --black:#0a0a0a;
@@ -30,7 +30,7 @@
     background-image: repeating-linear-gradient(0deg, rgba(255,255,255,0.02) 0px, transparent 1px, transparent 2px);
     overflow-x:hidden;
   }
-  h1,h2,h3,h4,.logo,nav a,.tag,.btn,.stat b,.timeline-year{ font-family:'Press Start 2P', monospace; }
+  h1,h2,h3,h4,.logo,nav a,.tag,.btn,.stat b,.timeline-year{ font-family:'DotGothic16', monospace; }
   .post-meta,.brief-card p,.hero p,.section-sub,.signal p,.quote p{ font-family:'VT323', monospace; font-size:1.2rem; }
   a{color:inherit;}
 
@@ -98,7 +98,7 @@
   }
   .stat{text-align:center;}
   .stat b{display:block; color:var(--yellow); font-size:1.4rem; margin-bottom:8px;}
-  .stat span{color:var(--grey); font-size:0.6rem; letter-spacing:1px; text-transform:uppercase; font-family:'Press Start 2P',monospace;}
+  .stat span{color:var(--grey); font-size:0.6rem; letter-spacing:1px; text-transform:uppercase; font-family:'DotGothic16',monospace;}
 
   /* ---------- SECTION SHARED ---------- */
   section{padding:80px 6%;}
@@ -155,7 +155,7 @@
   .t-item.done::before{background:var(--green);}
   .t-item.active::before{background:var(--red); box-shadow:0 0 0 4px rgba(200,29,29,0.25);}
   .timeline-year{font-size:0.6rem; color:var(--yellow); margin-bottom:8px; letter-spacing:1px;}
-  .t-item h4{color:var(--white); font-size:0.85rem; margin-bottom:8px; font-family:'Press Start 2P',monospace;}
+  .t-item h4{color:var(--white); font-size:0.85rem; margin-bottom:8px; font-family:'DotGothic16',monospace;}
   .t-item p{color:var(--grey); font-size:0.95rem;}
 
   /* ---------- JOURNAL ---------- */
@@ -326,24 +326,24 @@
   <h2 class="section-title">Dev Journal</h2>
   <p class="section-sub">Entries documenting the build — origins, mechanics, art, and playtests.</p>
   <div class="posts">
-    <div class="post-card">
-      <div class="post-thumb">☣</div>
+    <a class="post-card" href="posts/origins-of-carrier.html" style="text-decoration:none; display:block;">
+      <div class="post-thumb" style="background-image:url('images/origins/latest-cover-art.avif'); background-size:cover; background-position:center;"></div>
       <div class="post-body">
         <div class="post-meta">Oct 26 · 9 min read</div>
         <h4>The Origins of Carrier</h4>
         <p>A behind-the-scenes story about how Carrier began — what inspired it, our design goals, and where it's headed.</p>
-        <a class="post-link" href="#">Read entry →</a>
+        <span class="post-link">Read entry →</span>
       </div>
-    </div>
-    <div class="post-card">
-      <div class="post-thumb">📡</div>
+    </a>
+    <a class="post-card" href="posts/were-coming-back.html" style="text-decoration:none; display:block;">
+      <div class="post-thumb" style="background-image:url('images/curefinder-card.avif'); background-size:cover; background-position:center 20%;"></div>
       <div class="post-body">
         <div class="post-meta">Oct 19 · 2 min read</div>
         <h4>We're Coming Back, Soon.</h4>
         <p>A mini retrospective on the break, and what's next for development.</p>
-        <a class="post-link" href="#">Read entry →</a>
+        <span class="post-link">Read entry →</span>
       </div>
-    </div>
+    </a>
     <div class="post-card">
       <div class="post-thumb">🃏</div>
       <div class="post-body">
@@ -357,7 +357,7 @@
 </section>
 
 <div class="quote reveal">
-  <p>"Every failed prototype taught us something the design doc couldn't."</p>
+  <p>"Every playtest tore the game apart a little more — and a little closer to what it needed to be."</p>
   <span>— Playtest Notes, Session #7</span>
 </div>
 
