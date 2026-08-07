@@ -121,7 +121,7 @@
 
   /* ---------- SECTION SHARED ---------- */
   section{padding:80px 6%;}
-  .eyebrow{color:var(--red); font-size:0.55rem; letter-spacing:2px; margin-bottom:14px; text-transform:uppercase;}
+  .eyebrow{color:var(--red); font-size:0.6rem; letter-spacing:2px; margin-bottom:14px; text-transform:uppercase;}
   .section-title{font-size:1.2rem; color:var(--yellow); letter-spacing:1px; margin-bottom:16px; text-transform:uppercase;}
   .section-sub{color:var(--grey); max-width:620px; margin-bottom:48px;}
   .reveal{opacity:0; transform:translateY(24px); transition:opacity .6s ease, transform .6s ease;}
@@ -456,10 +456,10 @@
   <h2 class="section-title">Gallery</h2>
   <p class="section-sub">Prototype shots, card art, and table setups — replace these placeholders with real photos.</p>
   <div class="gallery-grid">
-    <div class="shot">🃏<div class="cap"><b class="cap-title">Latest Designs</b><span class="cap-desc">The newest card and component art, fresh off the design table.</span></div></div>
-    <div class="shot gallery-art" id="galleryArtShot" style="background-image:url('images/early-prototypes/phase2-1.webp'); background-size:cover; background-position:center;"><div class="cap"><b class="cap-title">Early Prototypes</b><span class="cap-desc">Where it all started — rough shapes, testing what worked.</span></div></div>
-    <div class="shot">🚫<div class="cap"><b class="cap-title">Character Archives</b><span class="cap-desc">Cards we pulled from the deck — too overpowered, too unfair, or just broke the game in ways we didn't want.</span></div></div>
-    <div class="shot">🧑‍🤝‍🧑<div class="cap"><b class="cap-title">Playtest Sessions</b><span class="cap-desc">Snapshots from the table, where the real testing happens.</span></div></div>
+    <div class="shot">🃏<div class="cap"><b class="cap-title">Latest Designs</b><span class="cap-desc">The newest card and component art, fresh off the design table. Updated as soon as new pieces are finalized. This is where the current look of Carrier lives.</span></div></div>
+    <div class="shot gallery-art" id="galleryArtShot" style="background-image:url('images/early-prototypes/phase2-1.webp'); background-size:cover; background-position:center;"><div class="cap"><b class="cap-title">Early Prototypes</b><span class="cap-desc">Where it all started — rough shapes, testing what worked. Concept sketches, home prints, and the first sleeved decks. A look back at how far the design has come.</span></div></div>
+    <div class="shot gallery-art" id="characterArchiveShot" style="background-image:url('images/character-archives/survivalist.webp'); background-size:cover; background-position:center;"><div class="cap"><b class="cap-title">Cutting Room</b><span class="cap-desc">Characters and secret roles we pulled from the deck. Some were too overpowered, others just unfair. The rest simply didn't make the final cut.</span></div></div>
+    <div class="shot">🧑‍🤝‍🧑<div class="cap"><b class="cap-title">Playtest Sessions</b><span class="cap-desc">Snapshots from the table, where the real testing happens. Every session shapes balance, pacing, and rules. This is Carrier being pressure-tested by real players.</span></div></div>
   </div>
 </section>
 
@@ -671,7 +671,8 @@
     if (sidePreview.classList.contains('active') &&
         !sidePreview.contains(e.target) &&
         !e.target.closest('.concept-grid img') &&
-        !e.target.closest('#galleryArtShot')){
+        !e.target.closest('#galleryArtShot') &&
+        !e.target.closest('#characterArchiveShot')){
       closeSidePreview();
     }
   });
@@ -688,7 +689,24 @@
   ];
   const galleryArtShot = document.getElementById('galleryArtShot');
   if (galleryArtShot){
-    galleryArtShot.addEventListener('click', ()=> openGalleryPreview(artDirectionItems, 4));
+    galleryArtShot.addEventListener('click', (e)=>{ e.stopPropagation(); openGalleryPreview(artDirectionItems, 4); });
+  }
+
+  const characterArchiveItems = [
+    { src:'images/character-archives/survivalist.webp', alt:'Survivalist character card', caption:"Survivalist (V3) — we're actually cutting down the total roster size. A lot of characters didn't have meaningful abilities; they were just there to fill up space. Going forward we'd rather have fewer, more meaningful characters, with room to add more later in future expansions." },
+    { src:'images/character-archives/watchman.webp', alt:'Watchman character card', caption:'Watchman — tested with a group of regulars, some of our earliest testers, and we found it too overpowered. The lesson: once a secret role gets revealed, their word becomes law. That’s far too powerful for a social deduction game built on doubt.' }
+  ];
+  const characterArchiveShot = document.getElementById('characterArchiveShot');
+  if (characterArchiveShot){
+    characterArchiveShot.addEventListener('click', (e)=>{
+      e.stopPropagation();
+      if (characterArchiveItems.length > 1){
+        openGalleryPreview(characterArchiveItems, 0);
+      } else {
+        const it = characterArchiveItems[0];
+        openSidePreview(it.src, it.alt, it.caption);
+      }
+    });
   }
 
   document.querySelectorAll('.hero-marquee-track img').forEach(img=>{
