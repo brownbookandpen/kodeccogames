@@ -60,7 +60,7 @@
 
   /* ---------- HERO ---------- */
   .hero{
-    position:relative; padding:100px 6% 90px; text-align:center; overflow:hidden;
+    position:relative; padding:50px 6% 90px; text-align:center; overflow:hidden;
     background:
       linear-gradient(rgba(8,8,8,0.88),rgba(8,8,8,0.94)),
       repeating-linear-gradient(135deg, #1a1a1a 0 40px, #141414 40px 80px);
@@ -72,17 +72,36 @@
   }
   .hero-inner{position:relative; z-index:2;}
   .hero .tag{
-    display:block; width:fit-content; margin:0 auto 28px; color:var(--yellow); border:2px solid var(--yellow);
+    display:block; width:fit-content; margin:0 auto 34px; color:var(--yellow); border:2px solid var(--yellow);
     padding:8px 14px; font-size:0.5rem; letter-spacing:1px;
     animation: flicker 3.5s infinite;
   }
   @keyframes flicker{0%,92%,100%{opacity:1;} 94%{opacity:0.4;} 96%{opacity:1;} 98%{opacity:0.5;}}
   .hero img.hero-logo{
-    max-width:min(90%,560px); width:100%; height:auto; image-rendering:pixelated;
-    filter: drop-shadow(6px 6px 0 #000) drop-shadow(0 0 40px rgba(200,29,29,0.5));
-    margin-bottom:26px;
+    max-width:min(60%,320px); width:100%; height:auto; image-rendering:pixelated;
+    filter: drop-shadow(0 4px 16px rgba(0,0,0,0.7)) drop-shadow(0 0 70px rgba(200,29,29,0.55));
+    margin-bottom:18px;
   }
   .hero p{max-width:600px; margin:0 auto 34px; color:var(--grey); font-size:1.1rem;}
+
+  /* ---------- HERO MARQUEE ---------- */
+  .hero-marquee{
+    width:100%; max-width:960px; margin:0 auto 40px; overflow:hidden;
+    -webkit-mask-image:linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+    mask-image:linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  }
+  .hero-marquee-track{
+    display:flex; gap:14px; width:max-content;
+    animation:marqueeRight 26s linear infinite;
+  }
+  .hero-marquee:hover .hero-marquee-track{ animation-play-state:paused; }
+  @keyframes marqueeRight{ from{ transform:translateX(-50%); } to{ transform:translateX(0); } }
+  .hero-marquee-track img{
+    width:160px; height:160px; object-fit:cover; flex-shrink:0; cursor:pointer;
+    border:2px solid var(--darkred); box-shadow:3px 3px 0 rgba(0,0,0,0.6);
+    transition:border-color .2s, transform .2s;
+  }
+  .hero-marquee-track img:hover{ border-color:var(--yellow); transform:scale(1.04); }
   .btn{
     display:inline-block; background:var(--red); color:#fff;
     padding:15px 24px; text-decoration:none; font-size:0.62rem;
@@ -259,23 +278,29 @@
 
   /* ---------- JOURNAL ---------- */
   .journal{background:var(--panel2); border-top:2px solid var(--darkred); border-bottom:2px solid var(--darkred);}
-  .posts{display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:26px;}
-  .post-card{background:var(--panel); border:2px solid #2b2b2b; overflow:hidden; transition:border-color .2s, transform .2s;}
-  .post-card:hover{border-color:var(--red); transform:translateY(-4px);}
-  .post-thumb{
-    height:150px;
+  .posts{display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:18px;}
+  .post-card{
+    aspect-ratio:1/1; border:2px solid #2b2b2b; position:relative; overflow:hidden;
     background:
       linear-gradient(135deg,#2a0a0a,#111),
       repeating-linear-gradient(90deg, rgba(255,255,255,0.03) 0 8px, transparent 8px 16px),
       repeating-linear-gradient(0deg, rgba(255,255,255,0.03) 0 8px, transparent 8px 16px);
-    display:flex; align-items:center; justify-content:center; font-size:2.6rem;
-    border-bottom:2px solid var(--darkred); color:var(--red);
+    display:flex; align-items:center; justify-content:center; font-size:2.2rem; color:var(--red);
+    text-decoration:none; transition:border-color .2s, transform .2s;
   }
-  .post-body{padding:22px;}
-  .post-meta{color:var(--grey); font-size:0.72rem; letter-spacing:1px; text-transform:uppercase; margin-bottom:10px;}
-  .post-body h4{color:var(--white); margin-bottom:12px; font-size:0.8rem; line-height:1.5;}
-  .post-body p{color:var(--grey); font-size:0.9rem;}
-  .post-link{display:inline-block; margin-top:14px; color:var(--yellow); font-size:0.7rem; text-decoration:none; letter-spacing:1px;}
+  .post-card:hover{border-color:var(--yellow); transform:scale(1.03);}
+  .post-thumb{ position:absolute; inset:0; }
+  .post-cap{
+    position:absolute; bottom:0; left:0; right:0; background:rgba(0,0,0,0.8);
+    font-family:'VT323',monospace; padding:10px 12px;
+  }
+  .post-cap .post-meta{color:var(--grey); font-size:0.65rem; letter-spacing:1px; text-transform:uppercase; margin-bottom:4px; display:block;}
+  .post-cap .post-cap-title{
+    display:block; color:var(--yellow); font-family:'DotGothic16',monospace;
+    font-size:0.72rem; letter-spacing:0.5px; text-transform:uppercase; margin-bottom:4px;
+  }
+  .post-cap .post-cap-desc{ display:block; color:var(--grey); font-size:0.85rem; line-height:1.35; }
+  .post-link{display:inline-block; margin-top:8px; color:var(--yellow); font-size:0.7rem; text-decoration:none; letter-spacing:1px;}
   .post-link:hover{text-decoration:underline;}
 
   /* ---------- QUOTE ---------- */
@@ -360,8 +385,30 @@
 
 <section class="hero">
   <div class="hero-inner">
-    <span class="tag">⚠ DEVELOPMENT LOG — ONGOING</span>
     <img class="hero-logo" src="images/carrier-icon.png" alt="CARRIER">
+    <span class="tag">⚠ DEVELOPMENT LOG — ONGOING</span>
+
+    <div class="hero-marquee">
+      <div class="hero-marquee-track">
+        <img src="images/concept-core-loop/concept-1.webp" alt="First draft of Carrier concept art">
+        <img src="images/concept-core-loop/concept-2.webp" alt="Idealisation phase concept art">
+        <img src="images/concept-core-loop/concept-3.webp" alt="Support kits built from Midjourney assets">
+        <img src="images/concept-core-loop/concept-4.webp" alt="Border design and early zombie drafts">
+        <img src="images/early-prototypes/phase2-1.webp" alt="Printing cards at home">
+        <img src="images/early-prototypes/phase2-2.webp" alt="Cards sleeved with TCG sleeves">
+        <img src="images/early-prototypes/phase2-3.webp" alt="Cards printed at a local print shop">
+        <img src="images/early-prototypes/phase2-4.webp" alt="Introducing character cards">
+        <img src="images/concept-core-loop/concept-1.webp" alt="First draft of Carrier concept art">
+        <img src="images/concept-core-loop/concept-2.webp" alt="Idealisation phase concept art">
+        <img src="images/concept-core-loop/concept-3.webp" alt="Support kits built from Midjourney assets">
+        <img src="images/concept-core-loop/concept-4.webp" alt="Border design and early zombie drafts">
+        <img src="images/early-prototypes/phase2-1.webp" alt="Printing cards at home">
+        <img src="images/early-prototypes/phase2-2.webp" alt="Cards sleeved with TCG sleeves">
+        <img src="images/early-prototypes/phase2-3.webp" alt="Cards printed at a local print shop">
+        <img src="images/early-prototypes/phase2-4.webp" alt="Introducing character cards">
+      </div>
+    </div>
+
     <p>A survival board game about outlasting the horde. This is the record of building it — the design decisions, the failed prototypes, and everything still being figured out.</p>
     <a class="btn" href="#journal">Read the Journal</a>
     <a class="btn ghost" href="#signal">Get Alerts</a>
@@ -410,7 +457,7 @@
   <p class="section-sub">Prototype shots, card art, and table setups — replace these placeholders with real photos.</p>
   <div class="gallery-grid">
     <div class="shot">🃏<div class="cap"><b class="cap-title">Latest Designs</b><span class="cap-desc">The newest card and component art, fresh off the design table.</span></div></div>
-    <div class="shot gallery-art" id="galleryArtShot" style="background-image:url('images/roadmap/phase2/phase2-1.webp'); background-size:cover; background-position:center;"><div class="cap"><b class="cap-title">Early Prototypes</b><span class="cap-desc">Where it all started — rough shapes, testing what worked.</span></div></div>
+    <div class="shot gallery-art" id="galleryArtShot" style="background-image:url('images/early-prototypes/phase2-1.webp'); background-size:cover; background-position:center;"><div class="cap"><b class="cap-title">Early Prototypes</b><span class="cap-desc">Where it all started — rough shapes, testing what worked.</span></div></div>
     <div class="shot">🚫<div class="cap"><b class="cap-title">Character Archives</b><span class="cap-desc">Cards we pulled from the deck — too overpowered, too unfair, or just broke the game in ways we didn't want.</span></div></div>
     <div class="shot">🧑‍🤝‍🧑<div class="cap"><b class="cap-title">Playtest Sessions</b><span class="cap-desc">Snapshots from the table, where the real testing happens.</span></div></div>
   </div>
@@ -427,10 +474,10 @@
       <p>Defined the horde mechanic and core survival loop. Completed.</p>
       <div class="t-detail">
         <div class="concept-grid">
-          <img src="images/roadmap/phase1/concept-1.webp" alt="First draft of Carrier concept art" data-caption="The very first draft — messy, but the first time Carrier looked like something real.">
-          <img src="images/roadmap/phase1/concept-2.webp" alt="Idealisation phase concept art" data-caption="Idealisation phase — Midjourney helped generate assets quickly so we could iterate fast.">
-          <img src="images/roadmap/phase1/concept-3.webp" alt="Support kits built from Midjourney assets found on itch.io" data-caption="Support kits built from Midjourney backgrounds and asset packs found on itch.io.">
-          <img src="images/roadmap/phase1/concept-4.webp" alt="Border design and early zombie drafts" data-caption="Getting the border design right, and drafting the first zombies with Midjourney.">
+          <img src="images/concept-core-loop/concept-1.webp" alt="First draft of Carrier concept art" data-caption="The very first draft — messy, but the first time Carrier looked like something real.">
+          <img src="images/concept-core-loop/concept-2.webp" alt="Idealisation phase concept art" data-caption="Idealisation phase — Midjourney helped generate assets quickly so we could iterate fast.">
+          <img src="images/concept-core-loop/concept-3.webp" alt="Support kits built from Midjourney assets found on itch.io" data-caption="Support kits built from Midjourney backgrounds and asset packs found on itch.io.">
+          <img src="images/concept-core-loop/concept-4.webp" alt="Border design and early zombie drafts" data-caption="Getting the border design right, and drafting the first zombies with Midjourney.">
         </div>
         <div class="update-box"><p>Midjourney was still pretty new back then, and I was curious enough to test it out on these early concepts — some of these backgrounds and assets are AI-generated because I simply couldn't paint scenes like this myself yet. It is what it is; just part of the trail that led to where Carrier's art is now. Our early playtests also ran WAY too long — each game dragged on forever, and that's when we knew we had to go back to the drawing board.</p></div>
       </div>
@@ -441,10 +488,10 @@
       <p>First playable version built and tested with friends. Completed.</p>
       <div class="t-detail">
         <div class="concept-grid">
-          <img src="images/roadmap/phase2/phase2-1.webp" alt="Printing cards at home" data-caption="First, we purchased a printer to print at home — the ink wasn't the highest quality, but it helped us get moving.">
-          <img src="images/roadmap/phase2/phase2-2.webp" alt="Cards sleeved with TCG sleeves" data-caption="Then we sleeved everything with TCG sleeves, just to make it feel a little more like a real game.">
-          <img src="images/roadmap/phase2/phase2-3.webp" alt="Cards printed at a local print shop with glossy and matte finishes" data-caption="Later, we brought the game to a local print shop — the first time we saw glossy and matte finishes on our own cards.">
-          <img src="images/roadmap/phase2/phase2-4.webp" alt="Introducing character cards with public and secret roles" data-caption="We also introduced Characters — the public identity of a player. Carrier has secret roles and public roles.">
+          <img src="images/early-prototypes/phase2-1.webp" alt="Printing cards at home" data-caption="First, we purchased a printer to print at home — the ink wasn't the highest quality, but it helped us get moving.">
+          <img src="images/early-prototypes/phase2-2.webp" alt="Cards sleeved with TCG sleeves" data-caption="Then we sleeved everything with TCG sleeves, just to make it feel a little more like a real game.">
+          <img src="images/early-prototypes/phase2-3.webp" alt="Cards printed at a local print shop with glossy and matte finishes" data-caption="Later, we brought the game to a local print shop — the first time we saw glossy and matte finishes on our own cards.">
+          <img src="images/early-prototypes/phase2-4.webp" alt="Introducing character cards with public and secret roles" data-caption="We also introduced Characters — the public identity of a player. Carrier has secret roles and public roles.">
         </div>
         <div class="update-box"><p>This is also around when we started moving away from Midjourney and began drawing things ourselves — squeezing in art sessions during whatever free time we had. We still cut corners where we could (outfits especially), but from here on, the art was ours.</p></div>
       </div>
@@ -484,30 +531,30 @@
   <h2 class="section-title">Dev Journal</h2>
   <p class="section-sub">Entries documenting the build — origins, mechanics, art, and playtests.</p>
   <div class="posts">
-    <a class="post-card" href="posts/origins-of-carrier.html" style="text-decoration:none; display:block;">
+    <a class="post-card" href="posts/origins-of-carrier.html">
       <div class="post-thumb" style="background-image:url('images/origins/latest-cover-art.avif'); background-size:cover; background-position:center;"></div>
-      <div class="post-body">
-        <div class="post-meta">Oct 26 · 9 min read</div>
-        <h4>The Origins of Carrier</h4>
-        <p>A behind-the-scenes story about how Carrier began — what inspired it, our design goals, and where it's headed.</p>
+      <div class="post-cap">
+        <span class="post-meta">Oct 26 · 9 min read</span>
+        <b class="post-cap-title">The Origins of Carrier</b>
+        <span class="post-cap-desc">A behind-the-scenes story about how Carrier began — what inspired it, our design goals, and where it's headed.</span>
         <span class="post-link">Read entry →</span>
       </div>
     </a>
-    <a class="post-card" href="posts/were-coming-back.html" style="text-decoration:none; display:block;">
+    <a class="post-card" href="posts/were-coming-back.html">
       <div class="post-thumb" style="background-image:url('images/curefinder-card.avif'); background-size:cover; background-position:center 20%;"></div>
-      <div class="post-body">
-        <div class="post-meta">Oct 19 · 2 min read</div>
-        <h4>We're Coming Back, Soon.</h4>
-        <p>A mini retrospective on the break, and what's next for development.</p>
+      <div class="post-cap">
+        <span class="post-meta">Oct 19 · 2 min read</span>
+        <b class="post-cap-title">We're Coming Back, Soon.</b>
+        <span class="post-cap-desc">A mini retrospective on the break, and what's next for development.</span>
         <span class="post-link">Read entry →</span>
       </div>
     </a>
     <div class="post-card">
-      <div class="post-thumb">🃏</div>
-      <div class="post-body">
-        <div class="post-meta">Draft · Untitled</div>
-        <h4>Designing the Horde mechanic</h4>
-        <p>Placeholder entry — write up how the horde escalation system came together.</p>
+      🃏
+      <div class="post-cap">
+        <span class="post-meta">Draft · Untitled</span>
+        <b class="post-cap-title">Designing the Horde mechanic</b>
+        <span class="post-cap-desc">Placeholder entry — write up how the horde escalation system came together.</span>
         <a class="post-link" href="#">Read entry →</a>
       </div>
     </div>
@@ -630,19 +677,27 @@
   });
 
   const artDirectionItems = [
-    { src:'images/roadmap/phase1/concept-1.webp', alt:'First draft of Carrier concept art', caption:'The very first draft — messy, but the first time Carrier looked like something real.' },
-    { src:'images/roadmap/phase1/concept-2.webp', alt:'Idealisation phase concept art', caption:'Idealisation phase — Midjourney helped generate assets quickly so we could iterate fast.' },
-    { src:'images/roadmap/phase1/concept-3.webp', alt:'Support kits built from Midjourney assets', caption:'Support kits built from Midjourney backgrounds and asset packs found on itch.io.' },
-    { src:'images/roadmap/phase1/concept-4.webp', alt:'Border design and early zombie drafts', caption:'Getting the border design right, and drafting the first zombies with Midjourney.' },
-    { src:'images/roadmap/phase2/phase2-1.webp', alt:'Printing cards at home', caption:"First, we purchased a printer to print at home — the ink wasn't the highest quality, but it helped us get moving." },
-    { src:'images/roadmap/phase2/phase2-2.webp', alt:'Cards sleeved with TCG sleeves', caption:'Then we sleeved everything with TCG sleeves, just to make it feel a little more like a real game.' },
-    { src:'images/roadmap/phase2/phase2-3.webp', alt:'Cards printed at a local print shop', caption:'Later, we brought the game to a local print shop — the first time we saw glossy and matte finishes on our own cards.' },
-    { src:'images/roadmap/phase2/phase2-4.webp', alt:'Introducing character cards', caption:'We also introduced Characters — the public identity of a player. Carrier has secret roles and public roles.' }
+    { src:'images/concept-core-loop/concept-1.webp', alt:'First draft of Carrier concept art', caption:'The very first draft — messy, but the first time Carrier looked like something real.' },
+    { src:'images/concept-core-loop/concept-2.webp', alt:'Idealisation phase concept art', caption:'Idealisation phase — Midjourney helped generate assets quickly so we could iterate fast.' },
+    { src:'images/concept-core-loop/concept-3.webp', alt:'Support kits built from Midjourney assets', caption:'Support kits built from Midjourney backgrounds and asset packs found on itch.io.' },
+    { src:'images/concept-core-loop/concept-4.webp', alt:'Border design and early zombie drafts', caption:'Getting the border design right, and drafting the first zombies with Midjourney.' },
+    { src:'images/early-prototypes/phase2-1.webp', alt:'Printing cards at home', caption:"First, we purchased a printer to print at home — the ink wasn't the highest quality, but it helped us get moving." },
+    { src:'images/early-prototypes/phase2-2.webp', alt:'Cards sleeved with TCG sleeves', caption:'Then we sleeved everything with TCG sleeves, just to make it feel a little more like a real game.' },
+    { src:'images/early-prototypes/phase2-3.webp', alt:'Cards printed at a local print shop', caption:'Later, we brought the game to a local print shop — the first time we saw glossy and matte finishes on our own cards.' },
+    { src:'images/early-prototypes/phase2-4.webp', alt:'Introducing character cards', caption:'We also introduced Characters — the public identity of a player. Carrier has secret roles and public roles.' }
   ];
   const galleryArtShot = document.getElementById('galleryArtShot');
   if (galleryArtShot){
     galleryArtShot.addEventListener('click', ()=> openGalleryPreview(artDirectionItems, 4));
   }
+
+  document.querySelectorAll('.hero-marquee-track img').forEach(img=>{
+    img.addEventListener('click', (e)=>{
+      e.stopPropagation();
+      const idx = artDirectionItems.findIndex(it => it.src === img.getAttribute('src'));
+      openGalleryPreview(artDirectionItems, idx >= 0 ? idx : 0);
+    });
+  });
 
   document.querySelectorAll('.concept-grid').forEach(grid=>{
     const gridImgs = Array.from(grid.querySelectorAll('img[data-caption]'));
