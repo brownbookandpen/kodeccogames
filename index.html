@@ -121,7 +121,7 @@
 
   /* ---------- SECTION SHARED ---------- */
   section{padding:80px 6%;}
-  .eyebrow{color:var(--red); font-size:0.6rem; letter-spacing:2px; margin-bottom:14px; text-transform:uppercase;}
+  .eyebrow{color:var(--red); font-family:'DotGothic16',monospace; font-size:1.05rem; letter-spacing:2px; margin-bottom:14px; text-transform:uppercase;}
   .section-title{font-size:1.2rem; color:var(--yellow); letter-spacing:1px; margin-bottom:16px; text-transform:uppercase;}
   .section-sub{color:var(--grey); max-width:620px; margin-bottom:48px;}
   .reveal{opacity:0; transform:translateY(24px); transition:opacity .6s ease, transform .6s ease;}
@@ -167,6 +167,23 @@
   .shot .cap-desc{ display:block; color:var(--grey); font-size:0.85rem; line-height:1.35; }
 
   /* ---------- TIMELINE / ROADMAP ---------- */
+  #roadmap{ position:relative; z-index:0; }
+  .roadmap-bg{
+    position:absolute; inset:0;
+    background-image:url('images/roadmap-art.webp');
+    background-repeat:no-repeat; background-position:center 15%; background-size:cover;
+    opacity:0.3; z-index:-2; pointer-events:none;
+    -webkit-mask-image:radial-gradient(closest-side, #000 60%, transparent 100%);
+    mask-image:radial-gradient(closest-side, #000 60%, transparent 100%);
+    transition:background-position .6s ease, transform .6s ease;
+  }
+  .roadmap-fade{
+    position:absolute; inset:0; z-index:-1; pointer-events:none;
+    background:linear-gradient(90deg, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.88) 42%, rgba(0,0,0,0.35) 68%, transparent 88%);
+    opacity:0; transition:opacity .4s ease;
+  }
+  #roadmap.has-expanded .roadmap-bg{ background-position:135% 15%; transform:translateX(6%); }
+  #roadmap.has-expanded .roadmap-fade{ opacity:1; }
   .timeline{position:relative; max-width:720px;}
   .timeline::before{
     content:""; position:absolute; left:14px; top:0; bottom:0; width:2px; background:var(--darkred);
@@ -464,6 +481,8 @@
 </section>
 
 <section id="roadmap" class="reveal">
+  <div class="roadmap-bg"></div>
+  <div class="roadmap-fade"></div>
   <div class="eyebrow">// 03</div>
   <h2 class="section-title">Roadmap</h2>
   <p class="section-sub">Where the project stands, and what's coming next.</p>
@@ -608,9 +627,19 @@
     topBtn.style.display = window.scrollY > 500 ? 'flex' : 'none';
   });
 
-  document.querySelectorAll('.t-item').forEach(item=>{
+  const roadmapSection = document.getElementById('roadmap');
+  function syncRoadmapFade(){
+    if (!roadmapSection) return;
+    const anyExpanded = roadmapSection.querySelectorAll('.t-item.expanded').length > 0;
+    roadmapSection.classList.toggle('has-expanded', anyExpanded);
+  }
+  const allTItems = document.querySelectorAll('.t-item');
+  allTItems.forEach(item=>{
     item.addEventListener('click', ()=>{
-      item.classList.toggle('expanded');
+      const wasExpanded = item.classList.contains('expanded');
+      allTItems.forEach(other=> other.classList.remove('expanded'));
+      if (!wasExpanded) item.classList.add('expanded');
+      syncRoadmapFade();
     });
   });
 
