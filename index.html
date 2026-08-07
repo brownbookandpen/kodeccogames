@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CARRIER — Kodecco Games</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --black:#0a0a0a;
+    --panel:#161616;
+    --panel2:#1c1c1c;
+    --red:#c81d1d;
+    --brightred:#e8341f;
+    --darkred:#6e1010;
+    --yellow:#f2c14e;
+    --green:#3f8f5f;
+    --grey:#9a9a9a;
+    --white:#eee8dc;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background: var(--black);
+    color: var(--white);
+    font-family: 'VT323', 'Courier New', monospace;
+    font-size:1.25rem;
+    line-height:1.6;
+    background-image: repeating-linear-gradient(0deg, rgba(255,255,255,0.02) 0px, transparent 1px, transparent 2px);
+    overflow-x:hidden;
+  }
+  h1,h2,h3,h4,.logo,nav a,.tag,.btn,.stat b,.timeline-year{ font-family:'Press Start 2P', monospace; }
+  .post-meta,.brief-card p,.hero p,.section-sub,.signal p,.quote p{ font-family:'VT323', monospace; font-size:1.2rem; }
+  a{color:inherit;}
+
+  ::selection{background:var(--red); color:#fff;}
+
+  .hazard{
+    height:10px;
+    background: repeating-linear-gradient(45deg, var(--yellow) 0 20px, var(--black) 20px 40px);
+  }
+
+  /* ---------- HEADER ---------- */
+  header{
+    position:sticky; top:0; z-index:50;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:20px 6%; border-bottom:2px solid var(--darkred);
+    background:rgba(22,22,22,0.92); backdrop-filter:blur(4px);
+  }
+  .logo{font-size:1rem; letter-spacing:2px; color:var(--red); text-shadow:2px 2px 0 #000;}
+  .logo span{color:var(--yellow); font-size:0.6rem; display:block; margin-top:4px; letter-spacing:1px;}
+  nav a{
+    color:var(--grey); text-decoration:none; margin-left:22px; font-size:0.6rem;
+    text-transform:uppercase; border-bottom:2px solid transparent; padding-bottom:4px;
+    transition:color .15s,border-color .15s;
+  }
+  nav a:hover{color:var(--yellow); border-bottom:2px solid var(--yellow);}
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position:relative; padding:110px 6% 90px; text-align:center; overflow:hidden;
+    background:
+      linear-gradient(rgba(8,8,8,0.88),rgba(8,8,8,0.94)),
+      repeating-linear-gradient(135deg, #1a1a1a 0 40px, #141414 40px 80px);
+    border-bottom:2px solid var(--darkred);
+  }
+  .hero::before{
+    content:""; position:absolute; inset:0; pointer-events:none;
+    background: radial-gradient(circle at 50% 0%, rgba(200,29,29,0.18), transparent 60%);
+  }
+  .hero-inner{position:relative; z-index:2;}
+  .hero .tag{
+    display:inline-block; color:var(--yellow); border:2px solid var(--yellow);
+    padding:8px 14px; font-size:0.5rem; letter-spacing:1px; margin-bottom:28px;
+    animation: flicker 3.5s infinite;
+  }
+  @keyframes flicker{0%,92%,100%{opacity:1;} 94%{opacity:0.4;} 96%{opacity:1;} 98%{opacity:0.5;}}
+  .hero h1{
+    font-size:clamp(2rem,6vw,3.2rem); color:var(--brightred); letter-spacing:5px;
+    text-shadow:4px 4px 0 #000, 0 0 30px rgba(200,29,29,0.4);
+    margin-bottom:22px; line-height:1.4;
+  }
+  .hero p{max-width:600px; margin:0 auto 34px; color:var(--grey); font-size:1.1rem;}
+  .btn{
+    display:inline-block; background:var(--red); color:#fff;
+    padding:15px 24px; text-decoration:none; font-size:0.62rem;
+    border:2px solid #000; box-shadow:4px 4px 0 var(--darkred);
+    transition:transform .15s, box-shadow .15s;
+  }
+  .btn:hover{transform:translate(-2px,-2px); box-shadow:6px 6px 0 var(--darkred);}
+  .btn.ghost{background:transparent; border:2px solid var(--yellow); color:var(--yellow); box-shadow:4px 4px 0 #000; margin-left:14px;}
+
+  .stat-bar{
+    display:flex; justify-content:center; gap:50px; margin-top:50px; flex-wrap:wrap;
+    position:relative; z-index:2;
+  }
+  .stat{text-align:center;}
+  .stat b{display:block; color:var(--yellow); font-size:1.4rem; margin-bottom:8px;}
+  .stat span{color:var(--grey); font-size:0.6rem; letter-spacing:1px; text-transform:uppercase; font-family:'Press Start 2P',monospace;}
+
+  /* ---------- SECTION SHARED ---------- */
+  section{padding:80px 6%;}
+  .eyebrow{color:var(--red); font-size:0.55rem; letter-spacing:2px; margin-bottom:14px; text-transform:uppercase;}
+  .section-title{font-size:1.2rem; color:var(--yellow); letter-spacing:1px; margin-bottom:16px; text-transform:uppercase;}
+  .section-sub{color:var(--grey); max-width:620px; margin-bottom:48px;}
+  .reveal{opacity:0; transform:translateY(24px); transition:opacity .6s ease, transform .6s ease;}
+  .reveal.in{opacity:1; transform:translateY(0);}
+
+  /* ---------- MISSION BRIEF ---------- */
+  .brief-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:20px;}
+  .brief-card{
+    background:var(--panel); border:2px solid var(--darkred); padding:24px; position:relative;
+    transition:transform .2s, border-color .2s;
+  }
+  .brief-card:hover{transform:translateY(-4px); border-color:var(--red);}
+  .brief-card::before{
+    content:""; position:absolute; top:0; left:0; width:100%; height:4px;
+    background:repeating-linear-gradient(45deg, var(--yellow) 0 10px, var(--black) 10px 20px);
+  }
+  .brief-card .icon{font-size:1.6rem; margin-bottom:14px;}
+  .brief-card h3{color:var(--red); margin-bottom:12px; font-size:0.8rem;}
+  .brief-card p{color:var(--grey); font-size:0.92rem;}
+
+  /* ---------- GALLERY ---------- */
+  .gallery{background:var(--panel2); border-top:2px solid var(--darkred); border-bottom:2px solid var(--darkred);}
+  .gallery-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:18px;}
+  .shot{
+    aspect-ratio:4/3; border:2px solid #2b2b2b; position:relative; overflow:hidden;
+    background:
+      linear-gradient(135deg,#241010,#111),
+      repeating-linear-gradient(90deg, rgba(255,255,255,0.04) 0 8px, transparent 8px 16px),
+      repeating-linear-gradient(0deg, rgba(255,255,255,0.04) 0 8px, transparent 8px 16px);
+    display:flex; align-items:center; justify-content:center; font-size:2.2rem; color:var(--red);
+    transition:border-color .2s, transform .2s;
+  }
+  .shot:hover{border-color:var(--yellow); transform:scale(1.03);}
+  .shot .cap{
+    position:absolute; bottom:0; left:0; right:0; background:rgba(0,0,0,0.75);
+    font-family:'VT323',monospace; font-size:0.85rem; color:var(--grey); padding:6px 10px;
+  }
+
+  /* ---------- TIMELINE / ROADMAP ---------- */
+  .timeline{position:relative; max-width:720px; margin:0 auto;}
+  .timeline::before{
+    content:""; position:absolute; left:14px; top:0; bottom:0; width:2px; background:var(--darkred);
+  }
+  .t-item{position:relative; padding-left:50px; margin-bottom:38px;}
+  .t-item:last-child{margin-bottom:0;}
+  .t-item::before{
+    content:""; position:absolute; left:6px; top:4px; width:16px; height:16px;
+    background:var(--yellow); border:2px solid #000;
+  }
+  .t-item.done::before{background:var(--green);}
+  .t-item.active::before{background:var(--red); box-shadow:0 0 0 4px rgba(200,29,29,0.25);}
+  .timeline-year{font-size:0.6rem; color:var(--yellow); margin-bottom:8px; letter-spacing:1px;}
+  .t-item h4{color:var(--white); font-size:0.85rem; margin-bottom:8px; font-family:'Press Start 2P',monospace;}
+  .t-item p{color:var(--grey); font-size:0.95rem;}
+
+  /* ---------- JOURNAL ---------- */
+  .journal{background:var(--panel2); border-top:2px solid var(--darkred); border-bottom:2px solid var(--darkred);}
+  .posts{display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:26px;}
+  .post-card{background:var(--panel); border:2px solid #2b2b2b; overflow:hidden; transition:border-color .2s, transform .2s;}
+  .post-card:hover{border-color:var(--red); transform:translateY(-4px);}
+  .post-thumb{
+    height:150px;
+    background:
+      linear-gradient(135deg,#2a0a0a,#111),
+      repeating-linear-gradient(90deg, rgba(255,255,255,0.03) 0 8px, transparent 8px 16px),
+      repeating-linear-gradient(0deg, rgba(255,255,255,0.03) 0 8px, transparent 8px 16px);
+    display:flex; align-items:center; justify-content:center; font-size:2.6rem;
+    border-bottom:2px solid var(--darkred); color:var(--red);
+  }
+  .post-body{padding:22px;}
+  .post-meta{color:var(--grey); font-size:0.72rem; letter-spacing:1px; text-transform:uppercase; margin-bottom:10px;}
+  .post-body h4{color:var(--white); margin-bottom:12px; font-size:0.8rem; line-height:1.5;}
+  .post-body p{color:var(--grey); font-size:0.9rem;}
+  .post-link{display:inline-block; margin-top:14px; color:var(--yellow); font-size:0.7rem; text-decoration:none; letter-spacing:1px;}
+  .post-link:hover{text-decoration:underline;}
+
+  /* ---------- QUOTE ---------- */
+  .quote{
+    text-align:center; max-width:700px; margin:0 auto; padding:80px 6%;
+  }
+  .quote p{font-size:1.4rem; color:var(--white); font-style:italic; margin-bottom:18px;}
+  .quote span{color:var(--grey); font-size:0.7rem; letter-spacing:1px; text-transform:uppercase;}
+
+  /* ---------- SIGNAL / NEWSLETTER ---------- */
+  .signal{
+    text-align:center; background:var(--panel); border:2px solid var(--red);
+    margin:0 6% 80px; padding:56px 6%; box-shadow:6px 6px 0 var(--darkred);
+  }
+  .signal h2{color:var(--yellow); letter-spacing:1px; margin-bottom:18px; font-size:1.05rem;}
+  .signal p{color:var(--grey); margin-bottom:26px;}
+  .signal form{display:flex; justify-content:center; gap:10px; flex-wrap:wrap;}
+  .signal input{padding:13px 16px; border:2px solid #333; background:#0d0d0d; color:#fff; width:280px; font-family:inherit; font-size:1rem;}
+  .signal input:focus{outline:none; border-color:var(--yellow);}
+
+  /* ---------- FOOTER ---------- */
+  footer{text-align:center; padding:38px 6%; color:#5a5a5a; font-size:0.85rem; border-top:2px solid var(--darkred);}
+  footer .socials a{margin:0 10px; color:var(--grey); text-decoration:none; font-weight:700;}
+  footer .socials a:hover{color:var(--red);}
+  footer .brand{color:var(--grey); font-size:0.6rem; letter-spacing:1px; margin-top:14px; font-family:'Press Start 2P',monospace;}
+
+  #topBtn{
+    position:fixed; bottom:24px; right:24px; background:var(--red); color:#fff;
+    border:2px solid #000; width:44px; height:44px; display:none; align-items:center; justify-content:center;
+    cursor:pointer; font-size:1.1rem; box-shadow:3px 3px 0 var(--darkred); z-index:60;
+  }
+
+  @media (max-width:640px){
+    nav{display:none;}
+    .btn.ghost{margin-left:0; margin-top:12px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="hazard"></div>
+<header>
+  <div class="logo">CARRIER <span>KODECCO GAMES</span></div>
+  <nav>
+    <a href="#brief">Mission Brief</a>
+    <a href="#gallery">Gallery</a>
+    <a href="#roadmap">Roadmap</a>
+    <a href="#journal">Dev Journal</a>
+    <a href="#signal">Send Signal</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <div class="hero-inner">
+    <span class="tag">⚠ DEVELOPMENT LOG — ONGOING</span>
+    <h1>CARRIER</h1>
+    <p>A survival board game about outlasting the horde. This is the record of building it — the design decisions, the failed prototypes, and everything still being figured out.</p>
+    <a class="btn" href="#journal">Read the Journal</a>
+    <a class="btn ghost" href="#signal">Get Alerts</a>
+
+    <div class="stat-bar">
+      <div class="stat"><b>2–4</b><span>Players</span></div>
+      <div class="stat"><b>45m</b><span>Playtime</span></div>
+      <div class="stat"><b>v0.6</b><span>Prototype</span></div>
+      <div class="stat"><b>12+</b><span>Playtests</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="brief" class="reveal">
+  <div class="eyebrow">// 01</div>
+  <h2 class="section-title">Mission Brief</h2>
+  <p class="section-sub">The essentials — swap in your real rules summary once they're locked.</p>
+  <div class="brief-grid">
+    <div class="brief-card">
+      <div class="icon">👥</div>
+      <h3>SURVIVORS</h3>
+      <p>2–4 players choose who holds the line each round.</p>
+    </div>
+    <div class="brief-card">
+      <div class="icon">📦</div>
+      <h3>SUPPLY</h3>
+      <p>Success requires stockpiling supply cards before the horde arrives.</p>
+    </div>
+    <div class="brief-card">
+      <div class="icon">☣</div>
+      <h3>FAILURE STATE</h3>
+      <p>Running dry triggers the next disaster sequence — the tension engine of the game.</p>
+    </div>
+    <div class="brief-card">
+      <div class="icon">🎲</div>
+      <h3>ESCALATION</h3>
+      <p>Each round the horde grows — placeholder text for how difficulty ramps.</p>
+    </div>
+  </div>
+</section>
+
+<section id="gallery" class="gallery reveal">
+  <div class="eyebrow">// 02</div>
+  <h2 class="section-title">Gallery</h2>
+  <p class="section-sub">Prototype shots, card art, and table setups — replace these placeholders with real photos.</p>
+  <div class="gallery-grid">
+    <div class="shot">🃏<span class="cap">Card prototype v3</span></div>
+    <div class="shot">🗺️<span class="cap">Board layout draft</span></div>
+    <div class="shot">🎨<span class="cap">Early art direction</span></div>
+    <div class="shot">🧑‍🤝‍🧑<span class="cap">Playtest night #7</span></div>
+  </div>
+</section>
+
+<section id="roadmap" class="reveal">
+  <div class="eyebrow">// 03</div>
+  <h2 class="section-title">Roadmap</h2>
+  <p class="section-sub">Where the project stands, and what's coming next.</p>
+  <div class="timeline">
+    <div class="t-item done">
+      <div class="timeline-year">PHASE 1</div>
+      <h4>Concept &amp; Core Loop</h4>
+      <p>Defined the horde mechanic and core survival loop. Completed.</p>
+    </div>
+    <div class="t-item done">
+      <div class="timeline-year">PHASE 2</div>
+      <h4>Paper Prototype</h4>
+      <p>First playable version built and tested with friends. Completed.</p>
+    </div>
+    <div class="t-item active">
+      <div class="timeline-year">PHASE 3 — NOW</div>
+      <h4>Balancing &amp; Playtesting</h4>
+      <p>Running structured playtests to tune difficulty and pacing.</p>
+    </div>
+    <div class="t-item">
+      <div class="timeline-year">PHASE 4</div>
+      <h4>Art &amp; Component Design</h4>
+      <p>Locking the visual identity and final component list.</p>
+    </div>
+    <div class="t-item">
+      <div class="timeline-year">PHASE 5</div>
+      <h4>Publishing / Crowdfunding</h4>
+      <p>TBD — placeholder for launch plans.</p>
+    </div>
+  </div>
+</section>
+
+<section id="journal" class="journal reveal">
+  <div class="eyebrow">// 04</div>
+  <h2 class="section-title">Dev Journal</h2>
+  <p class="section-sub">Entries documenting the build — origins, mechanics, art, and playtests.</p>
+  <div class="posts">
+    <div class="post-card">
+      <div class="post-thumb">☣</div>
+      <div class="post-body">
+        <div class="post-meta">Oct 26 · 9 min read</div>
+        <h4>The Origins of Carrier</h4>
+        <p>A behind-the-scenes story about how Carrier began — what inspired it, our design goals, and where it's headed.</p>
+        <a class="post-link" href="#">Read entry →</a>
+      </div>
+    </div>
+    <div class="post-card">
+      <div class="post-thumb">📡</div>
+      <div class="post-body">
+        <div class="post-meta">Oct 19 · 2 min read</div>
+        <h4>We're Coming Back, Soon.</h4>
+        <p>A mini retrospective on the break, and what's next for development.</p>
+        <a class="post-link" href="#">Read entry →</a>
+      </div>
+    </div>
+    <div class="post-card">
+      <div class="post-thumb">🃏</div>
+      <div class="post-body">
+        <div class="post-meta">Draft · Untitled</div>
+        <h4>Designing the Horde mechanic</h4>
+        <p>Placeholder entry — write up how the horde escalation system came together.</p>
+        <a class="post-link" href="#">Read entry →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="quote reveal">
+  <p>"Every failed prototype taught us something the design doc couldn't."</p>
+  <span>— Playtest Notes, Session #7</span>
+</div>
+
+<div class="signal reveal" id="signal">
+  <h2>Stay in the Loop</h2>
+  <p>New journal entries and playtest calls, sent when there's something worth reading.</p>
+  <form onsubmit="event.preventDefault(); alert('Placeholder form — connect this to your email provider.');">
+    <input type="email" placeholder="your@email.com" required>
+    <button class="btn" type="submit">Subscribe</button>
+  </form>
+</div>
+
+<footer>
+  <div class="socials">
+    <a href="#">Instagram</a> · <a href="#">BoardGameGeek</a> · <a href="#">Email</a>
+  </div>
+  <p style="margin-top:12px;">© 2026 CARRIER — a survival board game in development.</p>
+  <div class="brand">KODECCO GAMES</div>
+</footer>
+
+<button id="topBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+  const reveals = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); } });
+  }, {threshold:0.12});
+  reveals.forEach(el=>io.observe(el));
+
+  const topBtn = document.getElementById('topBtn');
+  window.addEventListener('scroll', ()=>{
+    topBtn.style.display = window.scrollY > 500 ? 'flex' : 'none';
+  });
+</script>
+
+</body>
+</html>
