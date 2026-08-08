@@ -50,4 +50,4 @@ Currently, in V3, all encounters read out exactly how many participants are requ
 
 ![Supply & Samples](Images/img-10.png "Supply & Samples will be removed when V4 rolls out.")
 
-Another benefit to changing the participants, is that essentially, we remove over 72 cards (3 supply + 3 Samples for each player) from the game, removing a "fixed" hand. As players will be given a whole new way of resolving Encounters.
+Another benefit to changing the participants is that we remove over 72 cards (3 supply + 3 Samples for each player) from the game, removing a "fixed" hand. Players will instead be given a whole new way of resolving Encounters.
