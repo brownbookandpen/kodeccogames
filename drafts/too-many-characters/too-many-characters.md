@@ -3,7 +3,7 @@ title: Too Many Characters
 date: Aug 8, 2026
 read: 3 min read
 desc: A V3 playtest made it obvious — we kept expanding the character roster, and it just turned redundant.
-aspect: 3:2
+aspect: 4:3
 ---
 
 During a playtest session with Version 3, we kept expanding the characters. More classes, more abilities, more variety — it felt like progress at the time.
@@ -51,3 +51,5 @@ Currently, in V3, all encounters read out exactly how many participants are requ
 ![Supply & Samples](Images/img-10.png "Supply & Samples will be removed when V4 rolls out.")
 
 Another benefit to changing the participants is that we remove over 72 cards (3 supply + 3 Samples for each player) from the game, removing a "fixed" hand. Players will instead be given a whole new way of resolving Encounters.
+
+None of this is set in stone yet, but the direction is clear: fewer Characters, each one earning its spot. If a Character doesn't make a table feel different when it's in play, it doesn't belong in V4. We'll be sharing the redesigned roster as it comes together — for now, back to the drawing board.

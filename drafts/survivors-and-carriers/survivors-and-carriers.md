@@ -4,6 +4,7 @@ date: Jul 9, 2026
 read: 3 min read
 desc: Secret roles are now grouped under two simple sides, Survivors and Carriers, each with a name banner and a fresh pose.
 aspect: 16:9
+skip: true
 ---
 
 Two changes to the secret roles this week, both based on player feedback.
