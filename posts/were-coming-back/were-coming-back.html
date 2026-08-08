@@ -51,9 +51,31 @@
   .post-body img.card-art{
     display:block; width:100%; height:auto; margin:0 auto 40px;
     filter:drop-shadow(6px 6px 0 #000);
-    position:relative; z-index:10000;
+    position:relative; z-index:10000; cursor:zoom-in;
   }
   .post-body p{color:var(--white); margin-bottom:24px; font-size:1.15rem;}
+
+  .lightbox{
+    position:fixed; inset:0; background:rgba(5,5,5,0.94); display:none;
+    align-items:center; justify-content:center; z-index:20000; padding:40px; cursor:zoom-out;
+  }
+  .lightbox.active{display:flex;}
+  .lightbox img{
+    max-width:92vw; max-height:88vh; border:2px solid var(--darkred);
+    box-shadow:0 0 40px rgba(0,0,0,0.6); cursor:zoom-in;
+    transition:transform .25s ease; transform-origin:center center;
+  }
+  .lightbox img.zoomed{transform:scale(1.9); cursor:zoom-out;}
+  .lightbox-close{
+    position:absolute; top:22px; right:34px; color:var(--yellow); font-size:2.4rem;
+    font-family:'DotGothic16',monospace; cursor:pointer; line-height:1; z-index:20001;
+  }
+  .lightbox-close:hover{color:var(--red);}
+  .lightbox-hint{
+    position:absolute; bottom:22px; left:0; right:0; text-align:center;
+    color:var(--grey); font-size:0.7rem; letter-spacing:0.5px; text-transform:uppercase;
+    font-family:'DotGothic16',monospace; pointer-events:none;
+  }
 
   .back-link{
     display:block; max-width:720px; margin:0 auto 80px; padding:0 6%;
@@ -151,6 +173,42 @@
   </div>
   <p style="margin-top:12px;">© 2026 CARRIER — a survival board game in development.</p>
 </footer>
+
+<div class="lightbox" id="lightbox">
+  <span class="lightbox-close" id="lightboxClose">&times;</span>
+  <img id="lightboxImg" src="" alt="">
+  <span class="lightbox-hint">Click image to zoom · Click outside or press Esc to close</span>
+</div>
+
+<script>
+  (function(){
+    var lb = document.getElementById('lightbox');
+    var lbImg = document.getElementById('lightboxImg');
+    var closeBtn = document.getElementById('lightboxClose');
+
+    document.querySelectorAll('.post-body figure img, .post-body img.card-art').forEach(function(img){
+      img.addEventListener('click', function(){
+        lbImg.src = img.getAttribute('src');
+        lbImg.alt = img.getAttribute('alt') || '';
+        lbImg.classList.remove('zoomed');
+        lb.classList.add('active');
+      });
+    });
+
+    lbImg.addEventListener('click', function(e){
+      e.stopPropagation();
+      lbImg.classList.toggle('zoomed');
+    });
+
+    function closeLightbox(){
+      lb.classList.remove('active');
+      lbImg.classList.remove('zoomed');
+    }
+    closeBtn.addEventListener('click', closeLightbox);
+    lb.addEventListener('click', function(e){ if(e.target === lb) closeLightbox(); });
+    document.addEventListener('keydown', function(e){ if(e.key === 'Escape') closeLightbox(); });
+  })();
+</script>
 
 </body>
 </html>
