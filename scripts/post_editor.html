@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Dev Journal — Post Editor</title>
+<style>
+  :root{
+    --black:#0a0a0a; --panel:#161616; --panel2:#1c1c1c;
+    --red:#c81d1d; --brightred:#e8341f; --darkred:#6e1010;
+    --yellow:#f2c14e; --grey:#9a9a9a; --white:#eee8dc; --green:#3f8f5f;
+  }
+  *{box-sizing:border-box;}
+  body{
+    background:var(--black); color:var(--white); font-family:Georgia, 'Times New Roman', serif;
+    margin:0; padding:0;
+  }
+  header{
+    background:var(--panel); border-bottom:2px solid var(--darkred); padding:16px 24px;
+    display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px;
+  }
+  header h1{font-family:'Courier New',monospace; font-size:1.1rem; color:var(--yellow); margin:0; letter-spacing:1px;}
+  header .status{font-family:'Courier New',monospace; font-size:0.85rem; color:var(--grey);}
+  .wrap{max-width:820px; margin:0 auto; padding:24px;}
+
+  .field-grid{display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:10px;}
+  .field{margin-bottom:14px;}
+  .field label{display:block; font-family:'Courier New',monospace; font-size:0.72rem; color:var(--yellow); text-transform:uppercase; letter-spacing:1px; margin-bottom:6px;}
+  .field input, .field select, .field textarea{
+    width:100%; background:var(--panel2); border:1px solid #333; color:var(--white);
+    padding:9px 10px; font-family:Georgia,serif; font-size:0.95rem; border-radius:3px;
+  }
+  .field input:focus, .field select:focus, .field textarea:focus{outline:1px solid var(--yellow); border-color:var(--yellow);}
+  .field textarea{resize:vertical; min-height:50px;}
+  .field .hint{font-size:0.72rem; color:#666; margin-top:4px; font-family:'Courier New',monospace;}
+
+  .toolbar{
+    display:flex; gap:6px; flex-wrap:wrap; background:var(--panel); border:1px solid #333;
+    border-bottom:none; padding:8px; border-radius:4px 4px 0 0; position:sticky; top:0; z-index:5;
+  }
+  .toolbar button{
+    background:var(--panel2); color:var(--white); border:1px solid #444; border-radius:3px;
+    padding:7px 12px; cursor:pointer; font-size:0.85rem; font-family:'Courier New',monospace;
+  }
+  .toolbar button:hover{background:#2a2a2a; border-color:var(--yellow);}
+  .toolbar button.sep{width:1px; background:#444; padding:0; margin:0 4px; cursor:default;}
+  .toolbar button.sep:hover{background:#444;}
+
+  #editor{
+    min-height:400px; background:var(--panel2); border:1px solid #333; border-radius:0 0 4px 4px;
+    padding:20px 24px; font-size:1.05rem; line-height:1.7; color:var(--white);
+  }
+  #editor:focus{outline:none;}
+  #editor h2{color:var(--yellow); font-family:Georgia,serif; font-size:1.3rem; margin:22px 0 10px;}
+  #editor p{margin:0 0 14px;}
+  #editor a{color:#7ecbff;}
+  #editor .img-block{
+    margin:16px 0; border:2px dashed #444; border-radius:4px; padding:12px; background:#111;
+    display:flex; gap:14px; align-items:flex-start;
+  }
+  #editor .img-block img{max-width:220px; max-height:160px; object-fit:cover; border-radius:3px; display:block;}
+  #editor .img-block .img-meta{flex:1; font-family:'Courier New',monospace; font-size:0.8rem; color:var(--grey); line-height:1.6;}
+  #editor .img-block .img-meta b{color:var(--yellow);}
+  #editor .img-block .img-actions{display:flex; gap:6px; margin-top:8px;}
+  #editor .img-block .img-actions button{
+    font-family:'Courier New',monospace; font-size:0.72rem; background:var(--panel2); color:var(--white);
+    border:1px solid #444; border-radius:3px; padding:4px 8px; cursor:pointer;
+  }
+  #editor .img-block .img-actions button:hover{border-color:var(--yellow);}
+  #editor p:empty::before{content:"Start typing, or use the toolbar above..."; color:#555;}
+
+  .actions{display:flex; gap:10px; margin-top:20px; align-items:center; flex-wrap:wrap;}
+  .btn{
+    font-family:'Courier New',monospace; padding:12px 20px; border:none; border-radius:3px;
+    cursor:pointer; font-size:0.85rem; letter-spacing:0.5px;
+  }
+  .btn-primary{background:var(--red); color:#fff;}
+  .btn-primary:hover{background:var(--brightred);}
+  .btn-ghost{background:transparent; color:var(--grey); border:1px solid #444;}
+  .btn-ghost:hover{border-color:var(--yellow); color:var(--yellow);}
+
+  .toast{
+    position:fixed; bottom:24px; right:24px; background:var(--panel); border:2px solid var(--green);
+    color:var(--white); padding:14px 18px; border-radius:4px; font-family:'Courier New',monospace;
+    font-size:0.85rem; max-width:360px; display:none; box-shadow:0 4px 20px rgba(0,0,0,0.5);
+  }
+  .toast.error{border-color:var(--red);}
+  .toast a{color:var(--yellow);}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>// DEV JOURNAL — POST EDITOR</h1>
+  <span class="status" id="autosaveStatus"></span>
+</header>
+
+<div class="wrap">
+  <div class="field-grid">
+    <div class="field">
+      <label>Title</label>
+      <input type="text" id="fTitle" placeholder="Too Many Characters">
+    </div>
+    <div class="field">
+      <label>Slug (folder name — auto from title)</label>
+      <input type="text" id="fSlug" placeholder="too-many-characters">
+    </div>
+    <div class="field">
+      <label>Date</label>
+      <input type="text" id="fDate" placeholder="Aug 9, 2026">
+    </div>
+    <div class="field">
+      <label>Read time</label>
+      <input type="text" id="fRead" placeholder="3 min read">
+    </div>
+  </div>
+  <div class="field">
+    <label>Homepage description (one line, shown on the Dev Journal card)</label>
+    <textarea id="fDesc" placeholder="A one-line summary for the homepage card."></textarea>
+  </div>
+  <div class="field">
+    <label>Photo crop shape</label>
+    <select id="fAspect">
+      <option value="3:2">3:2 (default, landscape)</option>
+      <option value="16:9">16:9 (widescreen)</option>
+      <option value="4:3">4:3</option>
+      <option value="1:1">1:1 (square)</option>
+    </select>
+  </div>
+
+  <div class="toolbar">
+    <button type="button" data-cmd="header">H2 Header</button>
+    <button type="button" data-cmd="paragraph">Body text</button>
+    <button class="sep"></button>
+    <button type="button" data-cmd="bold"><b>B</b></button>
+    <button type="button" data-cmd="italic"><i>I</i></button>
+    <button type="button" data-cmd="link">Link</button>
+    <button class="sep"></button>
+    <button type="button" id="insertImageBtn">📷 Insert Photo</button>
+  </div>
+  <div id="editor" contenteditable="true"></div>
+  <input type="file" id="fileInput" accept="image/*" multiple style="display:none;">
+
+  <div class="actions">
+    <button class="btn btn-primary" id="saveBtn">Save Draft</button>
+    <button class="btn btn-ghost" id="loadBtn">Load Draft...</button>
+    <button class="btn btn-ghost" id="newBtn">New Draft</button>
+    <button class="btn btn-ghost" id="openFolderBtn" style="display:none;">Open Draft Folder</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const editor = document.getElementById('editor');
+const toast = document.getElementById('toast');
+let lastSavedPath = null;
+let imgCounter = 0;
+
+function showToast(msg, isError){
+  toast.textContent = msg;
+  toast.className = 'toast' + (isError ? ' error' : '');
+  toast.style.display = 'block';
+  clearTimeout(showToast._t);
+  showToast._t = setTimeout(()=>{ toast.style.display = 'none'; }, 6000);
+}
+
+// ---------- slug auto-fill ----------
+const fTitle = document.getElementById('fTitle');
+const fSlug = document.getElementById('fSlug');
+let slugManuallyEdited = false;
+fSlug.addEventListener('input', ()=>{ slugManuallyEdited = true; });
+fTitle.addEventListener('input', ()=>{
+  if (!slugManuallyEdited){
+    fSlug.value = fTitle.value.trim().toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'');
+  }
+});
+
+// ---------- default date ----------
+document.getElementById('fDate').value = new Date().toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' });
+
+// ---------- toolbar ----------
+document.querySelectorAll('.toolbar button[data-cmd]').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    editor.focus();
+    const cmd = btn.dataset.cmd;
+    if (cmd === 'header') document.execCommand('formatBlock', false, '<h2>');
+    else if (cmd === 'paragraph') document.execCommand('formatBlock', false, '<p>');
+    else if (cmd === 'bold') document.execCommand('bold');
+    else if (cmd === 'italic') document.execCommand('italic');
+    else if (cmd === 'link'){
+      const url = prompt('Link URL:');
+      if (url) document.execCommand('createLink', false, url);
+    }
+  });
+});
+
+// ---------- image insert ----------
+const fileInput = document.getElementById('fileInput');
+document.getElementById('insertImageBtn').addEventListener('click', ()=> fileInput.click());
+
+fileInput.addEventListener('change', async ()=>{
+  for (const file of fileInput.files){
+    await insertImageBlock(file);
+  }
+  fileInput.value = '';
+});
+
+function extFromMime(mime){
+  const map = {'image/png':'png','image/jpeg':'jpg','image/jpg':'jpg','image/webp':'webp','image/gif':'gif'};
+  return map[mime] || 'jpg';
+}
+
+function readAsDataURL(file){
+  return new Promise((resolve,reject)=>{
+    const reader = new FileReader();
+    reader.onload = ()=> resolve(reader.result);
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+function buildImgBlock(filename, dataUrl, alt, caption){
+  const block = document.createElement('div');
+  block.className = 'img-block';
+  block.contentEditable = 'false';
+  block.dataset.filename = filename;
+  block.dataset.dataUrl = dataUrl;
+  block.dataset.alt = alt || '';
+  block.dataset.caption = caption || '';
+
+  block.innerHTML = `
+    <img src="${dataUrl}" alt="">
+    <div class="img-meta">
+      <div><b>File:</b> ${escapeHtml(filename)}</div>
+      <div><b>Alt:</b> <span class="alt-text">${escapeHtml(alt) || '(none)'}</span></div>
+      <div><b>Caption:</b> <span class="caption-text">${escapeHtml(caption) || '(none)'}</span></div>
+      <div class="img-actions">
+        <button type="button" class="edit-img">Edit text</button>
+        <button type="button" class="remove-img">Remove</button>
+      </div>
+    </div>
+  `;
+
+  block.querySelector('.edit-img').addEventListener('click', (e)=>{
+    e.stopPropagation();
+    const newAlt = prompt('Alt text:', block.dataset.alt) ?? block.dataset.alt;
+    const newCap = prompt('Caption:', block.dataset.caption) ?? block.dataset.caption;
+    block.dataset.alt = newAlt;
+    block.dataset.caption = newCap;
+    block.querySelector('.alt-text').textContent = newAlt || '(none)';
+    block.querySelector('.caption-text').textContent = newCap || '(none)';
+  });
+  block.querySelector('.remove-img').addEventListener('click', (e)=>{
+    e.stopPropagation();
+    block.remove();
+  });
+
+  return block;
+}
+
+function rewireImgBlock(block){
+  block.querySelector('.edit-img')?.addEventListener('click', (e)=>{
+    e.stopPropagation();
+    const newAlt = prompt('Alt text:', block.dataset.alt) ?? block.dataset.alt;
+    const newCap = prompt('Caption:', block.dataset.caption) ?? block.dataset.caption;
+    block.dataset.alt = newAlt; block.dataset.caption = newCap;
+    block.querySelector('.alt-text').textContent = newAlt || '(none)';
+    block.querySelector('.caption-text').textContent = newCap || '(none)';
+  });
+  block.querySelector('.remove-img')?.addEventListener('click', (e)=>{
+    e.stopPropagation();
+    block.remove();
+  });
+  const n = parseInt((block.dataset.filename || '').match(/\d+/)?.[0] || '0', 10);
+  if (n > imgCounter) imgCounter = n;
+}
+
+async function insertImageBlock(file){
+  const dataUrl = await readAsDataURL(file);
+  const alt = prompt('Describe this photo (for accessibility):', '') || '';
+  const caption = prompt('Caption shown under the photo (optional):', '') || '';
+
+  imgCounter++;
+  const ext = extFromMime(file.type);
+  const filename = `img-${imgCounter}.${ext}`;
+
+  const block = buildImgBlock(filename, dataUrl, alt, caption);
+
+  // Insert at end of editor (simplest, reliable placement), followed by an empty paragraph
+  editor.appendChild(block);
+  const p = document.createElement('p');
+  p.innerHTML = '<br>';
+  editor.appendChild(p);
+  placeCursorAtEnd(p);
+}
+
+function escapeHtml(s){
+  const d = document.createElement('div');
+  d.textContent = s;
+  return d.innerHTML;
+}
+
+function placeCursorAtEnd(node){
+  const range = document.createRange();
+  range.selectNodeContents(node);
+  range.collapse(false);
+  const sel = window.getSelection();
+  sel.removeAllRanges();
+  sel.addRange(range);
+  editor.focus();
+}
+
+// ---------- markdown conversion ----------
+function inlineToMarkdown(node){
+  let out = '';
+  node.childNodes.forEach(child=>{
+    if (child.nodeType === Node.TEXT_NODE){
+      out += child.textContent;
+    } else if (child.nodeType === Node.ELEMENT_NODE){
+      const tag = child.tagName;
+      if (tag === 'B' || tag === 'STRONG'){
+        out += '**' + inlineToMarkdown(child) + '**';
+      } else if (tag === 'I' || tag === 'EM'){
+        out += '*' + inlineToMarkdown(child) + '*';
+      } else if (tag === 'A'){
+        out += '[' + inlineToMarkdown(child) + '](' + child.getAttribute('href') + ')';
+      } else if (tag === 'BR'){
+        out += ' ';
+      } else {
+        out += inlineToMarkdown(child);
+      }
+    }
+  });
+  return out;
+}
+
+function editorToMarkdown(){
+  const blocks = [];
+  const images = [];
+
+  Array.from(editor.children).forEach(el=>{
+    if (el.classList && el.classList.contains('img-block')){
+      const filename = el.dataset.filename;
+      const alt = (el.dataset.alt || '').replace(/"/g,"'");
+      const caption = (el.dataset.caption || '').replace(/"/g,"'");
+      images.push({ filename, dataUrl: el.dataset.dataUrl });
+      let line = `![${alt}](Images/${filename}`;
+      if (caption) line += ` "${caption}"`;
+      line += ')';
+      blocks.push(line);
+    } else if (el.tagName === 'H2'){
+      const text = inlineToMarkdown(el).trim();
+      if (text) blocks.push('## ' + text);
+    } else {
+      const text = inlineToMarkdown(el).trim();
+      if (text) blocks.push(text);
+    }
+  });
+
+  return { markdown: blocks.join('\n\n'), images };
+}
+
+// ---------- save ----------
+document.getElementById('saveBtn').addEventListener('click', async ()=>{
+  const title = fTitle.value.trim();
+  if (!title){
+    showToast('Give your post a title first.', true);
+    fTitle.focus();
+    return;
+  }
+  const { markdown, images } = editorToMarkdown();
+  if (!markdown.trim()){
+    showToast('Write something before saving — the post body is empty.', true);
+    return;
+  }
+
+  const payload = {
+    slug: fSlug.value.trim(),
+    frontmatter: {
+      title: title,
+      date: document.getElementById('fDate').value.trim(),
+      read: document.getElementById('fRead').value.trim() || '3 min read',
+      desc: document.getElementById('fDesc').value.trim(),
+      aspect: document.getElementById('fAspect').value
+    },
+    body: markdown,
+    images: images
+  };
+
+  const saveBtn = document.getElementById('saveBtn');
+  saveBtn.disabled = true;
+  saveBtn.textContent = 'Saving...';
+
+  try {
+    const res = await fetch('/save', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify(payload)
+    });
+    const result = await res.json();
+    if (result.ok){
+      lastSavedPath = result.path;
+      showToast('Saved! Draft written to: ' + result.path);
+      document.getElementById('openFolderBtn').style.display = 'inline-block';
+      localStorage.removeItem('post-editor-draft');
+    } else {
+      showToast('Save failed: ' + result.error, true);
+    }
+  } catch(e){
+    showToast('Could not reach the local server: ' + e.message, true);
+  } finally {
+    saveBtn.disabled = false;
+    saveBtn.textContent = 'Save Draft';
+  }
+});
+
+document.getElementById('openFolderBtn').addEventListener('click', async ()=>{
+  if (!lastSavedPath) return;
+  await fetch('/open-folder', {
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({ path: lastSavedPath })
+  });
+});
+
+document.getElementById('newBtn').addEventListener('click', ()=>{
+  if (!confirm('Clear everything and start a new draft?')) return;
+  fTitle.value = ''; fSlug.value = ''; fDesc.value = '';
+  fRead.value = ''; fAspect.value = '3:2'; slugManuallyEdited = false;
+  editor.innerHTML = '';
+  imgCounter = 0;
+  document.getElementById('openFolderBtn').style.display = 'none';
+  localStorage.removeItem('post-editor-draft');
+});
+
+// ---------- autosave to localStorage (safety net against accidental tab close) ----------
+const autosaveStatus = document.getElementById('autosaveStatus');
+function autosave(){
+  try{
+    const snapshot = {
+      title: fTitle.value, slug: fSlug.value, date: fDate.value, read: fRead.value,
+      desc: fDesc.value, aspect: fAspect.value, editorHtml: editor.innerHTML
+    };
+    localStorage.setItem('post-editor-draft', JSON.stringify(snapshot));
+    autosaveStatus.textContent = 'autosaved ' + new Date().toLocaleTimeString();
+  } catch(e){ /* ignore quota errors from large images */ }
+}
+let autosaveTimer;
+[fTitle, fSlug, fDate, fRead, fDesc, fAspect].forEach(el=>{
+  el.addEventListener('input', ()=>{ clearTimeout(autosaveTimer); autosaveTimer = setTimeout(autosave, 1500); });
+});
+editor.addEventListener('input', ()=>{ clearTimeout(autosaveTimer); autosaveTimer = setTimeout(autosave, 1500); });
+
+window.addEventListener('load', ()=>{
+  const saved = localStorage.getItem('post-editor-draft');
+  if (saved){
+    try{
+      const snap = JSON.parse(saved);
+      if (snap.title || (snap.editorHtml && snap.editorHtml.trim())){
+        if (confirm('Restore your last unsaved draft?')){
+          fTitle.value = snap.title || '';
+          fSlug.value = snap.slug || ''; slugManuallyEdited = !!snap.slug;
+          if (snap.date) fDate.value = snap.date;
+          fRead.value = snap.read || '';
+          fDesc.value = snap.desc || '';
+          fAspect.value = snap.aspect || '3:2';
+          editor.innerHTML = snap.editorHtml || '';
+          // reattach listeners on restored image blocks (innerHTML round-trips data-* but not JS listeners)
+          editor.querySelectorAll('.img-block').forEach(rewireImgBlock);
+        }
+      }
+    } catch(e){ /* ignore corrupt snapshot */ }
+  }
+});
+
+// ---------- load an existing draft from disk ----------
+const loadModal = document.createElement('div');
+loadModal.id = 'loadModal';
+loadModal.style.cssText = 'display:none; position:fixed; inset:0; background:rgba(0,0,0,0.7); z-index:50; align-items:center; justify-content:center;';
+loadModal.innerHTML = `
+  <div style="background:#161616; border:2px solid #6e1010; border-radius:6px; width:min(560px,90vw); max-height:80vh; overflow-y:auto; padding:20px;">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
+      <b style="font-family:'Courier New',monospace; color:#f2c14e; letter-spacing:1px;">// LOAD DRAFT</b>
+      <button type="button" id="closeLoadModal" style="background:none; border:none; color:#9a9a9a; font-size:1.2rem; cursor:pointer;">✕</button>
+    </div>
+    <div id="draftList" style="font-family:'Courier New',monospace; font-size:0.85rem;">Loading...</div>
+  </div>
+`;
+document.body.appendChild(loadModal);
+document.getElementById('closeLoadModal').addEventListener('click', ()=> loadModal.style.display = 'none');
+loadModal.addEventListener('click', (e)=>{ if (e.target === loadModal) loadModal.style.display = 'none'; });
+
+async function openLoadModal(){
+  loadModal.style.display = 'flex';
+  const listEl = document.getElementById('draftList');
+  listEl.textContent = 'Loading...';
+  try{
+    const res = await fetch('/list-drafts');
+    const result = await res.json();
+    if (!result.ok) throw new Error(result.error);
+    if (result.drafts.length === 0){
+      listEl.textContent = 'No drafts found in drafts\\ yet.';
+      return;
+    }
+    listEl.innerHTML = '';
+    result.drafts.forEach(d=>{
+      const row = document.createElement('div');
+      row.style.cssText = 'padding:10px 8px; border-bottom:1px solid #2a2a2a; cursor:pointer;';
+      row.onmouseenter = ()=> row.style.background = '#222';
+      row.onmouseleave = ()=> row.style.background = 'transparent';
+      row.innerHTML = `<div style="color:#eee8dc; font-size:0.95rem; font-family:Georgia,serif;">${escapeHtml(d.title)}${d.skip ? ' <span style="color:#e8341f; font-size:0.7rem;">[skip]</span>' : ''}</div>
+        <div style="color:#666; font-size:0.75rem; margin-top:2px;">${escapeHtml(d.slug)} · ${escapeHtml(d.date || '')}</div>`;
+      row.addEventListener('click', ()=> loadDraftBySlug(d.slug));
+      listEl.appendChild(row);
+    });
+  } catch(e){
+    listEl.textContent = 'Could not load draft list: ' + e.message;
+  }
+}
+
+async function loadDraftBySlug(slug){
+  const hasContent = fTitle.value.trim() || editor.textContent.trim();
+  if (hasContent && !confirm('Loading this draft will replace what you\'re currently writing. Continue?')) return;
+
+  try{
+    const res = await fetch('/load?slug=' + encodeURIComponent(slug));
+    const result = await res.json();
+    if (!result.ok) throw new Error(result.error);
+
+    const fm = result.frontmatter || {};
+    fTitle.value = fm.title || '';
+    fSlug.value = result.slug; slugManuallyEdited = true;
+    fDate.value = fm.date || '';
+    fRead.value = fm.read || '';
+    fDesc.value = fm.desc || '';
+    fAspect.value = fm.aspect || '3:2';
+
+    editor.innerHTML = '';
+    imgCounter = 0;
+    markdownToEditor(result.body || '', result.images || {});
+
+    loadModal.style.display = 'none';
+    document.getElementById('openFolderBtn').style.display = 'none';
+    lastSavedPath = null;
+    showToast('Loaded "' + (fm.title || slug) + '". Keep writing, then Save Draft to update it.');
+  } catch(e){
+    showToast('Could not load draft: ' + e.message, true);
+  }
+}
+
+document.getElementById('loadBtn').addEventListener('click', openLoadModal);
+
+// ---------- markdown -> editor (reverse of editorToMarkdown, for loading existing drafts) ----------
+function markdownInlineToHtml(text){
+  let out = text
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  out = out.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+  out = out.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+  out = out.replace(/\*(.+?)\*/g, '<em>$1</em>');
+  return out;
+}
+
+const IMG_LINE_RE = /^!\[([^\]]*)\]\(([^\s)"]+)(?:\s+"([^"]*)")?\)$/;
+const HEADING_RE = /^##\s+(.*)$/;
+
+function markdownToEditor(body, imagesByFilename){
+  const blocks = body.split(/\n\s*\n/).map(b=>b.trim()).filter(Boolean);
+
+  blocks.forEach(block=>{
+    const imgMatch = block.match(IMG_LINE_RE);
+    const headingMatch = block.match(HEADING_RE);
+
+    if (imgMatch){
+      const alt = imgMatch[1];
+      const rawPath = imgMatch[2];
+      const caption = imgMatch[3] || '';
+      const filename = rawPath.split('/').pop();
+      const dataUrl = imagesByFilename[filename];
+      if (dataUrl){
+        const block_ = buildImgBlock(filename, dataUrl, alt, caption);
+        editor.appendChild(block_);
+        const n = parseInt((filename.match(/\d+/) || ['0'])[0], 10);
+        if (n > imgCounter) imgCounter = n;
+      } else {
+        // Image file wasn't found on disk (renamed/moved outside the editor) — keep a placeholder paragraph so nothing is silently lost.
+        const p = document.createElement('p');
+        p.textContent = block;
+        editor.appendChild(p);
+      }
+    } else if (headingMatch){
+      const h2 = document.createElement('h2');
+      h2.innerHTML = markdownInlineToHtml(headingMatch[1].trim());
+      editor.appendChild(h2);
+    } else {
+      const p = document.createElement('p');
+      const joined = block.split('\n').map(l=>l.trim()).join(' ');
+      p.innerHTML = markdownInlineToHtml(joined);
+      editor.appendChild(p);
+    }
+  });
+
+  if (editor.children.length === 0){
+    const p = document.createElement('p');
+    p.innerHTML = '<br>';
+    editor.appendChild(p);
+  }
+}
+</script>
+
+</body>
+</html>
