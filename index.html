@@ -148,6 +148,13 @@
   .brief-card .icon{font-size:1.6rem; margin-bottom:14px;}
   .brief-card h3{color:var(--red); margin-bottom:12px; font-size:0.8rem;}
   .brief-card p{color:var(--grey); font-size:0.92rem;}
+  .brief-gallery{display:flex; gap:8px; margin-top:16px; flex-wrap:wrap;}
+  .bg-item{
+    position:relative; width:52px; height:52px; overflow:hidden; flex:0 0 52px;
+    border:2px solid #2b2b2b; transition:border-color .2s, transform .2s;
+  }
+  .bg-item img{width:100%; height:100%; object-fit:cover; display:block; cursor:pointer;}
+  .bg-item:hover{border-color:var(--yellow); transform:scale(1.06);}
 
   /* ---------- GALLERY ---------- */
   .gallery{background:var(--panel2); border-top:2px solid var(--darkred); border-bottom:2px solid var(--darkred);}
@@ -465,21 +472,33 @@
       <div class="icon">👥</div>
       <h3>SURVIVORS</h3>
       <p>2–4 players choose who holds the line each round.</p>
+      <!-- GALLERY: [MISSION BRIEF] 1. SURVIVORS -->
+      <div class="brief-gallery">
+      </div>
     </div>
     <div class="brief-card">
       <div class="icon">📦</div>
       <h3>SUPPLY</h3>
       <p>Success requires stockpiling supply cards before the horde arrives.</p>
+      <!-- GALLERY: [MISSION BRIEF] 2. ENCOUNTERS & SUPPLIES -->
+      <div class="brief-gallery">
+      </div>
     </div>
     <div class="brief-card">
       <div class="icon">☣</div>
       <h3>FAILURE STATE</h3>
       <p>Running dry triggers the next disaster sequence — the tension engine of the game.</p>
+      <!-- GALLERY: [MISSION BRIEF] 3. ZOMBIES -->
+      <div class="brief-gallery">
+      </div>
     </div>
     <div class="brief-card">
       <div class="icon">🎲</div>
       <h3>ESCALATION</h3>
       <p>Each round the horde grows — placeholder text for how difficulty ramps.</p>
+      <!-- GALLERY: [MISSION BRIEF] 4. ESCALATION -->
+      <div class="brief-gallery">
+      </div>
     </div>
   </div>
 </section>
@@ -489,10 +508,10 @@
   <h2 class="section-title">Gallery</h2>
   <p class="section-sub">Prototype shots, card art, and table setups — replace these placeholders with real photos.</p>
   <div class="gallery-grid">
-    <div class="shot gallery-art" id="latestDesignsShot" style="background-image:url('images/latest-designs/executioner.webp'); background-size:cover; background-position:center;"><div class="cap"><b class="cap-title">Latest Designs</b><span class="cap-desc">The newest card and component art, fresh off the design table. Updated as soon as new pieces are finalized. This is where the current look of Carrier lives.</span></div></div>
-    <div class="shot gallery-art" id="galleryArtShot" style="background-image:url('images/early-prototypes/phase2-1.webp'); background-size:cover; background-position:center;"><div class="cap"><b class="cap-title">Early Prototypes</b><span class="cap-desc">Where it all started — rough shapes, testing what worked. Concept sketches, home prints, and the first sleeved decks. A look back at how far the design has come.</span></div></div>
-    <div class="shot gallery-art" id="characterArchiveShot" style="background-image:url('images/character-archives/survivalist.webp'); background-size:cover; background-position:center;"><div class="cap"><b class="cap-title">Cutting Room</b><span class="cap-desc">Characters and secret roles we pulled from the deck. Some were too overpowered, others just unfair. The rest simply didn't make the final cut.</span></div></div>
-    <div class="shot gallery-art" id="playtestSessionsShot" style="background-image:url('images/playtest-sessions/pt2.webp'); background-size:cover; background-position:center;"><div class="cap"><b class="cap-title">Playtest Sessions</b><span class="cap-desc">Snapshots from the table, where the real testing happens. Every session shapes balance, pacing, and rules. This is Carrier being pressure-tested by real players.</span></div></div>
+    <div class="shot gallery-art" id="latestDesignsShot" style="background-image:url('images/[GALLERY] 1. LATEST DESIGNS/executioner.webp'); background-size:cover; background-position:center;"><div class="cap"><b class="cap-title">Latest Designs</b><span class="cap-desc">The newest card and component art, fresh off the design table. Updated as soon as new pieces are finalized. This is where the current look of Carrier lives.</span></div></div>
+    <div class="shot gallery-art" id="galleryArtShot" style="background-image:url('images/[ROADMAP] 2. PAPER PROTOTYPE/phase2-1.webp'); background-size:cover; background-position:center;"><div class="cap"><b class="cap-title">Early Prototypes</b><span class="cap-desc">Where it all started — rough shapes, testing what worked. Concept sketches, home prints, and the first sleeved decks. A look back at how far the design has come.</span></div></div>
+    <div class="shot gallery-art" id="characterArchiveShot" style="background-image:url('images/[GALLERY] 3. CUTTING ROOM/survivalist.webp'); background-size:cover; background-position:center;"><div class="cap"><b class="cap-title">Cutting Room</b><span class="cap-desc">Characters and secret roles we pulled from the deck. Some were too overpowered, others just unfair. The rest simply didn't make the final cut.</span></div></div>
+    <div class="shot gallery-art" id="playtestSessionsShot" style="background-image:url('images/[GALLERY] 4. PLAY TEST SESSIONS/pt2.webp'); background-size:cover; background-position:center;"><div class="cap"><b class="cap-title">Playtest Sessions</b><span class="cap-desc">Snapshots from the table, where the real testing happens. Every session shapes balance, pacing, and rules. This is Carrier being pressure-tested by real players.</span></div></div>
   </div>
 </section>
 
@@ -508,11 +527,12 @@
       <h4>Concept &amp; Core Loop <span class="t-toggle">▾</span></h4>
       <p>Defined the horde mechanic and core survival loop. Completed.</p>
       <div class="t-detail">
+        <!-- GALLERY: [ROADMAP] 1. CONCEPT AND CORE LOOP -->
         <div class="concept-grid">
-          <div class="cg-item"><img src="images/concept-core-loop/concept-1.webp" alt="First draft of Carrier concept art" data-caption="The very first draft — messy, but the first time Carrier looked like something real."><span class="cg-title">First Draft</span></div>
-          <div class="cg-item"><img src="images/concept-core-loop/concept-2.webp" alt="Idealisation phase concept art" data-caption="Idealisation phase — Midjourney helped generate assets quickly so we could iterate fast."><span class="cg-title">Idealisation</span></div>
-          <div class="cg-item"><img src="images/concept-core-loop/concept-3.webp" alt="Support kits built from Midjourney assets found on itch.io" data-caption="Support kits built from Midjourney backgrounds and asset packs found on itch.io."><span class="cg-title">Support Kits</span></div>
-          <div class="cg-item"><img src="images/concept-core-loop/concept-4.webp" alt="Border design and early zombie drafts" data-caption="Getting the border design right, and drafting the first zombies with Midjourney."><span class="cg-title">Border &amp; Zombies</span></div>
+          <div class="cg-item"><img src="images/[ROADMAP] 1. CONCEPT AND CORE LOOP/concept-1.webp" alt="First draft of Carrier concept art" data-caption="The very first draft — messy, but the first time Carrier looked like something real."><span class="cg-title">First Draft</span></div>
+          <div class="cg-item"><img src="images/[ROADMAP] 1. CONCEPT AND CORE LOOP/concept-2.webp" alt="Idealisation phase concept art" data-caption="Idealisation phase — Midjourney helped generate assets quickly so we could iterate fast."><span class="cg-title">Idealisation</span></div>
+          <div class="cg-item"><img src="images/[ROADMAP] 1. CONCEPT AND CORE LOOP/concept-3.webp" alt="Support kits built from Midjourney assets found on itch.io" data-caption="Support kits built from Midjourney backgrounds and asset packs found on itch.io."><span class="cg-title">Support Kits</span></div>
+          <div class="cg-item"><img src="images/[ROADMAP] 1. CONCEPT AND CORE LOOP/concept-4.webp" alt="Border design and early zombie drafts" data-caption="Getting the border design right, and drafting the first zombies with Midjourney."><span class="cg-title">Border &amp; Zombies</span></div>
         </div>
         <div class="update-box"><p>Midjourney was still pretty new back then, and I was curious enough to test it out on these early concepts — some of these backgrounds and assets are AI-generated because I simply couldn't paint scenes like this myself yet. It is what it is; just part of the trail that led to where Carrier's art is now. Our early playtests also ran WAY too long — each game dragged on forever, and that's when we knew we had to go back to the drawing board.</p></div>
       </div>
@@ -522,11 +542,13 @@
       <h4>Paper Prototype <span class="t-toggle">▾</span></h4>
       <p>First playable version built and tested with friends. Completed.</p>
       <div class="t-detail">
+        <!-- GALLERY: [ROADMAP] 2. PAPER PROTOTYPE -->
         <div class="concept-grid">
-          <div class="cg-item"><img src="images/early-prototypes/phase2-1.webp" alt="Printing cards at home" data-caption="First, we purchased a printer to print at home — the ink wasn't the highest quality, but it helped us get moving."><span class="cg-title">Home Printing</span></div>
-          <div class="cg-item"><img src="images/early-prototypes/phase2-2.webp" alt="Cards sleeved with TCG sleeves" data-caption="Then we sleeved everything with TCG sleeves, just to make it feel a little more like a real game."><span class="cg-title">Sleeved Cards</span></div>
-          <div class="cg-item"><img src="images/early-prototypes/phase2-3.webp" alt="Cards printed at a local print shop with glossy and matte finishes" data-caption="Later, we brought the game to a local print shop — the first time we saw glossy and matte finishes on our own cards."><span class="cg-title">Print Shop Finish</span></div>
-          <div class="cg-item"><img src="images/early-prototypes/phase2-4.webp" alt="Introducing character cards with public and secret roles" data-caption="We also introduced Characters — the public identity of a player. Carrier has secret roles and public roles."><span class="cg-title">Characters Intro</span></div>
+          <div class="cg-item"><img src="images/[ROADMAP] 2. PAPER PROTOTYPE/phase2-1.webp" alt="Printing cards at home" data-caption="First, we purchased a printer to print at home — the ink wasn't the highest quality, but it helped us get moving."><span class="cg-title">Home Printing</span></div>
+          <div class="cg-item"><img src="images/[ROADMAP] 2. PAPER PROTOTYPE/phase2-2.webp" alt="Cards sleeved with TCG sleeves" data-caption="Then we sleeved everything with TCG sleeves, just to make it feel a little more like a real game."><span class="cg-title">Sleeved Cards</span></div>
+          <div class="cg-item"><img src="images/[ROADMAP] 2. PAPER PROTOTYPE/phase2-3.webp" alt="Cards printed at a local print shop with glossy and matte finishes" data-caption="Later, we brought the game to a local print shop — the first time we saw glossy and matte finishes on our own cards."><span class="cg-title">Print Shop Finish</span></div>
+          <div class="cg-item"><img src="images/[ROADMAP] 2. PAPER PROTOTYPE/phase2-4.webp" alt="Introducing character cards with public and secret roles" data-caption="We also introduced Characters — the public identity of a player. Carrier has secret roles and public roles."><span class="cg-title">Characters Intro</span></div>
+          <div class="cg-item"><img src="images/[ROADMAP] 2. PAPER PROTOTYPE/early-prototypes-5.webp" alt="Secret role card from" data-caption="Secret role card from Version 1 Revision 6 the art was not refined, and background was just a fixed color."><span class="cg-title">Secret role card from</span></div>
         </div>
         <div class="update-box"><p>This is also around when we started moving away from Midjourney and began drawing things ourselves — squeezing in art sessions during whatever free time we had. We still cut corners where we could (outfits especially), but from here on, the art was ours.</p></div>
       </div>
@@ -536,11 +558,12 @@
       <h4>Balancing &amp; Playtesting <span class="phase-tag">[OVERHAUL]</span> <span class="t-toggle">▾</span></h4>
       <p>Overhauling the game's mechanics — optimizing systems and cutting redundancies, not building a whole new game. Running structured playtests to tune difficulty and pacing along the way.</p>
       <div class="t-detail">
+        <!-- GALLERY: [ROADMAP] 3. BALANCING AND PLAYTESTING -->
         <div class="concept-grid">
-          <div class="cg-item"><img src="images/balancing-playtesting/characters.webp" alt="V3 Characters (Public Roles)" data-caption="Our most stable, well-tested characters so far — balanced, and even the overpowered ones were manageable in-game. But a lot of them turned out to be redundant or too similar, so we're merging some together to make things less complicated."><span class="cg-title">Characters</span></div>
-          <div class="cg-item"><img src="images/balancing-playtesting/secret-roles.webp" alt="V3 Secret Roles" data-caption="The naming for Carriers didn't click immediately — we kept having to explain the difference between Carriers, Proto-Carriers, and Latent Carriers. Not clear-cut enough. We're overhauling all the names to make it crystal clear."><span class="cg-title">Secret Roles</span></div>
-          <div class="cg-item"><img src="images/balancing-playtesting/encounters.webp" alt="V3 Encounters" data-caption="This one's trickier — production costs mean the current setup needs a lot of cards. So we're asking: what can we merge, and what can we cut, without losing what makes Encounters work?"><span class="cg-title">Encounters</span></div>
-          <div class="cg-item"><img src="images/balancing-playtesting/special-conditions.webp" alt="V3 Special Conditions" data-caption="A good addition to the game — a round in Daybreak feels genuinely different from a round in Nightfall, and it should."><span class="cg-title">Special Conditions</span></div>
+          <div class="cg-item"><img src="images/[ROADMAP] 3. BALANCING AND PLAYTESTING/characters.webp" alt="V3 Characters (Public Roles)" data-caption="Our most stable, well-tested characters so far — balanced, and even the overpowered ones were manageable in-game. But a lot of them turned out to be redundant or too similar, so we're merging some together to make things less complicated."><span class="cg-title">Characters</span></div>
+          <div class="cg-item"><img src="images/[ROADMAP] 3. BALANCING AND PLAYTESTING/secret-roles.webp" alt="V3 Secret Roles" data-caption="The naming for Carriers didn't click immediately — we kept having to explain the difference between Carriers, Proto-Carriers, and Latent Carriers. Not clear-cut enough. We're overhauling all the names to make it crystal clear."><span class="cg-title">Secret Roles</span></div>
+          <div class="cg-item"><img src="images/[ROADMAP] 3. BALANCING AND PLAYTESTING/encounters.webp" alt="V3 Encounters" data-caption="This one's trickier — production costs mean the current setup needs a lot of cards. So we're asking: what can we merge, and what can we cut, without losing what makes Encounters work?"><span class="cg-title">Encounters</span></div>
+          <div class="cg-item"><img src="images/[ROADMAP] 3. BALANCING AND PLAYTESTING/special-conditions.webp" alt="V3 Special Conditions" data-caption="A good addition to the game — a round in Daybreak feels genuinely different from a round in Nightfall, and it should."><span class="cg-title">Special Conditions</span></div>
         </div>
         <div class="update-box"><p>We're deep in balancing right now — tightening up Characters, Secret Roles, Encounters, and Special Conditions. Some of it is trimming redundancy, some of it is fixing confusing naming, and some of it is just making sure every card earns its place in the deck.</p></div>
       </div>
@@ -550,12 +573,13 @@
       <h4>Art &amp; Component Design <span class="t-toggle">▾</span></h4>
       <p>As our design skills grow, we're moving further from the original Midjourney/AI-assisted art — toward asset packs from itch.io, and eventually hiring dedicated pixel art artists.</p>
       <div class="t-detail">
+        <!-- GALLERY: [ROADMAP] 4. ART AND COMPONENT DESIGN -->
         <div class="concept-grid">
-          <div class="cg-item"><img src="images/art-component/p1.webp" alt="Refined survivor art direction" data-caption="Finalizing the art direction by improving our drawings — done through repetition and slow, steady improvement rather than a single overhaul."><span class="cg-title">Art Direction</span></div>
-          <div class="cg-item"><img src="images/art-component/p2.webp" alt="Visual overhaul of the horde enemies" data-caption="A visual overhaul on the zombies, tied directly to the new Horde enemy. More to come on this." ><span class="cg-title">Horde Overhaul</span></div>
-          <div class="cg-item"><img src="images/art-component/p3.webp" alt="Old box render with early unrefined art" data-caption="An old render of the Carrier box with earlier, unrefined art — the idea, dimensions, and layout were there, more a visualization of how it would eventually look."><span class="cg-title">Old Box Render</span></div>
-          <div class="cg-item"><img src="images/art-component/p4.webp" alt="New box design with new art, angle 1" data-caption="The new box — new art, new direction."><span class="cg-title">New Box (v1)</span></div>
-          <div class="cg-item"><img src="images/art-component/p5.webp" alt="New box design with new art, angle 2" data-caption="The new box — new art, new direction."><span class="cg-title">New Box (v2)</span></div>
+          <div class="cg-item"><img src="images/[ROADMAP] 4. ART AND COMPONENT DESIGN/p1.webp" alt="Refined survivor art direction" data-caption="Finalizing the art direction by improving our drawings — done through repetition and slow, steady improvement rather than a single overhaul."><span class="cg-title">Art Direction</span></div>
+          <div class="cg-item"><img src="images/[ROADMAP] 4. ART AND COMPONENT DESIGN/p2.webp" alt="Visual overhaul of the horde enemies" data-caption="A visual overhaul on the zombies, tied directly to the new Horde enemy. More to come on this." ><span class="cg-title">Horde Overhaul</span></div>
+          <div class="cg-item"><img src="images/[ROADMAP] 4. ART AND COMPONENT DESIGN/p3.webp" alt="Old box render with early unrefined art" data-caption="An old render of the Carrier box with earlier, unrefined art — the idea, dimensions, and layout were there, more a visualization of how it would eventually look."><span class="cg-title">Old Box Render</span></div>
+          <div class="cg-item"><img src="images/[ROADMAP] 4. ART AND COMPONENT DESIGN/p4.webp" alt="New box design with new art, angle 1" data-caption="The new box — new art, new direction."><span class="cg-title">New Box (v1)</span></div>
+          <div class="cg-item"><img src="images/[ROADMAP] 4. ART AND COMPONENT DESIGN/p5.webp" alt="New box design with new art, angle 2" data-caption="The new box — new art, new direction."><span class="cg-title">New Box (v2)</span></div>
         </div>
         <div class="update-box"><p>Art is getting more refined with every pass — the survivor and horde designs are both being pushed further through repetition, and the box art has been completely redone from the old placeholder render to a real, finished design.</p></div>
       </div>
@@ -565,7 +589,9 @@
       <h4>Publishing / Crowdfunding <span class="t-toggle">▾</span></h4>
       <p>TBD — placeholder for launch plans.</p>
       <div class="t-detail">
-        <div class="shot-sq">📦</div>
+        <!-- GALLERY: [ROADMAP] 5. PUBLISHING & CROWDFUNDING -->
+        <div class="concept-grid">
+        </div>
         <div class="update-box"><p>Update placeholder — swap in a real photo and launch details once they're confirmed.</p></div>
       </div>
     </div>
@@ -577,8 +603,17 @@
   <h2 class="section-title">Dev Journal</h2>
   <p class="section-sub">Entries documenting the build — origins, mechanics, art, and playtests.</p>
   <div class="posts">
-    <a class="post-card" href="posts/origins-of-carrier.html">
-      <div class="post-thumb" style="background-image:url('images/origins/latest-cover-art.avif'); background-size:cover; background-position:center;"></div>
+    <a class="post-card" href="posts/survivors-vs-carriers/survivors-vs-carriers.html">
+      <div class="post-thumb" style="background-image:url('posts/survivors-vs-carriers/images/01.avif'); background-size:cover; background-position:center;"></div>
+      <div class="post-cap">
+        <span class="post-meta">Jul 9, 2026 · 3 min read</span>
+        <b class="post-cap-title">Survivors vs. Carriers</b>
+        <span class="post-cap-desc">Secret roles are now grouped under two simple sides, Survivors and Carriers, each with a name banner and a fresh pose.</span>
+        <span class="post-link">Read entry →</span>
+      </div>
+    </a>
+    <a class="post-card" href="posts/origins-of-carrier/origins-of-carrier.html">
+      <div class="post-thumb" style="background-image:url('posts/origins-of-carrier/images/latest-cover-art.avif'); background-size:cover; background-position:center;"></div>
       <div class="post-cap">
         <span class="post-meta">Oct 26 · 9 min read</span>
         <b class="post-cap-title">The Origins of Carrier</b>
@@ -586,7 +621,7 @@
         <span class="post-link">Read entry →</span>
       </div>
     </a>
-    <a class="post-card" href="posts/were-coming-back.html">
+    <a class="post-card" href="posts/were-coming-back/were-coming-back.html">
       <div class="post-thumb" style="background-image:url('images/curefinder-card.avif'); background-size:cover; background-position:center 20%;"></div>
       <div class="post-cap">
         <span class="post-meta">Oct 19 · 2 min read</span>
@@ -736,14 +771,14 @@
   });
 
   const artDirectionItems = [
-    { src:'images/concept-core-loop/concept-1.webp', alt:'First draft of Carrier concept art', caption:'The very first draft — messy, but the first time Carrier looked like something real.' },
-    { src:'images/concept-core-loop/concept-2.webp', alt:'Idealisation phase concept art', caption:'Idealisation phase — Midjourney helped generate assets quickly so we could iterate fast.' },
-    { src:'images/concept-core-loop/concept-3.webp', alt:'Support kits built from Midjourney assets', caption:'Support kits built from Midjourney backgrounds and asset packs found on itch.io.' },
-    { src:'images/concept-core-loop/concept-4.webp', alt:'Border design and early zombie drafts', caption:'Getting the border design right, and drafting the first zombies with Midjourney.' },
-    { src:'images/early-prototypes/phase2-1.webp', alt:'Printing cards at home', caption:"First, we purchased a printer to print at home — the ink wasn't the highest quality, but it helped us get moving." },
-    { src:'images/early-prototypes/phase2-2.webp', alt:'Cards sleeved with TCG sleeves', caption:'Then we sleeved everything with TCG sleeves, just to make it feel a little more like a real game.' },
-    { src:'images/early-prototypes/phase2-3.webp', alt:'Cards printed at a local print shop', caption:'Later, we brought the game to a local print shop — the first time we saw glossy and matte finishes on our own cards.' },
-    { src:'images/early-prototypes/phase2-4.webp', alt:'Introducing character cards', caption:'We also introduced Characters — the public identity of a player. Carrier has secret roles and public roles.' }
+    { src:'images/[ROADMAP] 1. CONCEPT AND CORE LOOP/concept-1.webp', alt:'First draft of Carrier concept art', caption:'The very first draft — messy, but the first time Carrier looked like something real.' },
+    { src:'images/[ROADMAP] 1. CONCEPT AND CORE LOOP/concept-2.webp', alt:'Idealisation phase concept art', caption:'Idealisation phase — Midjourney helped generate assets quickly so we could iterate fast.' },
+    { src:'images/[ROADMAP] 1. CONCEPT AND CORE LOOP/concept-3.webp', alt:'Support kits built from Midjourney assets', caption:'Support kits built from Midjourney backgrounds and asset packs found on itch.io.' },
+    { src:'images/[ROADMAP] 1. CONCEPT AND CORE LOOP/concept-4.webp', alt:'Border design and early zombie drafts', caption:'Getting the border design right, and drafting the first zombies with Midjourney.' },
+    { src:'images/[ROADMAP] 2. PAPER PROTOTYPE/phase2-1.webp', alt:'Printing cards at home', caption:"First, we purchased a printer to print at home — the ink wasn't the highest quality, but it helped us get moving." },
+    { src:'images/[ROADMAP] 2. PAPER PROTOTYPE/phase2-2.webp', alt:'Cards sleeved with TCG sleeves', caption:'Then we sleeved everything with TCG sleeves, just to make it feel a little more like a real game.' },
+    { src:'images/[ROADMAP] 2. PAPER PROTOTYPE/phase2-3.webp', alt:'Cards printed at a local print shop', caption:'Later, we brought the game to a local print shop — the first time we saw glossy and matte finishes on our own cards.' },
+    { src:'images/[ROADMAP] 2. PAPER PROTOTYPE/phase2-4.webp', alt:'Introducing character cards', caption:'We also introduced Characters — the public identity of a player. Carrier has secret roles and public roles.' }
   ];
   const galleryArtShot = document.getElementById('galleryArtShot');
   if (galleryArtShot){
@@ -751,8 +786,8 @@
   }
 
   const characterArchiveItems = [
-    { src:'images/character-archives/survivalist.webp', alt:'Survivalist character card', caption:"Survivalist (V3) — we're actually cutting down the total roster size. A lot of characters didn't have meaningful abilities; they were just there to fill up space. Going forward we'd rather have fewer, more meaningful characters, with room to add more later in future expansions." },
-    { src:'images/character-archives/watchman.webp', alt:'Watchman character card', caption:'Watchman — tested with a group of regulars, some of our earliest testers, and we found it too overpowered. The lesson: once a secret role gets revealed, their word becomes law. That’s far too powerful for a social deduction game built on doubt.' }
+    { src:'images/[GALLERY] 3. CUTTING ROOM/survivalist.webp', alt:'Survivalist character card', caption:"Survivalist (V3) — we're actually cutting down the total roster size. A lot of characters didn't have meaningful abilities; they were just there to fill up space. Going forward we'd rather have fewer, more meaningful characters, with room to add more later in future expansions." },
+    { src:'images/[GALLERY] 3. CUTTING ROOM/watchman.webp', alt:'Watchman character card', caption:'Watchman — tested with a group of regulars, some of our earliest testers, and we found it too overpowered. The lesson: once a secret role gets revealed, their word becomes law. That’s far too powerful for a social deduction game built on doubt.' }
   ];
   const characterArchiveShot = document.getElementById('characterArchiveShot');
   if (characterArchiveShot){
@@ -768,7 +803,7 @@
   }
 
   const latestDesignsItems = [
-    { src:'images/latest-designs/executioner.webp', alt:'Executioner card, renamed from Carrier', caption:"The Carrier role card is now called Executioner — a clearer, more recognizable name for new players than the old naming, which could get confused with the game's own title. If you're the Executioner, your ability is to kill whoever you think the Curefinder is." }
+    { src:'images/[GALLERY] 1. LATEST DESIGNS/executioner.webp', alt:'Executioner card, renamed from Carrier', caption:"The Carrier role card is now called Executioner — a clearer, more recognizable name for new players than the old naming, which could get confused with the game's own title. If you're the Executioner, your ability is to kill whoever you think the Curefinder is." }
   ];
   const latestDesignsShot = document.getElementById('latestDesignsShot');
   if (latestDesignsShot){
@@ -784,18 +819,18 @@
   }
 
   const playtestSessionsItems = [
-    { src:'images/playtest-sessions/pt1.webp', alt:'Playtest session 1, May 21 2024', caption:"May 21, 2024. This was the first time we brought someone else on board to help pull in players we didn't already know. New faces meant new blind spots — the kind of honest, unfiltered feedback you just can't get from friends. Rough as it was, this was the first real test of whether Carrier could stand on its own." },
-    { src:'images/playtest-sessions/pt2.webp', alt:'Playtest session 2, May 27 2024, at The Mind Cafe', caption:"May 27, 2024. Held at The Mind Cafe, a well-known board game spot, this was our first major session in front of a crowd that actually lived and breathed tabletop games. The pressure was real, and so was the feedback. It pushed us to think a lot harder about pacing and balance." },
-    { src:'images/playtest-sessions/pt3.webp', alt:'Playtest session 3, May 30 2024, at a local church', caption:"May 30, 2024. A smaller, more relaxed session held at a local church with friends. Sometimes the best feedback comes from people who have no problem telling you what isn't working. A lot of the small quality-of-life fixes that followed trace back to this night." },
-    { src:'images/playtest-sessions/pt4.webp', alt:'Playtest session 4, June 1 2024', caption:"June 1, 2024. June turned out to be one of our busiest months yet, packed with events and back-to-back testing. We ran through the game more times than we could count, and it exposed just how many flaws were still hiding under the surface. Painful, but exactly the kind of pressure the design needed." },
-    { src:'images/playtest-sessions/pt5.webp', alt:'Playtest session, June 6 2024, regular church meetup', caption:"June 6, 2024 — back to our regular church board game meetup, the group that's tested Carrier more than anyone else at this point. There's real value in testing with the same people again and again; they catch things new players never would. This session felt less like a test and more like fine-tuning with old friends." },
-    { src:'images/playtest-sessions/pt6.webp', alt:'PlayPlayFair booth, June 15 2024', caption:"June 15, 2024. We ran a booth at PlayPlayFair, a Singapore event for board game enthusiasts. This was our biggest exposure yet — more eyes on Carrier in one place than any session before it." },
-    { src:'images/playtest-sessions/pt7.webp', alt:'Follow-up session with players met at PlayPlayFair', caption:"Some of the people we met at PlayPlayFair followed up and joined us again, this time at a different venue. Getting people to come back for a second round was a good sign — it meant the game actually stuck with them." },
-    { src:'images/playtest-sessions/pt8.webp', alt:'TableConquest tabletop event booth', caption:"TableConquest, a tabletop event for games like D&D. We had a small spot in the booth and met some cool new friends who were happy to give Carrier a shot." },
-    { src:'images/playtest-sessions/pt9.webp', alt:'Playtest at Church of the Good Shepherd', caption:"Held at Church of the Good Shepherd. What made this one notable wasn't the venue, it was that word had clearly spread — we saw real interest carrying over from earlier sessions instead of starting from scratch each time." },
-    { src:'images/playtest-sessions/pt10.webp', alt:'Large 16-player playtest session', caption:"Sixteen players, using two merged sets of cards just to fit everyone in. It also taught us 16 was way too many — rounds dragged on because of how long each player's turn took. A clear signal we needed to cap the player count." },
-    { src:'images/playtest-sessions/pt12.webp', alt:'SGGA drink-up event with game designers', caption:"The SGGA drink-up event, where a few actual game designers sat down and tried Carrier. Feedback from people who design games for a living hits differently." },
-    { src:'images/playtest-sessions/pt13.webp', alt:'Testing the maximum player count', caption:"After the 16-player session taught us that was already too far, we deliberately pushed further to find our real maximum player count." }
+    { src:'images/[GALLERY] 4. PLAY TEST SESSIONS/pt1.webp', alt:'Playtest session 1, May 21 2024', caption:"May 21, 2024. This was the first time we brought someone else on board to help pull in players we didn't already know. New faces meant new blind spots — the kind of honest, unfiltered feedback you just can't get from friends. Rough as it was, this was the first real test of whether Carrier could stand on its own." },
+    { src:'images/[GALLERY] 4. PLAY TEST SESSIONS/pt2.webp', alt:'Playtest session 2, May 27 2024, at The Mind Cafe', caption:"May 27, 2024. Held at The Mind Cafe, a well-known board game spot, this was our first major session in front of a crowd that actually lived and breathed tabletop games. The pressure was real, and so was the feedback. It pushed us to think a lot harder about pacing and balance." },
+    { src:'images/[GALLERY] 4. PLAY TEST SESSIONS/pt3.webp', alt:'Playtest session 3, May 30 2024, at a local church', caption:"May 30, 2024. A smaller, more relaxed session held at a local church with friends. Sometimes the best feedback comes from people who have no problem telling you what isn't working. A lot of the small quality-of-life fixes that followed trace back to this night." },
+    { src:'images/[GALLERY] 4. PLAY TEST SESSIONS/pt4.webp', alt:'Playtest session 4, June 1 2024', caption:"June 1, 2024. June turned out to be one of our busiest months yet, packed with events and back-to-back testing. We ran through the game more times than we could count, and it exposed just how many flaws were still hiding under the surface. Painful, but exactly the kind of pressure the design needed." },
+    { src:'images/[GALLERY] 4. PLAY TEST SESSIONS/pt5.webp', alt:'Playtest session, June 6 2024, regular church meetup', caption:"June 6, 2024 — back to our regular church board game meetup, the group that's tested Carrier more than anyone else at this point. There's real value in testing with the same people again and again; they catch things new players never would. This session felt less like a test and more like fine-tuning with old friends." },
+    { src:'images/[GALLERY] 4. PLAY TEST SESSIONS/pt6.webp', alt:'PlayPlayFair booth, June 15 2024', caption:"June 15, 2024. We ran a booth at PlayPlayFair, a Singapore event for board game enthusiasts. This was our biggest exposure yet — more eyes on Carrier in one place than any session before it." },
+    { src:'images/[GALLERY] 4. PLAY TEST SESSIONS/pt7.webp', alt:'Follow-up session with players met at PlayPlayFair', caption:"Some of the people we met at PlayPlayFair followed up and joined us again, this time at a different venue. Getting people to come back for a second round was a good sign — it meant the game actually stuck with them." },
+    { src:'images/[GALLERY] 4. PLAY TEST SESSIONS/pt8.webp', alt:'TableConquest tabletop event booth', caption:"TableConquest, a tabletop event for games like D&D. We had a small spot in the booth and met some cool new friends who were happy to give Carrier a shot." },
+    { src:'images/[GALLERY] 4. PLAY TEST SESSIONS/pt9.webp', alt:'Playtest at Church of the Good Shepherd', caption:"Held at Church of the Good Shepherd. What made this one notable wasn't the venue, it was that word had clearly spread — we saw real interest carrying over from earlier sessions instead of starting from scratch each time." },
+    { src:'images/[GALLERY] 4. PLAY TEST SESSIONS/pt10.webp', alt:'Large 16-player playtest session', caption:"Sixteen players, using two merged sets of cards just to fit everyone in. It also taught us 16 was way too many — rounds dragged on because of how long each player's turn took. A clear signal we needed to cap the player count." },
+    { src:'images/[GALLERY] 4. PLAY TEST SESSIONS/pt12.webp', alt:'SGGA drink-up event with game designers', caption:"The SGGA drink-up event, where a few actual game designers sat down and tried Carrier. Feedback from people who design games for a living hits differently." },
+    { src:'images/[GALLERY] 4. PLAY TEST SESSIONS/pt13.webp', alt:'Testing the maximum player count', caption:"After the 16-player session taught us that was already too far, we deliberately pushed further to find our real maximum player count." }
   ];
   const playtestSessionsShot = document.getElementById('playtestSessionsShot');
   if (playtestSessionsShot){
@@ -808,16 +843,16 @@
   // Latest 10 items across the site, newest first. Add new entries to the TOP
   // and drop the oldest to keep this at 10 whenever something new goes live.
   const siteFeed = [
-    { src:'images/latest-designs/executioner.webp', alt:'Executioner card, renamed from Carrier', caption:"The Carrier role card is now called Executioner — a clearer, more recognizable name for new players than the old naming, which could get confused with the game's own title. If you're the Executioner, your ability is to kill whoever you think the Curefinder is.", tag:'Latest Design' },
-    { src:'images/character-archives/watchman.webp', alt:'Watchman character card', caption:'Watchman — tested with a group of regulars, some of our earliest testers, and we found it too overpowered. The lesson: once a secret role gets revealed, their word becomes law. That’s far too powerful for a social deduction game built on doubt.', tag:'Cutting Room' },
-    { src:'images/character-archives/survivalist.webp', alt:'Survivalist character card', caption:"Survivalist (V3) — we're actually cutting down the total roster size. A lot of characters didn't have meaningful abilities; they were just there to fill up space. Going forward we'd rather have fewer, more meaningful characters, with room to add more later in future expansions.", tag:'Cutting Room' },
-    { src:'images/origins/latest-cover-art.avif', alt:'The Origins of Carrier cover art', caption:'The Origins of Carrier — a behind-the-scenes story about how Carrier began, what inspired it, and where it\'s headed.', tag:'Dev Journal' },
+    { src:'images/[GALLERY] 1. LATEST DESIGNS/executioner.webp', alt:'Executioner card, renamed from Carrier', caption:"The Carrier role card is now called Executioner — a clearer, more recognizable name for new players than the old naming, which could get confused with the game's own title. If you're the Executioner, your ability is to kill whoever you think the Curefinder is.", tag:'Latest Design' },
+    { src:'images/[GALLERY] 3. CUTTING ROOM/watchman.webp', alt:'Watchman character card', caption:'Watchman — tested with a group of regulars, some of our earliest testers, and we found it too overpowered. The lesson: once a secret role gets revealed, their word becomes law. That’s far too powerful for a social deduction game built on doubt.', tag:'Cutting Room' },
+    { src:'images/[GALLERY] 3. CUTTING ROOM/survivalist.webp', alt:'Survivalist character card', caption:"Survivalist (V3) — we're actually cutting down the total roster size. A lot of characters didn't have meaningful abilities; they were just there to fill up space. Going forward we'd rather have fewer, more meaningful characters, with room to add more later in future expansions.", tag:'Cutting Room' },
+    { src:'posts/origins-of-carrier/images/latest-cover-art.avif', alt:'The Origins of Carrier cover art', caption:'The Origins of Carrier — a behind-the-scenes story about how Carrier began, what inspired it, and where it\'s headed.', tag:'Dev Journal' },
     { src:'images/curefinder-card.avif', alt:'Curefinder role card', caption:"We're Coming Back, Soon. — a mini retrospective on the break, and what's next for development.", tag:'Dev Journal' },
-    { src:'images/early-prototypes/phase2-4.webp', alt:'Introducing character cards', caption:'We also introduced Characters — the public identity of a player. Carrier has secret roles and public roles.', tag:'Early Prototypes' },
-    { src:'images/early-prototypes/phase2-3.webp', alt:'Cards printed at a local print shop', caption:'Later, we brought the game to a local print shop — the first time we saw glossy and matte finishes on our own cards.', tag:'Early Prototypes' },
-    { src:'images/early-prototypes/phase2-2.webp', alt:'Cards sleeved with TCG sleeves', caption:'Then we sleeved everything with TCG sleeves, just to make it feel a little more like a real game.', tag:'Early Prototypes' },
-    { src:'images/early-prototypes/phase2-1.webp', alt:'Printing cards at home', caption:"First, we purchased a printer to print at home — the ink wasn't the highest quality, but it helped us get moving.", tag:'Early Prototypes' },
-    { src:'images/concept-core-loop/concept-4.webp', alt:'Border design and early zombie drafts', caption:'Getting the border design right, and drafting the first zombies with Midjourney.', tag:'Concept & Core Loop' }
+    { src:'images/[ROADMAP] 2. PAPER PROTOTYPE/phase2-4.webp', alt:'Introducing character cards', caption:'We also introduced Characters — the public identity of a player. Carrier has secret roles and public roles.', tag:'Early Prototypes' },
+    { src:'images/[ROADMAP] 2. PAPER PROTOTYPE/phase2-3.webp', alt:'Cards printed at a local print shop', caption:'Later, we brought the game to a local print shop — the first time we saw glossy and matte finishes on our own cards.', tag:'Early Prototypes' },
+    { src:'images/[ROADMAP] 2. PAPER PROTOTYPE/phase2-2.webp', alt:'Cards sleeved with TCG sleeves', caption:'Then we sleeved everything with TCG sleeves, just to make it feel a little more like a real game.', tag:'Early Prototypes' },
+    { src:'images/[ROADMAP] 2. PAPER PROTOTYPE/phase2-1.webp', alt:'Printing cards at home', caption:"First, we purchased a printer to print at home — the ink wasn't the highest quality, but it helped us get moving.", tag:'Early Prototypes' },
+    { src:'images/[ROADMAP] 1. CONCEPT AND CORE LOOP/concept-4.webp', alt:'Border design and early zombie drafts', caption:'Getting the border design right, and drafting the first zombies with Midjourney.', tag:'Concept & Core Loop' }
   ].slice(0, 10);
 
   const heroMarqueeTrack = document.getElementById('heroMarqueeTrack');

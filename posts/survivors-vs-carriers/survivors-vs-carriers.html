@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>We're Coming Back, Soon. — CARRIER</title>
+<title>Survivors vs. Carriers — CARRIER</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DotGothic16&family=VT323&display=swap" rel="stylesheet">
 <style>
@@ -48,12 +48,11 @@
   .post-header .meta{color:var(--grey); font-size:0.9rem;}
 
   .post-body{max-width:720px; margin:0 auto; padding:60px 6% 40px;}
-  .post-body img.card-art{
-    display:block; width:100%; height:auto; margin:0 auto 40px;
-    filter:drop-shadow(6px 6px 0 #000);
-    position:relative; z-index:10000;
-  }
   .post-body p{color:var(--white); margin-bottom:24px; font-size:1.15rem;}
+  .post-body h2{color:var(--red); font-size:1.2rem; margin:36px 0 16px;}
+  .post-body figure{margin:0 0 32px;}
+  .post-body figure img{display:block; width:100%; height:auto; border:2px solid var(--darkred);}
+  .post-body figcaption{color:var(--grey); font-size:0.9rem; margin-top:10px; line-height:1.5;}
 
   .back-link{
     display:block; max-width:720px; margin:0 auto 80px; padding:0 6%;
@@ -66,7 +65,6 @@
   footer .socials a{margin:0 10px; color:var(--grey); text-decoration:none; font-weight:700;}
   footer .socials a:hover{color:var(--red);}
 
-  /* ---------- CRT / RETRO FX ---------- */
   .crt-overlay{
     position:fixed; inset:0; pointer-events:none; z-index:9999;
     background:repeating-linear-gradient(0deg, rgba(0,0,0,0.18) 0px, rgba(0,0,0,0.18) 1px, transparent 1px, transparent 3px);
@@ -80,18 +78,6 @@
     content:"_"; margin-left:3px; animation:cursorblink 1s steps(1) infinite;
   }
   @keyframes cursorblink{ 50%{ opacity:0; } }
-  nav a{ position:relative; }
-  nav a:hover{ animation:navglitch .3s steps(2,end) infinite; }
-  @keyframes navglitch{
-    0%{ text-shadow:2px 0 var(--red), -2px 0 var(--yellow); }
-    50%{ text-shadow:-2px 0 var(--red), 2px 0 var(--yellow); }
-    100%{ text-shadow:2px 0 var(--red), -2px 0 var(--yellow); }
-  }
-  .logo-group:hover img{ animation:logoglitch .25s steps(2,end) infinite; }
-  @keyframes logoglitch{
-    0%{ transform:translate(0,0); } 25%{ transform:translate(-1px,1px); }
-    50%{ transform:translate(1px,-1px); } 75%{ transform:translate(-1px,-1px); } 100%{ transform:translate(0,0); }
-  }
 </style>
 </head>
 <body>
@@ -99,51 +85,85 @@
 <div class="crt-overlay"></div>
 <div class="hazard"></div>
 <header>
-  <a href="../index.html" class="logo-group">
-    <img src="../images/kodecco-icon.png" alt="Kodecco Games">
+  <a href="../../index.html" class="logo-group">
+    <img src="../../images/kodecco-icon.png" alt="Kodecco Games">
   </a>
   <nav>
-    <a href="../index.html#brief">Mission Brief</a>
-    <a href="../index.html#gallery">Gallery</a>
-    <a href="../index.html#roadmap">Roadmap</a>
-    <a href="../index.html#journal">Dev Journal</a>
-    <a href="../index.html#signal">Send Signal</a>
+    <a href="../../index.html#brief">Mission Brief</a>
+    <a href="../../index.html#gallery">Gallery</a>
+    <a href="../../index.html#roadmap">Roadmap</a>
+    <a href="../../index.html#journal">Dev Journal</a>
+    <a href="../../index.html#signal">Send Signal</a>
   </nav>
 </header>
 
 <div class="post-header">
   <span class="tag">// DEV JOURNAL</span>
-  <h1>We're Coming Back, Soon.</h1>
-  <div class="meta">Oct 19, 2025 · 2 min read</div>
+  <h1>Survivors vs. Carriers</h1>
+  <div class="meta">Jul 9, 2026 · 3 min read</div>
 </div>
 
 <div class="post-body">
-  <img class="card-art" src="../images/curefinder-card.avif" alt="Curefinder role card — Custodians">
 
-  <p>It's been almost two years since Carrier first went public. Back then, it was a small idea — a social deduction game born from late-night sketches and an obsession with survival stories.</p>
+  <p>Two changes to the secret roles this week, both based on player feedback.</p>
 
-  <p>The first Kickstarter didn't go the way we hoped. It was tough, but it forced a moment of clarity. We took a step back, tore everything apart, and started again from the ground up.</p>
+  <h2>Simpler Sides</h2>
 
-  <p>Since then, the game has evolved in every way possible:</p>
+  <p>Every secret role used to belong to its own named team — Custodians, and a few others — which meant new players had to learn a team name <strong>and</strong> a role name before they even understood what side they were on. That's one layer of confusion too many.</p>
 
-  <p>New artwork, refined roles, and a stronger narrative direction.</p>
+  <p>From now on, there are just two sides: <strong>Survivors</strong> and <strong>Carriers</strong>. The top banner tells you your side at a glance, and the bottom banner still names your specific role, like Patient Zero or Curefinder, so nothing is lost — it's just easier to read at the table.</p>
 
-  <p>Simplified mechanics that bring more tension and clarity to each round.</p>
+  <figure>
 
-  <p>A world that feels darker, tighter, and more alive.</p>
+    <img src="images/01.avif" alt="Patient Zero card, before and after the Survivor/Carrier relabel">
 
-  <p>What started as a project about infection has become a story about trust — who you believe, and what you risk when the world starts to fall apart.</p>
+    <figcaption>Patient Zero — old Custodians banner on the left, new Survivor banner with the role name kept below in the subtitle area.</figcaption>
 
-  <p>As we prepare for our second launch, we're doing things differently this time: slower, more deliberate, and with a clearer vision of what Carrier is meant to be.</p>
+  </figure>
 
-  <p>If you've followed the project since the beginning, thank you. Your patience and support have kept this alive far longer than I could have on my own.</p>
+  <figure>
 
-  <p>This next chapter feels like the real beginning.</p>
+    <img src="images/02.avif" alt="Apprentice card, before and after the Survivor/Carrier relabel">
 
-  <p>Stay tuned.</p>
+    <figcaption>Apprentice — same simplification, Secret Role up top, role name below</figcaption>
+
+  </figure>
+
+  <figure>
+
+    <img src="images/03.avif" alt="Curefinder card, before and after the Survivor/Carrier relabel">
+
+    <figcaption>Curefinder — the mission text stays the same, only the Secret Role banner changes</figcaption>
+
+  </figure>
+
+  <figure>
+
+    <img src="images/04.avif" alt="Carrier-side Executioner card, before and after the relabel">
+
+    <figcaption>Renamed to Executioner (To emphasize he kills), the Carrier Secret Role, now labeled the same simple way</figcaption>
+
+  </figure>
+
+  <figure>
+
+    <img src="images/05.avif" alt="Carrier-side Saboteur card, before and after the relabel">
+
+    <figcaption>Saboteur — the main cause of failed encounters. Unlike the Executioner, who can both kill and sabotage, the Saboteur cannot kill.</figcaption>
+
+  </figure>
+
+  <h2>Less Static Poses</h2>
+
+  <p>We also noticed the secret role art was starting to blend together — several characters stood in nearly the same stance, just recolored. It made cards easy to mix up on the table and didn't do justice to who these characters are.</p>
+
+  <p>Each role is getting its own pose going forward — different stances, different body language — so the cards read as distinct characters instead of palette swaps of the same figure.</p>
+
+  <p>More of this as the redesigned deck comes together. Stay tuned.</p>
+
 </div>
 
-<a class="back-link" href="../index.html#journal">← Back to Dev Journal</a>
+<a class="back-link" href="../../index.html#journal">← Back to Dev Journal</a>
 
 <footer>
   <div class="socials">
