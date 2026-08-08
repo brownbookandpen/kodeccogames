@@ -156,6 +156,25 @@
   .bg-item img{width:100%; height:100%; object-fit:cover; display:block; cursor:pointer;}
   .bg-item:hover{border-color:var(--yellow); transform:scale(1.06);}
 
+  /* ---------- WORK IN PROGRESS PLACEHOLDERS ---------- */
+  .wip-img{ filter:grayscale(100%) contrast(1.05); transition:filter .35s ease; }
+  .bg-item:hover .wip-img, .cg-item:hover .wip-img, .brief-shot:hover .wip-img{ filter:grayscale(0%); }
+  .wip-label{
+    position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+    background:rgba(0,0,0,0.55); color:var(--yellow); font-family:'DotGothic16',monospace;
+    letter-spacing:0.5px; text-transform:uppercase; text-align:center; padding:4px;
+    pointer-events:none; line-height:1.2;
+  }
+  .bg-item .wip-label{font-size:0.32rem;}
+  .cg-item .wip-label{font-size:0.55rem;}
+  .brief-shot{
+    position:relative; aspect-ratio:1/1; overflow:hidden; margin-bottom:18px;
+    border:2px solid #2b2b2b; transition:border-color .2s, transform .2s;
+  }
+  .brief-shot:hover{border-color:var(--yellow); transform:scale(1.02);}
+  .brief-shot img{width:100%; height:100%; object-fit:cover; display:block;}
+  .brief-shot .wip-label{font-size:0.65rem;}
+
   /* ---------- GALLERY ---------- */
   .gallery{background:var(--panel2); border-top:2px solid var(--darkred); border-bottom:2px solid var(--darkred);}
   .gallery-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:18px;}
@@ -474,36 +493,36 @@
   <p class="section-sub">The essentials — swap in your real rules summary once they're locked.</p>
   <div class="brief-grid">
     <div class="brief-card">
-      <div class="icon">👥</div>
-      <h3>SURVIVORS</h3>
-      <p>2–4 players choose who holds the line each round.</p>
       <!-- GALLERY: [MISSION BRIEF] 1. SURVIVORS -->
       <div class="brief-gallery">
+        <div class="brief-shot"><img class="wip-img" src="images/[PLACEHOLDER] 1024x1024work-in-progress.png" alt="Survivors art coming soon"><span class="wip-label">Coming Soon</span></div>
       </div>
+      <h3>SURVIVORS</h3>
+      <p>2–4 players choose who holds the line each round.</p>
     </div>
     <div class="brief-card">
-      <div class="icon">📦</div>
-      <h3>SUPPLY</h3>
-      <p>Success requires stockpiling supply cards before the horde arrives.</p>
       <!-- GALLERY: [MISSION BRIEF] 2. ENCOUNTERS & SUPPLIES -->
       <div class="brief-gallery">
+        <div class="brief-shot"><img class="wip-img" src="images/[PLACEHOLDER] 1024x1024work-in-progress.png" alt="Supply art coming soon"><span class="wip-label">Coming Soon</span></div>
       </div>
+      <h3>SUPPLY</h3>
+      <p>Success requires stockpiling supply cards before the horde arrives.</p>
     </div>
     <div class="brief-card">
-      <div class="icon">☣</div>
-      <h3>FAILURE STATE</h3>
-      <p>Running dry triggers the next disaster sequence — the tension engine of the game.</p>
       <!-- GALLERY: [MISSION BRIEF] 3. ZOMBIES -->
       <div class="brief-gallery">
+        <div class="brief-shot"><img class="wip-img" src="images/[PLACEHOLDER] 1024x1024work-in-progress.png" alt="Zombies art coming soon"><span class="wip-label">Coming Soon</span></div>
       </div>
+      <h3>FAILURE STATE</h3>
+      <p>Running dry triggers the next disaster sequence — the tension engine of the game.</p>
     </div>
     <div class="brief-card">
-      <div class="icon">🎲</div>
-      <h3>ESCALATION</h3>
-      <p>Each round the horde grows — placeholder text for how difficulty ramps.</p>
       <!-- GALLERY: [MISSION BRIEF] 4. ESCALATION -->
       <div class="brief-gallery">
+        <div class="brief-shot"><img class="wip-img" src="images/[PLACEHOLDER] 1024x1024work-in-progress.png" alt="Escalation art coming soon"><span class="wip-label">Coming Soon</span></div>
       </div>
+      <h3>ESCALATION</h3>
+      <p>Each round the horde grows — placeholder text for how difficulty ramps.</p>
     </div>
   </div>
 </section>
@@ -596,6 +615,7 @@
       <div class="t-detail">
         <!-- GALLERY: [ROADMAP] 5. PUBLISHING & CROWDFUNDING -->
         <div class="concept-grid">
+          <div class="cg-item"><img class="wip-img" src="images/[PLACEHOLDER] 1024x1024work-in-progress.png" alt="Publishing and crowdfunding details coming soon" data-caption="Launch plans, pledge tiers, and publishing details are still being worked out — check back soon."><span class="wip-label">Coming Soon</span></div>
         </div>
         <div class="update-box"><p>Update placeholder — swap in a real photo and launch details once they're confirmed.</p></div>
       </div>
