@@ -221,12 +221,19 @@
     max-height:0; overflow:hidden; opacity:0;
     transition:max-height .4s ease, opacity .3s ease, margin-top .35s ease;
   }
-  .t-item.expanded .t-detail{max-height:380px; opacity:1; margin-top:18px;}
+  .t-item.expanded .t-detail{max-height:420px; opacity:1; margin-top:18px;}
   .concept-grid{
-    display:grid; grid-template-columns:repeat(4,1fr); gap:14px;
+    overflow:hidden;
+    max-width:602px; /* fits exactly 4 x 140px items + gaps; anything beyond overflows and becomes hover-scrollable */
+    -webkit-mask-image:linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+    mask-image:linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+  }
+  .cg-track{
+    display:flex; gap:14px; width:max-content;
+    transition:transform .5s cubic-bezier(.22,.61,.36,1);
   }
   .cg-item{
-    position:relative; width:100%; aspect-ratio:1/1; overflow:hidden;
+    position:relative; flex:0 0 140px; width:140px; aspect-ratio:1/1; overflow:hidden;
     border:2px solid #2b2b2b; z-index:10000;
     opacity:0; transform:scale(.9);
     transition:border-color .2s, transform .2s, opacity .4s ease;
@@ -242,11 +249,13 @@
     pointer-events:none;
   }
   .t-item.expanded .cg-item{ opacity:1; transform:scale(1); }
-  .t-item.expanded .cg-item:nth-child(1){ transition-delay:.05s; }
-  .t-item.expanded .cg-item:nth-child(2){ transition-delay:.1s; }
-  .t-item.expanded .cg-item:nth-child(3){ transition-delay:.15s; }
-  .t-item.expanded .cg-item:nth-child(4){ transition-delay:.2s; }
   .cg-item:hover{ border-color:var(--yellow); transform:scale(1.04) !important; }
+  .cg-hint{
+    display:block; text-align:center; color:var(--grey); font-size:0.55rem;
+    letter-spacing:1px; text-transform:uppercase; margin-top:8px;
+    font-family:'DotGothic16',monospace; opacity:0.75;
+  }
+  .cg-hint .blink{ animation:cursorblink 1s steps(1) infinite; color:var(--yellow); }
 
   /* ---------- SIDE PREVIEW ---------- */
   .side-preview-backdrop{
@@ -298,7 +307,11 @@
   }
   .t-detail .update-box{
     margin-top:10px; background:var(--panel); border:2px solid var(--darkred); padding:12px 14px;
-    color:var(--grey); font-size:0.85rem; line-height:1.5; overflow:hidden;
+    color:var(--grey); font-size:0.85rem; line-height:1.5;
+    height:150px; overflow-x:hidden; overflow-y:hidden;
+  }
+  .t-detail .update-box p::after{
+    content:"_"; margin-left:2px; color:var(--yellow); animation:cursorblink 1s steps(1) infinite;
   }
   .t-detail .update-box p{
     opacity:0; transform:translateX(70px); white-space:pre-wrap;
@@ -537,8 +550,14 @@
       <h4>Art &amp; Component Design <span class="t-toggle">▾</span></h4>
       <p>As our design skills grow, we're moving further from the original Midjourney/AI-assisted art — toward asset packs from itch.io, and eventually hiring dedicated pixel art artists.</p>
       <div class="t-detail">
-        <div class="shot-sq">🎨</div>
-        <div class="update-box"><p>Update placeholder — swap in a real photo and a note on the art direction once it's locked.</p></div>
+        <div class="concept-grid">
+          <div class="cg-item"><img src="images/art-component/p1.webp" alt="Refined survivor art direction" data-caption="Finalizing the art direction by improving our drawings — done through repetition and slow, steady improvement rather than a single overhaul."><span class="cg-title">Art Direction</span></div>
+          <div class="cg-item"><img src="images/art-component/p2.webp" alt="Visual overhaul of the horde enemies" data-caption="A visual overhaul on the zombies, tied directly to the new Horde enemy. More to come on this." ><span class="cg-title">Horde Overhaul</span></div>
+          <div class="cg-item"><img src="images/art-component/p3.webp" alt="Old box render with early unrefined art" data-caption="An old render of the Carrier box with earlier, unrefined art — the idea, dimensions, and layout were there, more a visualization of how it would eventually look."><span class="cg-title">Old Box Render</span></div>
+          <div class="cg-item"><img src="images/art-component/p4.webp" alt="New box design with new art, angle 1" data-caption="The new box — new art, new direction."><span class="cg-title">New Box (v1)</span></div>
+          <div class="cg-item"><img src="images/art-component/p5.webp" alt="New box design with new art, angle 2" data-caption="The new box — new art, new direction."><span class="cg-title">New Box (v2)</span></div>
+        </div>
+        <div class="update-box"><p>Art is getting more refined with every pass — the survivor and horde designs are both being pushed further through repetition, and the box art has been completely redone from the old placeholder render to a real, finished design.</p></div>
       </div>
     </div>
     <div class="t-item">
@@ -819,28 +838,63 @@
   }
 
   document.querySelectorAll('.concept-grid').forEach(grid=>{
-    const gridImgs = Array.from(grid.querySelectorAll('img[data-caption]'));
-    const items = gridImgs.map(img=>({
-      src: img.getAttribute('src'), alt: img.alt, caption: img.dataset.caption
-    }));
-    gridImgs.forEach((img, idx)=>{
-      const box = img.closest('.t-detail').querySelector('.update-box p');
-      if (box && !box.dataset.default) box.dataset.default = box.textContent;
+    const box = grid.closest('.t-detail').querySelector('.update-box p');
+    if (box && !box.dataset.default) box.dataset.default = box.textContent;
+    const swapText = (text)=>{
+      if(!box) return;
+      box.textContent = text;
+      box.style.animation = 'none';
+      void box.offsetWidth;
+      box.style.animation = '';
+    };
 
-      const swapText = (text)=>{
-        if(!box) return;
-        box.textContent = text;
-        box.style.animation = 'none';
-        void box.offsetWidth;
-        box.style.animation = '';
-      };
+    // build the click/browse list from the original (pre-duplication) items
+    const originalItems = Array.from(grid.querySelectorAll('.cg-item')).map(el=>{
+      const img = el.querySelector('img');
+      return { src: img.getAttribute('src'), alt: img.alt, caption: img.dataset.caption };
+    });
+
+    // wrap the existing items in a track (no auto-loop needed anymore)
+    const track = document.createElement('div');
+    track.className = 'cg-track';
+    const originalNodes = Array.from(grid.children);
+    let currentOffset = 0;
+
+    const wireItem = (el)=>{
+      const img = el.querySelector('img');
       img.addEventListener('mouseenter', ()=> swapText(img.dataset.caption));
       img.addEventListener('mouseleave', ()=> swapText(box.dataset.default));
       img.addEventListener('click', (e)=>{
         e.stopPropagation();
-        openGalleryPreview(items, idx);
+        const idx = originalItems.findIndex(it=> it.src === img.getAttribute('src'));
+        openGalleryPreview(originalItems, idx >= 0 ? idx : 0);
       });
+      // move incrementally: hovered item glides to become the centered focal point
+      el.addEventListener('mouseenter', ()=>{
+        const gridRect = grid.getBoundingClientRect();
+        const itemRect = el.getBoundingClientRect();
+        const delta = (gridRect.left + gridRect.width/2) - (itemRect.left + itemRect.width/2);
+        let next = currentOffset + delta;
+        const maxOffset = 0;
+        const minOffset = Math.min(0, -(track.scrollWidth - gridRect.width));
+        next = Math.min(maxOffset, Math.max(minOffset, next));
+        currentOffset = next;
+        track.style.transform = `translateX(${currentOffset}px)`;
+      });
+    };
+
+    originalNodes.forEach(node=>{ track.appendChild(node); wireItem(node); });
+    grid.appendChild(track);
+
+    grid.addEventListener('mouseleave', ()=>{
+      currentOffset = 0;
+      track.style.transform = 'translateX(0)';
     });
+
+    const hint = document.createElement('span');
+    hint.className = 'cg-hint';
+    hint.innerHTML = '🖱 hover an item to bring it forward · click to browse <span class="blink">_</span>';
+    grid.insertAdjacentElement('afterend', hint);
   });
 </script>
 
