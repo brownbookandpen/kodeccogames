@@ -138,7 +138,7 @@
   .brief-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:20px;}
   .brief-card{
     background:var(--panel); border:2px solid var(--darkred); padding:24px; position:relative;
-    transition:transform .2s, border-color .2s;
+    transition:transform .2s, border-color .2s; cursor:pointer;
   }
   .brief-card:hover{transform:translateY(-4px); border-color:var(--red);}
   .brief-card::before{
@@ -174,6 +174,41 @@
   .brief-shot:hover{border-color:var(--yellow); transform:scale(1.02);}
   .brief-shot img{width:100%; height:100%; object-fit:cover; display:block;}
   .brief-shot .wip-label{font-size:0.65rem;}
+  .brief-shot::after{
+    content:""; position:absolute; inset:0; pointer-events:none; opacity:0;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+    mix-blend-mode:overlay;
+  }
+  .brief-shot:hover::after{ animation:staticFlicker .55s steps(6) 1; }
+  @keyframes staticFlicker{
+    0%{opacity:.9;} 15%{opacity:.4;} 30%{opacity:.85;} 45%{opacity:.25;} 60%{opacity:.6;} 80%{opacity:.15;} 100%{opacity:0;}
+  }
+
+  /* ---------- BRIEF MODAL ---------- */
+  .wip-modal{
+    position:fixed; inset:0; background:rgba(5,5,5,0.88); display:none;
+    align-items:center; justify-content:center; z-index:20000; padding:20px;
+  }
+  .wip-modal.active{ display:flex; }
+  .wip-modal-box{
+    position:relative; max-width:364px; width:100%; background:var(--panel);
+    border:2px solid var(--darkred); padding:22px 20px; text-align:left;
+  }
+  .wip-modal-box::before{
+    content:""; position:absolute; top:0; left:0; width:100%; height:4px;
+    background:repeating-linear-gradient(45deg, var(--yellow) 0 10px, var(--black) 10px 20px);
+  }
+  .wip-modal-box img{
+    display:block; width:100%; aspect-ratio:1/1; object-fit:cover;
+    border:2px solid #2b2b2b; margin-bottom:14px;
+  }
+  .wip-modal-box h3{ color:var(--red); font-family:'DotGothic16',monospace; font-size:0.75rem; margin-bottom:12px; letter-spacing:0.5px; }
+  .wip-modal-box p{ color:var(--white); font-family:'VT323',monospace; font-size:0.85rem; line-height:1.5; }
+  .wip-modal-close{
+    position:absolute; top:10px; right:14px; color:var(--yellow); font-size:1.3rem;
+    font-family:'DotGothic16',monospace; cursor:pointer; line-height:1;
+  }
+  .wip-modal-close:hover{ color:var(--red); }
 
   /* ---------- GALLERY ---------- */
   .gallery{background:var(--panel2); border-top:2px solid var(--darkred); border-bottom:2px solid var(--darkred);}
@@ -495,37 +530,42 @@
     <div class="brief-card">
       <!-- GALLERY: [MISSION BRIEF] 1. SURVIVORS -->
       <div class="brief-gallery">
-        <div class="brief-shot"><img class="wip-img" src="images/[PLACEHOLDER] 1024x1024work-in-progress.png" alt="Survivors art coming soon"><span class="wip-label">Coming Soon</span></div>
+        <div class="brief-shot"><img class="wip-img" src="images/[PLACEHOLDER] WORKINPROGRESS ENCOUNTERS.png" alt="Survivors art coming soon"><span class="wip-label">Coming Soon</span></div>
       </div>
-      <h3>SURVIVORS</h3>
-      <p>2–4 players choose who holds the line each round.</p>
+      <h3>1. TAKE YOUR SURVIVOR</h3>
     </div>
     <div class="brief-card">
       <!-- GALLERY: [MISSION BRIEF] 2. ENCOUNTERS & SUPPLIES -->
       <div class="brief-gallery">
-        <div class="brief-shot"><img class="wip-img" src="images/[PLACEHOLDER] 1024x1024work-in-progress.png" alt="Supply art coming soon"><span class="wip-label">Coming Soon</span></div>
+        <div class="brief-shot"><img class="wip-img" src="images/[PLACEHOLDER] WORKINPROGRESS SUPPLY.png" alt="Supply art coming soon"><span class="wip-label">Coming Soon</span></div>
       </div>
-      <h3>SUPPLY</h3>
-      <p>Success requires stockpiling supply cards before the horde arrives.</p>
+      <h3>2. GATHER SUPPLIES</h3>
     </div>
     <div class="brief-card">
       <!-- GALLERY: [MISSION BRIEF] 3. ZOMBIES -->
       <div class="brief-gallery">
-        <div class="brief-shot"><img class="wip-img" src="images/[PLACEHOLDER] 1024x1024work-in-progress.png" alt="Zombies art coming soon"><span class="wip-label">Coming Soon</span></div>
+        <div class="brief-shot"><img class="wip-img" src="images/[PLACEHOLDER] WORKINPROGRESS ZOMBIES.png" alt="Encounters art coming soon"><span class="wip-label">Coming Soon</span></div>
       </div>
-      <h3>FAILURE STATE</h3>
-      <p>Running dry triggers the next disaster sequence — the tension engine of the game.</p>
+      <h3>3. OVERCOME ENCOUNTERS</h3>
     </div>
     <div class="brief-card">
       <!-- GALLERY: [MISSION BRIEF] 4. ESCALATION -->
       <div class="brief-gallery">
-        <div class="brief-shot"><img class="wip-img" src="images/[PLACEHOLDER] 1024x1024work-in-progress.png" alt="Escalation art coming soon"><span class="wip-label">Coming Soon</span></div>
+        <div class="brief-shot"><img class="wip-img" src="images/[PLACEHOLDER] WORKINPROGRESS ESCALATION.png" alt="Escalation art coming soon"><span class="wip-label">Coming Soon</span></div>
       </div>
-      <h3>ESCALATION</h3>
-      <p>Each round the horde grows — placeholder text for how difficulty ramps.</p>
+      <h3>4. ESCAPE THE DEAD</h3>
     </div>
   </div>
 </section>
+
+<div class="wip-modal" id="wipModal">
+  <div class="wip-modal-box">
+    <span class="wip-modal-close" id="wipModalClose">&times;</span>
+    <img id="wipModalImg" src="" alt="">
+    <h3 id="wipModalTitle">Coming Soon</h3>
+    <p id="wipModalText">We're still hard at work on this part of Carrier, refining the mechanics and art before it's ready to share. What you're looking at right now is a placeholder standing in for the real content. Expect balance passes, visual polish, and playtesting feedback to shape what eventually goes here. We didn't want to leave this section empty while everything else comes together. Check back soon — this page will be updated as soon as it's ready.</p>
+  </div>
+</div>
 
 <section id="gallery" class="gallery reveal">
   <div class="eyebrow">// 02</div>
@@ -615,7 +655,7 @@
       <div class="t-detail">
         <!-- GALLERY: [ROADMAP] 5. PUBLISHING & CROWDFUNDING -->
         <div class="concept-grid">
-          <div class="cg-item"><img class="wip-img" src="images/[PLACEHOLDER] 1024x1024work-in-progress.png" alt="Publishing and crowdfunding details coming soon" data-caption="Launch plans, pledge tiers, and publishing details are still being worked out — check back soon."><span class="wip-label">Coming Soon</span></div>
+          <div class="cg-item"><img class="wip-img" src="images/[PLACEHOLDER] WORKINPROGRESS SUPPLY.png" alt="Publishing and crowdfunding details coming soon" data-caption="Launch plans, pledge tiers, and publishing details are still being worked out — check back soon."><span class="wip-label">Coming Soon</span></div>
         </div>
         <div class="update-box"><p>Update placeholder — swap in a real photo and launch details once they're confirmed.</p></div>
       </div>
@@ -965,6 +1005,33 @@
     hint.innerHTML = '🖱 hover an item to bring it forward · click to browse <span class="blink">_</span>';
     grid.insertAdjacentElement('afterend', hint);
   });
+
+  // ---------- Mission Brief "Coming Soon" popup ----------
+  const wipModal = document.getElementById('wipModal');
+  const wipModalImg = document.getElementById('wipModalImg');
+  const wipModalTitle = document.getElementById('wipModalTitle');
+  const wipModalClose = document.getElementById('wipModalClose');
+  document.querySelectorAll('.brief-card').forEach(card=>{
+    card.addEventListener('click', ()=>{
+      const heading = card.querySelector('h3');
+      const raw = heading ? heading.textContent : 'Coming Soon';
+      wipModalTitle.textContent = raw.replace(/^\d+\.\s*/, '');
+      const shotImg = card.querySelector('.brief-shot img');
+      if (shotImg){
+        wipModalImg.src = shotImg.getAttribute('src');
+        wipModalImg.alt = shotImg.getAttribute('alt') || '';
+        wipModalImg.style.display = 'block';
+      } else {
+        wipModalImg.removeAttribute('src');
+        wipModalImg.style.display = 'none';
+      }
+      wipModal.classList.add('active');
+    });
+  });
+  function closeWipModal(){ wipModal.classList.remove('active'); }
+  wipModalClose.addEventListener('click', closeWipModal);
+  wipModal.addEventListener('click', (e)=>{ if(e.target === wipModal) closeWipModal(); });
+  document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape') closeWipModal(); });
 </script>
 
 </body>
