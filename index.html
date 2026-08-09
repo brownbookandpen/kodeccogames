@@ -57,6 +57,11 @@
     transition:color .15s,border-color .15s;
   }
   nav a:hover{color:var(--yellow); border-bottom:2px solid var(--yellow);}
+  .nav-toggle{
+    display:none; background:none; border:2px solid var(--darkred); color:var(--yellow);
+    font-size:1.2rem; line-height:1; padding:6px 10px; cursor:pointer;
+  }
+  .nav-toggle:hover{border-color:var(--yellow);}
 
   /* ---------- HERO ---------- */
   .hero{
@@ -289,6 +294,13 @@
     -webkit-mask-image:linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
     mask-image:linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
   }
+  @media (hover:none){
+    .concept-grid{
+      overflow-x:auto; overflow-y:hidden; -webkit-overflow-scrolling:touch; scrollbar-width:none;
+    }
+    .concept-grid::-webkit-scrollbar{display:none;}
+    .cg-track{transition:none;}
+  }
   .cg-track{
     display:flex; gap:14px; width:max-content;
     transition:transform .5s cubic-bezier(.22,.61,.36,1);
@@ -435,7 +447,7 @@
   .signal h2{color:var(--yellow); letter-spacing:1px; margin-bottom:18px; font-size:1.05rem;}
   .signal p{color:var(--grey); margin-bottom:26px;}
   .signal form{display:flex; justify-content:center; gap:10px; flex-wrap:wrap;}
-  .signal input{padding:13px 16px; border:2px solid #333; background:#0d0d0d; color:#fff; width:280px; font-family:inherit; font-size:1rem;}
+  .signal input{padding:13px 16px; border:2px solid #333; background:#0d0d0d; color:#fff; width:100%; max-width:280px; font-family:inherit; font-size:1rem;}
   .signal input:focus{outline:none; border-color:var(--yellow);}
 
   /* ---------- FOOTER ---------- */
@@ -451,7 +463,15 @@
   }
 
   @media (max-width:640px){
-    nav{display:none;}
+    .nav-toggle{display:block;}
+    nav{
+      display:none; position:absolute; top:100%; left:0; right:0;
+      flex-direction:column; gap:2px; padding:10px 6% 18px;
+      background:rgba(10,10,10,0.98); border-bottom:2px solid var(--darkred);
+      z-index:10000;
+    }
+    nav.open{display:flex;}
+    nav a{margin-left:0; padding:12px 0; font-size:0.8rem; border-bottom:1px solid #2b2b2b;}
     .btn.ghost{margin-left:0; margin-top:12px;}
   }
 
@@ -491,7 +511,8 @@
   <a href="#" class="logo-group" onclick="window.scrollTo({top:0,behavior:'smooth'}); return false;">
     <img class="kodecco-mark" src="images/kodecco-icon.png" alt="Kodecco Games">
   </a>
-  <nav>
+  <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">☰</button>
+  <nav id="mainNav">
     <a href="#brief">Mission Brief</a>
     <a href="#gallery">Gallery</a>
     <a href="#roadmap">Roadmap</a>
@@ -969,6 +990,8 @@
     const originalNodes = Array.from(grid.children);
     let currentOffset = 0;
 
+    const supportsHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+
     const wireItem = (el)=>{
       const img = el.querySelector('img');
       img.addEventListener('mouseenter', ()=> swapText(img.dataset.caption));
@@ -978,6 +1001,7 @@
         const idx = originalItems.findIndex(it=> it.src === img.getAttribute('src'));
         openGalleryPreview(originalItems, idx >= 0 ? idx : 0);
       });
+      if (!supportsHover) return;
       // move incrementally: hovered item glides to become the centered focal point
       el.addEventListener('mouseenter', ()=>{
         const gridRect = grid.getBoundingClientRect();
@@ -995,16 +1019,36 @@
     originalNodes.forEach(node=>{ track.appendChild(node); wireItem(node); });
     grid.appendChild(track);
 
-    grid.addEventListener('mouseleave', ()=>{
-      currentOffset = 0;
-      track.style.transform = 'translateX(0)';
-    });
+    if (supportsHover){
+      grid.addEventListener('mouseleave', ()=>{
+        currentOffset = 0;
+        track.style.transform = 'translateX(0)';
+      });
+    }
 
     const hint = document.createElement('span');
     hint.className = 'cg-hint';
-    hint.innerHTML = '🖱 hover an item to bring it forward · click to browse <span class="blink">_</span>';
+    hint.innerHTML = supportsHover
+      ? '🖱 hover an item to bring it forward · click to browse <span class="blink">_</span>'
+      : '👆 swipe to browse · tap an image to view <span class="blink">_</span>';
     grid.insertAdjacentElement('afterend', hint);
   });
+
+  // ---------- Mobile nav toggle ----------
+  const navToggle = document.getElementById('navToggle');
+  const mainNav = document.getElementById('mainNav');
+  if (navToggle && mainNav){
+    navToggle.addEventListener('click', ()=>{
+      const open = mainNav.classList.toggle('open');
+      navToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+    mainNav.querySelectorAll('a').forEach(a=>{
+      a.addEventListener('click', ()=>{
+        mainNav.classList.remove('open');
+        navToggle.setAttribute('aria-expanded', 'false');
+      });
+    });
+  }
 
   // ---------- Mission Brief "Coming Soon" popup ----------
   const wipModal = document.getElementById('wipModal');
