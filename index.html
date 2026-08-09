@@ -432,6 +432,19 @@
   .post-link{display:inline-block; margin-top:auto; color:var(--yellow); font-size:0.7rem; text-decoration:none; letter-spacing:1px;}
   .post-link:hover{text-decoration:underline;}
 
+  /* ---------- INSTAGRAM ---------- */
+  #igEmbedContainer{max-width:960px;}
+  .ig-fallback{
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    gap:8px; max-width:360px; margin:0 auto; padding:40px 24px; text-align:center;
+    background:var(--panel); border:2px solid var(--darkred); text-decoration:none; color:inherit;
+    transition:border-color .2s, transform .2s;
+  }
+  .ig-fallback:hover{border-color:var(--yellow); transform:translateY(-4px);}
+  .ig-fallback-icon{font-size:2rem;}
+  .ig-fallback-title{color:var(--yellow); font-family:'DotGothic16',monospace; font-size:1rem; letter-spacing:0.5px;}
+  .ig-fallback-desc{color:var(--grey); font-size:0.9rem; line-height:1.4;}
+
   /* ---------- QUOTE ---------- */
   .quote{
     text-align:center; max-width:700px; margin:0 auto; padding:80px 6%;
@@ -517,6 +530,7 @@
     <a href="#gallery">Gallery</a>
     <a href="#roadmap">Roadmap</a>
     <a href="#journal">Dev Journal</a>
+    <a href="#instagram">Instagram</a>
     <a href="#signal">Send Signal</a>
   </nav>
 </header>
@@ -734,6 +748,22 @@
         <a class="post-link" href="#">Read entry →</a>
       </div>
     </div>
+  </div>
+</section>
+
+<section id="instagram" class="reveal">
+  <div class="eyebrow">// 05</div>
+  <h2 class="section-title">On Instagram</h2>
+  <p class="section-sub">Follow <a href="https://www.instagram.com/kodeccogames/" target="_blank" rel="noopener" style="color:var(--yellow); text-decoration:underline;">@kodeccogames</a> for behind-the-scenes shots, playtest clips, and art drops.</p>
+
+  <!-- INSTAGRAM WIDGET: paste your embed widget's <script>/<div> snippet here once you've set it up
+       (e.g. Elfsight, EmbedSocial, SnapWidget). It will replace the fallback card below. -->
+  <div id="igEmbedContainer">
+    <a class="ig-fallback" href="https://www.instagram.com/kodeccogames/" target="_blank" rel="noopener">
+      <span class="ig-fallback-icon">📷</span>
+      <span class="ig-fallback-title">@kodeccogames</span>
+      <span class="ig-fallback-desc">Live feed coming soon — tap to visit the profile in the meantime.</span>
+    </a>
   </div>
 </section>
 
