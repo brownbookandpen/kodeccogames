@@ -188,7 +188,7 @@ def insert_item(text: str, folder_dir: str, kind: str, slug: str, alt: str, capt
         new_item = f'\n{child_indent}<div class="bg-item"><img src="{src}" alt="{alt_html}" title="{caption_html}"></div>'
     elif kind == "ig-grid":
         new_item = (
-            f'\n{child_indent}<a class="ig-item" href="https://www.instagram.com/kodeccogames/" '
+            f'\n{child_indent}<a class="ig-item" href="https://www.instagram.com/kodecco.games/" '
             f'target="_blank" rel="noopener"><img src="{src}" alt="{alt_html}" loading="lazy"></a>'
         )
     else:

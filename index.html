@@ -152,6 +152,7 @@
   }
   .brief-card .icon{font-size:1.6rem; margin-bottom:14px;}
   .brief-card h3{color:var(--red); margin-bottom:12px; font-size:0.8rem;}
+  .brief-tag{color:var(--yellow); font-size:0.65rem; letter-spacing:0.5px;}
   .brief-card p{color:var(--grey); font-size:0.92rem;}
   .brief-gallery{display:block; margin-top:16px;}
   .bg-item{
@@ -570,33 +571,40 @@
   <h2 class="section-title">Mission Brief</h2>
   <p class="section-sub">The essentials — swap in your real rules summary once they're locked.</p>
   <div class="brief-grid">
-    <div class="brief-card">
+    <div class="brief-card" data-slug="allegiance" data-page="rules/allegiance/allegiance.html">
       <!-- GALLERY: [MISSION BRIEF] 1. SURVIVORS -->
       <div class="brief-gallery">
-        <div class="brief-shot"><img class="wip-img" src="images/[PLACEHOLDER] WORKINPROGRESS ENCOUNTERS.png" alt="Survivors art coming soon"><span class="wip-label">Coming Soon</span></div>
+        <div class="brief-shot"><img class="wip-img" src="images/[PLACEHOLDER] WORKINPROGRESS ENCOUNTERS.png" alt="Allegiance art coming soon"><span class="wip-label">Coming Soon</span></div>
       </div>
-      <h3>1. TAKE YOUR SURVIVOR</h3>
+      <h3>ALLEGIANCE <span class="brief-tag">[SECRET ROLE]</span></h3>
     </div>
-    <div class="brief-card">
+    <div class="brief-card" data-slug="character">
       <!-- GALLERY: [MISSION BRIEF] 2. ENCOUNTERS & SUPPLIES -->
       <div class="brief-gallery">
-        <div class="brief-shot"><img class="wip-img" src="images/[PLACEHOLDER] WORKINPROGRESS SUPPLY.png" alt="Supply art coming soon"><span class="wip-label">Coming Soon</span></div>
+        <div class="brief-shot"><img class="wip-img" src="images/[PLACEHOLDER] WORKINPROGRESS ESCALATION.png" alt="Character art coming soon"><span class="wip-label">Coming Soon</span></div>
       </div>
-      <h3>2. GATHER SUPPLIES</h3>
+      <h3>CHARACTER <span class="brief-tag">[PUBLIC ROLE]</span></h3>
     </div>
-    <div class="brief-card">
+    <div class="brief-card" data-slug="supplies">
+      <!-- GALLERY: [MISSION BRIEF] 5. SUPPLIES -->
+      <div class="brief-gallery">
+        <div class="brief-shot"><img class="wip-img" src="images/[PLACEHOLDER] WORKINPROGRESS SUPPLY.png" alt="Supplies art coming soon"><span class="wip-label">Coming Soon</span></div>
+      </div>
+      <h3>SUPPLIES</h3>
+    </div>
+    <div class="brief-card" data-slug="encounters">
       <!-- GALLERY: [MISSION BRIEF] 3. ZOMBIES -->
       <div class="brief-gallery">
         <div class="brief-shot"><img class="wip-img" src="images/[PLACEHOLDER] WORKINPROGRESS ZOMBIES.png" alt="Encounters art coming soon"><span class="wip-label">Coming Soon</span></div>
       </div>
-      <h3>3. OVERCOME ENCOUNTERS</h3>
+      <h3>ENCOUNTERS</h3>
     </div>
-    <div class="brief-card">
+    <div class="brief-card" data-slug="mission">
       <!-- GALLERY: [MISSION BRIEF] 4. ESCALATION -->
       <div class="brief-gallery">
-        <div class="brief-shot"><img class="wip-img" src="images/[PLACEHOLDER] WORKINPROGRESS ESCALATION.png" alt="Escalation art coming soon"><span class="wip-label">Coming Soon</span></div>
+        <div class="brief-shot"><img class="wip-img" src="images/[PLACEHOLDER] WORKINPROGRESS ESCALATION.png" alt="Mission art coming soon"><span class="wip-label">Coming Soon</span></div>
       </div>
-      <h3>4. ESCAPE THE DEAD</h3>
+      <h3>MISSION</h3>
     </div>
   </div>
 </section>
@@ -762,14 +770,14 @@
 <section id="instagram" class="reveal">
   <div class="eyebrow">// 05</div>
   <h2 class="section-title">On Instagram</h2>
-  <p class="section-sub">Follow <a href="https://www.instagram.com/kodeccogames/" target="_blank" rel="noopener" style="color:var(--yellow); text-decoration:underline;">@kodeccogames</a> for behind-the-scenes shots, playtest clips, and art drops.</p>
+  <p class="section-sub">Follow <a href="https://www.instagram.com/kodecco.games/" target="_blank" rel="noopener" style="color:var(--yellow); text-decoration:underline;">@kodecco.games</a> for behind-the-scenes shots, playtest clips, and art drops.</p>
 
   <!-- GALLERY: [INSTAGRAM] POSTS -->
   <div class="ig-grid" id="igGrid">
   </div>
-  <a class="ig-fallback" id="igFallback" href="https://www.instagram.com/kodeccogames/" target="_blank" rel="noopener">
+  <a class="ig-fallback" id="igFallback" href="https://www.instagram.com/kodecco.games/" target="_blank" rel="noopener">
     <span class="ig-fallback-icon">📷</span>
-    <span class="ig-fallback-title">@kodeccogames</span>
+    <span class="ig-fallback-title">@kodecco.games</span>
     <span class="ig-fallback-desc">Photos coming soon — tap to visit the profile in the meantime.</span>
   </a>
 </section>
@@ -1071,6 +1079,22 @@
     grid.insertAdjacentElement('afterend', hint);
   });
 
+  // ---------- Gallery captions: match every box to the tallest one ----------
+  (function(){
+    const caps = Array.from(document.querySelectorAll('.gallery-grid .shot .cap'));
+    if (!caps.length) return;
+    function syncCapHeights(){
+      caps.forEach(c => c.style.minHeight = '');
+      const tallest = Math.max(...caps.map(c => c.scrollHeight));
+      caps.forEach(c => c.style.minHeight = tallest + 'px');
+    }
+    syncCapHeights();
+    window.addEventListener('resize', () => {
+      clearTimeout(window._capResizeT);
+      window._capResizeT = setTimeout(syncCapHeights, 150);
+    });
+  })();
+
   // ---------- Instagram grid: shuffle on load, fall back if empty ----------
   (function(){
     const igGrid = document.getElementById('igGrid');
@@ -1113,6 +1137,11 @@
   const wipModalClose = document.getElementById('wipModalClose');
   document.querySelectorAll('.brief-card').forEach(card=>{
     card.addEventListener('click', ()=>{
+      const page = card.dataset.page;
+      if (page){
+        window.location.href = page;
+        return;
+      }
       const heading = card.querySelector('h3');
       const raw = heading ? heading.textContent : 'Coming Soon';
       wipModalTitle.textContent = raw.replace(/^\d+\.\s*/, '');

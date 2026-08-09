@@ -1,35 +1,36 @@
 #!/usr/bin/env python3
 """
-new_post.py — turn a plain text/markdown draft into a Dev Journal post page.
+new_rule.py — turn a plain text/markdown draft into a Mission Brief rules page.
 
 USAGE
-    python3 scripts/new_post.py drafts/my-post.md
+    python3 scripts/new_rule.py drafts/rules/allegiance.md
 
 WHAT IT DOES
     1. Reads a draft file with a small frontmatter block + your writing.
+       Same format as new_post.py's Dev Journal drafts.
     2. Crops every photo you reference to a clean rectangle (landscape,
        default 3:2) so nothing looks stretched or squished on the site.
-    3. Generates posts/<slug>/index.html, with its own posts/<slug>/images/
-       folder — each post is fully self-contained in one folder.
-    4. Adds the new entry to the top of the Dev Journal on index.html
-       (re-running on an edited draft updates it in place, no duplicates).
+    3. Generates rules/<slug>/<slug>.html, with its own rules/<slug>/images/
+       folder — each rule page is fully self-contained in one folder.
+    4. Wires the matching Mission Brief card on index.html (matched by
+       its data-slug="<slug>" attribute) so clicking it opens the new
+       page directly instead of the "Coming Soon" popup.
 
 RUNNING ON EVERYTHING AT ONCE
-    python3 scripts/new_post.py --all
-    (or double-click scripts/new_post.bat with no file dragged onto it)
-    Scans every drafts/**/*.md and rebuilds/updates all of them.
+    python3 scripts/new_rule.py --all
+    (or double-click scripts/new_rule.bat with no file dragged onto it)
+    Scans every drafts/rules/*.md and rebuilds/updates all of them.
 
 SETUP (once)
     pip install pillow
 
-DRAFT FILE FORMAT  (see drafts/example-post.md for a working sample)
+DRAFT FILE FORMAT  (see drafts/rules/example-rule.md for a working sample)
 
     ---
-    title: Survivors vs. Carriers
-    date: Aug 8, 2026
-    read: 2 min read
-    desc: One-line summary shown on the homepage card.
-    aspect: 3:2        (optional, default 3:2. try 16:9 or 4:3)
+    title: Allegiance
+    tag: Secret Role
+    slug: allegiance      (must match the data-slug on the Mission Brief card)
+    aspect: 3:2            (optional, default 3:2. try 16:9 or 4:3)
     ---
 
     Plain paragraphs just work.
@@ -46,7 +47,6 @@ DRAFT FILE FORMAT  (see drafts/example-post.md for a working sample)
 
 import re
 import sys
-import shutil
 from pathlib import Path
 
 try:
@@ -55,7 +55,7 @@ except ImportError:
     sys.exit("Missing dependency. Run:  pip install pillow")
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
-POSTS_DIR = REPO_ROOT / "posts"
+RULES_DIR = REPO_ROOT / "rules"
 INDEX_HTML = REPO_ROOT / "index.html"
 
 MAX_WIDTH = 1400
@@ -97,12 +97,10 @@ def crop_to_rect(src: Path, dst: Path, aspect: float):
     current_ratio = w / h
 
     if current_ratio > target_ratio:
-        # too wide -> crop sides
         new_w = int(h * target_ratio)
         x0 = (w - new_w) // 2
         im = im.crop((x0, 0, x0 + new_w, h))
     else:
-        # too tall -> crop top/bottom
         new_h = int(w / target_ratio)
         y0 = (h - new_h) // 2
         im = im.crop((0, y0, w, y0 + new_h))
@@ -162,7 +160,7 @@ def save_card_image(src: Path, dst: Path, max_width: int = 520):
 
 
 def build_card_block_html(inner: str, draft_dir: Path, images_dir: Path, img_counter: int):
-    """Render a ::card ... :: block as: title top-left, image below it, text beside the image."""
+    """Render a ::card ... :: block as an image-left / text-right row. Returns (html, img_counter)."""
     blocks = re.split(r"\n\s*\n", inner.strip())
     img_html = ""
     title_html = ""
@@ -202,17 +200,14 @@ def build_card_block_html(inner: str, draft_dir: Path, images_dir: Path, img_cou
     return html, img_counter
 
 
-def build_body_html(body: str, draft_dir: Path, post_images_dir: Path, aspect: float):
+def build_body_html(body: str, draft_dir: Path, rule_images_dir: Path, aspect: float):
     html_parts = []
-    first_image_filename = None
     img_counter = 0
 
-    # Pull out ::card ... :: blocks first and replace with placeholder tokens,
-    # since they span multiple blank-line-separated chunks (image + text).
     card_html_by_token = {}
     def _stash_card(m):
         nonlocal img_counter
-        html, img_counter = build_card_block_html(m.group(1), draft_dir, post_images_dir, img_counter)
+        html, img_counter = build_card_block_html(m.group(1), draft_dir, rule_images_dir, img_counter)
         token = f"@@CARD{len(card_html_by_token)}@@"
         card_html_by_token[token] = html
         return f"\n\n{token}\n\n"
@@ -240,11 +235,9 @@ def build_body_html(body: str, draft_dir: Path, post_images_dir: Path, aspect: f
                 sys.exit(f"Image not found: {src_path}")
 
             out_name = f"{img_counter:02d}{src_path.suffix.lower()}"
-            out_path = post_images_dir / out_name
+            out_path = rule_images_dir / out_name
             final_path = resolve_and_save_image(src_path, out_path, img_match.group("aspect"), aspect)
             web_path = f"images/{final_path.name}"
-            if first_image_filename is None:
-                first_image_filename = final_path.name
 
             html_parts.append("  <figure>")
             html_parts.append(f'    <img src="{web_path}" alt="{alt}">')
@@ -259,10 +252,10 @@ def build_body_html(body: str, draft_dir: Path, post_images_dir: Path, aspect: f
             paragraph = " ".join(line.strip() for line in block.splitlines())
             html_parts.append(f"  <p>{inline_format(paragraph)}</p>")
 
-    return "\n\n".join(html_parts), first_image_filename
+    return "\n\n".join(html_parts)
 
 
-POST_TEMPLATE = """<!DOCTYPE html>
+RULE_TEMPLATE = """<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -308,8 +301,8 @@ POST_TEMPLATE = """<!DOCTYPE html>
     display:block; width:fit-content; margin:0 auto 22px; color:var(--yellow); border:2px solid var(--yellow);
     padding:8px 14px; font-size:0.5rem; letter-spacing:1px;
   }}
-  .post-header h1{{font-size:clamp(1.4rem,4vw,2.1rem); color:var(--brightred); text-shadow:3px 3px 0 #000; margin-bottom:18px; line-height:1.5;}}
-  .post-header .meta{{color:var(--grey); font-size:0.9rem;}}
+  .post-header h1{{font-size:clamp(1.4rem,4vw,2.1rem); color:var(--brightred); text-shadow:3px 3px 0 #000; margin-bottom:14px; line-height:1.5;}}
+  .post-header .subtag{{color:var(--yellow); font-size:0.85rem; letter-spacing:1px; text-transform:uppercase;}}
 
   .post-body{{max-width:720px; margin:0 auto; padding:60px 6% 40px;}}
   .post-body p{{color:var(--white); margin-bottom:24px; font-size:1.15rem;}}
@@ -404,9 +397,9 @@ POST_TEMPLATE = """<!DOCTYPE html>
 </header>
 
 <div class="post-header">
-  <span class="tag">// DEV JOURNAL</span>
+  <span class="tag">// MISSION BRIEF</span>
   <h1>{title}</h1>
-  <div class="meta">{date} · {read}</div>
+  <div class="subtag">[{tag}]</div>
 </div>
 
 <div class="post-body">
@@ -415,7 +408,7 @@ POST_TEMPLATE = """<!DOCTYPE html>
 
 </div>
 
-<a class="back-link" href="../../index.html#journal">← Back to Dev Journal</a>
+<a class="back-link" href="../../index.html#brief">← Back to Mission Brief</a>
 
 <footer>
   <div class="socials">
@@ -464,40 +457,32 @@ POST_TEMPLATE = """<!DOCTYPE html>
 </html>
 """
 
-CARD_TEMPLATE = """    <a class="post-card" href="posts/{slug}/{slug}.html">
-      <div class="post-thumb" style="background-image:url('{thumb}'); background-size:cover; background-position:center;"></div>
-      <div class="post-cap">
-        <span class="post-meta">{date} · {read}</span>
-        <b class="post-cap-title">{title}</b>
-        <span class="post-cap-desc">{desc}</span>
-        <span class="post-link">Read entry →</span>
-      </div>
-    </a>
-"""
 
-
-def insert_into_index(card_html: str, slug: str):
+def wire_brief_card(slug: str, page_path: str):
+    """Add/refresh data-page="rules/<slug>/<slug>.html" on the matching Mission Brief card."""
     text = INDEX_HTML.read_text(encoding="utf-8")
 
-    # Remove any existing card for this slug first, so re-running the script
-    # on an edited draft updates the homepage instead of duplicating it.
-    existing_card_re = re.compile(
-        r'\s*<a class="post-card" href="posts/' + re.escape(slug) + r'/' + re.escape(slug) + r'\.html">.*?</a>\n',
-        re.DOTALL,
+    card_re = re.compile(
+        r'<div class="brief-card"([^>]*)data-slug="' + re.escape(slug) + r'"([^>]*)>'
     )
-    text = existing_card_re.sub("\n", text, count=1)
+    m = card_re.search(text)
+    if not m:
+        print(f'  ! No <div class="brief-card" data-slug="{slug}"> found on index.html — add data-page manually.')
+        return
 
-    marker = '<div class="posts">'
-    idx = text.find(marker)
-    if idx == -1:
-        sys.exit('Could not find <div class="posts"> in index.html — add the card manually.')
-    insert_at = idx + len(marker) + 1
-    new_text = text[:insert_at] + card_html + text[insert_at:]
-    INDEX_HTML.write_text(new_text, encoding="utf-8")
+    attrs_before, attrs_after = m.group(1), m.group(2)
+    combined = attrs_before + attrs_after
+    # strip any existing data-page="..." so re-running never duplicates it
+    combined = re.sub(r'\s*data-page="[^"]*"', "", combined)
+    new_tag = f'<div class="brief-card" data-slug="{slug}" data-page="{page_path}"{combined}>'
+    # normalize potential double spacing
+    new_tag = re.sub(r"\s{2,}", " ", new_tag).replace(' >', '>')
+
+    text = text[:m.start()] + new_tag + text[m.end():]
+    INDEX_HTML.write_text(text, encoding="utf-8")
 
 
-def process_draft(draft_path: Path) -> str:
-    """Build/update a single post from a draft .md file. Returns the slug, or None if skipped."""
+def process_draft(draft_path: Path):
     raw = draft_path.read_text(encoding="utf-8")
     fm, body = parse_frontmatter(raw)
 
@@ -506,39 +491,32 @@ def process_draft(draft_path: Path) -> str:
         return None
 
     title = fm.get("title", "Untitled")
-    date = fm.get("date", "")
-    read = fm.get("read", "3 min read")
-    desc = fm.get("desc", "")
+    tag = fm.get("tag", "").upper()
     aspect = parse_aspect(fm.get("aspect", "3:2"))
     slug = fm.get("slug") or slugify(title)
 
-    post_dir = POSTS_DIR / slug
-    post_images_dir = post_dir / "images"
+    rule_dir = RULES_DIR / slug
+    rule_images_dir = rule_dir / "images"
 
-    body_html, first_image = build_body_html(body, draft_path.parent, post_images_dir, aspect)
+    body_html = build_body_html(body, draft_path.parent, rule_images_dir, aspect)
 
-    post_html = POST_TEMPLATE.format(title=title, date=date, read=read, body_html=body_html)
-    post_dir.mkdir(parents=True, exist_ok=True)
-    post_path = post_dir / f"{slug}.html"
-    post_path.write_text(post_html, encoding="utf-8")
+    rule_html = RULE_TEMPLATE.format(title=title, tag=tag, body_html=body_html)
+    rule_dir.mkdir(parents=True, exist_ok=True)
+    rule_path = rule_dir / f"{slug}.html"
+    rule_path.write_text(rule_html, encoding="utf-8")
 
-    thumb = fm.get("thumb")
-    if thumb:
-        thumb_web = thumb  # explicit path, relative to site root
-    elif first_image:
-        thumb_web = f"posts/{slug}/images/{first_image}"
-    else:
-        thumb_web = "images/kodecco-icon.png"
+    wire_brief_card(slug, f"rules/{slug}/{slug}.html")
 
-    card_html = CARD_TEMPLATE.format(slug=slug, thumb=thumb_web, date=date, read=read, title=title, desc=desc)
-    insert_into_index(card_html, slug)
-
-    print(f"Updated:  posts/{slug}/{slug}.html  (from {draft_path.relative_to(REPO_ROOT)})")
+    try:
+        src_label = draft_path.relative_to(REPO_ROOT)
+    except ValueError:
+        src_label = draft_path
+    print(f"Updated:  rules/{slug}/{slug}.html  (from {src_label})")
     return slug
 
 
 def find_all_drafts():
-    drafts_dir = REPO_ROOT / "drafts"
+    drafts_dir = REPO_ROOT / "drafts" / "rules"
     if not drafts_dir.exists():
         return []
     return sorted(drafts_dir.rglob("*.md"))
@@ -550,23 +528,17 @@ def main():
     if not args or args[0] in ("--all", "all"):
         drafts = find_all_drafts()
         if not drafts:
-            sys.exit("No .md drafts found under drafts/")
-        print(f"Scanning {len(drafts)} draft(s)...\n")
-        done = 0
-        for draft_path in drafts:
-            try:
-                if process_draft(draft_path):
-                    done += 1
-            except SystemExit as e:
-                print(f"  ! Skipped {draft_path.relative_to(REPO_ROOT)}: {e}")
-        print(f"\n{done} post(s) built/updated. Dev Journal on index.html is up to date.")
+            sys.exit("No drafts found in drafts/rules/. Drag a .md file onto new_rule.bat, or pass a path.")
+        for d in drafts:
+            process_draft(d)
         return
 
-    draft_path = Path(args[0]).resolve()
+    draft_path = Path(args[0])
+    if not draft_path.is_absolute():
+        draft_path = REPO_ROOT / draft_path
     if not draft_path.exists():
         sys.exit(f"Draft not found: {draft_path}")
     process_draft(draft_path)
-    print("Added to Dev Journal on index.html")
 
 
 if __name__ == "__main__":

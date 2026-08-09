@@ -18,4 +18,15 @@ Write your post here. Plain paragraphs, just like this one, become <p> tags auto
 Drop photo files in this same drafts/ folder (or a subfolder), reference them by filename above,
 and the script will auto-crop them to a clean rectangle and copy them into the site for you.
 
+For a card/asset image shown beside text instead of full-width (no cropping, keeps
+transparency), use a ::card block:
+
+::card
+![Executioner card art](executioner.png)
+
+## Executioner
+
+Text goes here, laid out to the right of the card image.
+::
+
 Delete this example file once you're comfortable — it's just a template.

@@ -48,25 +48,115 @@
   #editor{
     min-height:400px; background:var(--panel2); border:1px solid #333; border-radius:0 0 4px 4px;
     padding:20px 24px; font-size:1.05rem; line-height:1.7; color:var(--white);
+    position:relative; transition:box-shadow .15s, border-color .15s;
   }
   #editor:focus{outline:none;}
+  #editor.drag-over{box-shadow:inset 0 0 0 2px var(--yellow); border-color:var(--yellow);}
   #editor h2{color:var(--yellow); font-family:Georgia,serif; font-size:1.3rem; margin:22px 0 10px;}
   #editor p{margin:0 0 14px;}
   #editor a{color:#7ecbff;}
-  #editor .img-block{
-    margin:16px 0; border:2px dashed #444; border-radius:4px; padding:12px; background:#111;
-    display:flex; gap:14px; align-items:flex-start;
+  #editor p:empty::before{content:"Start typing, drag a photo in, or use the toolbar above..."; color:#555;}
+
+  .drop-marker{
+    height:3px; background:var(--yellow); border-radius:2px; margin:4px 0;
+    box-shadow:0 0 8px var(--yellow);
   }
-  #editor .img-block img{max-width:220px; max-height:160px; object-fit:cover; border-radius:3px; display:block;}
-  #editor .img-block .img-meta{flex:1; font-family:'Courier New',monospace; font-size:0.8rem; color:var(--grey); line-height:1.6;}
-  #editor .img-block .img-meta b{color:var(--yellow);}
-  #editor .img-block .img-actions{display:flex; gap:6px; margin-top:8px;}
-  #editor .img-block .img-actions button{
+
+  /* ---------- PHOTO BLOCK (image on top, editable text keeps going underneath) ---------- */
+  .photo-block{
+    margin:18px 0; border:2px dashed #3a3a3a; border-radius:4px; padding:14px; background:#111;
+  }
+  .photo-block .crop-wrap{
+    position:relative; width:100%; max-width:480px; margin:0 auto 12px; overflow:hidden;
+    border-radius:3px; background:#000; cursor:pointer;
+  }
+  .photo-block .crop-wrap img{width:100%; height:100%; object-fit:cover; display:block;}
+  .photo-block .shape-badge{
+    position:absolute; top:8px; right:8px; background:rgba(0,0,0,0.75); color:var(--yellow);
+    font-family:'Courier New',monospace; font-size:0.68rem; padding:4px 8px; border-radius:3px;
+    border:1px solid #444; pointer-events:none;
+  }
+  .photo-block .alt-row{
+    font-family:'Courier New',monospace; font-size:0.72rem; color:var(--grey); margin-bottom:10px;
+    display:flex; gap:10px; align-items:center; flex-wrap:wrap;
+  }
+  .photo-block .alt-row input{
+    flex:1; min-width:160px; background:var(--panel2); border:1px solid #333; color:var(--white);
+    padding:5px 8px; font-family:'Courier New',monospace; font-size:0.75rem; border-radius:3px;
+  }
+  .photo-block .photo-body{
+    background:#161616; border:1px solid #2a2a2a; border-radius:3px; padding:12px 14px;
+    min-height:44px; font-family:Georgia,serif; font-size:1rem; line-height:1.6;
+  }
+  .photo-block .photo-body:focus{outline:1px solid var(--yellow);}
+  .photo-block .photo-body p{margin:0 0 10px;}
+  .photo-block .photo-body p:last-child{margin-bottom:0;}
+  .photo-block .photo-body[data-empty="true"]::before{content:"Caption / write-up for this photo — keep typing, it flows as one block..."; color:#555;}
+  .photo-block .block-actions{display:flex; gap:6px; margin-top:8px; justify-content:flex-end;}
+
+  /* ---------- CARD BLOCK (card art left, text right — for role/character cards etc.) ---------- */
+  .card-block{
+    margin:18px 0; border:2px dashed #3a3a3a; border-radius:4px; padding:14px; background:#111;
+    display:grid; grid-template-columns:200px 1fr; grid-template-areas:"title title" "img side";
+    column-gap:16px; row-gap:10px;
+  }
+  .card-block .crop-wrap{
+    grid-area:img; position:relative; width:200px; border-radius:3px; overflow:hidden;
+    background:#000; cursor:pointer;
+  }
+  .card-block .crop-wrap img{width:100%; height:auto; display:block; object-fit:contain;}
+  .card-block .shape-badge{
+    position:absolute; top:6px; right:6px; background:rgba(0,0,0,0.75); color:var(--yellow);
+    font-family:'Courier New',monospace; font-size:0.62rem; padding:3px 6px; border-radius:3px;
+    border:1px solid #444; pointer-events:none;
+  }
+  .card-block .card-side{grid-area:side; min-width:0;}
+  .card-block .card-title{
+    grid-area:title;
+    background:#161616; border:1px solid #2a2a2a; border-radius:3px; padding:8px 12px;
+    font-family:'DotGothic16', Georgia, serif; font-size:1.1rem; color:var(--yellow);
+    text-transform:uppercase; letter-spacing:0.5px; min-height:20px;
+  }
+  .card-block .card-title:focus{outline:1px solid var(--yellow);}
+  .card-block .card-title[data-empty="true"]::before{content:"Card title (e.g. Executioner)"; color:#555; text-transform:none;}
+  .card-block .card-body{
+    background:#161616; border:1px solid #2a2a2a; border-radius:3px; padding:10px 12px;
+    min-height:44px; font-family:Georgia,serif; font-size:0.98rem; line-height:1.6;
+  }
+  .card-block .card-body:focus{outline:1px solid var(--yellow);}
+  .card-block .card-body p{margin:0 0 10px;}
+  .card-block .card-body p:last-child{margin-bottom:0;}
+  .card-block .card-body[data-empty="true"]::before{content:"Card text — abilities, flavor text, etc."; color:#555;}
+  .card-block .block-actions{display:flex; gap:6px; margin-top:8px; justify-content:flex-end; width:100%;}
+  .card-block .alt-row{
+    font-family:'Courier New',monospace; font-size:0.72rem; color:var(--grey); margin-top:8px;
+    display:flex; gap:8px; align-items:center;
+  }
+  .card-block .alt-row input{
+    flex:1; background:var(--panel2); border:1px solid #333; color:var(--white);
+    padding:5px 8px; font-family:'Courier New',monospace; font-size:0.72rem; border-radius:3px;
+  }
+
+  .block-actions button{
     font-family:'Courier New',monospace; font-size:0.72rem; background:var(--panel2); color:var(--white);
     border:1px solid #444; border-radius:3px; padding:4px 8px; cursor:pointer;
   }
-  #editor .img-block .img-actions button:hover{border-color:var(--yellow);}
-  #editor p:empty::before{content:"Start typing, or use the toolbar above..."; color:#555;}
+  .block-actions button:hover{border-color:var(--yellow);}
+
+  /* ---------- crop shape popover ---------- */
+  .shape-popover{
+    position:fixed; z-index:200; background:#1c1c1c; border:1px solid var(--yellow); border-radius:4px;
+    padding:6px; display:none; box-shadow:0 6px 24px rgba(0,0,0,0.6);
+  }
+  .shape-popover.active{display:block;}
+  .shape-popover button{
+    display:block; width:100%; text-align:left; background:none; border:none; color:var(--white);
+    font-family:'Courier New',monospace; font-size:0.78rem; padding:7px 12px; cursor:pointer; border-radius:3px;
+    white-space:nowrap;
+  }
+  .shape-popover button:hover{background:#2a2a2a; color:var(--yellow);}
+  .shape-popover button.active-shape{color:var(--yellow);}
+  .shape-popover button.active-shape::before{content:"✓ ";}
 
   .actions{display:flex; gap:10px; margin-top:20px; align-items:center; flex-wrap:wrap;}
   .btn{
@@ -118,12 +208,14 @@
     <textarea id="fDesc" placeholder="A one-line summary for the homepage card."></textarea>
   </div>
   <div class="field">
-    <label>Photo crop shape</label>
+    <label>Default photo crop shape (used for new Photo blocks — you can override per-photo by clicking the image)</label>
     <select id="fAspect">
       <option value="3:2">3:2 (default, landscape)</option>
       <option value="16:9">16:9 (widescreen)</option>
       <option value="4:3">4:3</option>
+      <option value="3:4">3:4 (portrait)</option>
       <option value="1:1">1:1 (square)</option>
+      <option value="original">Original (no crop)</option>
     </select>
   </div>
 
@@ -135,19 +227,33 @@
     <button type="button" data-cmd="italic"><i>I</i></button>
     <button type="button" data-cmd="link">Link</button>
     <button class="sep"></button>
-    <button type="button" id="insertImageBtn">📷 Insert Photo</button>
+    <button type="button" id="insertPhotoBtn">🖼 Insert Photo</button>
+    <button type="button" id="insertCardBtn">🎴 Insert Card</button>
+    <button type="button" id="insertSecretCardBtn">🃏 Secret Role Card</button>
   </div>
   <div id="editor" contenteditable="true"></div>
-  <input type="file" id="fileInput" accept="image/*" multiple style="display:none;">
+  <input type="file" id="fileInputPhoto" accept="image/*" multiple style="display:none;">
+  <input type="file" id="fileInputCard" accept="image/*" multiple style="display:none;">
+  <input type="file" id="fileInputSecretCard" accept="image/*" multiple style="display:none;">
+
+  <div class="hint" style="margin-top:8px;">
+    Tip: you can also just drag image files straight from your computer into the box above —
+    portrait-shaped images are auto-added as Cards, wider ones as Photos. Click any inserted
+    image to change its crop shape (Square / 4:3 / 3:4 / Landscape / Original). "Secret Role Card"
+    is the same card layout (art on the left, text on the right) but auto-cropped to a clean
+    4:3 portrait shape — built for your Secret Role / Character card art specifically.
+  </div>
 
   <div class="actions">
     <button class="btn btn-primary" id="saveBtn">Save Draft</button>
+    <button class="btn btn-ghost" id="previewBtn">👁 Preview</button>
     <button class="btn btn-ghost" id="loadBtn">Load Draft...</button>
     <button class="btn btn-ghost" id="newBtn">New Draft</button>
     <button class="btn btn-ghost" id="openFolderBtn" style="display:none;">Open Draft Folder</button>
   </div>
 </div>
 
+<div class="shape-popover" id="shapePopover"></div>
 <div class="toast" id="toast"></div>
 
 <script>
@@ -155,6 +261,15 @@ const editor = document.getElementById('editor');
 const toast = document.getElementById('toast');
 let lastSavedPath = null;
 let imgCounter = 0;
+
+const SHAPES = [
+  { key:'1:1',      label:'Square (1:1)' },
+  { key:'4:3',       label:'4:3' },
+  { key:'3:4',       label:'3:4 (portrait)' },
+  { key:'3:2',       label:'Landscape (3:2)' },
+  { key:'16:9',      label:'Widescreen (16:9)' },
+  { key:'original',  label:'Original (no crop)' },
+];
 
 function showToast(msg, isError){
   toast.textContent = msg;
@@ -194,16 +309,11 @@ document.querySelectorAll('.toolbar button[data-cmd]').forEach(btn=>{
   });
 });
 
-// ---------- image insert ----------
-const fileInput = document.getElementById('fileInput');
-document.getElementById('insertImageBtn').addEventListener('click', ()=> fileInput.click());
-
-fileInput.addEventListener('change', async ()=>{
-  for (const file of fileInput.files){
-    await insertImageBlock(file);
-  }
-  fileInput.value = '';
-});
+function escapeHtml(s){
+  const d = document.createElement('div');
+  d.textContent = s || '';
+  return d.innerHTML;
+}
 
 function extFromMime(mime){
   const map = {'image/png':'png','image/jpeg':'jpg','image/jpg':'jpg','image/webp':'webp','image/gif':'gif'};
@@ -219,85 +329,26 @@ function readAsDataURL(file){
   });
 }
 
-function buildImgBlock(filename, dataUrl, alt, caption){
-  const block = document.createElement('div');
-  block.className = 'img-block';
-  block.contentEditable = 'false';
-  block.dataset.filename = filename;
-  block.dataset.dataUrl = dataUrl;
-  block.dataset.alt = alt || '';
-  block.dataset.caption = caption || '';
-
-  block.innerHTML = `
-    <img src="${dataUrl}" alt="">
-    <div class="img-meta">
-      <div><b>File:</b> ${escapeHtml(filename)}</div>
-      <div><b>Alt:</b> <span class="alt-text">${escapeHtml(alt) || '(none)'}</span></div>
-      <div><b>Caption:</b> <span class="caption-text">${escapeHtml(caption) || '(none)'}</span></div>
-      <div class="img-actions">
-        <button type="button" class="edit-img">Edit text</button>
-        <button type="button" class="remove-img">Remove</button>
-      </div>
-    </div>
-  `;
-
-  block.querySelector('.edit-img').addEventListener('click', (e)=>{
-    e.stopPropagation();
-    const newAlt = prompt('Alt text:', block.dataset.alt) ?? block.dataset.alt;
-    const newCap = prompt('Caption:', block.dataset.caption) ?? block.dataset.caption;
-    block.dataset.alt = newAlt;
-    block.dataset.caption = newCap;
-    block.querySelector('.alt-text').textContent = newAlt || '(none)';
-    block.querySelector('.caption-text').textContent = newCap || '(none)';
+function loadImageDims(dataUrl){
+  return new Promise((resolve)=>{
+    const im = new Image();
+    im.onload = ()=> resolve({ w: im.naturalWidth, h: im.naturalHeight });
+    im.onerror = ()=> resolve({ w: 0, h: 0 });
+    im.src = dataUrl;
   });
-  block.querySelector('.remove-img').addEventListener('click', (e)=>{
-    e.stopPropagation();
-    block.remove();
-  });
-
-  return block;
 }
 
-function rewireImgBlock(block){
-  block.querySelector('.edit-img')?.addEventListener('click', (e)=>{
-    e.stopPropagation();
-    const newAlt = prompt('Alt text:', block.dataset.alt) ?? block.dataset.alt;
-    const newCap = prompt('Caption:', block.dataset.caption) ?? block.dataset.caption;
-    block.dataset.alt = newAlt; block.dataset.caption = newCap;
-    block.querySelector('.alt-text').textContent = newAlt || '(none)';
-    block.querySelector('.caption-text').textContent = newCap || '(none)';
-  });
-  block.querySelector('.remove-img')?.addEventListener('click', (e)=>{
-    e.stopPropagation();
-    block.remove();
-  });
-  const n = parseInt((block.dataset.filename || '').match(/\d+/)?.[0] || '0', 10);
-  if (n > imgCounter) imgCounter = n;
+function aspectRatioCss(shapeKey, naturalW, naturalH){
+  if (shapeKey === 'original'){
+    return (naturalW && naturalH) ? (naturalW + ' / ' + naturalH) : 'auto';
+  }
+  const [w,h] = shapeKey.split(':').map(Number);
+  return w + ' / ' + h;
 }
 
-async function insertImageBlock(file){
-  const dataUrl = await readAsDataURL(file);
-  const alt = prompt('Describe this photo (for accessibility):', '') || '';
-  const caption = prompt('Caption shown under the photo (optional):', '') || '';
-
-  imgCounter++;
-  const ext = extFromMime(file.type);
-  const filename = `img-${imgCounter}.${ext}`;
-
-  const block = buildImgBlock(filename, dataUrl, alt, caption);
-
-  // Insert at end of editor (simplest, reliable placement), followed by an empty paragraph
-  editor.appendChild(block);
-  const p = document.createElement('p');
-  p.innerHTML = '<br>';
-  editor.appendChild(p);
-  placeCursorAtEnd(p);
-}
-
-function escapeHtml(s){
-  const d = document.createElement('div');
-  d.textContent = s;
-  return d.innerHTML;
+function shapeLabel(key){
+  const s = SHAPES.find(s=>s.key===key);
+  return s ? s.label : key;
 }
 
 function placeCursorAtEnd(node){
@@ -307,8 +358,296 @@ function placeCursorAtEnd(node){
   const sel = window.getSelection();
   sel.removeAllRanges();
   sel.addRange(range);
-  editor.focus();
 }
+
+// ---------- editable-region empty-state tracking ----------
+function watchEmptyState(el){
+  const update = ()=>{
+    const text = el.textContent.replace(/​/g,'').trim();
+    el.dataset.empty = text ? 'false' : 'true';
+  };
+  update();
+  el.addEventListener('input', update);
+  return update;
+}
+
+// ---------- crop shape popover ----------
+const shapePopover = document.getElementById('shapePopover');
+let popoverTarget = null;
+
+function openShapePopover(cropWrap, imgEl, ev){
+  ev.stopPropagation();
+  popoverTarget = { cropWrap, imgEl };
+  shapePopover.innerHTML = '';
+  SHAPES.forEach(s=>{
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.textContent = s.label;
+    if (cropWrap.dataset.shape === s.key) b.classList.add('active-shape');
+    b.addEventListener('click', ()=> applyShape(cropWrap, imgEl, s.key));
+    shapePopover.appendChild(b);
+  });
+  const rect = ev.currentTarget.getBoundingClientRect();
+  shapePopover.style.left = Math.min(rect.left, window.innerWidth - 220) + 'px';
+  shapePopover.style.top = (rect.bottom + 6) + 'px';
+  shapePopover.classList.add('active');
+}
+
+function closeShapePopover(){
+  shapePopover.classList.remove('active');
+  popoverTarget = null;
+}
+document.addEventListener('click', (e)=>{
+  if (shapePopover.classList.contains('active') && !shapePopover.contains(e.target)) closeShapePopover();
+});
+
+function applyShape(cropWrap, imgEl, shapeKey){
+  const natW = parseInt(cropWrap.dataset.naturalW || '0', 10);
+  const natH = parseInt(cropWrap.dataset.naturalH || '0', 10);
+  cropWrap.dataset.shape = shapeKey;
+  cropWrap.style.aspectRatio = aspectRatioCss(shapeKey, natW, natH);
+  imgEl.style.objectFit = (shapeKey === 'original') ? 'contain' : 'cover';
+  const badge = cropWrap.querySelector('.shape-badge');
+  if (badge) badge.textContent = shapeLabel(shapeKey);
+  closeShapePopover();
+}
+
+// ---------- PHOTO BLOCK ----------
+function buildPhotoBlock(filename, dataUrl, natW, natH, defaultShape){
+  const block = document.createElement('div');
+  block.className = 'photo-block';
+  block.contentEditable = 'false';
+  block.dataset.filename = filename;
+  block.dataset.dataUrl = dataUrl;
+  block.dataset.blockType = 'photo';
+
+  const cropWrap = document.createElement('div');
+  cropWrap.className = 'crop-wrap';
+  cropWrap.dataset.naturalW = natW;
+  cropWrap.dataset.naturalH = natH;
+  cropWrap.dataset.shape = defaultShape;
+  cropWrap.style.aspectRatio = aspectRatioCss(defaultShape, natW, natH);
+
+  const img = document.createElement('img');
+  img.src = dataUrl;
+  img.style.objectFit = (defaultShape === 'original') ? 'contain' : 'cover';
+  cropWrap.appendChild(img);
+
+  const badge = document.createElement('span');
+  badge.className = 'shape-badge';
+  badge.textContent = shapeLabel(defaultShape);
+  cropWrap.appendChild(badge);
+
+  cropWrap.addEventListener('click', (e)=> openShapePopover(cropWrap, img, e));
+  block.appendChild(cropWrap);
+
+  const altRow = document.createElement('div');
+  altRow.className = 'alt-row';
+  altRow.innerHTML = `<span>Alt text:</span>`;
+  const altInput = document.createElement('input');
+  altInput.type = 'text';
+  altInput.placeholder = 'Describe this photo (for accessibility)';
+  altRow.appendChild(altInput);
+  block.appendChild(altRow);
+
+  const body = document.createElement('div');
+  body.className = 'photo-body';
+  body.contentEditable = 'true';
+  body.dataset.empty = 'true';
+  watchEmptyState(body);
+  block.appendChild(body);
+
+  const actions = document.createElement('div');
+  actions.className = 'block-actions';
+  const removeBtn = document.createElement('button');
+  removeBtn.type = 'button';
+  removeBtn.textContent = 'Remove block';
+  removeBtn.addEventListener('click', (e)=>{ e.stopPropagation(); block.remove(); });
+  actions.appendChild(removeBtn);
+  block.appendChild(actions);
+
+  block._altInput = altInput;
+  block._body = body;
+  block._cropWrap = cropWrap;
+  block._img = img;
+  return block;
+}
+
+async function insertPhotoBlockFromFile(file, insertBeforeNode){
+  const dataUrl = await readAsDataURL(file);
+  const { w, h } = await loadImageDims(dataUrl);
+  imgCounter++;
+  const ext = extFromMime(file.type);
+  const filename = `img-${imgCounter}.${ext}`;
+  const defaultShape = document.getElementById('fAspect').value;
+  const block = buildPhotoBlock(filename, dataUrl, w, h, defaultShape);
+  insertBlockAt(block, insertBeforeNode);
+  return block;
+}
+
+// ---------- CARD BLOCK ----------
+function buildCardBlock(filename, dataUrl, natW, natH, initialShape){
+  initialShape = initialShape || 'original';
+  const block = document.createElement('div');
+  block.className = 'card-block';
+  block.contentEditable = 'false';
+  block.dataset.filename = filename;
+  block.dataset.dataUrl = dataUrl;
+  block.dataset.blockType = 'card';
+
+  const cropWrap = document.createElement('div');
+  cropWrap.className = 'crop-wrap';
+  cropWrap.dataset.naturalW = natW;
+  cropWrap.dataset.naturalH = natH;
+  cropWrap.dataset.shape = initialShape;
+  cropWrap.style.aspectRatio = aspectRatioCss(initialShape, natW, natH);
+
+  const img = document.createElement('img');
+  img.src = dataUrl;
+  img.style.objectFit = (initialShape === 'original') ? 'contain' : 'cover';
+  cropWrap.appendChild(img);
+
+  const badge = document.createElement('span');
+  badge.className = 'shape-badge';
+  badge.textContent = shapeLabel(initialShape);
+  cropWrap.appendChild(badge);
+
+  cropWrap.addEventListener('click', (e)=> openShapePopover(cropWrap, img, e));
+
+  const title = document.createElement('div');
+  title.className = 'card-title';
+  title.contentEditable = 'true';
+  title.dataset.empty = 'true';
+  watchEmptyState(title);
+  block.appendChild(title); // direct child of the grid, so grid-area:title actually applies
+
+  block.appendChild(cropWrap);
+
+  const side = document.createElement('div');
+  side.className = 'card-side';
+
+  const body = document.createElement('div');
+  body.className = 'card-body';
+  body.contentEditable = 'true';
+  body.dataset.empty = 'true';
+  watchEmptyState(body);
+  side.appendChild(body);
+
+  const altRow = document.createElement('div');
+  altRow.className = 'alt-row';
+  altRow.innerHTML = `<span>Alt:</span>`;
+  const altInput = document.createElement('input');
+  altInput.type = 'text';
+  altInput.placeholder = 'Describe this card art (for accessibility)';
+  altRow.appendChild(altInput);
+  side.appendChild(altRow);
+
+  const actions = document.createElement('div');
+  actions.className = 'block-actions';
+  const removeBtn = document.createElement('button');
+  removeBtn.type = 'button';
+  removeBtn.textContent = 'Remove block';
+  removeBtn.addEventListener('click', (e)=>{ e.stopPropagation(); block.remove(); });
+  actions.appendChild(removeBtn);
+  side.appendChild(actions);
+
+  block.appendChild(side);
+
+  block._altInput = altInput;
+  block._title = title;
+  block._body = body;
+  block._cropWrap = cropWrap;
+  block._img = img;
+  return block;
+}
+
+async function insertCardBlockFromFile(file, insertBeforeNode, initialShape){
+  const dataUrl = await readAsDataURL(file);
+  const { w, h } = await loadImageDims(dataUrl);
+  imgCounter++;
+  const ext = extFromMime(file.type);
+  const filename = `img-${imgCounter}.${ext}`;
+  const block = buildCardBlock(filename, dataUrl, w, h, initialShape);
+  insertBlockAt(block, insertBeforeNode);
+  return block;
+}
+
+function insertBlockAt(block, insertBeforeNode){
+  if (insertBeforeNode && insertBeforeNode.parentNode === editor){
+    editor.insertBefore(block, insertBeforeNode);
+  } else {
+    editor.appendChild(block);
+  }
+  const p = document.createElement('p');
+  p.innerHTML = '<br>';
+  block.parentNode.insertBefore(p, block.nextSibling);
+}
+
+// ---------- manual insert buttons ----------
+const fileInputPhoto = document.getElementById('fileInputPhoto');
+document.getElementById('insertPhotoBtn').addEventListener('click', ()=> fileInputPhoto.click());
+fileInputPhoto.addEventListener('change', async ()=>{
+  for (const file of fileInputPhoto.files) await insertPhotoBlockFromFile(file, null);
+  fileInputPhoto.value = '';
+});
+
+const fileInputCard = document.getElementById('fileInputCard');
+document.getElementById('insertCardBtn').addEventListener('click', ()=> fileInputCard.click());
+fileInputCard.addEventListener('change', async ()=>{
+  for (const file of fileInputCard.files) await insertCardBlockFromFile(file, null, 'original');
+  fileInputCard.value = '';
+});
+
+const fileInputSecretCard = document.getElementById('fileInputSecretCard');
+document.getElementById('insertSecretCardBtn').addEventListener('click', ()=> fileInputSecretCard.click());
+fileInputSecretCard.addEventListener('change', async ()=>{
+  for (const file of fileInputSecretCard.files) await insertCardBlockFromFile(file, null, '3:4');
+  fileInputSecretCard.value = '';
+});
+
+// ---------- drag & drop ----------
+editor.addEventListener('dragover', (e)=>{
+  if (!e.dataTransfer.types.includes('Files')) return;
+  e.preventDefault();
+  editor.classList.add('drag-over');
+});
+editor.addEventListener('dragleave', (e)=>{
+  if (e.target === editor) editor.classList.remove('drag-over');
+});
+editor.addEventListener('drop', async (e)=>{
+  if (!e.dataTransfer.files || !e.dataTransfer.files.length) return;
+  e.preventDefault();
+  editor.classList.remove('drag-over');
+
+  // find nearest top-level child to insert before, based on drop Y position
+  let insertBefore = null;
+  const y = e.clientY;
+  for (const child of Array.from(editor.children)){
+    const r = child.getBoundingClientRect();
+    if (y < r.top + r.height / 2){ insertBefore = child; break; }
+  }
+
+  for (const file of Array.from(e.dataTransfer.files)){
+    if (!file.type.startsWith('image/')) continue;
+    const dataUrl = await readAsDataURL(file);
+    const { w, h } = await loadImageDims(dataUrl);
+    // heuristic: portrait-ish (taller than wide) -> Card, otherwise -> Photo
+    if (h > w * 1.1){
+      imgCounter++;
+      const ext = extFromMime(file.type);
+      const filename = `img-${imgCounter}.${ext}`;
+      const block = buildCardBlock(filename, dataUrl, w, h);
+      insertBlockAt(block, insertBefore);
+    } else {
+      imgCounter++;
+      const ext = extFromMime(file.type);
+      const filename = `img-${imgCounter}.${ext}`;
+      const defaultShape = document.getElementById('fAspect').value;
+      const block = buildPhotoBlock(filename, dataUrl, w, h, defaultShape);
+      insertBlockAt(block, insertBefore);
+    }
+  }
+});
 
 // ---------- markdown conversion ----------
 function inlineToMarkdown(node){
@@ -334,20 +673,61 @@ function inlineToMarkdown(node){
   return out;
 }
 
+function editableParagraphs(el){
+  // Split a nested editable region into markdown paragraph strings.
+  const parts = [];
+  if (el.querySelector('p, h2, h3, div')){
+    Array.from(el.children).forEach(child=>{
+      const text = inlineToMarkdown(child).trim();
+      if (text) parts.push(text);
+    });
+  }
+  if (parts.length === 0){
+    const text = inlineToMarkdown(el).trim();
+    if (text) parts.push(text);
+  }
+  return parts;
+}
+
 function editorToMarkdown(){
   const blocks = [];
   const images = [];
+  const defaultAspect = document.getElementById('fAspect').value;
 
   Array.from(editor.children).forEach(el=>{
-    if (el.classList && el.classList.contains('img-block')){
+    if (el.classList && el.classList.contains('photo-block')){
       const filename = el.dataset.filename;
-      const alt = (el.dataset.alt || '').replace(/"/g,"'");
-      const caption = (el.dataset.caption || '').replace(/"/g,"'");
       images.push({ filename, dataUrl: el.dataset.dataUrl });
+      const alt = (el._altInput.value || '').replace(/"/g,"'");
+      const paragraphs = editableParagraphs(el._body);
+      const caption = (paragraphs[0] || '').replace(/"/g,"'");
+      const shape = el._cropWrap.dataset.shape;
+
       let line = `![${alt}](Images/${filename}`;
       if (caption) line += ` "${caption}"`;
       line += ')';
+      if (shape && shape !== defaultAspect) line += ` {aspect=${shape}}`;
       blocks.push(line);
+
+      for (let i = 1; i < paragraphs.length; i++){
+        blocks.push(paragraphs[i]);
+      }
+    } else if (el.classList && el.classList.contains('card-block')){
+      const filename = el.dataset.filename;
+      images.push({ filename, dataUrl: el.dataset.dataUrl });
+      const alt = (el._altInput.value || '').replace(/"/g,"'");
+      const title = inlineToMarkdown(el._title).trim();
+      const paragraphs = editableParagraphs(el._body);
+      const cardShape = el._cropWrap.dataset.shape;
+
+      const inner = [];
+      let imgLine = `![${alt}](Images/${filename})`;
+      if (cardShape && cardShape !== 'original') imgLine += ` {aspect=${cardShape}}`;
+      inner.push(imgLine);
+      if (title) inner.push('## ' + title);
+      paragraphs.forEach(p => inner.push(p));
+
+      blocks.push('::card\n' + inner.join('\n\n') + '\n::');
     } else if (el.tagName === 'H2'){
       const text = inlineToMarkdown(el).trim();
       if (text) blocks.push('## ' + text);
@@ -359,6 +739,148 @@ function editorToMarkdown(){
 
   return { markdown: blocks.join('\n\n'), images };
 }
+
+// ---------- preview ----------
+// Renders the current draft using the *exact* CSS from the real post template
+// (scripts/new_post.py POST_TEMPLATE), so what you see here is what the site
+// will look like — built straight from the live editor blocks (not a markdown
+// round-trip), and using the in-memory images directly, so it works even
+// before you've hit Save.
+const PREVIEW_CSS = `
+  :root{
+    --black:#0a0a0a; --panel:#161616; --panel2:#1c1c1c;
+    --red:#c81d1d; --brightred:#e8341f; --darkred:#6e1010;
+    --yellow:#f2c14e; --grey:#9a9a9a; --white:#eee8dc;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--black); color:var(--white);
+    font-family:'VT323','Courier New',monospace; font-size:1.25rem; line-height:1.7;
+  }
+  h1,h2,.tag{font-family:'DotGothic16',monospace;}
+  a{color:inherit;}
+  .hazard{height:10px; background:repeating-linear-gradient(45deg, var(--yellow) 0 20px, var(--black) 20px 40px);}
+  .preview-banner{
+    background:var(--red); color:#fff; text-align:center; padding:8px; font-family:'Courier New',monospace;
+    font-size:0.8rem; letter-spacing:1px; text-transform:uppercase; position:sticky; top:0; z-index:99999;
+  }
+  .post-header{
+    padding:70px 6% 40px; text-align:center;
+    background:linear-gradient(rgba(8,8,8,0.9),rgba(8,8,8,0.94)), repeating-linear-gradient(135deg,#1a1a1a 0 40px,#141414 40px 80px);
+    border-bottom:2px solid var(--darkred);
+  }
+  .post-header .tag{
+    display:block; width:fit-content; margin:0 auto 22px; color:var(--yellow); border:2px solid var(--yellow);
+    padding:8px 14px; font-size:0.5rem; letter-spacing:1px;
+  }
+  .post-header h1{font-size:clamp(1.4rem,4vw,2.1rem); color:var(--brightred); text-shadow:3px 3px 0 #000; margin-bottom:18px; line-height:1.5;}
+  .post-header .meta{color:var(--grey); font-size:0.9rem;}
+  .post-body{max-width:720px; margin:0 auto; padding:60px 6% 40px;}
+  .post-body p{color:var(--white); margin-bottom:24px; font-size:1.15rem;}
+  .post-body h2{color:var(--red); font-size:1.2rem; margin:36px 0 16px;}
+  .post-body figure{margin:0 0 32px;}
+  .post-body figure img{display:block; width:100%; border:2px solid var(--darkred); cursor:zoom-in;}
+  .post-body figcaption{color:var(--grey); font-size:0.9rem; margin-top:10px; line-height:1.5;}
+  .card-row{
+    display:grid; grid-template-columns:220px 1fr; grid-template-areas:"title title" "img text";
+    column-gap:28px; row-gap:16px; margin:0 0 32px;
+    background:var(--panel); border:2px solid var(--darkred); padding:22px 26px;
+  }
+  .card-row .card-title{
+    grid-area:title; color:var(--red); font-family:'DotGothic16',monospace; font-size:1.05rem;
+    letter-spacing:0.5px; text-transform:uppercase;
+  }
+  .card-row .card-img{grid-area:img; width:220px;}
+  .card-row .card-img img{display:block; width:100%; height:auto; cursor:zoom-in;}
+  .card-row .card-text{grid-area:text; min-width:0;}
+  .card-row .card-text p{color:var(--white); margin-bottom:16px; font-size:1.05rem; line-height:1.6;}
+  @media (max-width:560px){
+    .card-row{grid-template-columns:1fr; grid-template-areas:"title" "img" "text"; text-align:center;}
+    .card-row .card-img{width:100%; max-width:260px; margin:0 auto;}
+  }
+  footer{text-align:center; padding:38px 6%; color:#5a5a5a; font-size:0.85rem; border-top:2px solid var(--darkred);}
+`;
+
+function blockToPreviewHtml(el){
+  if (el.classList && el.classList.contains('photo-block')){
+    const shape = el._cropWrap.dataset.shape;
+    const objFit = shape === 'original' ? 'contain' : 'cover';
+    const ar = el._cropWrap.style.aspectRatio || 'auto';
+    const alt = escapeHtml(el._altInput.value || '');
+    const paragraphs = editableParagraphs(el._body);
+    let html = `<figure><img src="${el.dataset.dataUrl}" alt="${alt}" style="aspect-ratio:${ar}; object-fit:${objFit};">`;
+    if (paragraphs[0]) html += `<figcaption>${markdownInlineToHtml(paragraphs[0])}</figcaption>`;
+    html += `</figure>`;
+    for (let i = 1; i < paragraphs.length; i++){
+      html += `<p>${markdownInlineToHtml(paragraphs[i])}</p>`;
+    }
+    return html;
+  }
+  if (el.classList && el.classList.contains('card-block')){
+    const alt = escapeHtml(el._altInput.value || '');
+    const title = inlineToMarkdown(el._title).trim();
+    const paragraphs = editableParagraphs(el._body);
+    const cardShape = el._cropWrap.dataset.shape;
+    const cardObjFit = cardShape === 'original' ? 'contain' : 'cover';
+    const cardAr = el._cropWrap.style.aspectRatio || 'auto';
+    let html = `<div class="card-row">`;
+    if (title) html += `<h3 class="card-title">${markdownInlineToHtml(title)}</h3>`;
+    html += `<div class="card-img"><img src="${el.dataset.dataUrl}" alt="${alt}" style="aspect-ratio:${cardAr}; object-fit:${cardObjFit};"></div>`;
+    html += `<div class="card-text">`;
+    paragraphs.forEach(p => html += `<p>${markdownInlineToHtml(p)}</p>`);
+    html += `</div></div>`;
+    return html;
+  }
+  if (el.tagName === 'H2'){
+    return `<h2>${el.innerHTML}</h2>`;
+  }
+  // plain paragraph — use its live innerHTML directly, so bold/italic/links preview exactly as typed
+  return `<p>${el.innerHTML}</p>`;
+}
+
+function openPreview(){
+  const title = fTitle.value.trim() || 'Untitled';
+  const date = document.getElementById('fDate').value.trim();
+  const read = document.getElementById('fRead').value.trim() || '3 min read';
+
+  const bodyHtml = Array.from(editor.children).map(blockToPreviewHtml).join('\n');
+
+  const html = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>${escapeHtml(title)} — Preview</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DotGothic16&family=VT323&display=swap" rel="stylesheet">
+<style>${PREVIEW_CSS}</style>
+</head>
+<body>
+<div class="preview-banner">⚠ PREVIEW ONLY — not saved yet</div>
+<div class="hazard"></div>
+<div class="post-header">
+  <span class="tag">// DEV JOURNAL</span>
+  <h1>${escapeHtml(title)}</h1>
+  <div class="meta">${escapeHtml(date)} · ${escapeHtml(read)}</div>
+</div>
+<div class="post-body">
+${bodyHtml}
+</div>
+<footer><p>© 2026 CARRIER — a survival board game in development.</p></footer>
+</body>
+</html>`;
+
+  const win = window.open('', '_blank');
+  if (!win){
+    showToast('Preview blocked by the browser pop-up blocker — allow pop-ups for this page.', true);
+    return;
+  }
+  win.document.open();
+  win.document.write(html);
+  win.document.close();
+}
+
+document.getElementById('previewBtn').addEventListener('click', openPreview);
 
 // ---------- save ----------
 document.getElementById('saveBtn').addEventListener('click', async ()=>{
@@ -450,12 +972,17 @@ let autosaveTimer;
 });
 editor.addEventListener('input', ()=>{ clearTimeout(autosaveTimer); autosaveTimer = setTimeout(autosave, 1500); });
 
+// NOTE: localStorage autosave only reliably restores plain text/heading blocks —
+// photo/card blocks are complex enough that we rebuild them fresh via Load Draft
+// from disk instead of round-tripping through localStorage. This keeps the
+// safety net simple and avoids losing crop-shape state silently.
 window.addEventListener('load', ()=>{
   const saved = localStorage.getItem('post-editor-draft');
   if (saved){
     try{
       const snap = JSON.parse(saved);
-      if (snap.title || (snap.editorHtml && snap.editorHtml.trim())){
+      const hasBlocks = snap.editorHtml && /photo-block|card-block/.test(snap.editorHtml);
+      if ((snap.title || (snap.editorHtml && snap.editorHtml.trim())) && !hasBlocks){
         if (confirm('Restore your last unsaved draft?')){
           fTitle.value = snap.title || '';
           fSlug.value = snap.slug || ''; slugManuallyEdited = !!snap.slug;
@@ -464,9 +991,9 @@ window.addEventListener('load', ()=>{
           fDesc.value = snap.desc || '';
           fAspect.value = snap.aspect || '3:2';
           editor.innerHTML = snap.editorHtml || '';
-          // reattach listeners on restored image blocks (innerHTML round-trips data-* but not JS listeners)
-          editor.querySelectorAll('.img-block').forEach(rewireImgBlock);
         }
+      } else if (hasBlocks){
+        showToast('Found an unsaved draft with photos/cards from last time — use "Load Draft" if you saved it, otherwise it was lost with the tab close (sorry!).');
       }
     } catch(e){ /* ignore corrupt snapshot */ }
   }
@@ -536,7 +1063,7 @@ async function loadDraftBySlug(slug){
 
     editor.innerHTML = '';
     imgCounter = 0;
-    markdownToEditor(result.body || '', result.images || {});
+    await markdownToEditor(result.body || '', result.images || {}, fAspect.value);
 
     loadModal.style.display = 'none';
     document.getElementById('openFolderBtn').style.display = 'none';
@@ -559,44 +1086,128 @@ function markdownInlineToHtml(text){
   return out;
 }
 
-const IMG_LINE_RE = /^!\[([^\]]*)\]\(([^\s)"]+)(?:\s+"([^"]*)")?\)$/;
+const IMG_LINE_RE = /^!\[([^\]]*)\]\(([^\s)"]+)(?:\s+"([^"]*)")?\)(?:\s*\{aspect=([^}]+)\})?$/;
 const HEADING_RE = /^##\s+(.*)$/;
 
-function markdownToEditor(body, imagesByFilename){
-  const blocks = body.split(/\n\s*\n/).map(b=>b.trim()).filter(Boolean);
+function fillEditableWithParagraphs(el, paragraphs){
+  el.innerHTML = '';
+  paragraphs.forEach(text=>{
+    const p = document.createElement('p');
+    p.innerHTML = markdownInlineToHtml(text);
+    el.appendChild(p);
+  });
+  if (el.children.length === 0){
+    const p = document.createElement('p');
+    p.innerHTML = '<br>';
+    el.appendChild(p);
+  }
+  const evt = new Event('input');
+  el.dispatchEvent(evt);
+}
 
-  blocks.forEach(block=>{
+async function markdownToEditor(body, imagesByFilename, defaultAspect){
+  // Pull out ::card ... :: blocks BEFORE blank-line splitting (they contain
+  // internal blank lines themselves), same approach the Python build scripts use.
+  const CARD_EXTRACT_RE = /^::card\s*\n([\s\S]*?)\n::\s*$/gm;
+  const cardInnerByToken = {};
+  let tokenN = 0;
+  const preparedBody = body.replace(CARD_EXTRACT_RE, (match, inner)=>{
+    const token = `@@CARD${tokenN++}@@`;
+    cardInnerByToken[token] = inner;
+    return `\n\n${token}\n\n`;
+  });
+
+  const blocks = preparedBody.split(/\n\s*\n/).map(b=>b.trim()).filter(Boolean);
+
+  for (const block of blocks){
+    const cardInner = cardInnerByToken[block];
     const imgMatch = block.match(IMG_LINE_RE);
     const headingMatch = block.match(HEADING_RE);
+
+    if (cardInner !== undefined){
+      const innerBlocks = cardInner.split(/\n\s*\n/).map(b=>b.trim()).filter(Boolean);
+      let filename = null, alt = '', title = '', paragraphs = [], cardShape = 'original';
+      innerBlocks.forEach(ib=>{
+        const im = ib.match(IMG_LINE_RE);
+        const hm = ib.match(HEADING_RE);
+        if (im && !filename){ filename = im[2].split('/').pop(); alt = im[1]; cardShape = im[4] || 'original'; }
+        else if (hm){ title = hm[1].trim(); }
+        else { paragraphs.push(ib); }
+      });
+      const dataUrl = filename ? imagesByFilename[filename] : null;
+      if (dataUrl){
+        const dims = await loadImageDims(dataUrl);
+        const cb = buildCardBlock(filename, dataUrl, dims.w, dims.h, cardShape);
+        cb._altInput.value = alt;
+        fillEditableWithParagraphs(cb._title, title ? [title] : []);
+        // title is single-line; strip the <p> wrapper fillEditableWithParagraphs adds
+        if (cb._title.querySelector('p')) cb._title.innerHTML = cb._title.querySelector('p').innerHTML;
+        cb._title.dispatchEvent(new Event('input'));
+        fillEditableWithParagraphs(cb._body, paragraphs);
+        editor.appendChild(cb);
+        const n = parseInt((filename.match(/\d+/) || ['0'])[0], 10);
+        if (n > imgCounter) imgCounter = n;
+      } else {
+        const p = document.createElement('p');
+        p.textContent = '::card\n' + cardInner + '\n::';
+        editor.appendChild(p);
+      }
+      const spacer = document.createElement('p'); spacer.innerHTML = '<br>'; editor.appendChild(spacer);
+      continue;
+    }
 
     if (imgMatch){
       const alt = imgMatch[1];
       const rawPath = imgMatch[2];
       const caption = imgMatch[3] || '';
+      const shape = imgMatch[4] || defaultAspect || '3:2';
       const filename = rawPath.split('/').pop();
       const dataUrl = imagesByFilename[filename];
       if (dataUrl){
-        const block_ = buildImgBlock(filename, dataUrl, alt, caption);
-        editor.appendChild(block_);
+        const dims = await loadImageDims(dataUrl);
+        const pb = buildPhotoBlock(filename, dataUrl, dims.w, dims.h, shape);
+        pb._altInput.value = alt;
+        fillEditableWithParagraphs(pb._body, caption ? [caption] : []);
+        editor.appendChild(pb);
         const n = parseInt((filename.match(/\d+/) || ['0'])[0], 10);
         if (n > imgCounter) imgCounter = n;
       } else {
-        // Image file wasn't found on disk (renamed/moved outside the editor) — keep a placeholder paragraph so nothing is silently lost.
         const p = document.createElement('p');
         p.textContent = block;
         editor.appendChild(p);
       }
-    } else if (headingMatch){
+      const spacer = document.createElement('p'); spacer.innerHTML = '<br>'; editor.appendChild(spacer);
+      continue;
+    }
+
+    if (headingMatch){
       const h2 = document.createElement('h2');
       h2.innerHTML = markdownInlineToHtml(headingMatch[1].trim());
       editor.appendChild(h2);
-    } else {
+      continue;
+    }
+
+    // A plain paragraph immediately after a photo-block should be folded into
+    // that block's body instead of floating on its own, so re-editing feels right.
+    const last = editor.lastElementChild;
+    const prevReal = last && last.tagName === 'P' && !last.textContent.trim()
+      ? last.previousElementSibling : last;
+    if (prevReal && prevReal.classList && prevReal.classList.contains('photo-block')){
       const p = document.createElement('p');
       const joined = block.split('\n').map(l=>l.trim()).join(' ');
       p.innerHTML = markdownInlineToHtml(joined);
-      editor.appendChild(p);
+      if (prevReal._body.dataset.empty === 'true') prevReal._body.innerHTML = '';
+      prevReal._body.appendChild(p);
+      prevReal._body.dispatchEvent(new Event('input'));
+      if (last && last !== prevReal) last.remove();
+      continue;
     }
-  });
+
+    const p = document.createElement('p');
+    const joined = block.split('\n').map(l=>l.trim()).join(' ');
+    p.innerHTML = markdownInlineToHtml(joined);
+    editor.appendChild(p);
+  }
 
   if (editor.children.length === 0){
     const p = document.createElement('p');
