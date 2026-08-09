@@ -153,7 +153,7 @@
   .brief-card .icon{font-size:1.6rem; margin-bottom:14px;}
   .brief-card h3{color:var(--red); margin-bottom:12px; font-size:0.8rem;}
   .brief-card p{color:var(--grey); font-size:0.92rem;}
-  .brief-gallery{display:flex; gap:8px; margin-top:16px; flex-wrap:wrap;}
+  .brief-gallery{display:block; margin-top:16px;}
   .bg-item{
     position:relative; width:52px; height:52px; overflow:hidden; flex:0 0 52px;
     border:2px solid #2b2b2b; transition:border-color .2s, transform .2s;
@@ -173,7 +173,7 @@
   .bg-item .wip-label{font-size:0.32rem;}
   .cg-item .wip-label{font-size:0.55rem;}
   .brief-shot{
-    position:relative; aspect-ratio:1/1; overflow:hidden; margin-bottom:18px;
+    position:relative; width:100%; aspect-ratio:1/1; overflow:hidden; margin-bottom:18px;
     border:2px solid #2b2b2b; transition:border-color .2s, transform .2s;
   }
   .brief-shot:hover{border-color:var(--yellow); transform:scale(1.02);}
@@ -433,7 +433,15 @@
   .post-link:hover{text-decoration:underline;}
 
   /* ---------- INSTAGRAM ---------- */
-  #igEmbedContainer{max-width:960px;}
+  .ig-grid{
+    display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:14px;
+  }
+  .ig-item{
+    display:block; aspect-ratio:1/1; overflow:hidden; border:2px solid #2b2b2b;
+    transition:border-color .2s, transform .2s;
+  }
+  .ig-item:hover{border-color:var(--yellow); transform:scale(1.03);}
+  .ig-item img{width:100%; height:100%; object-fit:cover; display:block;}
   .ig-fallback{
     display:flex; flex-direction:column; align-items:center; justify-content:center;
     gap:8px; max-width:360px; margin:0 auto; padding:40px 24px; text-align:center;
@@ -756,15 +764,14 @@
   <h2 class="section-title">On Instagram</h2>
   <p class="section-sub">Follow <a href="https://www.instagram.com/kodeccogames/" target="_blank" rel="noopener" style="color:var(--yellow); text-decoration:underline;">@kodeccogames</a> for behind-the-scenes shots, playtest clips, and art drops.</p>
 
-  <!-- INSTAGRAM WIDGET: paste your embed widget's <script>/<div> snippet here once you've set it up
-       (e.g. Elfsight, EmbedSocial, SnapWidget). It will replace the fallback card below. -->
-  <div id="igEmbedContainer">
-    <a class="ig-fallback" href="https://www.instagram.com/kodeccogames/" target="_blank" rel="noopener">
-      <span class="ig-fallback-icon">📷</span>
-      <span class="ig-fallback-title">@kodeccogames</span>
-      <span class="ig-fallback-desc">Live feed coming soon — tap to visit the profile in the meantime.</span>
-    </a>
+  <!-- GALLERY: [INSTAGRAM] POSTS -->
+  <div class="ig-grid" id="igGrid">
   </div>
+  <a class="ig-fallback" id="igFallback" href="https://www.instagram.com/kodeccogames/" target="_blank" rel="noopener">
+    <span class="ig-fallback-icon">📷</span>
+    <span class="ig-fallback-title">@kodeccogames</span>
+    <span class="ig-fallback-desc">Photos coming soon — tap to visit the profile in the meantime.</span>
+  </a>
 </section>
 
 <div class="quote reveal">
@@ -1063,6 +1070,25 @@
       : '👆 swipe to browse · tap an image to view <span class="blink">_</span>';
     grid.insertAdjacentElement('afterend', hint);
   });
+
+  // ---------- Instagram grid: shuffle on load, fall back if empty ----------
+  (function(){
+    const igGrid = document.getElementById('igGrid');
+    const igFallback = document.getElementById('igFallback');
+    if (!igGrid || !igFallback) return;
+    const items = Array.from(igGrid.children);
+    if (items.length === 0){
+      igGrid.style.display = 'none';
+      return;
+    }
+    igFallback.style.display = 'none';
+    // Fisher-Yates shuffle, then re-append in the new order
+    for (let i = items.length - 1; i > 0; i--){
+      const j = Math.floor(Math.random() * (i + 1));
+      [items[i], items[j]] = [items[j], items[i]];
+    }
+    items.forEach(el => igGrid.appendChild(el));
+  })();
 
   // ---------- Mobile nav toggle ----------
   const navToggle = document.getElementById('navToggle');

@@ -68,6 +68,7 @@ FOLDER_CONFIG = [
     {"dir": "[MISSION BRIEF] 2. ENCOUNTERS & SUPPLIES", "slug": "mb-encounters", "kind": "brief-gallery"},
     {"dir": "[MISSION BRIEF] 3. ZOMBIES", "slug": "mb-zombies", "kind": "brief-gallery"},
     {"dir": "[MISSION BRIEF] 4. ESCALATION", "slug": "mb-escalation", "kind": "brief-gallery"},
+    {"dir": "[INSTAGRAM] POSTS", "slug": "ig", "kind": "ig-grid"},
 ]
 # NOTE: [GALLERY] 1/3/4 have kind=None — they only feed a single curated hero
 # thumbnail each, with no repeatable grid on the page yet, so this script
@@ -76,7 +77,7 @@ FOLDER_CONFIG = [
 # renamed) by hand if you want to swap which photo is featured.
 
 RAW_EXTS = {".png", ".jpg", ".jpeg"}
-TILE_SIZE = {"concept-grid": 640, "brief-gallery": 300}
+TILE_SIZE = {"concept-grid": 640, "brief-gallery": 300, "ig-grid": 480}
 MANIFEST_NAME = ".gallery-manifest.json"
 
 
@@ -153,7 +154,7 @@ def find_grid_for_folder(text: str, folder_dir: str):
     if idx == -1:
         return None
 
-    open_re = re.compile(r'<div class="(?:concept-grid|brief-gallery)">')
+    open_re = re.compile(r'<div class="(?:concept-grid|brief-gallery|ig-grid)">')
     m = open_re.search(text, idx)
     if not m:
         return None
@@ -185,6 +186,11 @@ def insert_item(text: str, folder_dir: str, kind: str, slug: str, alt: str, capt
 
     if kind == "brief-gallery":
         new_item = f'\n{child_indent}<div class="bg-item"><img src="{src}" alt="{alt_html}" title="{caption_html}"></div>'
+    elif kind == "ig-grid":
+        new_item = (
+            f'\n{child_indent}<a class="ig-item" href="https://www.instagram.com/kodeccogames/" '
+            f'target="_blank" rel="noopener"><img src="{src}" alt="{alt_html}" loading="lazy"></a>'
+        )
     else:
         new_item = (
             f'\n{child_indent}<div class="cg-item"><img src="{src}" '
