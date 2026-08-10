@@ -83,9 +83,25 @@
   }
   @keyframes flicker{0%,92%,100%{opacity:1;} 94%{opacity:0.4;} 96%{opacity:1;} 98%{opacity:0.5;}}
   .hero img.hero-logo{
-    max-width:min(60%,320px); width:100%; height:auto; image-rendering:pixelated;
+    max-width:min(78%,460px); width:100%; height:auto; image-rendering:pixelated;
     filter: drop-shadow(0 4px 16px rgba(0,0,0,0.7)) drop-shadow(0 0 70px rgba(200,29,29,0.55));
     margin-bottom:18px;
+    animation: logoPulse 4s ease-in-out infinite;
+    position:relative;
+  }
+  @keyframes logoPulse{
+    0%,100%{ filter: drop-shadow(0 4px 16px rgba(0,0,0,0.7)) drop-shadow(0 0 70px rgba(200,29,29,0.55)); }
+    50%{ filter: drop-shadow(0 4px 16px rgba(0,0,0,0.7)) drop-shadow(0 0 110px rgba(232,52,31,0.85)); }
+  }
+  .hero-logo-wrap{ position:relative; display:inline-block; }
+  .hero-logo-wrap::before{
+    content:""; position:absolute; inset:6%; z-index:-1; pointer-events:none;
+    background: radial-gradient(circle, rgba(232,52,31,0.22), transparent 65%);
+    animation: logoGlowPulse 4s ease-in-out infinite;
+  }
+  @keyframes logoGlowPulse{
+    0%,100%{ opacity:0.4; transform:scale(0.97); }
+    50%{ opacity:0.7; transform:scale(1.02); }
   }
   .hero p{max-width:600px; margin:0 auto 34px; color:var(--grey); font-size:1.1rem;}
 
@@ -546,7 +562,9 @@
 
 <section class="hero">
   <div class="hero-inner">
-    <img class="hero-logo" src="images/carrier-icon.png" alt="CARRIER">
+    <div class="hero-logo-wrap">
+      <img class="hero-logo" src="images/carrier-icon.png" alt="CARRIER">
+    </div>
     <span class="tag">⚠ DEVELOPMENT LOG — ONGOING</span>
 
     <div class="hero-marquee">

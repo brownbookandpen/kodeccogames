@@ -64,13 +64,16 @@
   .lightbox{
     position:fixed; inset:0; background:rgba(5,5,5,0.94); display:none;
     align-items:center; justify-content:center; z-index:20000; padding:24px; cursor:zoom-out;
+    overflow:auto; -webkit-overflow-scrolling:touch; touch-action:pan-x pan-y pinch-zoom;
   }
   .lightbox.active{display:flex;}
   .lightbox img{
     max-width:94vw; max-height:90vh; cursor:zoom-in;
-    transition:transform .25s ease; transform-origin:center center;
+    transition:max-width .25s ease, max-height .25s ease;
+    margin:auto;
   }
-  .lightbox img.zoomed{transform:scale(1.6); cursor:zoom-out;}
+  .lightbox.zoomed{align-items:flex-start; justify-content:flex-start; cursor:auto;}
+  .lightbox img.zoomed{max-width:none; max-height:none; width:220vw; height:auto; cursor:zoom-out;}
   .lightbox-close{
     position:absolute; top:22px; right:34px; color:var(--yellow); font-size:2.4rem;
     font-family:'DotGothic16',monospace; cursor:pointer; line-height:1; z-index:20001;
@@ -192,11 +195,15 @@
     lbImg.addEventListener('click', function(e){
       e.stopPropagation();
       lbImg.classList.toggle('zoomed');
+      lb.classList.toggle('zoomed', lbImg.classList.contains('zoomed'));
+      lb.scrollTop = 0;
+      lb.scrollLeft = 0;
     });
 
     function closeLightbox(){
       lb.classList.remove('active');
       lbImg.classList.remove('zoomed');
+      lb.classList.remove('zoomed');
     }
     closeBtn.addEventListener('click', closeLightbox);
     lb.addEventListener('click', function(e){ if(e.target === lb) closeLightbox(); });
