@@ -5,12 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>CHARACTER — CARRIER</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=DotGothic16&family=VT323&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DotGothic16&family=VT323&display=swap" rel="stylesheet">
 <style>
   :root{
     --black:#0a0a0a; --panel:#161616; --panel2:#1c1c1c;
     --red:#c81d1d; --brightred:#e8341f; --darkred:#6e1010;
     --yellow:#f2c14e; --grey:#9a9a9a; --white:#eee8dc;
+    --role-green:#3fae4a; --role-blue:#3f8cd4; --role-orange:#d97a2b;
+    --role-olive:#8f9c3f; --role-gold:#d9a72b; --border:#2a2a2a;
   }
   *{box-sizing:border-box;margin:0;padding:0;}
   html{scroll-behavior:smooth;}
@@ -52,37 +54,107 @@
   }
   .post-header h1{font-size:clamp(1.4rem,4vw,2.1rem); color:var(--brightred); text-shadow:3px 3px 0 #000; margin-bottom:14px; line-height:1.5;}
   .post-header .subtag{color:var(--yellow); font-size:0.85rem; letter-spacing:1px; text-transform:uppercase;}
+  .post-header .tag::after{
+    content:"_"; margin-left:3px; animation:cursorblink 1s steps(1) infinite;
+  }
+  @keyframes cursorblink{ 50%{ opacity:0; } }
 
-  .stack{max-width:900px; margin:0 auto; padding:50px 6% 40px;}
-  .stack-item{margin:0 0 36px; text-align:center;}
-  .stack-item img{
-    display:block; width:100%; height:auto; margin:0 auto; cursor:zoom-in;
-    transition:filter .2s;
-  }
-  .stack-item img:hover{filter:brightness(1.06);}
+  /* ---------- role list ---------- */
+  .role-list{max-width:900px; margin:0 auto; padding:50px 100px 60px 6%; position:relative;}
 
-  .lightbox{
-    position:fixed; inset:0; background:rgba(5,5,5,0.94); display:none;
-    align-items:center; justify-content:center; z-index:20000; padding:24px; cursor:zoom-out;
-    overflow:auto; -webkit-overflow-scrolling:touch; touch-action:pan-x pan-y pinch-zoom;
+  .role{
+    display:flex; gap:36px; align-items:flex-start;
+    padding:56px 0; border-bottom:1px solid var(--border);
+    will-change:transform,opacity;
+    transform-origin:left center;
+    transition:transform .15s linear, opacity .15s linear;
   }
-  .lightbox.active{display:flex;}
-  .lightbox img{
-    max-width:94vw; max-height:90vh; cursor:zoom-in;
-    transition:max-width .25s ease, max-height .25s ease;
-    margin:auto;
+  .role:last-child{border-bottom:none;}
+
+  .card{
+    flex:0 0 220px;
+    border:2px solid var(--role-color, var(--red));
+    background:var(--panel);
+    overflow:hidden; border-radius:10px; cursor:pointer;
+    transition:transform .12s steps(3), box-shadow .12s steps(3);
   }
-  .lightbox.zoomed{align-items:flex-start; justify-content:flex-start; cursor:auto;}
-  .lightbox img.zoomed{max-width:none; max-height:none; width:220vw; height:auto; cursor:zoom-out;}
-  .lightbox-close{
-    position:absolute; top:22px; right:34px; color:var(--yellow); font-size:2.4rem;
-    font-family:'DotGothic16',monospace; cursor:pointer; line-height:1; z-index:20001;
+  .card:hover{
+    transform:translate(-3px,-3px);
+    box-shadow:5px 5px 0 var(--role-color, var(--red));
   }
-  .lightbox-close:hover{color:var(--red);}
-  .lightbox-hint{
-    position:absolute; bottom:18px; left:0; right:0; text-align:center;
-    color:var(--grey); font-size:0.65rem; letter-spacing:0.5px; text-transform:uppercase;
-    font-family:'DotGothic16',monospace; pointer-events:none;
+  .card img, .modal img{
+    image-rendering:pixelated; image-rendering:-moz-crisp-edges; image-rendering:crisp-edges;
+  }
+  .card img{
+    display:block; width:100%; aspect-ratio:900/1221; object-fit:cover; background:#000;
+  }
+
+  .info{flex:1; min-width:0;}
+  .info h2{
+    font-family:'Bebas Neue','Arial Narrow',sans-serif; font-weight:400;
+    font-size:clamp(2.2rem,4.4vw,3.1rem); letter-spacing:1.5px;
+    margin-bottom:14px; color:var(--role-color, var(--red));
+    text-shadow:2px 2px 0 #000;
+  }
+  .info p{font-size:1.1rem; line-height:1.6; color:var(--white); margin-bottom:16px;}
+  .ability-name{
+    display:inline-block;
+    background:var(--role-color, var(--red)); color:var(--role-text,#000);
+    font-family:'DotGothic16',monospace; font-size:0.75rem;
+    letter-spacing:1px; text-transform:uppercase;
+    padding:8px 14px; margin-bottom:12px; border-radius:4px;
+  }
+  .rules{
+    font-family:'VT323',monospace; font-size:0.95rem;
+    color:var(--grey); border-left:2px dashed var(--role-color, var(--red));
+    padding-left:12px; line-height:1.6;
+  }
+  .rules div:not(.ability-name){display:flex; gap:8px; align-items:flex-start; margin-bottom:4px;}
+  .rules div:not(.ability-name) span.ic{
+    flex:0 0 auto; color:var(--role-text,#000); background:var(--role-color, var(--red));
+    display:inline-flex; align-items:center; justify-content:center;
+    width:18px; height:18px; font-size:0.7rem; margin-top:3px;
+  }
+
+  /* right-side navigator */
+  nav.navigator{
+    position:fixed; top:50%; right:24px; transform:translateY(-50%);
+    display:flex; flex-direction:column; gap:12px; z-index:10;
+  }
+  nav.navigator button{
+    all:unset; cursor:pointer; box-sizing:border-box;
+    font-family:'DotGothic16',monospace; font-size:0.65rem; color:#5a5a5a;
+    width:30px; height:26px; display:flex; align-items:center; justify-content:center;
+    background:var(--panel); border:1px solid var(--border); border-radius:4px;
+    transition:color .1s, background .1s, transform .1s;
+  }
+  nav.navigator button.active{
+    color:var(--btn-text,#000); background:var(--btn-color, var(--red)); border-color:var(--btn-color, var(--red));
+    transform:scale(1.15);
+  }
+  nav.navigator button:hover{color:var(--white); border-color:var(--btn-color, var(--red));}
+
+  @media (max-width:900px){
+    .role-list{padding:40px 6% 100px;}
+    .role{
+      flex-direction:column; align-items:center; text-align:center;
+      gap:18px; padding:36px 0; transform-origin:center top;
+    }
+    .card{flex:0 0 auto; width:min(240px,70vw);}
+    .info p, .rules{text-align:left;}
+
+    nav.navigator{
+      top:auto; bottom:0; right:0; left:0; transform:none;
+      flex-direction:row; justify-content:center; gap:4px;
+      background:linear-gradient(0deg,#0a0a0aee,#0a0a0a99 80%,transparent);
+      padding:10px 8px calc(10px + env(safe-area-inset-bottom));
+      overflow-x:auto;
+    }
+    nav.navigator button{
+      font-size:0.65rem; min-width:34px; min-height:32px; width:34px; height:32px;
+      flex:0 0 auto;
+    }
+    nav.navigator button.active{transform:scale(1.1);}
   }
 
   .back-link{
@@ -105,25 +177,67 @@
   @keyframes crtflicker{
     0%,100%{opacity:0.85;} 92%{opacity:0.85;} 93%{opacity:0.55;} 94%{opacity:0.85;} 96%{opacity:0.65;} 97%{opacity:0.85;}
   }
-  .post-header .tag::after{
-    content:"_"; margin-left:3px; animation:cursorblink 1s steps(1) infinite;
-  }
-  @keyframes cursorblink{ 50%{ opacity:0; } }
 
-  @media (max-width:560px){
-    .stack{padding-top:34px;}
-    .stack-item{margin-bottom:26px;}
+  ::selection{background:var(--red); color:#000;}
+  ::-webkit-scrollbar{width:12px;}
+  ::-webkit-scrollbar-track{background:var(--black);}
+  ::-webkit-scrollbar-thumb{background:#333; border:2px solid var(--black);}
+  ::-webkit-scrollbar-thumb:hover{background:var(--red);}
+
+  /* ---------- modal ---------- */
+  .modal-overlay{
+    position:fixed; inset:0; background:rgba(5,5,5,0.94);
+    display:flex; align-items:center; justify-content:center;
+    padding:24px; z-index:20000;
+    opacity:0; pointer-events:none; transition:opacity .2s;
   }
+  .modal-overlay.open{opacity:1; pointer-events:auto;}
+
+  .modal{
+    background:var(--panel); border:2px solid var(--role-color, var(--red));
+    max-width:640px; width:100%; max-height:88vh; border-radius:12px;
+    overflow-y:auto; position:relative;
+    display:flex; align-items:flex-start; gap:24px; padding:28px;
+    transform:scale(.94); transition:transform .2s;
+  }
+  .modal-overlay.open .modal{transform:scale(1);}
+
+  .modal img{
+    flex:0 0 260px; width:260px; height:auto;
+    aspect-ratio:900/1221; object-fit:contain; border-radius:8px;
+    border:2px solid var(--role-color, var(--red)); background:#000;
+  }
+  .modal .modal-body{flex:1; min-width:0;}
+  .modal .modal-body h2{
+    font-family:'Bebas Neue','Arial Narrow',sans-serif; font-weight:400;
+    font-size:2.4rem; letter-spacing:1.5px;
+    color:var(--role-color, var(--red)); margin-bottom:14px; text-shadow:2px 2px 0 #000;
+  }
+  .modal .modal-body p{font-size:1rem; line-height:1.55; margin-bottom:14px;}
+  .modal .rules{font-size:0.9rem;}
+
+  .modal-close{
+    all:unset; position:absolute; top:14px; right:14px; cursor:pointer;
+    font-family:'DotGothic16',monospace; font-size:1rem; color:var(--grey);
+    line-height:1; width:28px; height:28px; border-radius:4px;
+    display:flex; align-items:center; justify-content:center;
+    background:#000; border:1px solid var(--border);
+  }
+  .modal-close:hover{color:var(--role-text,#000); background:var(--role-color, var(--red)); border-color:var(--role-color, var(--red));}
+
   @media (max-width:640px){
+    .modal{flex-direction:column; padding:20px; max-height:92vh;}
+    .modal img{width:100%; flex:0 0 auto;}
+
     .nav-toggle{display:block;}
-    nav{
+    nav#mainNav{
       display:none; position:absolute; top:100%; left:0; right:0;
       flex-direction:column; gap:2px; padding:10px 6% 18px;
       background:rgba(10,10,10,0.98); border-bottom:2px solid var(--darkred);
       z-index:10000;
     }
-    nav.open{display:flex;}
-    nav a{margin-left:0; padding:12px 0; font-size:0.8rem; border-bottom:1px solid #2b2b2b;}
+    nav#mainNav.open{display:flex;}
+    nav#mainNav a{margin-left:0; padding:12px 0; font-size:0.8rem; border-bottom:1px solid #2b2b2b;}
   }
 </style>
 </head>
@@ -151,28 +265,317 @@
   <div class="subtag">[PUBLIC ROLE]</div>
 </div>
 
-<div class="stack">
-<!-- STACK_ITEMS_START -->
-  <div class="stack-item"><img src="images/01.png" alt="TRACER" loading="lazy"></div>
-  <div class="stack-item"><img src="images/02.png" alt="INSPECTOR" loading="lazy"></div>
-  <div class="stack-item"><img src="images/03.png" alt="ENFORCER" loading="lazy"></div>
-  <div class="stack-item"><img src="images/04.png" alt="FORAGER" loading="lazy"></div>
-  <div class="stack-item"><img src="images/05.png" alt="BLACKSMITH" loading="lazy"></div>
-  <div class="stack-item"><img src="images/06.png" alt="SURVIVALIST" loading="lazy"></div>
-  <div class="stack-item"><img src="images/07.png" alt="BRAWLER" loading="lazy"></div>
-  <div class="stack-item"><img src="images/08.png" alt="DUELIST" loading="lazy"></div>
-  <div class="stack-item"><img src="images/09.png" alt="DEADEYE" loading="lazy"></div>
-  <div class="stack-item"><img src="images/10.png" alt="TRICKSTER" loading="lazy"></div>
-  <div class="stack-item"><img src="images/11.png" alt="PROSPECTOR" loading="lazy"></div>
-  <div class="stack-item"><img src="images/12.png" alt="STRANGER" loading="lazy"></div>
-  <div class="stack-item"><img src="images/13.png" alt="PATHFINDER" loading="lazy"></div>
-  <div class="stack-item"><img src="images/14.png" alt="SURVEYOR" loading="lazy"></div>
-  <div class="stack-item"><img src="images/15.png" alt="OUTRUNNER" loading="lazy"></div>
-  <div class="stack-item"><img src="images/16.png" alt="OUTLANDER" loading="lazy"></div>
-  <div class="stack-item"><img src="images/17.png" alt="VIROLOGIST" loading="lazy"></div>
-  <div class="stack-item"><img src="images/18.png" alt="GENETICIST" loading="lazy"></div>
-<!-- STACK_ITEMS_END -->
-</div>
+<main class="role-list" id="main">
+
+  <section class="role" data-nav="TR" style="--role-color:var(--red);--role-text:#fff">
+    <div class="card">
+      <img src="images/01.png" alt="Tracer">
+    </div>
+    <div class="info">
+      <h2>TRACER</h2>
+      <p>[ACTIVE] Choose the First Player. Take their hand and examine every card in it, then return it to them. Then choose the Second Player, take their hand, examine it, and return it.</p>
+      <p>Both must happen in the same turn. You can't examine the First Player now and save the Second Player for a later Daybreak.</p>
+      <div class="rules">
+        <div class="ability-name">Intercept</div>
+        <div><span class="ic">▲</span>Can only be used during "Daybreak" phase.</div>
+        <div><span class="ic">◆</span>Can be used once per game.</div>
+        <div><span class="ic">?</span>Take and examine all hand cards of 2 players of your choice.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="role" data-nav="IN" style="--role-color:var(--red);--role-text:#fff">
+    <div class="card">
+      <img src="images/02.png" alt="Inspector">
+    </div>
+    <div class="info">
+      <h2>INSPECTOR</h2>
+      <p>[ACTIVE] Choose two other players. You may not choose yourself. Designate one as the Checker and the other as the Target. The Checker takes the Target's secret role and examines it, then it's returned face-down. Only the Checker sees it, no one else at the table.</p>
+      <p>This can only happen once per game, during Nightfall, and both choices — who checks and who's checked — are made in the same turn.</p>
+      <div class="rules">
+        <div class="ability-name">Delegate</div>
+        <div><span class="ic">▲</span>Can only be used during "Nightfall" phase.</div>
+        <div><span class="ic">◆</span>Can be used once per game.</div>
+        <div><span class="ic">?</span>Select 2 players and designate a player to check the secret role of the other.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="role" data-nav="EN" style="--role-color:var(--red);--role-text:#fff">
+    <div class="card">
+      <img src="images/03.png" alt="Enforcer">
+    </div>
+    <div class="info">
+      <h2>ENFORCER</h2>
+      <p>[ACTIVE] Investigate triggers after an Escape nomination fails. The Enforcer may then view the secret role of one of the nominated players, but only on his own next turn. Can be used during Daybreak or Nightfall, but only once per game.</p>
+      <p>If the failed nomination happens before his turn, he can investigate that same turn; if it happens after his turn, he has to wait until his next turn comes around.</p>
+      <div class="rules">
+        <div class="ability-name">Investigate</div>
+        <div><span class="ic">▲</span>Can be used during "Daybreak" &amp; "Nightfall".</div>
+        <div><span class="ic">◆</span>Can be used once per game.</div>
+        <div><span class="ic">?</span>After an unsuccessful Escape nomination, you may view the secret role of a nominated player on your next turn.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="role" data-nav="FO" style="--role-color:var(--role-green)">
+    <div class="card">
+      <img src="images/04.png" alt="Forager">
+    </div>
+    <div class="info">
+      <h2>FORAGER</h2>
+      <p>[ACTIVE] Allocate lets the Forager draw 6 cards from the discard pile and hand out Supplies among them to any player(s) of her choice. Any Encounter cards drawn this way are set right back into the discard pile. Can only be used during Daybreak, and up to twice per game.</p>
+      <p>This is one of the few ways to recover resources the party already burned through, so save it for when supplies are genuinely running low rather than early when the discard pile is thin.</p>
+      <div class="rules">
+        <div class="ability-name">Allocate</div>
+        <div><span class="ic">▲</span>Can only be used during "Daybreak" phase.</div>
+        <div><span class="ic">◆</span>Can be used twice per game.</div>
+        <div><span class="ic">?</span>Draw 6 cards from the discard pile and give the Supplies to any player(s). Return any Encounter cards to the discard pile.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="role" data-nav="BL" style="--role-color:var(--role-green)">
+    <div class="card">
+      <img src="images/05.png" alt="Blacksmith">
+    </div>
+    <div class="info">
+      <h2>BLACKSMITH</h2>
+      <p>[ACTIVE] Reforge lets the Blacksmith shuffle the discard pile and draw 3 cards. Take a single Supply card drawn this way to either keep for yourself or give away to another player. Any non-Supply cards are returned. Can only be used during Daybreak, but can be used multiple times.</p>
+      <p>Unlike the Forager's bigger but capped haul, the Blacksmith trades scale for repetition — smaller yield, no limit.</p>
+      <div class="rules">
+        <div class="ability-name">Reforge</div>
+        <div><span class="ic">▲</span>Can only be used during "Daybreak" phase.</div>
+        <div><span class="ic">◆</span>Can be used multiple times.</div>
+        <div><span class="ic">?</span>Shuffle the discard pile, draw 3 cards. Take a Supply card to keep or give away. If no Supply is drawn, no card is taken.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="role" data-nav="SU" style="--role-color:var(--role-green)">
+    <div class="card">
+      <img src="images/06.png" alt="Survivalist">
+    </div>
+    <div class="info">
+      <h2>SURVIVALIST</h2>
+      <p>[PASSIVE] Whenever a Zombie Encounter the Survivalist takes part in succeeds, the Survivalist is refunded a random Supply card. Permanent passive ability, but only in effect during Daybreak.</p>
+      <p>It doesn't matter whether the Survivalist joined by their own choice or someone else's. If another player is leading the Encounter and picks the Survivalist to come along, the refund still triggers on success.</p>
+      <div class="rules">
+        <div class="ability-name">Recover</div>
+        <div><span class="ic">▲</span>Can only be used during "Daybreak" phase.</div>
+        <div><span class="ic">◆</span>Permanent passive ability.</div>
+        <div><span class="ic">?</span>Whenever a Zombie Encounter the Survivalist takes part in succeeds, the Survivalist is refunded a random Supply card.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="role" data-nav="BR" style="--role-color:var(--role-blue)">
+    <div class="card">
+      <img src="images/07.png" alt="Brawler">
+    </div>
+    <div class="info">
+      <h2>BRAWLER</h2>
+      <p>[ACTIVE] When the Brawler confronts an Encounter alone, every card he contributes counts as double value. This can only be triggered during Daybreak, and only once per game.</p>
+      <p>Because it's a single use, save it for an Encounter you're genuinely tackling solo and where the extra value matters, not one you'd have cleared easily anyway.</p>
+      <div class="rules">
+        <div class="ability-name">Berserk</div>
+        <div><span class="ic">▲</span>Can be used during "Daybreak" &amp; "Nightfall".</div>
+        <div><span class="ic">◆</span>Can be used once per game.</div>
+        <div><span class="ic">?</span>When confronting an Encounter alone, each card you contribute counts as double value.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="role" data-nav="DU" style="--role-color:var(--role-blue)">
+    <div class="card">
+      <img src="images/08.png" alt="Duelist">
+    </div>
+    <div class="info">
+      <h2>DUELIST</h2>
+      <p>[PASSIVE] Whenever the Duelist is chosen to take part in an Encounter, he may choose to contribute either 1 or 2 cards to it, instead of being locked into only giving one. This is a permanent passive ability, active during Daybreak.</p>
+      <p>This flexibility lets him hold back and conserve his hand when the Encounter doesn't need much, or commit an extra card when it's close to failing. Worth factoring into how the party plans its contributions each round.</p>
+      <div class="rules">
+        <div class="ability-name">Dexterous</div>
+        <div><span class="ic">▲</span>Can only be used during "Daybreak" phase.</div>
+        <div><span class="ic">◆</span>Permanent passive ability.</div>
+        <div><span class="ic">?</span>When chosen for any Encounters, you choose to contribute 1 or 2 cards.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="role" data-nav="DE" style="--role-color:var(--role-blue)">
+    <div class="card">
+      <img src="images/09.png" alt="Deadeye">
+    </div>
+    <div class="info">
+      <h2>DEADEYE</h2>
+      <p>[ACTIVE] Longshot lets the Deadeye reduce the damage required to beat a drawn Encounter by 2 points. It doesn't matter who drew the Encounter, any player's draw can trigger it, as long as it happens during Daybreak. Can be used up to twice per game.</p>
+      <p>Because it works off anyone's draw, Deadeye doesn't need to be leading or even part of the Encounter to use it.</p>
+      <div class="rules">
+        <div class="ability-name">Longshot</div>
+        <div><span class="ic">▲</span>Can only be used during "Daybreak" phase.</div>
+        <div><span class="ic">◆</span>Can be used twice per game.</div>
+        <div><span class="ic">?</span>Whenever an Encounter is drawn, use this ability to reduce the damage required by 2 points.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="role" data-nav="TK" style="--role-color:var(--role-orange)">
+    <div class="card">
+      <img src="images/10.png" alt="Trickster">
+    </div>
+    <div class="info">
+      <h2>TRICKSTER</h2>
+      <p>[ACTIVE] Imitate lets the Trickster swap character cards with another player. Once a swap happens, that player becomes the new Trickster, and whoever used to hold the Trickster card cannot be targeted by Imitate again. This can only be used during Nightfall, and has no limit on total uses, so long as a valid target remains.</p>
+      <p>The Imitate ability does not work on Amnesiacs.</p>
+      <div class="rules">
+        <div class="ability-name">Imitate</div>
+        <div><span class="ic">▲</span>Can only be used during "Nightfall" phase.</div>
+        <div><span class="ic">◆</span>Can be used multiple times.</div>
+        <div><span class="ic">?</span>Swap character cards with another player. Previous Tricksters cannot be targeted. This ability does not affect Amnesiacs.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="role" data-nav="PR" style="--role-color:var(--role-orange)">
+    <div class="card">
+      <img src="images/11.png" alt="Prospector">
+    </div>
+    <div class="info">
+      <h2>PROSPECTOR</h2>
+      <p>[PASSIVE] Stockpile gives the Prospector a head start. At the start of the game, she searches the deck for 2 Supply cards, adds them to her hand, then shuffles the deck. Her hand limit is 6. This is a permanent passive ability, effective during both Daybreak and Nightfall.</p>
+      <p>Because this only triggers once, at setup, it front-loads her advantage rather than paying off later. She also holds a 6-card hand limit, double the normal limit, so she can keep stockpiling supplies well beyond what other players can carry.</p>
+      <div class="rules">
+        <div class="ability-name">Stockpile</div>
+        <div><span class="ic">▲</span>Effective during "Daybreak" &amp; "Nightfall".</div>
+        <div><span class="ic">◆</span>Permanent passive ability.</div>
+        <div><span class="ic">?</span>Hand limit is 6. At the start of the game, search the deck for 2 Supply cards, add them to your hand, then shuffle the deck.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="role" data-nav="ST" style="--role-color:var(--role-orange)">
+    <div class="card">
+      <img src="images/12.png" alt="Stranger">
+    </div>
+    <div class="info">
+      <h2>STRANGER</h2>
+      <p>[PASSIVE] Elude makes the Stranger permanently unreadable. His secret role and inventory can never be checked by any other player's ability, effective during both Daybreak and Nightfall.</p>
+      <p>[ACTIVE] Flashback makes up for it by learning about others instead. During Daybreak, he may look at one other player's secret role, once per turn, up to 3 times total per game.</p>
+      <div class="rules">
+        <div class="ability-name">Elude</div>
+        <div><span class="ic">▲</span>Effective during "Daybreak" &amp; "Nightfall".</div>
+        <div><span class="ic">◆</span>Permanent passive ability.</div>
+        <div><span class="ic">?</span>Your secret role and inventory can never be checked by any player.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="role" data-nav="PA" style="--role-color:var(--role-olive)">
+    <div class="card">
+      <img src="images/13.png" alt="Pathfinder">
+    </div>
+    <div class="info">
+      <h2>PATHFINDER</h2>
+      <p>[ACTIVE] When you activate this ability, you may look at the next 6 Encounter cards from the top of the deck and rearrange them in any order you like, then place them back on top of the deck. This can only be done during Daybreak, and only once per game.</p>
+      <p>Remember, after using your ability, you will draw your card for the turn as normal, so whatever you place on top becomes your draw. Plan your order with that in mind.</p>
+      <div class="rules">
+        <div class="ability-name">Scout</div>
+        <div><span class="ic">▲</span>Can only be used during "Daybreak" phase.</div>
+        <div><span class="ic">◆</span>Can be used once per game.</div>
+        <div><span class="ic">?</span>Look at and rearrange the next 6 Encounter cards from the top of the deck.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="role" data-nav="SY" style="--role-color:var(--role-olive)">
+    <div class="card">
+      <img src="images/14.png" alt="Surveyor">
+    </div>
+    <div class="info">
+      <h2>SURVEYOR</h2>
+      <p>[ACTIVE] Lookout lets the Surveyor look at the next 3 Encounter cards from the top of the deck, then place them back in the same order. Nothing is rearranged, this is purely information. Can only be used during Daybreak, with no limit on uses.</p>
+      <p>Unlike abilities that let you reorder the deck, this just tells you what's coming so the party can plan around it — brace for a tough Encounter, hold back resources, or push forward knowing an easy one is next.</p>
+      <div class="rules">
+        <div class="ability-name">Lookout</div>
+        <div><span class="ic">▲</span>Can only be used during "Daybreak" phase.</div>
+        <div><span class="ic">◆</span>Can be used multiple times.</div>
+        <div><span class="ic">?</span>Look at the next 3 Encounter cards from the top of the deck, then place them back in the same order.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="role" data-nav="OU" style="--role-color:var(--role-olive)">
+    <div class="card">
+      <img src="images/15.png" alt="Outrunner">
+    </div>
+    <div class="info">
+      <h2>OUTRUNNER</h2>
+      <p>[ACTIVE] Evade lets the Outrunner dodge a drawn Encounter entirely. Whenever an Encounter is drawn, he may reshuffle it back into the Encounter deck instead of resolving it. Can be used during Daybreak or Nightfall, up to twice per game.</p>
+      <p>This works on any drawn Encounter, not just his own, so it can bail out another player facing something the party isn't ready for. Save both uses for the moments that would genuinely hurt.</p>
+      <div class="rules">
+        <div class="ability-name">Evade</div>
+        <div><span class="ic">▲</span>Can be used during "Daybreak" &amp; "Nightfall".</div>
+        <div><span class="ic">◆</span>Can be used twice per game.</div>
+        <div><span class="ic">?</span>Whenever an Encounter is drawn, you may use this ability to reshuffle the card back into the Encounter deck.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="role" data-nav="OL" style="--role-color:var(--role-orange)">
+    <div class="card">
+      <img src="images/16.png" alt="Outlander">
+    </div>
+    <div class="info">
+      <h2>OUTLANDER</h2>
+      <p>[PASSIVE] As an Amnesiac, the Outlander is never allowed to look at his own secret role. Once a player receives this character, they must set that role aside without checking it and play the rest of the game not knowing their own identity.</p>
+      <p>[ACTIVE] Flashback makes up for it by learning about others instead. During Daybreak, he may look at one other player's secret role, once per turn, up to 3 times total per game.</p>
+      <div class="rules">
+        <div class="ability-name">Flashback</div>
+        <div><span class="ic">▲</span>Can only be used during "Daybreak" phase.</div>
+        <div><span class="ic">◆</span>Can be used twice per game.</div>
+        <div><span class="ic">?</span>You look at another player's secret role.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="role" data-nav="VI" style="--role-color:var(--role-gold)">
+    <div class="card">
+      <img src="images/17.png" alt="Virologist">
+    </div>
+    <div class="info">
+      <h2>VIROLOGIST</h2>
+      <p>[ACTIVE] Diagnose lets the Virologist discard 3 cards to check a player's secret role card. Can only be used during Daybreak, and up to once per turn.</p>
+      <p>The cost is steep, 3 cards for a single check, so it works best when narrowing down a specific suspicion rather than fishing blind. Since it's once per turn rather than once per game, a well-stocked Virologist can still diagnose multiple players over the course of the game.</p>
+      <div class="rules">
+        <div class="ability-name">Diagnose</div>
+        <div><span class="ic">▲</span>Can only be used during "Daybreak" phase.</div>
+        <div><span class="ic">◆</span>Can be used once per turn.</div>
+        <div><span class="ic">?</span>Discard 3 cards to check a player's secret role card.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="role" data-nav="GE" style="--role-color:var(--role-gold)">
+    <div class="card">
+      <img src="images/18.png" alt="Geneticist">
+    </div>
+    <div class="info">
+      <h2>GENETICIST</h2>
+      <p>[ACTIVE] Profile lets the Geneticist ask another player to reveal his secret role to him. If that player agrees, the Geneticist must also reveal his own secret role in return. Can only be used during Daybreak, and only once per game.</p>
+      <p>Unlike other role-checking abilities, this one is mutual and voluntary, the target can simply refuse. It works best on someone you already trust or someone who has just as much reason to want a trade.</p>
+      <div class="rules">
+        <div class="ability-name">Profile</div>
+        <div><span class="ic">▲</span>Can only be used during "Daybreak" phase.</div>
+        <div><span class="ic">◆</span>Can be used once per game.</div>
+        <div><span class="ic">?</span>Ask a player to reveal his secret role to you. If he agrees, you also reveal your secret role to him.</div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<nav class="navigator" id="navigator"></nav>
 
 <a class="back-link" href="../../index.html#brief">← Back to Mission Brief</a>
 
@@ -183,44 +586,20 @@
   <p style="margin-top:12px;">© 2026 CARRIER — a survival board game in development.</p>
 </footer>
 
-<div class="lightbox" id="lightbox">
-  <span class="lightbox-close" id="lightboxClose">&times;</span>
-  <img id="lightboxImg" src="" alt="">
-  <span class="lightbox-hint">Click image to zoom · Click outside or press Esc to close</span>
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal" id="modal">
+    <button class="modal-close" id="modalClose" aria-label="Close">✕</button>
+    <img id="modalImg" src="" alt="">
+    <div class="modal-body">
+      <h2 id="modalTitle"></h2>
+      <div id="modalText"></div>
+      <div class="rules" id="modalRules"></div>
+    </div>
+  </div>
 </div>
 
 <script>
   (function(){
-    var lb = document.getElementById('lightbox');
-    var lbImg = document.getElementById('lightboxImg');
-    var closeBtn = document.getElementById('lightboxClose');
-
-    document.querySelectorAll('.stack-item img').forEach(function(img){
-      img.addEventListener('click', function(){
-        lbImg.src = img.getAttribute('src');
-        lbImg.alt = img.getAttribute('alt') || '';
-        lbImg.classList.remove('zoomed');
-        lb.classList.add('active');
-      });
-    });
-
-    lbImg.addEventListener('click', function(e){
-      e.stopPropagation();
-      lbImg.classList.toggle('zoomed');
-      lb.classList.toggle('zoomed', lbImg.classList.contains('zoomed'));
-      lb.scrollTop = 0;
-      lb.scrollLeft = 0;
-    });
-
-    function closeLightbox(){
-      lb.classList.remove('active');
-      lbImg.classList.remove('zoomed');
-      lb.classList.remove('zoomed');
-    }
-    closeBtn.addEventListener('click', closeLightbox);
-    lb.addEventListener('click', function(e){ if(e.target === lb) closeLightbox(); });
-    document.addEventListener('keydown', function(e){ if(e.key === 'Escape') closeLightbox(); });
-
     var navToggle = document.getElementById('navToggle');
     var mainNav = document.getElementById('mainNav');
     if (navToggle && mainNav){
@@ -236,6 +615,106 @@
       });
     }
   })();
+
+  const roles = Array.from(document.querySelectorAll('.role'));
+  const navEl = document.getElementById('navigator');
+
+  // build side-navigator buttons from data-nav
+  roles.forEach((r) => {
+    const btn = document.createElement('button');
+    btn.textContent = r.dataset.nav;
+    const color = r.style.getPropertyValue('--role-color');
+    const text = r.style.getPropertyValue('--role-text');
+    if (color) btn.style.setProperty('--btn-color', color);
+    if (text) btn.style.setProperty('--btn-text', text);
+    btn.addEventListener('click', () => {
+      r.scrollIntoView({behavior:'smooth', block:'center'});
+    });
+    navEl.appendChild(btn);
+    r._navBtn = btn;
+  });
+
+  let ticking = false;
+
+  function update(){
+    const vh = window.innerHeight;
+    const center = vh / 2;
+    let closest = null, closestDist = Infinity;
+
+    roles.forEach(r => {
+      const rect = r.getBoundingClientRect();
+      const rCenter = rect.top + rect.height / 2;
+      const dist = Math.abs(center - rCenter);
+
+      // map distance -> scale (closer to center = bigger)
+      const norm = Math.min(dist / (vh * 0.7), 1); // 0 = centered, 1 = far
+      const scale = 1.12 - norm * 0.3;   // 1.12 down to 0.82
+      const opacity = 1 - norm * 0.55;   // 1 down to 0.45
+
+      r.style.transform = `scale(${scale})`;
+      r.style.opacity = opacity;
+
+      if (dist < closestDist){ closestDist = dist; closest = r; }
+    });
+
+    roles.forEach(r => r._navBtn.classList.toggle('active', r === closest));
+    ticking = false;
+  }
+
+  window.addEventListener('scroll', () => {
+    if (!ticking){
+      requestAnimationFrame(update);
+      ticking = true;
+    }
+  });
+  window.addEventListener('resize', update);
+  update();
+
+  // ---------- card modal ----------
+  const overlay = document.getElementById('modalOverlay');
+  const modal = document.getElementById('modal');
+  const modalImg = document.getElementById('modalImg');
+  const modalTitle = document.getElementById('modalTitle');
+  const modalText = document.getElementById('modalText');
+  const modalRules = document.getElementById('modalRules');
+  const modalClose = document.getElementById('modalClose');
+  let lastFocused = null;
+
+  function openModal(role){
+    const color = role.style.getPropertyValue('--role-color') || 'var(--red)';
+    const text = role.style.getPropertyValue('--role-text') || '#000';
+    modal.style.setProperty('--role-color', color);
+    modal.style.setProperty('--role-text', text);
+    modalImg.src = role.querySelector('img').src;
+    modalImg.alt = role.querySelector('img').alt;
+    modalTitle.textContent = role.querySelector('h2').textContent;
+    modalText.innerHTML = Array.from(role.querySelectorAll('.info > p'))
+      .map(p => `<p>${p.innerHTML}</p>`).join('');
+    modalRules.innerHTML = role.querySelector('.rules').innerHTML;
+
+    lastFocused = document.activeElement;
+    overlay.classList.add('open');
+    modalClose.focus();
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal(){
+    overlay.classList.remove('open');
+    document.body.style.overflow = '';
+    if (lastFocused) lastFocused.focus();
+  }
+
+  roles.forEach(r => {
+    r.querySelector('.card').addEventListener('click', () => openModal(r));
+  });
+
+  modalClose.addEventListener('click', closeModal);
+  overlay.addEventListener('click', e => {
+    if (e.target === overlay) closeModal();
+  });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && overlay.classList.contains('open')) closeModal();
+  });
 </script>
 
 </body>
