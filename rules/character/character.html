@@ -74,6 +74,12 @@
   .role:last-child{border-bottom:none;}
   .role-inner{display:flex; gap:36px; align-items:flex-start;}
 
+  /* native scroll-snap for touch devices — desktop wheel scrolling is handled entirely in JS instead */
+  @media (hover:none) and (pointer:coarse){
+    html{scroll-snap-type:y mandatory;}
+    .role{scroll-snap-align:center;}
+  }
+
   .card{
     flex:0 0 300px;
     border:2px solid var(--role-color, var(--red));
@@ -685,6 +691,21 @@
   const navPrev = document.getElementById('navPrev');
   const navNext = document.getElementById('navNext');
 
+  // touch devices use native scrolling everywhere, including nav taps — mixing our custom
+  // JS scroll animation with the browser's own CSS scroll-snap is what caused the previous
+  // "moves then snaps back" bugs, so keep them fully separate.
+  function isTouchDevice(){
+    return window.matchMedia('(hover: none) and (pointer: coarse)').matches;
+  }
+  function goToRole(index){
+    index = Math.max(0, Math.min(roles.length - 1, index));
+    if (isTouchDevice()){
+      roles[index].scrollIntoView({ behavior: 'smooth', block: 'center' });
+    } else {
+      snapToRole(index);
+    }
+  }
+
   // build side-navigator buttons from data-nav
   roles.forEach((r, i) => {
     const btn = document.createElement('button');
@@ -698,14 +719,14 @@
     if (color) btn.style.setProperty('--btn-color', color);
     if (text) btn.style.setProperty('--btn-text', text);
     btn.addEventListener('click', () => {
-      snapToRole(i);
+      goToRole(i);
     });
     navTrack.appendChild(btn);
     r._navBtn = btn;
   });
 
   // pad both ends of the strip with clones of the opposite end, so the first/last
-  // button can be perfectly centered too (and the strip reads as an endless loop)
+  // button can be perfectly centered too
   const NAV_CLONE_COUNT = Math.min(6, roles.length - 1);
   function makeNavClone(realIndex){
     const src = roles[realIndex]._navBtn;
@@ -716,7 +737,7 @@
     clone.style.cssText = src.style.cssText;
     clone.tabIndex = -1;
     clone.setAttribute('aria-hidden', 'true');
-    clone.addEventListener('click', () => snapToRole(realIndex));
+    clone.addEventListener('click', () => goToRole(realIndex));
     return clone;
   }
   const leadClones = document.createDocumentFragment();
@@ -827,70 +848,10 @@
     }, 110);
   }, { passive:false });
 
-  // ---------- touch scrolling (mobile): same 1:1 live tracking + snap-on-release ----------
-  function touchIsInsideExcludedArea(target){
-    return !!(target.closest && (
-      target.closest('.navigator') ||
-      target.closest('.modal-overlay') ||
-      target.closest('#mainNav')
-    ));
-  }
-
-  let touchActive = false;
-  let touchLastY = 0;
-  let touchOverscroll = 0; // how far past the last/first card the user is pulling (for wraparound)
-  const WRAP_PULL_THRESHOLD = 50; // px of pull past the edge needed to commit to wrapping
-
-  window.addEventListener('touchstart', (e) => {
-    if (e.touches.length !== 1) return;
-    if (touchIsInsideExcludedArea(e.target)) return; // let nav strip / modal / menu scroll normally
-    touchActive = true;
-    touchOverscroll = 0;
-    snapping = false; // cancel any in-progress settle animation
-    touchLastY = e.touches[0].clientY;
-  }, { passive:true });
-
-  window.addEventListener('touchmove', (e) => {
-    if (!touchActive || e.touches.length !== 1) return;
-    e.preventDefault();
-    const y = e.touches[0].clientY;
-    const delta = touchLastY - y; // finger moves up -> scroll down
-    touchLastY = y;
-
-    const current = window.scrollY;
-    const max = maxScrollY();
-    const desired = current + delta;
-
-    if (desired > max){
-      // pulling past the last card — accumulate pull distance instead of scrolling further
-      touchOverscroll = Math.min(touchOverscroll + (desired - max), 140);
-      scrollInstant(max);
-    } else if (desired < 0){
-      // pulling past the first card
-      touchOverscroll = Math.max(touchOverscroll - (0 - desired), -140);
-      scrollInstant(0);
-    } else {
-      touchOverscroll = 0; // back within bounds — cancel any pending wrap
-      scrollInstant(desired);
-    }
-  }, { passive:false });
-
-  function endTouch(){
-    if (!touchActive) return;
-    touchActive = false;
-    if (touchOverscroll > WRAP_PULL_THRESHOLD){
-      touchOverscroll = 0;
-      snapToRole(0); // pulled past Geneticist — loop to Tracer
-    } else if (touchOverscroll < -WRAP_PULL_THRESHOLD){
-      touchOverscroll = 0;
-      snapToRole(roles.length - 1); // pulled past Tracer — loop to Geneticist
-    } else {
-      touchOverscroll = 0;
-      snapToRole(closestRoleIndexAt(window.scrollY));
-    }
-  }
-  window.addEventListener('touchend', endTouch, { passive:true });
-  window.addEventListener('touchcancel', endTouch, { passive:true });
+  // Mobile/touch scrolling intentionally uses the browser's own native scroll + CSS scroll-snap
+  // (see the touch-scoped media query in <style>) instead of custom JS. A hand-rolled touch
+  // handler fights real devices' own momentum/rubber-banding in ways a desktop simulator won't
+  // catch — native scrolling is what actually feels reliable on a phone.
 
   let ticking = false;
 
