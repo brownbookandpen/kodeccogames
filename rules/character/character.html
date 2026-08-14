@@ -73,6 +73,7 @@
 
   .role:last-child{border-bottom:none;}
   .role-inner{display:flex; gap:36px; align-items:flex-start;}
+  .role-bg-art{display:none;} /* mobile-only full-bleed background art; built by JS */
 
   /* native scroll-snap for touch devices — desktop wheel scrolling is handled entirely in JS instead */
   @media (hover:none) and (pointer:coarse){
@@ -150,14 +151,52 @@
   @media (max-width:900px){
     .role-list{padding:40px 6% 100px;}
     .role{
-      padding:36px 0; transform-origin:center top;
+      position:relative; overflow:hidden;
+      padding:48px 22px; transform-origin:center top;
       min-height:calc(100vh - 150px);
+      border-bottom:none;
     }
     .role-inner{
+      position:relative; z-index:1;
       flex-direction:column; align-items:center; text-align:center; gap:18px;
     }
-    .card{flex:0 0 auto; width:min(240px,70vw);}
-    .info p, .rules{text-align:left;}
+
+    /* the boxed thumbnail (full card art incl. its own title/ability text) is replaced by
+       .role-bg-art below on mobile — it's still in the DOM only so tapping opens the modal */
+    .card{
+      position:absolute; inset:0; opacity:0; z-index:2;
+      border:none; cursor:pointer;
+    }
+    .card img{ width:100%; height:100%; }
+
+    /* cropped character-only art (no baked-in text) as a full-bleed background behind the text.
+       Height is capped to a natural, viewport-relative framing rather than stretching to match
+       long-text sections — otherwise "cover" would zoom in absurdly on very tall boxes. Any
+       overflow text below just fades into the plain dark backdrop instead. */
+    .role-bg-art{
+      display:block; position:absolute; top:0; left:50%;
+      width:100vw; height:82vh; margin-left:-50vw;
+      background-size:cover; background-position:center 15%;
+      z-index:0;
+    }
+    /* dark scrim over the art, fading to the page's own background color at the bottom so
+       overflow text (for long entries) blends in seamlessly rather than showing a hard edge */
+    .role-bg-art::after{
+      content:''; position:absolute; inset:0;
+      background:
+        linear-gradient(180deg, rgba(6,6,6,.88) 0%, rgba(6,6,6,.4) 28%, rgba(6,6,6,.6) 65%, var(--black) 100%);
+    }
+
+    .info h2{ text-shadow:0 2px 10px rgba(0,0,0,.95), 2px 2px 0 #000; }
+    .info p{
+      text-align:left;
+      text-shadow:0 1px 6px rgba(0,0,0,.95), 0 0 2px rgba(0,0,0,.9);
+    }
+    .rules{
+      text-align:left;
+      text-shadow:0 1px 5px rgba(0,0,0,.95);
+      border-left-color:var(--role-color, var(--red));
+    }
 
     nav.navigator{
       top:auto; bottom:0; right:0; left:0; transform:none;
@@ -690,6 +729,18 @@
   const navTrack = document.getElementById('navigatorTrack');
   const navPrev = document.getElementById('navPrev');
   const navNext = document.getElementById('navNext');
+
+  // mobile-only background art: a cropped, text-free version of each card image
+  // ("NN-bg.png" alongside the original "NN.png"), shown full-bleed behind the text.
+  roles.forEach(r => {
+    const cardImg = r.querySelector('.card img');
+    if (!cardImg) return;
+    const bgSrc = cardImg.getAttribute('src').replace(/(\.[a-z0-9]+)$/i, '-bg$1');
+    const bgArt = document.createElement('div');
+    bgArt.className = 'role-bg-art';
+    bgArt.style.backgroundImage = `url("${bgSrc}")`;
+    r.insertBefore(bgArt, r.firstChild);
+  });
 
   // touch devices use native scrolling everywhere, including nav taps — mixing our custom
   // JS scroll animation with the browser's own CSS scroll-snap is what caused the previous
