@@ -165,7 +165,19 @@
     .role{
       position:relative; overflow:hidden;
       padding:30px 0 44px; transform-origin:center top;
-      min-height:calc(100vh - 150px);
+      /* Sized in vw, NEVER vh. On a real phone the browser's address bar collapses as you
+         scroll, which changes the viewport height — so any vh-based sizing makes all 18
+         sections silently re-measure mid-gesture, the page's total height changes underneath
+         you, and the browser corrects the scroll position. That correction is felt as
+         "it moves, then suddenly snaps into place". It cannot reproduce in a headless test
+         because there is no collapsing address bar there, which is why this survived so long.
+         vw does not change when the address bar moves, so the layout is now stable mid-scroll.
+         The floor keeps the artwork (145vw tall) from being clipped by overflow:hidden. */
+      min-height:calc(145vw + 60px);
+      /* no will-change on mobile: it pins a separate compositing layer for every one of the
+         18 sections for an animation that only ever runs on desktop — that is real memory
+         pressure on a phone, and it buys nothing here. */
+      will-change:auto;
       border-bottom:none;
       scroll-margin-top:82px; /* keeps the sticky header from covering the top of the section on tap */
     }
@@ -181,8 +193,7 @@
       /* pushed down so the panel starts around the figure's waist — head and torso stay in
          open art, and the art still shows through the glass behind the copy */
       margin-top:52vw;
-      background:rgba(9,9,9,.72);
-      backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px);
+      background:rgba(9,9,9,.80);
       border:1px solid rgba(255,255,255,.07);
       border-radius:12px;
       padding:16px 15px 2px;
@@ -252,8 +263,7 @@
     .rules{
       text-align:left;
       margin-top:18px;
-      background:rgba(9,9,9,.82);
-      backdrop-filter:blur(3px); -webkit-backdrop-filter:blur(3px);
+      background:rgba(9,9,9,.86);
       border:1px solid rgba(255,255,255,.07);
       border-left:3px solid var(--role-color, var(--red));
       border-radius:10px;
@@ -764,6 +774,7 @@
     <a href="#">Instagram</a> · <a href="#">BoardGameGeek</a> · <a href="#">Email</a>
   </div>
   <p style="margin-top:12px;">© 2026 CARRIER — a survival board game in development.</p>
+  <p style="margin-top:8px; font-size:0.6rem; color:#3f3f3f; letter-spacing:1px;">build m7 · 2026-08-14</p>
 </footer>
 
 <div class="modal-overlay" id="modalOverlay">
