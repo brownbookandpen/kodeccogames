@@ -316,6 +316,13 @@
       opacity:1; transition:opacity .5s ease;
     }
     .swipe-hint.hide{ opacity:0; }
+
+    /* The page is a fixed, non-scrolling frame on mobile, so this link had nowhere to sit —
+       it ended up bleeding through behind the bottom nav strip. The header menu already covers
+       getting out of this page.
+       (body-prefixed for specificity: the base .back-link rule is declared *after* this media
+       query in the stylesheet, so a bare .back-link here would lose the cascade tie.) */
+    body .back-link, body footer{ display:none; }
   }
 
   .back-link{
