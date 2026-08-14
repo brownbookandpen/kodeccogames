@@ -171,16 +171,15 @@
     .card img{ width:100%; height:100%; }
 
     /* tall portrait character art (no baked-in text) as a full-bleed background behind the
-       text. The box is taller than the art itself and the art is anchored to the bottom, so
-       a guaranteed gap of plain dark backdrop sits above it — behind the title — regardless
-       of viewport size. The image's own headroom and extended-ground padding (images/NN-sq.png)
-       add extra breathing room on top of that. Overflow text for long entries just fades into
-       the plain dark backdrop below. */
+       text, starting flush with the top of the section (so it lines up right under the sticky
+       header with no dead black gap). The source images (images/NN-sq.png) already have their
+       own headroom baked in above the character, which is what keeps the title clear — no
+       extra CSS-driven gap on top of that. Overflow text for long entries just fades into the
+       plain dark backdrop below. */
     .role-bg-art{
       display:block; position:absolute; top:0; left:50%;
-      width:100vw; height:90vh; margin-left:-50vw;
-      background-size:auto 78vh; background-position:center bottom;
-      background-repeat:no-repeat;
+      width:100vw; height:82vh; margin-left:-50vw;
+      background-size:cover; background-position:center top;
       z-index:0;
     }
     /* dark scrim over the art, fading to the page's own background color at the bottom so
