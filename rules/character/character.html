@@ -803,7 +803,13 @@
   }
 
   let wheelIdleTimer = null;
-  const WHEEL_MULT = 6; // wheel deltaY (px) -> scroll px; raises "one notch" close to one section
+  // a typical single wheel "notch" reports deltaY ~100-120px regardless of screen size, but each
+  // section is roughly one viewport tall — so scale the multiplier to the viewport, not a flat
+  // constant, or one notch falls short of crossing into the next card on taller screens and just
+  // snaps back to the same one.
+  function wheelMultiplier(){
+    return (window.innerHeight * 0.9) / 110;
+  }
 
   window.addEventListener('wheel', (e) => {
     if (Math.abs(e.deltaY) < 2) return;
@@ -811,7 +817,7 @@
 
     snapping = false; // live input takes priority over any in-progress settle animation
 
-    const dy = normalizeDeltaY(e) * WHEEL_MULT;
+    const dy = normalizeDeltaY(e) * wheelMultiplier();
     scrollInstant(Math.max(0, Math.min(maxScrollY(), window.scrollY + dy)));
 
     // once the user pauses, ease the last bit into whichever section they ended up near
