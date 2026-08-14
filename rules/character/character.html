@@ -73,7 +73,7 @@
 
   .role:last-child{border-bottom:none;}
   .role-inner{display:flex; gap:36px; align-items:flex-start;}
-  .role-bg-art{display:none;} /* mobile-only full-bleed background art; built by JS */
+  .mobile-card-img{display:none;} /* mobile-only: the flattened full-card artwork (see @media below) */
 
   /* NO scroll-snap on touch devices — deliberately. This was previously
      `scroll-snap-type:y mandatory`, and it is incompatible with this page's content:
@@ -195,69 +195,35 @@
       will-change:auto;
     }
 
-    /* .role-inner and .info are collapsed with display:contents so their children (h2, the
-       art, the description panel, the rules box) become direct flex children of .role — that
-       lets a single `order` per element re-sequence title → art → text → rules without
-       touching the DOM, and without disturbing the desktop layout those wrappers still do
-       real layout work for. */
-    .role-inner, .info{ display:contents; }
+    /* The mobile card is now your finished artwork (images/NN-card.png — a flattened export
+       of the PORTRAITS/*.psd files) shown as a single image, not a title/art/text/rules layout
+       built out of HTML. Desktop is untouched: it still uses .role-inner's h2/art/paragraphs/
+       rules exactly as before, they're just hidden here on mobile. */
+    .role-inner{
+      position:relative; z-index:1; height:100%;
+      display:flex; align-items:center; justify-content:center;
+      /* --nav-clearance is measured by JS from the actual bottom nav height (see
+         setFrameHeight) rather than guessed, so the image gets to use as much of the frame as
+         it actually can instead of leaving a flat, oversized gap above the nav. */
+      padding:8px 14px var(--nav-clearance, 96px);
+    }
+    .info h2, .info-body, .rules{ display:none; }
 
-    .info h2{
-      order:1; text-align:center;
-      font-size:clamp(1.7rem, 8vw, 2.3rem); letter-spacing:2px;
-      padding:16px 18px 4px; margin:0;
-      text-shadow:0 3px 16px rgba(0,0,0,.9), 2px 2px 0 #000;
+    .mobile-card-img{
+      display:block;
+      max-width:100%; max-height:100%; width:auto; height:auto;
+      margin:0 auto;
+      border-radius:14px;
+      box-shadow:0 16px 40px rgba(0,0,0,.6);
     }
 
-    /* portrait art (images/NN-sq.png — cropped, text-free) sits framed on plain black with a
-       soft role-coloured glow behind it, rather than bleeding full-width behind the copy. */
-    .role-bg-art{
-      order:2; display:block; position:relative;
-      width:min(66vw, 280px); aspect-ratio:827/1200;
-      margin:2px auto 12px;
-      background-size:contain; background-position:center; background-repeat:no-repeat;
-      filter:drop-shadow(0 14px 22px rgba(0,0,0,.65));
-    }
-    .role-bg-art::before{
-      content:''; position:absolute; inset:-16%; z-index:-1; border-radius:50%;
-      background:radial-gradient(circle, var(--role-color, var(--red)) 0%, transparent 66%);
-      opacity:0.28;
-    }
-
-    /* the boxed thumbnail (full card art incl. its own baked-in title/ability text) becomes an
-       invisible full-frame tap target — it's still in the DOM only so tapping opens the modal */
+    /* the boxed thumbnail (original small card graphic) becomes an invisible full-frame tap
+       target — it's still in the DOM only so tapping opens the modal */
     .card{
       position:absolute; inset:0; opacity:0; z-index:5;
       border:none; cursor:pointer;
     }
     .card img{ width:100%; height:100%; }
-
-    .info-body{ order:3; }
-    .info p{
-      text-align:left; font-size:0.92rem; line-height:1.55;
-      margin:0 20px 12px; text-shadow:none; color:var(--white);
-    }
-
-    /* ability box: filled colour pill for the ability name, then icon rows — a clean bordered
-       card rather than the old dashed-rule/panel treatment, closer to a printed reference card */
-    .rules{
-      order:4; text-align:left;
-      margin:14px 20px calc(96px + env(safe-area-inset-bottom));
-      background:var(--panel2);
-      border:1px solid rgba(255,255,255,.14);
-      border-radius:12px;
-      padding:16px 16px 14px;
-      font-size:0.9rem; line-height:1.5;
-      text-shadow:none;
-      box-shadow:0 10px 26px rgba(0,0,0,.5);
-    }
-    .rules .ability-name{
-      display:block; width:fit-content;
-      margin-bottom:14px; padding:8px 16px;
-      border-radius:6px; font-size:0.7rem; letter-spacing:1.5px;
-    }
-    .rules div:not(.ability-name){margin-bottom:8px;}
-    .rules div:not(.ability-name):last-child{margin-bottom:0;}
 
     nav.navigator{
       top:auto; bottom:0; right:0; left:0; transform:none;
@@ -360,8 +326,11 @@
   .modal-overlay.open .modal{transform:scale(1);}
 
   .modal img{
-    width:100%; height:auto; max-height:92vh;
-    aspect-ratio:900/1221; object-fit:contain; border-radius:14px;
+    /* no fixed aspect-ratio here on purpose: mobile shows the NN-card.png export (827:1241)
+       and desktop shows the original small thumbnail's art (900:1221) — different ratios, so
+       the box just follows each image's own natural shape instead of forcing one. */
+    width:auto; height:auto; max-width:100%; max-height:92vh;
+    object-fit:contain; border-radius:14px;
     border:2px solid var(--role-color, var(--red)); background:#000;
     box-shadow:0 20px 50px rgba(0,0,0,.6);
   }
@@ -423,6 +392,7 @@
       <div class="card">
       <img src="images/01.png" alt="Tracer">
     </div>
+    <img class="mobile-card-img" src="images/01-card.png" alt="Tracer — full card" loading="lazy" decoding="async">
     <div class="info">
       <h2>TRACER</h2>
       <p>[ACTIVE] Choose the First Player. Take their hand and examine every card in it, then return it to them. Then choose the Second Player, take their hand, examine it, and return it.</p>
@@ -442,6 +412,7 @@
       <div class="card">
       <img src="images/02.png" alt="Inspector">
     </div>
+    <img class="mobile-card-img" src="images/02-card.png" alt="Inspector — full card" loading="lazy" decoding="async">
     <div class="info">
       <h2>INSPECTOR</h2>
       <p>[ACTIVE] Choose two other players. You may not choose yourself. Designate one as the Checker and the other as the Target. The Checker takes the Target's secret role and examines it, then it's returned face-down. Only the Checker sees it, no one else at the table.</p>
@@ -461,6 +432,7 @@
       <div class="card">
       <img src="images/03.png" alt="Enforcer">
     </div>
+    <img class="mobile-card-img" src="images/03-card.png" alt="Enforcer — full card" loading="lazy" decoding="async">
     <div class="info">
       <h2>ENFORCER</h2>
       <p>[ACTIVE] Investigate triggers after an Escape nomination fails. The Enforcer may then view the secret role of one of the nominated players, but only on his own next turn. Can be used during Daybreak or Nightfall, but only once per game.</p>
@@ -480,6 +452,7 @@
       <div class="card">
       <img src="images/04.png" alt="Forager">
     </div>
+    <img class="mobile-card-img" src="images/04-card.png" alt="Forager — full card" loading="lazy" decoding="async">
     <div class="info">
       <h2>FORAGER</h2>
       <p>[ACTIVE] Allocate lets the Forager draw 6 cards from the discard pile and hand out Supplies among them to any player(s) of her choice. Any Encounter cards drawn this way are set right back into the discard pile. Can only be used during Daybreak, and up to twice per game.</p>
@@ -499,6 +472,7 @@
       <div class="card">
       <img src="images/05.png" alt="Blacksmith">
     </div>
+    <img class="mobile-card-img" src="images/05-card.png" alt="Blacksmith — full card" loading="lazy" decoding="async">
     <div class="info">
       <h2>BLACKSMITH</h2>
       <p>[ACTIVE] Reforge lets the Blacksmith shuffle the discard pile and draw 3 cards. Take a single Supply card drawn this way to either keep for yourself or give away to another player. Any non-Supply cards are returned. Can only be used during Daybreak, but can be used multiple times.</p>
@@ -518,6 +492,7 @@
       <div class="card">
       <img src="images/06.png" alt="Survivalist">
     </div>
+    <img class="mobile-card-img" src="images/06-card.png" alt="Survivalist — full card" loading="lazy" decoding="async">
     <div class="info">
       <h2>SURVIVALIST</h2>
       <p>[PASSIVE] Whenever a Zombie Encounter the Survivalist takes part in succeeds, the Survivalist is refunded a random Supply card. Permanent passive ability, but only in effect during Daybreak.</p>
@@ -537,6 +512,7 @@
       <div class="card">
       <img src="images/07.png" alt="Brawler">
     </div>
+    <img class="mobile-card-img" src="images/07-card.png" alt="Brawler — full card" loading="lazy" decoding="async">
     <div class="info">
       <h2>BRAWLER</h2>
       <p>[ACTIVE] When the Brawler confronts an Encounter alone, every card he contributes counts as double value. This can only be triggered during Daybreak, and only once per game.</p>
@@ -556,6 +532,7 @@
       <div class="card">
       <img src="images/08.png" alt="Duelist">
     </div>
+    <img class="mobile-card-img" src="images/08-card.png" alt="Duelist — full card" loading="lazy" decoding="async">
     <div class="info">
       <h2>DUELIST</h2>
       <p>[PASSIVE] Whenever the Duelist is chosen to take part in an Encounter, he may choose to contribute either 1 or 2 cards to it, instead of being locked into only giving one. This is a permanent passive ability, active during Daybreak.</p>
@@ -575,6 +552,7 @@
       <div class="card">
       <img src="images/09.png" alt="Deadeye">
     </div>
+    <img class="mobile-card-img" src="images/09-card.png" alt="Deadeye — full card" loading="lazy" decoding="async">
     <div class="info">
       <h2>DEADEYE</h2>
       <p>[ACTIVE] Longshot lets the Deadeye reduce the damage required to beat a drawn Encounter by 2 points. It doesn't matter who drew the Encounter, any player's draw can trigger it, as long as it happens during Daybreak. Can be used up to twice per game.</p>
@@ -594,6 +572,7 @@
       <div class="card">
       <img src="images/10.png" alt="Trickster">
     </div>
+    <img class="mobile-card-img" src="images/10-card.png" alt="Trickster — full card" loading="lazy" decoding="async">
     <div class="info">
       <h2>TRICKSTER</h2>
       <p>[ACTIVE] Imitate lets the Trickster swap character cards with another player. Once a swap happens, that player becomes the new Trickster, and whoever used to hold the Trickster card cannot be targeted by Imitate again. This can only be used during Nightfall, and has no limit on total uses, so long as a valid target remains.</p>
@@ -613,6 +592,7 @@
       <div class="card">
       <img src="images/11.png" alt="Prospector">
     </div>
+    <img class="mobile-card-img" src="images/11-card.png" alt="Prospector — full card" loading="lazy" decoding="async">
     <div class="info">
       <h2>PROSPECTOR</h2>
       <p>[PASSIVE] Stockpile gives the Prospector a head start. At the start of the game, she searches the deck for 2 Supply cards, adds them to her hand, then shuffles the deck. Her hand limit is 6. This is a permanent passive ability, effective during both Daybreak and Nightfall.</p>
@@ -632,6 +612,7 @@
       <div class="card">
       <img src="images/12.png" alt="Stranger">
     </div>
+    <img class="mobile-card-img" src="images/12-card.png" alt="Stranger — full card" loading="lazy" decoding="async">
     <div class="info">
       <h2>STRANGER</h2>
       <p>[PASSIVE] Elude makes the Stranger permanently unreadable. His secret role and inventory can never be checked by any other player's ability, effective during both Daybreak and Nightfall.</p>
@@ -651,6 +632,7 @@
       <div class="card">
       <img src="images/13.png" alt="Pathfinder">
     </div>
+    <img class="mobile-card-img" src="images/13-card.png" alt="Pathfinder — full card" loading="lazy" decoding="async">
     <div class="info">
       <h2>PATHFINDER</h2>
       <p>[ACTIVE] When you activate this ability, you may look at the next 6 Encounter cards from the top of the deck and rearrange them in any order you like, then place them back on top of the deck. This can only be done during Daybreak, and only once per game.</p>
@@ -670,6 +652,7 @@
       <div class="card">
       <img src="images/14.png" alt="Surveyor">
     </div>
+    <img class="mobile-card-img" src="images/14-card.png" alt="Surveyor — full card" loading="lazy" decoding="async">
     <div class="info">
       <h2>SURVEYOR</h2>
       <p>[ACTIVE] Lookout lets the Surveyor look at the next 3 Encounter cards from the top of the deck, then place them back in the same order. Nothing is rearranged, this is purely information. Can only be used during Daybreak, with no limit on uses.</p>
@@ -689,6 +672,7 @@
       <div class="card">
       <img src="images/15.png" alt="Outrunner">
     </div>
+    <img class="mobile-card-img" src="images/15-card.png" alt="Outrunner — full card" loading="lazy" decoding="async">
     <div class="info">
       <h2>OUTRUNNER</h2>
       <p>[ACTIVE] Evade lets the Outrunner dodge a drawn Encounter entirely. Whenever an Encounter is drawn, he may reshuffle it back into the Encounter deck instead of resolving it. Can be used during Daybreak or Nightfall, up to twice per game.</p>
@@ -708,6 +692,7 @@
       <div class="card">
       <img src="images/16.png" alt="Outlander">
     </div>
+    <img class="mobile-card-img" src="images/16-card.png" alt="Outlander — full card" loading="lazy" decoding="async">
     <div class="info">
       <h2>OUTLANDER</h2>
       <p>[PASSIVE] As an Amnesiac, the Outlander is never allowed to look at his own secret role. Once a player receives this character, they must set that role aside without checking it and play the rest of the game not knowing their own identity.</p>
@@ -727,6 +712,7 @@
       <div class="card">
       <img src="images/17.png" alt="Virologist">
     </div>
+    <img class="mobile-card-img" src="images/17-card.png" alt="Virologist — full card" loading="lazy" decoding="async">
     <div class="info">
       <h2>VIROLOGIST</h2>
       <p>[ACTIVE] Diagnose lets the Virologist discard 3 cards to check a player's secret role card. Can only be used during Daybreak, and up to once per turn.</p>
@@ -746,6 +732,7 @@
       <div class="card">
       <img src="images/18.png" alt="Geneticist">
     </div>
+    <img class="mobile-card-img" src="images/18-card.png" alt="Geneticist — full card" loading="lazy" decoding="async">
     <div class="info">
       <h2>GENETICIST</h2>
       <p>[ACTIVE] Profile lets the Geneticist ask another player to reveal his secret role to him. If that player agrees, the Geneticist must also reveal his own secret role in return. Can only be used during Daybreak, and only once per game.</p>
@@ -811,44 +798,9 @@
   const navPrev = document.getElementById('navPrev');
   const navNext = document.getElementById('navNext');
 
-  // mobile-only background art: a cropped, text-free version of each card image
-  // ("NN-sq.png" alongside the original "NN.png"), shown centred behind the mobile title/text.
-  // Loading is deferred per-card via IntersectionObserver below (all 18 cards now sit side by
-  // side in the DOM for the horizontal carousel, so nothing here is display:none anymore — the
-  // old "browser skips fetching hidden images" trick doesn't apply and would eagerly pull down
-  // all 18 portraits at once without this).
-  roles.forEach(r => {
-    const cardImg = r.querySelector('.card img');
-    if (!cardImg) return;
-    const bgSrc = cardImg.getAttribute('src').replace(/(\d+)(\.[a-z0-9]+)$/i, '$1-sq$2');
-    const bgArt = document.createElement('div');
-    bgArt.className = 'role-bg-art';
-    bgArt.dataset.bg = bgSrc;
-    r.insertBefore(bgArt, r.firstChild);
-  });
-
-  if (roleList){
-    const loadBg = el => {
-      if (el.dataset.bg && !el.style.backgroundImage){
-        el.style.backgroundImage = `url("${el.dataset.bg}")`;
-      }
-    };
-    if ('IntersectionObserver' in window){
-      // rootMargin extends left/right so the NEXT card's art is already loading before you
-      // swipe to it, not just the one currently in view.
-      const bgObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting){
-            loadBg(entry.target);
-            bgObserver.unobserve(entry.target);
-          }
-        });
-      }, { root: roleList, rootMargin: '0px 100% 0px 100%', threshold: 0.01 });
-      document.querySelectorAll('.role-bg-art').forEach(el => bgObserver.observe(el));
-    } else {
-      document.querySelectorAll('.role-bg-art').forEach(loadBg);
-    }
-  }
+  // Note: the mobile carousel now shows the flattened NN-card.png artwork directly (see
+  // .mobile-card-img in the markup/CSS) instead of a JS-built background-art layer, so there's
+  // no separate lazy-load step needed here — those <img> tags carry loading="lazy" natively.
 
   // Wrap each role's description paragraphs in a single .info-body element. On mobile this
   // becomes one translucent panel sitting over the artwork, so the copy reads against a
@@ -1183,6 +1135,9 @@
     const vh = (window.visualViewport && window.visualViewport.height) || window.innerHeight;
     const frameH = Math.max(320, vh - topOffset - navH);
     document.documentElement.style.setProperty('--frame-h', frameH + 'px');
+    // navH already includes the nav's own safe-area padding (it's a real measured box), so
+    // this doesn't need another env(safe-area-inset-bottom) added on top — just a small gap.
+    document.documentElement.style.setProperty('--nav-clearance', (navH + 12) + 'px');
     if (swipeHint) swipeHint.style.top = (topOffset + 14) + 'px';
   }
 
@@ -1255,8 +1210,12 @@
     const text = role.style.getPropertyValue('--role-text') || '#000';
     modal.style.setProperty('--role-color', color);
     modal.style.setProperty('--role-text', text);
-    modalImg.src = role.querySelector('img').src;
-    modalImg.alt = role.querySelector('img').alt;
+    // On mobile, zoom into the same artwork the swipeable card is already showing (the
+    // flattened NN-card.png). Desktop keeps its original small thumbnail's image — untouched.
+    const mobileImg = role.querySelector('.mobile-card-img');
+    const sourceImg = (isPagerMode() && mobileImg) ? mobileImg : role.querySelector('.card img');
+    modalImg.src = sourceImg.src;
+    modalImg.alt = sourceImg.alt;
 
     lastFocused = document.activeElement;
     overlay.classList.add('open');
