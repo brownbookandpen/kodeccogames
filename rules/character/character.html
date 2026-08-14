@@ -234,10 +234,22 @@
        built out of HTML. Desktop is untouched: it still uses .role-inner's h2/art/paragraphs/
        rules exactly as before, they're just hidden here on mobile. */
     .role-inner{
-      position:relative; z-index:1; height:100%;
+      position:relative; z-index:1;
+      /* THE VIEWING WINDOW — deliberately sized from WIDTH, not height.
+         Deriving it from the frame (i.e. viewport height) meant every browser's toolbar
+         behaviour changed how much of the card was on screen: Safari collapses its bars when
+         you arrive from a scrolled page, Chrome manages them differently again, and svh only
+         patched Safari. Width is immune to all of it — it is the same number however you got
+         here and whichever browser you're in — so pinning the window to 1.3 x width makes the
+         framing byte-identical everywhere.
+         1.3 is chosen as the floor of the height/width ratios actually available across the
+         devices tested (iOS Safari ~1.32, Chrome ~1.32-1.85), so the window fits without
+         needing to shrink. min() keeps it safe if a viewport ever is shorter than that. */
+      height:min(100%, calc(100vw * 1.3));
+      margin-top:auto;   /* park the window against the bottom of the frame */
       /* Bottom-aligned + clipped. The card is scaled by WIDTH only (see .mobile-card-img), so
-         whenever it comes out taller than the frame the surplus is trimmed off the TOP here —
-         empty sky — while the ability box and NOTE stay pinned to the bottom edge. */
+         the surplus is trimmed off the TOP here — empty sky — while the ability box and NOTE
+         stay pinned to the bottom edge. */
       display:flex; align-items:flex-end; justify-content:center;
       overflow:hidden;
       /* No padding at all. --frame-h ALREADY subtracts the nav height, so also padding the
