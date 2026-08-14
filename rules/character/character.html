@@ -200,6 +200,16 @@
     }
     .role-list::-webkit-scrollbar{ display:none; }
 
+    /* Stable frame height. --frame-h (JS, from innerHeight) is the fallback; where svh is
+       supported the frame is derived from it instead, so the card is framed identically whether
+       you arrive from a scrolled page (Safari toolbars collapsed, taller innerHeight) or load
+       the URL fresh (toolbars expanded, shorter). 100svh always means "viewport with the
+       toolbars showing", so it doesn't change under you. */
+    @supports (height:100svh){
+      .role-list{ height:calc(100svh - var(--chrome-offset, 141px)); }
+      html, body{ height:100svh; }
+    }
+
     .role{
       position:relative;
       flex:0 0 100%; width:100%; height:100%; min-height:0;
@@ -1195,6 +1205,14 @@
     // landscape phone, pushing the frame (and the card inside it) down under the fixed nav.
     const frameH = Math.max(160, vh - topOffset - navH);
     document.documentElement.style.setProperty('--frame-h', frameH + 'px');
+
+    // The two measurements above that are genuinely stable (header + nav) are published on
+    // their own, so the stylesheet can derive the frame from 100svh instead of this px value.
+    // innerHeight/visualViewport track Safari's collapsing toolbars: arriving from a scrolled
+    // page gives a taller viewport than a fresh load, which changed how much of the card was
+    // clipped and made the artwork appear to shift between visits. svh is defined against the
+    // *largest* toolbar state, so it does not move — see the @supports block in the CSS.
+    document.documentElement.style.setProperty('--chrome-offset', (topOffset + navH) + 'px');
     // navH already includes the nav's own safe-area padding (it's a real measured box), so
     // this doesn't need another env(safe-area-inset-bottom) added on top — just a small gap.
     document.documentElement.style.setProperty('--nav-clearance', (navH + 12) + 'px');
