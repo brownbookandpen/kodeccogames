@@ -1196,6 +1196,28 @@
   setActiveNav(0);
   update();
 
+  // ---------- TEMP diagnostic overlay (remove once width bug is confirmed/fixed) ----------
+  (function(){
+    if (!isPagerMode()) return;
+    const box = document.createElement('div');
+    box.style.cssText = 'position:fixed;top:4px;left:4px;z-index:99999;background:#0f0;color:#000;'
+      + 'font:11px/1.3 monospace;padding:4px 6px;border-radius:4px;pointer-events:none;white-space:pre;';
+    document.body.appendChild(box);
+    function paint(){
+      const de = document.documentElement;
+      const vv = window.visualViewport;
+      box.textContent =
+        'innerW:'+window.innerWidth+' innerH:'+window.innerHeight+'\n'+
+        'clientW:'+de.clientWidth+' scrollW:'+de.scrollWidth+'\n'+
+        'vvW:'+(vv?Math.round(vv.width):'-')+' vvScale:'+(vv?vv.scale.toFixed(2):'-')+'\n'+
+        'dpr:'+window.devicePixelRatio+' scrollX:'+window.scrollX;
+    }
+    paint();
+    window.addEventListener('resize', paint);
+    window.addEventListener('scroll', paint, { passive:true });
+    if (window.visualViewport) window.visualViewport.addEventListener('resize', paint);
+  })();
+
   // ---------- card modal ----------
   const overlay = document.getElementById('modalOverlay');
   const modal = document.getElementById('modal');
