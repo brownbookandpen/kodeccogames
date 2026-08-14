@@ -170,14 +170,16 @@
     }
     .card img{ width:100%; height:100%; }
 
-    /* cropped character-only art (no baked-in text) as a full-bleed background behind the text.
-       Height is capped to a natural, viewport-relative framing rather than stretching to match
-       long-text sections — otherwise "cover" would zoom in absurdly on very tall boxes. Any
-       overflow text below just fades into the plain dark backdrop instead. */
+    /* square character art (no baked-in text) as a full-bleed background behind the text.
+       The source images have a solid dark band padded onto their top (see images/NN-sq.png)
+       so the character sits lower in frame, clear of the title, without needing CSS tricks
+       that behave inconsistently across short vs. long role descriptions. Height is capped to
+       a viewport-relative framing rather than stretching to match long-text sections — overflow
+       text just fades into the plain dark backdrop below. */
     .role-bg-art{
       display:block; position:absolute; top:0; left:50%;
       width:100vw; height:82vh; margin-left:-50vw;
-      background-size:cover; background-position:center 15%;
+      background-size:cover; background-position:center top;
       z-index:0;
     }
     /* dark scrim over the art, fading to the page's own background color at the bottom so
@@ -224,6 +226,11 @@
     }
     .nav-arrow:hover{border-color:var(--yellow);}
     .nav-arrow:active{transform:scale(0.92);}
+    .nav-arrow-top{
+      color:var(--black); background:var(--yellow); border-color:var(--yellow);
+      font-size:1rem;
+    }
+    .nav-arrow-top:hover{border-color:#fff;}
   }
 
   .back-link{
@@ -736,7 +743,7 @@
   roles.forEach(r => {
     const cardImg = r.querySelector('.card img');
     if (!cardImg) return;
-    const bgSrc = cardImg.getAttribute('src').replace(/(\.[a-z0-9]+)$/i, '-bg$1');
+    const bgSrc = cardImg.getAttribute('src').replace(/(\d+)(\.[a-z0-9]+)$/i, '$1-sq$2');
     const bgArt = document.createElement('div');
     bgArt.className = 'role-bg-art';
     bgArt.style.backgroundImage = `url("${bgSrc}")`;
@@ -763,11 +770,14 @@
   // build side-navigator buttons from data-nav
   roles.forEach((r, i) => {
     const btn = document.createElement('button');
-    const abbr = r.dataset.nav;
-    const fullName = r.querySelector('h2').textContent;
+    // the first role's button doubles as a "back to top" shortcut, so it always
+    // shows an arrow instead of its "TR" abbreviation, active or not.
+    const abbr = i === 0 ? '⤒' : r.dataset.nav;
+    const fullName = i === 0 ? '⤒' : r.querySelector('h2').textContent;
     btn.textContent = abbr;
     btn.dataset.abbr = abbr;
     btn.dataset.full = fullName;
+    if (i === 0) btn.setAttribute('aria-label', 'Back to top (Tracer)');
     const color = r.style.getPropertyValue('--role-color');
     const text = r.style.getPropertyValue('--role-text');
     if (color) btn.style.setProperty('--btn-color', color);
@@ -808,14 +818,29 @@
     navTrack.scrollTo({ left: Math.max(0, Math.min(max, target)), behavior: 'smooth' });
   }
 
-  // mobile prev/next arrows step the track instead of finger-scrolling
+  // mobile prev/next arrows step the track instead of finger-scrolling — except the right
+  // arrow, which turns into a "back to the top" button once you're on the last character.
+  function updateNavArrowState(activeIndex){
+    if (!navNext) return;
+    const atEnd = activeIndex === roles.length - 1;
+    navNext.textContent = atEnd ? '⤒' : '›';
+    navNext.setAttribute('aria-label', atEnd ? 'Back to top (Tracer)' : 'Scroll right');
+    navNext.classList.toggle('nav-arrow-top', atEnd);
+  }
+
   if (navPrev && navNext && navTrack){
     const stepTrack = (dir) => {
       const amount = Math.max(navTrack.clientWidth * 0.7, 80);
       navTrack.scrollBy({left: dir * amount, behavior: 'smooth'});
     };
     navPrev.addEventListener('click', () => stepTrack(-1));
-    navNext.addEventListener('click', () => stepTrack(1));
+    navNext.addEventListener('click', () => {
+      if (navNext.classList.contains('nav-arrow-top')){
+        goToRole(0);
+      } else {
+        stepTrack(1);
+      }
+    });
   }
 
   // ---------- wheel scrolling: 1:1 live tracking, snaps to a section once you pause ----------
@@ -940,7 +965,10 @@
         if (isActive) activeChanged = true;
       }
     });
-    if (activeChanged && closest) centerActiveNavButton(closest._navBtn);
+    if (activeChanged && closest){
+      centerActiveNavButton(closest._navBtn);
+      updateNavArrowState(roles.indexOf(closest));
+    }
     ticking = false;
   }
 
