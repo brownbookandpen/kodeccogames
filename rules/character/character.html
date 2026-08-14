@@ -181,6 +181,17 @@
       border-bottom:none;
       scroll-margin-top:82px; /* keeps the sticky header from covering the top of the section on tap */
     }
+
+    /* ---------- one-character-per-screen pager ----------
+       Only the current character is in the layout; the other seventeen are display:none.
+       With nothing above or below it, there is no scrolling BETWEEN characters at all — so
+       there is nothing for the browser to snap, by construction rather than by tuning. You
+       still scroll normally *within* a character when its text runs long.
+       Scoped to .js-pager, which JS adds on startup: if the script ever fails to run, the
+       class is absent, every section stays visible and the page degrades to a plain scroll
+       instead of rendering blank. */
+    .role-list.js-pager .role{ display:none; }
+    .role-list.js-pager .role.is-current{ display:flex; }
     .role-inner{
       position:relative; z-index:1;
       flex-direction:column; align-items:stretch; text-align:left; gap:0;
@@ -774,7 +785,7 @@
     <a href="#">Instagram</a> · <a href="#">BoardGameGeek</a> · <a href="#">Email</a>
   </div>
   <p style="margin-top:12px;">© 2026 CARRIER — a survival board game in development.</p>
-  <p style="margin-top:8px; font-size:0.6rem; color:#3f3f3f; letter-spacing:1px;">build m7 · 2026-08-14</p>
+  <p style="margin-top:8px; font-size:0.6rem; color:#3f3f3f; letter-spacing:1px;">build m8 · 2026-08-14</p>
 </footer>
 
 <div class="modal-overlay" id="modalOverlay">
@@ -808,6 +819,15 @@
   })();
 
   const roles = Array.from(document.querySelectorAll('.role'));
+  const roleList = document.querySelector('.role-list');
+
+  // Applied HERE — before the background-art elements are built below — and not at the end of
+  // the script. Browsers don't fetch background images for display:none elements, so with the
+  // pager already active only the first character's portrait is downloaded on load; the other
+  // seventeen (~150KB each) arrive lazily the first time you actually open them. Set from JS
+  // so a script failure leaves every section visible instead of hiding all eighteen.
+  if (roleList) roleList.classList.add('js-pager');
+  if (roles[0]) roles[0].classList.add('is-current');
   const navEl = document.getElementById('navigator');
   const navTrack = document.getElementById('navigatorTrack');
   const navPrev = document.getElementById('navPrev');
@@ -841,18 +861,40 @@
     paras.forEach(p => body.appendChild(p));
   });
 
-  // touch devices use native scrolling everywhere, including nav taps — mixing our custom
-  // JS scroll animation with the browser's own CSS scroll-snap is what caused the previous
-  // "moves then snaps back" bugs, so keep them fully separate.
   function isTouchDevice(){
     return window.matchMedia('(hover: none) and (pointer: coarse)').matches;
   }
+
+  // Pager mode is keyed to the SAME breakpoint as the CSS that hides non-current sections —
+  // deliberately not to touch capability. Keying it to touch would let a narrow desktop
+  // window show a single section while the wheel handler still tried to scroll through all
+  // eighteen, which is precisely the kind of mismatch that produced the old "it moves, then
+  // jumps" behaviour.
+  function isPagerMode(){
+    return window.matchMedia('(max-width:900px)').matches;
+  }
+
+  let currentIndex = 0;
+
+  // Show exactly one character. The hidden sections cost nothing: browsers don't fetch
+  // background images for display:none elements, so the other seventeen portraits are only
+  // downloaded when you actually open them — a real saving on mobile data.
+  function showRole(index, opts){
+    const doScroll = !(opts && opts.scroll === false);
+    currentIndex = Math.max(0, Math.min(roles.length - 1, index));
+    roles.forEach((r, i) => r.classList.toggle('is-current', i === currentIndex));
+    setActiveNav(currentIndex);
+    if (doScroll){
+      // instant, not smooth: the character is being swapped out underneath, so animating
+      // the scroll would just show a slide of whatever happens to be on screen
+      roles[currentIndex].scrollIntoView({ behavior: 'auto', block: 'start' });
+    }
+  }
+
   function goToRole(index){
     index = Math.max(0, Math.min(roles.length - 1, index));
-    if (isTouchDevice()){
-      // block:'start' (not 'center') so long entries land with the title at the top,
-      // clear of the sticky header, instead of centering on the middle of the text
-      roles[index].scrollIntoView({ behavior: 'smooth', block: 'start' });
+    if (isPagerMode()){
+      showRole(index);
     } else {
       snapToRole(index);
     }
@@ -909,14 +951,39 @@
     navTrack.scrollTo({ left: Math.max(0, Math.min(max, target)), behavior: 'smooth' });
   }
 
-  // mobile prev/next arrows step the track instead of finger-scrolling — except the right
-  // arrow, which turns into a "back to the top" button once you're on the last character.
+  // Sets which character the bottom strip shows as current. In pager mode this is driven by
+  // explicit navigation rather than by scroll position, so it lives in its own function
+  // instead of being derived inside the scroll handler.
+  function setActiveNav(index){
+    roles.forEach((r, i) => {
+      if (!r._navBtn) return;
+      const isActive = i === index;
+      if (r._navBtn.classList.contains('active') !== isActive){
+        r._navBtn.classList.toggle('active', isActive);
+        r._navBtn.textContent = isActive ? r._navBtn.dataset.full : r._navBtn.dataset.abbr;
+      }
+    });
+    if (roles[index] && roles[index]._navBtn) centerActiveNavButton(roles[index]._navBtn);
+    updateNavArrowState(index);
+  }
+
+  // In pager mode the arrows move between CHARACTERS rather than nudging the strip sideways
+  // (the strip is swipeable by finger anyway). The right arrow still turns into a
+  // "back to the first character" button once you reach the end.
   function updateNavArrowState(activeIndex){
-    if (!navNext) return;
     const atEnd = activeIndex === roles.length - 1;
-    navNext.textContent = atEnd ? '⤒' : '›';
-    navNext.setAttribute('aria-label', atEnd ? 'Back to top (Tracer)' : 'Scroll right');
-    navNext.classList.toggle('nav-arrow-top', atEnd);
+    if (navNext){
+      navNext.textContent = atEnd ? '⤒' : '›';
+      navNext.setAttribute('aria-label', atEnd ? 'Back to the first character' : 'Next character');
+      navNext.classList.toggle('nav-arrow-top', atEnd);
+    }
+    if (navPrev){
+      const atStart = isPagerMode() && activeIndex === 0;
+      navPrev.setAttribute('aria-label', 'Previous character');
+      navPrev.disabled = atStart;
+      // the button is `all:unset`, so :disabled has no styling of its own to fall back on
+      navPrev.style.opacity = atStart ? '0.3' : '';
+    }
   }
 
   if (navPrev && navNext && navTrack){
@@ -924,13 +991,14 @@
       const amount = Math.max(navTrack.clientWidth * 0.7, 80);
       navTrack.scrollBy({left: dir * amount, behavior: 'smooth'});
     };
-    navPrev.addEventListener('click', () => stepTrack(-1));
+    navPrev.addEventListener('click', () => {
+      if (isPagerMode()) goToRole(currentIndex - 1);
+      else stepTrack(-1);
+    });
     navNext.addEventListener('click', () => {
-      if (navNext.classList.contains('nav-arrow-top')){
-        goToRole(0);
-      } else {
-        stepTrack(1);
-      }
+      if (navNext.classList.contains('nav-arrow-top')) goToRole(0);
+      else if (isPagerMode()) goToRole(currentIndex + 1);
+      else stepTrack(1);
     });
   }
 
@@ -1031,14 +1099,18 @@
   let ticking = false;
 
   function update(){
+    ticking = false;
+    // In pager mode the current character is explicit state, not something derived from
+    // scroll position — so the scroll handler has nothing to do and must not touch the nav
+    // or the sections' transforms. This is the single most important guard on this page:
+    // a scroll listener that mutates layout while the user is mid-gesture is exactly how
+    // the earlier "moves, then snaps" behaviour was produced.
+    if (isPagerMode()) return;
+
     const vh = window.innerHeight;
     const center = vh / 2;
     let closest = null, closestDist = Infinity;
-    // the "breathing" scale/opacity focus effect is desktop-only: on touch devices the
-    // browser's own CSS scroll-snap is what advances one card at a time (see goToRole above),
-    // and a live-changing transform on a scroll-snap-align target fights the native snap
-    // engine on real phones — scroll settles, then visibly jumps/snaps again as the transform
-    // and the browser's snap point recalculation chase each other. Skip it entirely on touch.
+    // the "breathing" scale/opacity focus effect is desktop-only
     const touch = isTouchDevice();
 
     roles.forEach(r => {
@@ -1073,7 +1145,6 @@
       centerActiveNavButton(closest._navBtn);
       updateNavArrowState(roles.indexOf(closest));
     }
-    ticking = false;
   }
 
   window.addEventListener('scroll', () => {
@@ -1082,7 +1153,15 @@
       ticking = true;
     }
   });
-  window.addEventListener('resize', update);
+
+  window.addEventListener('resize', () => {
+    // crossing the breakpoint (rotation, desktop window resize) swaps between pager and the
+    // full scrolling list — re-assert the current character so neither mode is left half-applied
+    if (isPagerMode()) showRole(currentIndex, { scroll:false });
+    update();
+  });
+
+  showRole(0, { scroll:false });
   update();
 
   // ---------- card modal ----------
