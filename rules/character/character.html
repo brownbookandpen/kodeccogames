@@ -326,11 +326,8 @@
   .modal-overlay.open .modal{transform:scale(1);}
 
   .modal img{
-    /* no fixed aspect-ratio here on purpose: mobile shows the NN-card.png export (827:1241)
-       and desktop shows the original small thumbnail's art (900:1221) — different ratios, so
-       the box just follows each image's own natural shape instead of forcing one. */
-    width:auto; height:auto; max-width:100%; max-height:92vh;
-    object-fit:contain; border-radius:14px;
+    width:100%; height:auto; max-height:92vh;
+    aspect-ratio:900/1221; object-fit:contain; border-radius:14px;
     border:2px solid var(--role-color, var(--red)); background:#000;
     box-shadow:0 20px 50px rgba(0,0,0,.6);
   }
@@ -1210,10 +1207,10 @@
     const text = role.style.getPropertyValue('--role-text') || '#000';
     modal.style.setProperty('--role-color', color);
     modal.style.setProperty('--role-text', text);
-    // On mobile, zoom into the same artwork the swipeable card is already showing (the
-    // flattened NN-card.png). Desktop keeps its original small thumbnail's image — untouched.
-    const mobileImg = role.querySelector('.mobile-card-img');
-    const sourceImg = (isPagerMode() && mobileImg) ? mobileImg : role.querySelector('.card img');
+    // Always the original full card art (images/NN.png) — same on mobile and desktop. The
+    // swipeable mobile carousel shows the newer PORTRAITS artwork, but tapping to zoom in
+    // should show the actual finished card, not that poster-style export.
+    const sourceImg = role.querySelector('.card img');
     modalImg.src = sourceImg.src;
     modalImg.alt = sourceImg.alt;
 
