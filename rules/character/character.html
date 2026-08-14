@@ -221,7 +221,11 @@
        rules exactly as before, they're just hidden here on mobile. */
     .role-inner{
       position:relative; z-index:1; height:100%;
-      display:flex; align-items:center; justify-content:center;
+      /* Bottom-aligned + clipped. The card is scaled by WIDTH only (see .mobile-card-img), so
+         whenever it comes out taller than the frame the surplus is trimmed off the TOP here —
+         empty sky — while the ability box and NOTE stay pinned to the bottom edge. */
+      display:flex; align-items:flex-end; justify-content:center;
+      overflow:hidden;
       /* No padding at all. --frame-h ALREADY subtracts the nav height, so also padding the
          bottom by --nav-clearance was subtracting the nav twice and wasting ~53px of card. */
       padding:0;
@@ -237,15 +241,18 @@
 
     .mobile-card-img{
       display:block;
-      /* Fill the frame completely — no letterbox bars in either direction. "cover" means the
-         card is scaled to the wider of the two dimensions and the overflow is cropped; the
-         card is 2:3 and a phone screen is much taller than that, so the crop lands on the
-         vertical axis. object-position:bottom anchors the BOTTOM edge, so everything trimmed
-         comes off the top (empty sky above the character) and the ability box + NOTE lines at
-         the bottom are never cut. Measured bottom margin across all 18 cards is only 4-9%,
-         versus a top region that is pure background. */
-      width:100%; height:100%;
-      object-fit:cover; object-position:center bottom;
+      /* Scale by WIDTH ONLY — height follows the artwork's own ratio.
+         This was object-fit:cover with height:100%, which made the scale depend on the frame's
+         HEIGHT as well: cover picks whichever axis needs more magnification, so as Safari's
+         toolbars grew/shrank between a link-navigation and a fresh load, the frame ratio crossed
+         2:3 and the crop silently flipped from "trim the top" to "trim the sides" — the artwork
+         appeared to jump and zoom between loads, and on a tall phone it cropped ~19% off each
+         side, cutting into the ability text.
+         Width-driven sizing is deterministic: the scale is always screenWidth/827 no matter how
+         tall the viewport is, so the card lands identically every load. Any surplus height is
+         clipped off the top by .role-inner's overflow + flex-end. */
+      width:100%; height:auto;
+      flex:0 0 auto;
       margin:0;
       border-radius:0;
       /* no pinch-zoom / double-tap-zoom on the artwork itself */
