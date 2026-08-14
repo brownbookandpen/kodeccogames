@@ -939,19 +939,27 @@
     const vh = window.innerHeight;
     const center = vh / 2;
     let closest = null, closestDist = Infinity;
+    // the "breathing" scale/opacity focus effect is desktop-only: on touch devices the
+    // browser's own CSS scroll-snap is what advances one card at a time (see goToRole above),
+    // and a live-changing transform on a scroll-snap-align target fights the native snap
+    // engine on real phones — scroll settles, then visibly jumps/snaps again as the transform
+    // and the browser's snap point recalculation chase each other. Skip it entirely on touch.
+    const touch = isTouchDevice();
 
     roles.forEach(r => {
       const rect = r.getBoundingClientRect();
       const rCenter = rect.top + rect.height / 2;
       const dist = Math.abs(center - rCenter);
 
-      // map distance -> scale (closer to center = bigger)
-      const norm = Math.min(dist / (vh * 0.7), 1); // 0 = centered, 1 = far
-      const scale = 1.12 - norm * 0.3;   // 1.12 down to 0.82
-      const opacity = 1 - norm * 0.55;   // 1 down to 0.45
+      if (!touch){
+        // map distance -> scale (closer to center = bigger)
+        const norm = Math.min(dist / (vh * 0.7), 1); // 0 = centered, 1 = far
+        const scale = 1.12 - norm * 0.3;   // 1.12 down to 0.82
+        const opacity = 1 - norm * 0.55;   // 1 down to 0.45
 
-      r.style.transform = `scale(${scale})`;
-      r.style.opacity = opacity;
+        r.style.transform = `scale(${scale})`;
+        r.style.opacity = opacity;
+      }
 
       if (dist < closestDist){ closestDist = dist; closest = r; }
     });
