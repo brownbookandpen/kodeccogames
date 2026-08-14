@@ -15,7 +15,7 @@
     --role-olive:#8f9c3f; --role-gold:#d9a72b; --border:#2a2a2a;
   }
   *{box-sizing:border-box;margin:0;padding:0;}
-  html{scroll-behavior:smooth;}
+  html{scroll-behavior:auto;}
   body{
     background:var(--black); color:var(--white);
     font-family:'VT323','Courier New',monospace; font-size:1.25rem; line-height:1.7;
@@ -60,19 +60,22 @@
   @keyframes cursorblink{ 50%{ opacity:0; } }
 
   /* ---------- role list ---------- */
-  .role-list{max-width:900px; margin:0 auto; padding:50px 100px 60px 6%; position:relative;}
+  .role-list{max-width:1200px; margin:0 auto; padding:50px 100px 60px 6%; position:relative;}
 
   .role{
-    display:flex; gap:36px; align-items:flex-start;
+    display:flex; flex-direction:column; justify-content:center;
     padding:56px 0; border-bottom:1px solid var(--border);
     will-change:transform,opacity;
     transform-origin:left center;
     transition:transform .15s linear, opacity .15s linear;
+    min-height:calc(100vh - 90px);
   }
+
   .role:last-child{border-bottom:none;}
+  .role-inner{display:flex; gap:36px; align-items:flex-start;}
 
   .card{
-    flex:0 0 220px;
+    flex:0 0 300px;
     border:2px solid var(--role-color, var(--red));
     background:var(--panel);
     overflow:hidden; border-radius:10px; cursor:pointer;
@@ -83,7 +86,7 @@
     box-shadow:5px 5px 0 var(--role-color, var(--red));
   }
   .card img, .modal img{
-    image-rendering:pixelated; image-rendering:-moz-crisp-edges; image-rendering:crisp-edges;
+    image-rendering:auto;
   }
   .card img{
     display:block; width:100%; aspect-ratio:900/1221; object-fit:cover; background:#000;
@@ -119,42 +122,62 @@
   /* right-side navigator */
   nav.navigator{
     position:fixed; top:50%; right:24px; transform:translateY(-50%);
-    display:flex; flex-direction:column; gap:12px; z-index:10;
+    display:flex; flex-direction:column; align-items:flex-end; gap:12px; z-index:10;
   }
   nav.navigator button{
     all:unset; cursor:pointer; box-sizing:border-box;
     font-family:'DotGothic16',monospace; font-size:0.65rem; color:#5a5a5a;
-    width:30px; height:26px; display:flex; align-items:center; justify-content:center;
+    min-width:30px; height:26px; padding:0 8px; white-space:nowrap;
+    display:flex; align-items:center; justify-content:center;
     background:var(--panel); border:1px solid var(--border); border-radius:4px;
     transition:color .1s, background .1s, transform .1s;
   }
   nav.navigator button.active{
     color:var(--btn-text,#000); background:var(--btn-color, var(--red)); border-color:var(--btn-color, var(--red));
-    transform:scale(1.15);
+    transform:scale(1.15); letter-spacing:0.5px;
   }
   nav.navigator button:hover{color:var(--white); border-color:var(--btn-color, var(--red));}
+
+  .navigator-track{display:contents;}
+  .nav-arrow{display:none;}
 
   @media (max-width:900px){
     .role-list{padding:40px 6% 100px;}
     .role{
-      flex-direction:column; align-items:center; text-align:center;
-      gap:18px; padding:36px 0; transform-origin:center top;
+      padding:36px 0; transform-origin:center top;
+      min-height:calc(100vh - 150px);
+    }
+    .role-inner{
+      flex-direction:column; align-items:center; text-align:center; gap:18px;
     }
     .card{flex:0 0 auto; width:min(240px,70vw);}
     .info p, .rules{text-align:left;}
 
     nav.navigator{
       top:auto; bottom:0; right:0; left:0; transform:none;
-      flex-direction:row; justify-content:center; gap:4px;
+      flex-direction:row; align-items:center; justify-content:center; gap:6px;
       background:linear-gradient(0deg,#0a0a0aee,#0a0a0a99 80%,transparent);
       padding:10px 8px calc(10px + env(safe-area-inset-bottom));
-      overflow-x:auto;
+    }
+    .navigator-track{
+      display:flex; flex-direction:row; gap:4px;
+      overflow-x:hidden; scroll-behavior:smooth;
+      flex:1 1 auto; min-width:0;
     }
     nav.navigator button{
-      font-size:0.65rem; min-width:34px; min-height:32px; width:34px; height:32px;
+      font-size:0.65rem; min-width:34px; height:32px; padding:0 10px; white-space:nowrap;
       flex:0 0 auto;
     }
     nav.navigator button.active{transform:scale(1.1);}
+
+    .nav-arrow{
+      all:unset; display:flex; align-items:center; justify-content:center;
+      box-sizing:border-box; cursor:pointer; flex:0 0 auto;
+      width:30px; height:32px; font-size:1.2rem; color:var(--yellow);
+      background:var(--panel); border:1px solid var(--border); border-radius:4px;
+    }
+    .nav-arrow:hover{border-color:var(--yellow);}
+    .nav-arrow:active{transform:scale(0.92);}
   }
 
   .back-link{
@@ -268,7 +291,8 @@
 <main class="role-list" id="main">
 
   <section class="role" data-nav="TR" style="--role-color:var(--red);--role-text:#fff">
-    <div class="card">
+    <div class="role-inner">
+      <div class="card">
       <img src="images/01.png" alt="Tracer">
     </div>
     <div class="info">
@@ -282,10 +306,12 @@
         <div><span class="ic">?</span>Take and examine all hand cards of 2 players of your choice.</div>
       </div>
     </div>
+    </div>
   </section>
 
   <section class="role" data-nav="IN" style="--role-color:var(--red);--role-text:#fff">
-    <div class="card">
+    <div class="role-inner">
+      <div class="card">
       <img src="images/02.png" alt="Inspector">
     </div>
     <div class="info">
@@ -299,10 +325,12 @@
         <div><span class="ic">?</span>Select 2 players and designate a player to check the secret role of the other.</div>
       </div>
     </div>
+    </div>
   </section>
 
   <section class="role" data-nav="EN" style="--role-color:var(--red);--role-text:#fff">
-    <div class="card">
+    <div class="role-inner">
+      <div class="card">
       <img src="images/03.png" alt="Enforcer">
     </div>
     <div class="info">
@@ -316,10 +344,12 @@
         <div><span class="ic">?</span>After an unsuccessful Escape nomination, you may view the secret role of a nominated player on your next turn.</div>
       </div>
     </div>
+    </div>
   </section>
 
   <section class="role" data-nav="FO" style="--role-color:var(--role-green)">
-    <div class="card">
+    <div class="role-inner">
+      <div class="card">
       <img src="images/04.png" alt="Forager">
     </div>
     <div class="info">
@@ -333,10 +363,12 @@
         <div><span class="ic">?</span>Draw 6 cards from the discard pile and give the Supplies to any player(s). Return any Encounter cards to the discard pile.</div>
       </div>
     </div>
+    </div>
   </section>
 
   <section class="role" data-nav="BL" style="--role-color:var(--role-green)">
-    <div class="card">
+    <div class="role-inner">
+      <div class="card">
       <img src="images/05.png" alt="Blacksmith">
     </div>
     <div class="info">
@@ -350,10 +382,12 @@
         <div><span class="ic">?</span>Shuffle the discard pile, draw 3 cards. Take a Supply card to keep or give away. If no Supply is drawn, no card is taken.</div>
       </div>
     </div>
+    </div>
   </section>
 
   <section class="role" data-nav="SU" style="--role-color:var(--role-green)">
-    <div class="card">
+    <div class="role-inner">
+      <div class="card">
       <img src="images/06.png" alt="Survivalist">
     </div>
     <div class="info">
@@ -367,10 +401,12 @@
         <div><span class="ic">?</span>Whenever a Zombie Encounter the Survivalist takes part in succeeds, the Survivalist is refunded a random Supply card.</div>
       </div>
     </div>
+    </div>
   </section>
 
   <section class="role" data-nav="BR" style="--role-color:var(--role-blue)">
-    <div class="card">
+    <div class="role-inner">
+      <div class="card">
       <img src="images/07.png" alt="Brawler">
     </div>
     <div class="info">
@@ -384,10 +420,12 @@
         <div><span class="ic">?</span>When confronting an Encounter alone, each card you contribute counts as double value.</div>
       </div>
     </div>
+    </div>
   </section>
 
   <section class="role" data-nav="DU" style="--role-color:var(--role-blue)">
-    <div class="card">
+    <div class="role-inner">
+      <div class="card">
       <img src="images/08.png" alt="Duelist">
     </div>
     <div class="info">
@@ -401,10 +439,12 @@
         <div><span class="ic">?</span>When chosen for any Encounters, you choose to contribute 1 or 2 cards.</div>
       </div>
     </div>
+    </div>
   </section>
 
   <section class="role" data-nav="DE" style="--role-color:var(--role-blue)">
-    <div class="card">
+    <div class="role-inner">
+      <div class="card">
       <img src="images/09.png" alt="Deadeye">
     </div>
     <div class="info">
@@ -418,10 +458,12 @@
         <div><span class="ic">?</span>Whenever an Encounter is drawn, use this ability to reduce the damage required by 2 points.</div>
       </div>
     </div>
+    </div>
   </section>
 
   <section class="role" data-nav="TK" style="--role-color:var(--role-orange)">
-    <div class="card">
+    <div class="role-inner">
+      <div class="card">
       <img src="images/10.png" alt="Trickster">
     </div>
     <div class="info">
@@ -435,10 +477,12 @@
         <div><span class="ic">?</span>Swap character cards with another player. Previous Tricksters cannot be targeted. This ability does not affect Amnesiacs.</div>
       </div>
     </div>
+    </div>
   </section>
 
   <section class="role" data-nav="PR" style="--role-color:var(--role-orange)">
-    <div class="card">
+    <div class="role-inner">
+      <div class="card">
       <img src="images/11.png" alt="Prospector">
     </div>
     <div class="info">
@@ -452,10 +496,12 @@
         <div><span class="ic">?</span>Hand limit is 6. At the start of the game, search the deck for 2 Supply cards, add them to your hand, then shuffle the deck.</div>
       </div>
     </div>
+    </div>
   </section>
 
   <section class="role" data-nav="ST" style="--role-color:var(--role-orange)">
-    <div class="card">
+    <div class="role-inner">
+      <div class="card">
       <img src="images/12.png" alt="Stranger">
     </div>
     <div class="info">
@@ -469,10 +515,12 @@
         <div><span class="ic">?</span>Your secret role and inventory can never be checked by any player.</div>
       </div>
     </div>
+    </div>
   </section>
 
   <section class="role" data-nav="PA" style="--role-color:var(--role-olive)">
-    <div class="card">
+    <div class="role-inner">
+      <div class="card">
       <img src="images/13.png" alt="Pathfinder">
     </div>
     <div class="info">
@@ -486,10 +534,12 @@
         <div><span class="ic">?</span>Look at and rearrange the next 6 Encounter cards from the top of the deck.</div>
       </div>
     </div>
+    </div>
   </section>
 
   <section class="role" data-nav="SY" style="--role-color:var(--role-olive)">
-    <div class="card">
+    <div class="role-inner">
+      <div class="card">
       <img src="images/14.png" alt="Surveyor">
     </div>
     <div class="info">
@@ -503,10 +553,12 @@
         <div><span class="ic">?</span>Look at the next 3 Encounter cards from the top of the deck, then place them back in the same order.</div>
       </div>
     </div>
+    </div>
   </section>
 
   <section class="role" data-nav="OU" style="--role-color:var(--role-olive)">
-    <div class="card">
+    <div class="role-inner">
+      <div class="card">
       <img src="images/15.png" alt="Outrunner">
     </div>
     <div class="info">
@@ -520,10 +572,12 @@
         <div><span class="ic">?</span>Whenever an Encounter is drawn, you may use this ability to reshuffle the card back into the Encounter deck.</div>
       </div>
     </div>
+    </div>
   </section>
 
   <section class="role" data-nav="OL" style="--role-color:var(--role-orange)">
-    <div class="card">
+    <div class="role-inner">
+      <div class="card">
       <img src="images/16.png" alt="Outlander">
     </div>
     <div class="info">
@@ -537,10 +591,12 @@
         <div><span class="ic">?</span>You look at another player's secret role.</div>
       </div>
     </div>
+    </div>
   </section>
 
   <section class="role" data-nav="VI" style="--role-color:var(--role-gold)">
-    <div class="card">
+    <div class="role-inner">
+      <div class="card">
       <img src="images/17.png" alt="Virologist">
     </div>
     <div class="info">
@@ -554,10 +610,12 @@
         <div><span class="ic">?</span>Discard 3 cards to check a player's secret role card.</div>
       </div>
     </div>
+    </div>
   </section>
 
   <section class="role" data-nav="GE" style="--role-color:var(--role-gold)">
-    <div class="card">
+    <div class="role-inner">
+      <div class="card">
       <img src="images/18.png" alt="Geneticist">
     </div>
     <div class="info">
@@ -571,11 +629,16 @@
         <div><span class="ic">?</span>Ask a player to reveal his secret role to you. If he agrees, you also reveal your secret role to him.</div>
       </div>
     </div>
+    </div>
   </section>
 
 </main>
 
-<nav class="navigator" id="navigator"></nav>
+<nav class="navigator" id="navigator">
+  <button class="nav-arrow nav-arrow-left" id="navPrev" aria-label="Scroll left">‹</button>
+  <div class="navigator-track" id="navigatorTrack"></div>
+  <button class="nav-arrow nav-arrow-right" id="navNext" aria-label="Scroll right">›</button>
+</nav>
 
 <a class="back-link" href="../../index.html#brief">← Back to Mission Brief</a>
 
@@ -618,21 +681,210 @@
 
   const roles = Array.from(document.querySelectorAll('.role'));
   const navEl = document.getElementById('navigator');
+  const navTrack = document.getElementById('navigatorTrack');
+  const navPrev = document.getElementById('navPrev');
+  const navNext = document.getElementById('navNext');
 
   // build side-navigator buttons from data-nav
-  roles.forEach((r) => {
+  roles.forEach((r, i) => {
     const btn = document.createElement('button');
-    btn.textContent = r.dataset.nav;
+    const abbr = r.dataset.nav;
+    const fullName = r.querySelector('h2').textContent;
+    btn.textContent = abbr;
+    btn.dataset.abbr = abbr;
+    btn.dataset.full = fullName;
     const color = r.style.getPropertyValue('--role-color');
     const text = r.style.getPropertyValue('--role-text');
     if (color) btn.style.setProperty('--btn-color', color);
     if (text) btn.style.setProperty('--btn-text', text);
     btn.addEventListener('click', () => {
-      r.scrollIntoView({behavior:'smooth', block:'center'});
+      snapToRole(i);
     });
-    navEl.appendChild(btn);
+    navTrack.appendChild(btn);
     r._navBtn = btn;
   });
+
+  // pad both ends of the strip with clones of the opposite end, so the first/last
+  // button can be perfectly centered too (and the strip reads as an endless loop)
+  const NAV_CLONE_COUNT = Math.min(6, roles.length - 1);
+  function makeNavClone(realIndex){
+    const src = roles[realIndex]._navBtn;
+    const clone = document.createElement('button');
+    clone.textContent = src.dataset.abbr;
+    clone.dataset.abbr = src.dataset.abbr;
+    clone.dataset.full = src.dataset.full;
+    clone.style.cssText = src.style.cssText;
+    clone.tabIndex = -1;
+    clone.setAttribute('aria-hidden', 'true');
+    clone.addEventListener('click', () => snapToRole(realIndex));
+    return clone;
+  }
+  const leadClones = document.createDocumentFragment();
+  for (let i = roles.length - NAV_CLONE_COUNT; i < roles.length; i++) leadClones.appendChild(makeNavClone(i));
+  navTrack.insertBefore(leadClones, navTrack.firstChild);
+  for (let i = 0; i < NAV_CLONE_COUNT; i++) navTrack.appendChild(makeNavClone(i));
+
+  // center the mobile nav strip on whichever button is currently expanded/active
+  function centerActiveNavButton(btn){
+    if (!navTrack || !btn) return;
+    const btnCenter = (btn.offsetLeft - navTrack.offsetLeft) + btn.offsetWidth / 2;
+    const target = btnCenter - navTrack.clientWidth / 2;
+    const max = navTrack.scrollWidth - navTrack.clientWidth;
+    navTrack.scrollTo({ left: Math.max(0, Math.min(max, target)), behavior: 'smooth' });
+  }
+
+  // mobile prev/next arrows step the track instead of finger-scrolling
+  if (navPrev && navNext && navTrack){
+    const stepTrack = (dir) => {
+      const amount = Math.max(navTrack.clientWidth * 0.7, 80);
+      navTrack.scrollBy({left: dir * amount, behavior: 'smooth'});
+    };
+    navPrev.addEventListener('click', () => stepTrack(-1));
+    navNext.addEventListener('click', () => stepTrack(1));
+  }
+
+  // ---------- wheel scrolling: 1:1 live tracking, snaps to a section once you pause ----------
+  // IMPORTANT: every scrollTo call below passes behavior:'auto' explicitly. Without it,
+  // Chrome inherits the page's scroll-behavior and silently smooth-animates each call,
+  // which stacks dozens of overlapping animations per second inside a rAF loop and grinds
+  // scrolling to a crawl (multi-second lag). Always be explicit here.
+  function scrollInstant(y){
+    window.scrollTo({ top: y, left: 0, behavior: 'auto' });
+  }
+
+  function closestRoleIndexAt(y){
+    if (y === undefined) y = window.scrollY;
+    const viewportCenterDoc = y + window.innerHeight / 2;
+    let idx = 0, closestDist = Infinity;
+    roles.forEach((r, i) => {
+      const rect = r.getBoundingClientRect();
+      const docCenter = rect.top + window.scrollY + rect.height / 2; // absolute doc position
+      const dist = Math.abs(viewportCenterDoc - docCenter);
+      if (dist < closestDist){ closestDist = dist; idx = i; }
+    });
+    return idx;
+  }
+
+  function maxScrollY(){
+    return document.documentElement.scrollHeight - window.innerHeight;
+  }
+
+  function normalizeDeltaY(e){
+    if (e.deltaMode === 1) return e.deltaY * 20;             // DOM_DELTA_LINE (Firefox default)
+    if (e.deltaMode === 2) return e.deltaY * window.innerHeight; // DOM_DELTA_PAGE
+    return e.deltaY;                                          // DOM_DELTA_PIXEL
+  }
+
+  let snapping = false;
+  let snapTargetY = window.scrollY;
+
+  function snapStep(){
+    if (!snapping) return; // a newer wheel event or snap call cancelled this loop — stop chasing a stale target
+    const currentY = window.scrollY;
+    const diff = snapTargetY - currentY;
+    if (Math.abs(diff) < 0.5){
+      scrollInstant(snapTargetY);
+      snapping = false;
+      return;
+    }
+    scrollInstant(currentY + diff * 0.35);
+    requestAnimationFrame(snapStep);
+  }
+
+  function snapToRole(index){
+    index = Math.max(0, Math.min(roles.length - 1, index));
+    const r = roles[index];
+    const rect = r.getBoundingClientRect();
+    snapTargetY = Math.max(0, Math.min(maxScrollY(), window.scrollY + rect.top + rect.height / 2 - window.innerHeight / 2));
+    if (!snapping){
+      snapping = true;
+      requestAnimationFrame(snapStep);
+    }
+  }
+
+  let wheelIdleTimer = null;
+  const WHEEL_MULT = 6; // wheel deltaY (px) -> scroll px; raises "one notch" close to one section
+
+  window.addEventListener('wheel', (e) => {
+    if (Math.abs(e.deltaY) < 2) return;
+    e.preventDefault();
+
+    snapping = false; // live input takes priority over any in-progress settle animation
+
+    const dy = normalizeDeltaY(e) * WHEEL_MULT;
+    scrollInstant(Math.max(0, Math.min(maxScrollY(), window.scrollY + dy)));
+
+    // once the user pauses, ease the last bit into whichever section they ended up near
+    clearTimeout(wheelIdleTimer);
+    wheelIdleTimer = setTimeout(() => {
+      snapToRole(closestRoleIndexAt(window.scrollY));
+    }, 110);
+  }, { passive:false });
+
+  // ---------- touch scrolling (mobile): same 1:1 live tracking + snap-on-release ----------
+  function touchIsInsideExcludedArea(target){
+    return !!(target.closest && (
+      target.closest('.navigator') ||
+      target.closest('.modal-overlay') ||
+      target.closest('#mainNav')
+    ));
+  }
+
+  let touchActive = false;
+  let touchLastY = 0;
+  let touchOverscroll = 0; // how far past the last/first card the user is pulling (for wraparound)
+  const WRAP_PULL_THRESHOLD = 50; // px of pull past the edge needed to commit to wrapping
+
+  window.addEventListener('touchstart', (e) => {
+    if (e.touches.length !== 1) return;
+    if (touchIsInsideExcludedArea(e.target)) return; // let nav strip / modal / menu scroll normally
+    touchActive = true;
+    touchOverscroll = 0;
+    snapping = false; // cancel any in-progress settle animation
+    touchLastY = e.touches[0].clientY;
+  }, { passive:true });
+
+  window.addEventListener('touchmove', (e) => {
+    if (!touchActive || e.touches.length !== 1) return;
+    e.preventDefault();
+    const y = e.touches[0].clientY;
+    const delta = touchLastY - y; // finger moves up -> scroll down
+    touchLastY = y;
+
+    const current = window.scrollY;
+    const max = maxScrollY();
+    const desired = current + delta;
+
+    if (desired > max){
+      // pulling past the last card — accumulate pull distance instead of scrolling further
+      touchOverscroll = Math.min(touchOverscroll + (desired - max), 140);
+      scrollInstant(max);
+    } else if (desired < 0){
+      // pulling past the first card
+      touchOverscroll = Math.max(touchOverscroll - (0 - desired), -140);
+      scrollInstant(0);
+    } else {
+      touchOverscroll = 0; // back within bounds — cancel any pending wrap
+      scrollInstant(desired);
+    }
+  }, { passive:false });
+
+  function endTouch(){
+    if (!touchActive) return;
+    touchActive = false;
+    if (touchOverscroll > WRAP_PULL_THRESHOLD){
+      touchOverscroll = 0;
+      snapToRole(0); // pulled past Geneticist — loop to Tracer
+    } else if (touchOverscroll < -WRAP_PULL_THRESHOLD){
+      touchOverscroll = 0;
+      snapToRole(roles.length - 1); // pulled past Tracer — loop to Geneticist
+    } else {
+      touchOverscroll = 0;
+      snapToRole(closestRoleIndexAt(window.scrollY));
+    }
+  }
+  window.addEventListener('touchend', endTouch, { passive:true });
+  window.addEventListener('touchcancel', endTouch, { passive:true });
 
   let ticking = false;
 
@@ -657,7 +909,17 @@
       if (dist < closestDist){ closestDist = dist; closest = r; }
     });
 
-    roles.forEach(r => r._navBtn.classList.toggle('active', r === closest));
+    let activeChanged = false;
+    roles.forEach(r => {
+      const isActive = r === closest;
+      const wasActive = r._navBtn.classList.contains('active');
+      if (isActive !== wasActive){
+        r._navBtn.classList.toggle('active', isActive);
+        r._navBtn.textContent = isActive ? r._navBtn.dataset.full : r._navBtn.dataset.abbr;
+        if (isActive) activeChanged = true;
+      }
+    });
+    if (activeChanged && closest) centerActiveNavButton(closest._navBtn);
     ticking = false;
   }
 
