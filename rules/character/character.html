@@ -222,10 +222,9 @@
     .role-inner{
       position:relative; z-index:1; height:100%;
       display:flex; align-items:center; justify-content:center;
-      /* No horizontal padding: the card artwork is meant to run edge to edge. Only the bottom
-         gets --nav-clearance (measured by JS from the real bottom nav height) so the image
-         isn't hidden underneath the fixed nav strip. */
-      padding:0 0 var(--nav-clearance, 96px);
+      /* No padding at all. --frame-h ALREADY subtracts the nav height, so also padding the
+         bottom by --nav-clearance was subtracting the nav twice and wasting ~53px of card. */
+      padding:0;
       /* Desktop's .role-inner sets gap:36px. Left un-reset, that gap plus the still-present
          (though empty) .info flex sibling added 36px of phantom track to the flex row, so the
          centred card got pushed 18px off to the left — the black strip down the right edge. */
@@ -238,12 +237,15 @@
 
     .mobile-card-img{
       display:block;
-      /* Fixed frame, no scrolling: the image is given the whole available box and object-fit
-         keeps the artwork whole inside it. On a portrait phone width is the binding dimension,
-         so it still runs edge to edge; "contain" only kicks in on short/landscape screens,
-         where it letterboxes rather than overflowing and forcing a vertical scroll. */
+      /* Fill the frame completely — no letterbox bars in either direction. "cover" means the
+         card is scaled to the wider of the two dimensions and the overflow is cropped; the
+         card is 2:3 and a phone screen is much taller than that, so the crop lands on the
+         vertical axis. object-position:bottom anchors the BOTTOM edge, so everything trimmed
+         comes off the top (empty sky above the character) and the ability box + NOTE lines at
+         the bottom are never cut. Measured bottom margin across all 18 cards is only 4-9%,
+         versus a top region that is pure background. */
       width:100%; height:100%;
-      object-fit:contain; object-position:center;
+      object-fit:cover; object-position:center bottom;
       margin:0;
       border-radius:0;
       /* no pinch-zoom / double-tap-zoom on the artwork itself */
