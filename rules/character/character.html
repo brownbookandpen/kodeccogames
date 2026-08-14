@@ -156,17 +156,37 @@
   .nav-arrow{display:none;}
 
   @media (max-width:900px){
-    .role-list{padding:40px 6% 100px;}
+    /* Horizontal insets are applied ONCE, on .role-inner. Previously .role-list (6%) and
+       .role (22px) both added side padding, stacking to ~45px per side and squeezing the
+       body copy down to a 299px measure — about 28 characters per line in VT323, well under
+       the ~45-75 that reads comfortably. That single stacked-padding bug is what made every
+       card feel cramped and sprawl vertically. */
+    .role-list{padding:0 0 100px;}
     .role{
       position:relative; overflow:hidden;
-      padding:92px 22px 48px; transform-origin:center top;
+      padding:30px 0 44px; transform-origin:center top;
       min-height:calc(100vh - 150px);
       border-bottom:none;
-      scroll-margin-top:82px; /* keeps the sticky header from covering the top of the section on snap/tap */
+      scroll-margin-top:82px; /* keeps the sticky header from covering the top of the section on tap */
     }
     .role-inner{
       position:relative; z-index:1;
-      flex-direction:column; align-items:center; text-align:center; gap:18px;
+      flex-direction:column; align-items:stretch; text-align:left; gap:0;
+      padding:0 12px;
+    }
+
+    /* the readable surface: one panel behind all the description copy, so the text never
+       sits raw on the artwork. The art still shows through around and behind it. */
+    .info-body{
+      /* pushed down so the panel starts around the figure's waist — head and torso stay in
+         open art, and the art still shows through the glass behind the copy */
+      margin-top:52vw;
+      background:rgba(9,9,9,.72);
+      backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px);
+      border:1px solid rgba(255,255,255,.07);
+      border-radius:12px;
+      padding:16px 15px 2px;
+      box-shadow:0 10px 30px rgba(0,0,0,.55);
     }
 
     /* the boxed thumbnail (full card art incl. its own title/ability text) is replaced by
@@ -185,28 +205,65 @@
        plain dark backdrop below. */
     .role-bg-art{
       display:block; position:absolute; top:0; left:50%;
-      width:100vw; height:82vh; margin-left:-50vw;
-      background-size:cover; background-position:center top;
+      width:100vw; margin-left:-50vw;
+      /* Width-fit rather than `cover`. These portraits are 827x1200 (0.69) against a much
+         narrower box, so `cover` scaled them to the box HEIGHT and cropped the scene's sides
+         off, losing the forest framing. Fitting to width keeps the whole scene.
+         The height is then pinned to the image's own rendered height (100vw / 0.689 = 145vw)
+         so the box and the artwork end at exactly the same place — no empty letterbox band
+         under the sticky header, and no hard seam where the box outlives the image. */
+      height:145vw;
+      background-size:100% auto; background-position:center top;
+      background-repeat:no-repeat;
       z-index:0;
     }
-    /* dark scrim over the art, fading to the page's own background color at the bottom so
-       overflow text (for long entries) blends in seamlessly rather than showing a hard edge */
+    /* Scrim, keyed to where things actually are in the source art: the figure occupies
+       13-48% of the image, so the veil is lightest across that band (it was previously .88
+       black at the very top, which crushed the character to a silhouette). It then ramps to
+       solid black over the ground so long entries' overflow text blends into the page. */
     .role-bg-art::after{
       content:''; position:absolute; inset:0;
       background:
-        linear-gradient(180deg, rgba(6,6,6,.88) 0%, rgba(6,6,6,.4) 28%, rgba(6,6,6,.6) 65%, var(--black) 100%);
+        linear-gradient(180deg,
+          rgba(6,6,6,.55) 0%,
+          rgba(6,6,6,.22) 16%,
+          rgba(6,6,6,.30) 45%,
+          rgba(8,8,8,.80) 68%,
+          var(--black) 100%);
     }
 
-    .info h2{ text-shadow:0 2px 10px rgba(0,0,0,.95), 2px 2px 0 #000; }
+    /* the name stays over open artwork, centred, as the one display element */
+    .info h2{
+      text-align:center;
+      font-size:clamp(1.9rem, 8.5vw, 2.5rem);
+      margin-bottom:16px;
+      text-shadow:0 2px 12px rgba(0,0,0,.95), 2px 2px 0 #000;
+    }
+    /* type tuned for the wider measure: slightly smaller and tighter than the desktop scale,
+       and the heavy per-glyph text-shadows are gone — the panel provides contrast now, so the
+       shadows were only muddying the letterforms. */
     .info p{
       text-align:left;
-      text-shadow:0 1px 6px rgba(0,0,0,.95), 0 0 2px rgba(0,0,0,.9);
+      font-size:0.95rem; line-height:1.5;
+      margin-bottom:14px;
+      text-shadow:none;
     }
+    /* the ability block echoes the panel, tied to the role colour down its left edge */
     .rules{
       text-align:left;
-      text-shadow:0 1px 5px rgba(0,0,0,.95);
-      border-left-color:var(--role-color, var(--red));
+      margin-top:18px;
+      background:rgba(9,9,9,.82);
+      backdrop-filter:blur(3px); -webkit-backdrop-filter:blur(3px);
+      border:1px solid rgba(255,255,255,.07);
+      border-left:3px solid var(--role-color, var(--red));
+      border-radius:10px;
+      padding:15px 15px 13px;
+      font-size:0.92rem; line-height:1.5;
+      text-shadow:none;
+      box-shadow:0 10px 30px rgba(0,0,0,.55);
     }
+    .rules div:not(.ability-name){margin-bottom:7px;}
+    .rules div:not(.ability-name):last-child{margin-bottom:0;}
 
     nav.navigator{
       top:auto; bottom:0; right:0; left:0; transform:none;
@@ -755,6 +812,22 @@
     bgArt.className = 'role-bg-art';
     bgArt.style.backgroundImage = `url("${bgSrc}")`;
     r.insertBefore(bgArt, r.firstChild);
+  });
+
+  // Wrap each role's description paragraphs in a single .info-body element. On mobile this
+  // becomes one translucent panel sitting over the artwork, so the copy reads against a
+  // consistent dark surface instead of directly against the character's face. Styling the
+  // <p>s individually would produce a stack of separate slabs with gaps between them; one
+  // wrapper keeps it as a single readable block. No visual effect on desktop.
+  roles.forEach(r => {
+    const info = r.querySelector('.info');
+    if (!info) return;
+    const paras = Array.from(info.children).filter(el => el.tagName === 'P');
+    if (!paras.length) return;
+    const body = document.createElement('div');
+    body.className = 'info-body';
+    info.insertBefore(body, paras[0]);
+    paras.forEach(p => body.appendChild(p));
   });
 
   // touch devices use native scrolling everywhere, including nav taps — mixing our custom
