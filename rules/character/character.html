@@ -145,6 +145,11 @@
     position:fixed; top:50%; right:24px; transform:translateY(-50%);
     display:flex; flex-direction:column; align-items:flex-end; gap:12px; z-index:10;
   }
+  /* The strip is padded at both ends with clones of the opposite end so the mobile carousel can
+     centre its first/last button. Desktop lays the same strip out vertically with everything
+     visible, so those clones showed up as duplicate entries running past the top and bottom of
+     the screen. Only the 18 real buttons belong here. */
+  nav.navigator button.nav-clone{display:none;}
   nav.navigator button{
     all:unset; cursor:pointer; box-sizing:border-box;
     font-family:'DotGothic16',monospace; font-size:0.65rem; color:#5a5a5a;
@@ -319,6 +324,7 @@
       font-size:0.65rem; min-width:34px; height:32px; padding:0 10px; white-space:nowrap;
       flex:0 0 auto;
     }
+    nav.navigator button.nav-clone{display:flex;} /* re-enabled: mobile needs them to centre the ends */
     nav.navigator button.active{transform:scale(1.1);}
 
     .nav-arrow{
@@ -961,6 +967,9 @@
   function makeNavClone(realIndex){
     const src = roles[realIndex]._navBtn;
     const clone = document.createElement('button');
+    // tagged so CSS can drop them on desktop, where the strip is a vertical list that shows
+    // every button at once — the padding clones just read as duplicated entries there
+    clone.className = 'nav-clone';
     clone.textContent = src.dataset.abbr;
     clone.dataset.abbr = src.dataset.abbr;
     clone.dataset.full = src.dataset.full;
