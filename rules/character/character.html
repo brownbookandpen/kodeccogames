@@ -152,9 +152,10 @@
     .role-list{padding:40px 6% 100px;}
     .role{
       position:relative; overflow:hidden;
-      padding:48px 22px; transform-origin:center top;
+      padding:92px 22px 48px; transform-origin:center top;
       min-height:calc(100vh - 150px);
       border-bottom:none;
+      scroll-margin-top:82px; /* keeps the sticky header from covering the top of the section on snap/tap */
     }
     .role-inner{
       position:relative; z-index:1;
@@ -751,7 +752,9 @@
   function goToRole(index){
     index = Math.max(0, Math.min(roles.length - 1, index));
     if (isTouchDevice()){
-      roles[index].scrollIntoView({ behavior: 'smooth', block: 'center' });
+      // block:'start' (not 'center') so long entries land with the title at the top,
+      // clear of the sticky header, instead of centering on the middle of the text
+      roles[index].scrollIntoView({ behavior: 'smooth', block: 'start' });
     } else {
       snapToRole(index);
     }
