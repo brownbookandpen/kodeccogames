@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <title>CHARACTER — CARRIER</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DotGothic16&family=VT323&display=swap" rel="stylesheet">
@@ -172,6 +172,15 @@
        load/resize/orientation change; the vh value below is only the pre-JS fallback. */
     :root{ --frame-h:72vh; }
 
+    /* Fixed-size page: header + carousel frame + nav are measured to fit the viewport exactly,
+       so the document itself must not scroll or bounce in either axis. */
+    html, body{
+      height:100%; overflow:hidden;
+      overscroll-behavior:none;
+      touch-action:pan-x;               /* no pinch-zoom, no vertical pan at page level */
+      -webkit-text-size-adjust:100%;    /* stop iOS reflowing text on orientation change */
+    }
+
     /* the "MISSION BRIEF / CHARACTER" hero banner is dropped on mobile entirely — the
        carousel frame starts right under the sticky header, so every card gets more height */
     .post-header{ display:none; }
@@ -185,6 +194,9 @@
       scroll-snap-type:x mandatory; scroll-behavior:auto;
       -webkit-overflow-scrolling:touch;
       scrollbar-width:none;
+      /* pan-x only: the strip swipes sideways, and the browser is told up front that vertical
+         panning and pinch-zoom are not gestures it should handle here. */
+      touch-action:pan-x;
     }
     .role-list::-webkit-scrollbar{ display:none; }
 
@@ -192,14 +204,12 @@
       position:relative;
       flex:0 0 100%; width:100%; height:100%; min-height:0;
       display:flex; flex-direction:column;
-      overflow-y:auto; overflow-x:hidden;
-      -webkit-overflow-scrolling:touch;
+      /* fixed frame: the card is sized to fit the visible area, so there is nothing to scroll
+         down to and no way to drift the artwork off-screen */
+      overflow:hidden;
       scroll-snap-align:start; scroll-snap-stop:always;
       padding:0; border-bottom:none;
       will-change:auto;
-      /* overflow-y:auto above reserves a vertical scrollbar gutter, which shaved ~18px off the
-         right edge of every card and left a black strip down the side of the screen. Hide the
-         scrollbar so it takes zero layout width — scrolling itself still works. */
       scrollbar-width:none;
     }
     .role::-webkit-scrollbar{ display:none; }
@@ -228,13 +238,16 @@
 
     .mobile-card-img{
       display:block;
-      /* Fill the full screen width. Previously this was width:auto + max-height:100%, which
-         let the image size itself by HEIGHT and sit letterboxed with black bars down both
-         sides. Width is now the driver, height follows the artwork's aspect ratio. */
-      width:100%; height:auto;
-      max-width:none; max-height:none;
+      /* Fixed frame, no scrolling: the image is given the whole available box and object-fit
+         keeps the artwork whole inside it. On a portrait phone width is the binding dimension,
+         so it still runs edge to edge; "contain" only kicks in on short/landscape screens,
+         where it letterboxes rather than overflowing and forcing a vertical scroll. */
+      width:100%; height:100%;
+      object-fit:contain; object-position:center;
       margin:0;
       border-radius:0;
+      /* no pinch-zoom / double-tap-zoom on the artwork itself */
+      touch-action:pan-x;
     }
 
     /* the boxed thumbnail (original small card graphic) becomes an invisible full-frame tap
@@ -1162,7 +1175,9 @@
     const topOffset = rl ? rl.getBoundingClientRect().top + window.scrollY : 0;
     const navH = navEl ? navEl.getBoundingClientRect().height : 0;
     const vh = (window.visualViewport && window.visualViewport.height) || window.innerHeight;
-    const frameH = Math.max(320, vh - topOffset - navH);
+    // floor is deliberately low: a 320px minimum exceeded the space actually available on a
+    // landscape phone, pushing the frame (and the card inside it) down under the fixed nav.
+    const frameH = Math.max(160, vh - topOffset - navH);
     document.documentElement.style.setProperty('--frame-h', frameH + 'px');
     // navH already includes the nav's own safe-area padding (it's a real measured box), so
     // this doesn't need another env(safe-area-inset-bottom) added on top — just a small gap.
@@ -1341,6 +1356,30 @@
   roles.forEach(r => {
     r.querySelector('.card').addEventListener('click', () => openModal(r));
   });
+
+  // ---------- lock zoom on mobile ----------
+  // iOS Safari deliberately ignores maximum-scale / user-scalable=no in the viewport tag, so the
+  // only reliable way to stop pinch-zoom is to cancel the gesture events themselves. Without this
+  // a stray pinch leaves the card zoomed in with the artwork cropped off-screen, and because the
+  // frame is fixed there's no way to scroll it back into view.
+  (function lockZoom(){
+    const block = e => { if (isPagerMode()) e.preventDefault(); };
+    ['gesturestart','gesturechange','gestureend'].forEach(evt =>
+      document.addEventListener(evt, block, { passive:false }));
+
+    // multi-finger touches are the other route into a zoom on some Android browsers
+    document.addEventListener('touchmove', e => {
+      if (isPagerMode() && e.touches.length > 1) e.preventDefault();
+    }, { passive:false });
+
+    // ...and double-tap-to-zoom, which fires as a fast second tap rather than a gesture event
+    let lastTap = 0;
+    document.addEventListener('touchend', e => {
+      const now = e.timeStamp;
+      if (isPagerMode() && now - lastTap < 320) e.preventDefault();
+      lastTap = now;
+    }, { passive:false });
+  })();
 
   modalClose.addEventListener('click', closeModal);
   overlay.addEventListener('click', e => {
