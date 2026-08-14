@@ -156,141 +156,119 @@
   .nav-arrow{display:none;}
 
   @media (max-width:900px){
-    /* Horizontal insets are applied ONCE, on .role-inner. Previously .role-list (6%) and
-       .role (22px) both added side padding, stacking to ~45px per side and squeezing the
-       body copy down to a 299px measure — about 28 characters per line in VT323, well under
-       the ~45-75 that reads comfortably. That single stacked-padding bug is what made every
-       card feel cramped and sprawl vertically. */
-    .role-list{padding:0 0 100px;}
+    /* ---------- horizontal card carousel ----------
+       The page no longer paginates by hiding/showing sections up and down. Instead all 18
+       cards sit in a single row inside .role-list, which is a fixed-height "frame" (measured
+       by JS to fit exactly between the sticky header and the bottom nav strip) with native
+       horizontal scroll-snap. Swiping left/right moves between characters; if one character's
+       text runs long, that single card scrolls vertically WITHIN its own frame — the frame
+       itself never moves. This sidesteps the old vertical-snap problem entirely: that bug was
+       about section HEIGHT varying and fighting the collapsing address bar mid-snap. Here the
+       snap axis is horizontal and every card is exactly 100% of a fixed-width frame, a hard
+       constraint that doesn't drift, so mandatory snapping is safe. --frame-h is set by JS on
+       load/resize/orientation change; the vh value below is only the pre-JS fallback. */
+    :root{ --frame-h:72vh; }
+
+    /* the "MISSION BRIEF / CHARACTER" hero banner is dropped on mobile entirely — the
+       carousel frame starts right under the sticky header, so every card gets more height */
+    .post-header{ display:none; }
+
+    .role-list{
+      padding:0; margin:0; max-width:none; position:relative;
+      display:flex; flex-direction:row; align-items:stretch;
+      height:var(--frame-h);
+      overflow-x:auto; overflow-y:hidden;
+      scroll-snap-type:x mandatory; scroll-behavior:auto;
+      -webkit-overflow-scrolling:touch;
+      scrollbar-width:none;
+    }
+    .role-list::-webkit-scrollbar{ display:none; }
+
     .role{
-      position:relative; overflow:hidden;
-      padding:30px 0 44px; transform-origin:center top;
-      /* Sized in vw, NEVER vh. On a real phone the browser's address bar collapses as you
-         scroll, which changes the viewport height — so any vh-based sizing makes all 18
-         sections silently re-measure mid-gesture, the page's total height changes underneath
-         you, and the browser corrects the scroll position. That correction is felt as
-         "it moves, then suddenly snaps into place". It cannot reproduce in a headless test
-         because there is no collapsing address bar there, which is why this survived so long.
-         vw does not change when the address bar moves, so the layout is now stable mid-scroll.
-         The floor keeps the artwork (145vw tall) from being clipped by overflow:hidden. */
-      min-height:calc(145vw + 60px);
-      /* no will-change on mobile: it pins a separate compositing layer for every one of the
-         18 sections for an animation that only ever runs on desktop — that is real memory
-         pressure on a phone, and it buys nothing here. */
+      position:relative;
+      flex:0 0 100%; width:100%; height:100%; min-height:0;
+      display:flex; flex-direction:column;
+      overflow-y:auto; overflow-x:hidden;
+      -webkit-overflow-scrolling:touch;
+      scroll-snap-align:start; scroll-snap-stop:always;
+      padding:0; border-bottom:none;
       will-change:auto;
-      border-bottom:none;
-      scroll-margin-top:82px; /* keeps the sticky header from covering the top of the section on tap */
     }
 
-    /* ---------- one-character-per-screen pager ----------
-       Only the current character is in the layout; the other seventeen are display:none.
-       With nothing above or below it, there is no scrolling BETWEEN characters at all — so
-       there is nothing for the browser to snap, by construction rather than by tuning. You
-       still scroll normally *within* a character when its text runs long.
-       Scoped to .js-pager, which JS adds on startup: if the script ever fails to run, the
-       class is absent, every section stays visible and the page degrades to a plain scroll
-       instead of rendering blank. */
-    .role-list.js-pager .role{ display:none; }
-    .role-list.js-pager .role.is-current{ display:flex; }
-    .role-inner{
-      position:relative; z-index:1;
-      flex-direction:column; align-items:stretch; text-align:left; gap:0;
-      padding:0 12px;
+    /* .role-inner and .info are collapsed with display:contents so their children (h2, the
+       art, the description panel, the rules box) become direct flex children of .role — that
+       lets a single `order` per element re-sequence title → art → text → rules without
+       touching the DOM, and without disturbing the desktop layout those wrappers still do
+       real layout work for. */
+    .role-inner, .info{ display:contents; }
+
+    .info h2{
+      order:1; text-align:center;
+      font-size:clamp(1.7rem, 8vw, 2.3rem); letter-spacing:2px;
+      padding:16px 18px 4px; margin:0;
+      text-shadow:0 3px 16px rgba(0,0,0,.9), 2px 2px 0 #000;
     }
 
-    /* the readable surface: one panel behind all the description copy, so the text never
-       sits raw on the artwork. The art still shows through around and behind it. */
-    .info-body{
-      /* pushed down so the panel starts around the figure's waist — head and torso stay in
-         open art, and the art still shows through the glass behind the copy */
-      margin-top:52vw;
-      background:rgba(9,9,9,.80);
-      border:1px solid rgba(255,255,255,.07);
-      border-radius:12px;
-      padding:16px 15px 2px;
-      box-shadow:0 10px 30px rgba(0,0,0,.55);
+    /* portrait art (images/NN-sq.png — cropped, text-free) sits framed on plain black with a
+       soft role-coloured glow behind it, rather than bleeding full-width behind the copy. */
+    .role-bg-art{
+      order:2; display:block; position:relative;
+      width:min(66vw, 280px); aspect-ratio:827/1200;
+      margin:2px auto 12px;
+      background-size:contain; background-position:center; background-repeat:no-repeat;
+      filter:drop-shadow(0 14px 22px rgba(0,0,0,.65));
+    }
+    .role-bg-art::before{
+      content:''; position:absolute; inset:-16%; z-index:-1; border-radius:50%;
+      background:radial-gradient(circle, var(--role-color, var(--red)) 0%, transparent 66%);
+      opacity:0.28;
     }
 
-    /* the boxed thumbnail (full card art incl. its own title/ability text) is replaced by
-       .role-bg-art below on mobile — it's still in the DOM only so tapping opens the modal */
+    /* the boxed thumbnail (full card art incl. its own baked-in title/ability text) becomes an
+       invisible full-frame tap target — it's still in the DOM only so tapping opens the modal */
     .card{
-      position:absolute; inset:0; opacity:0; z-index:2;
+      position:absolute; inset:0; opacity:0; z-index:5;
       border:none; cursor:pointer;
     }
     .card img{ width:100%; height:100%; }
 
-    /* tall portrait character art (no baked-in text) as a full-bleed background behind the
-       text, starting flush with the top of the section (so it lines up right under the sticky
-       header with no dead black gap). The source images (images/NN-sq.png) already have their
-       own headroom baked in above the character, which is what keeps the title clear — no
-       extra CSS-driven gap on top of that. Overflow text for long entries just fades into the
-       plain dark backdrop below. */
-    .role-bg-art{
-      display:block; position:absolute; top:0; left:50%;
-      width:100vw; margin-left:-50vw;
-      /* Width-fit rather than `cover`. These portraits are 827x1200 (0.69) against a much
-         narrower box, so `cover` scaled them to the box HEIGHT and cropped the scene's sides
-         off, losing the forest framing. Fitting to width keeps the whole scene.
-         The height is then pinned to the image's own rendered height (100vw / 0.689 = 145vw)
-         so the box and the artwork end at exactly the same place — no empty letterbox band
-         under the sticky header, and no hard seam where the box outlives the image. */
-      height:145vw;
-      background-size:100% auto; background-position:center top;
-      background-repeat:no-repeat;
-      z-index:0;
-    }
-    /* Scrim, keyed to where things actually are in the source art: the figure occupies
-       13-48% of the image, so the veil is lightest across that band (it was previously .88
-       black at the very top, which crushed the character to a silhouette). It then ramps to
-       solid black over the ground so long entries' overflow text blends into the page. */
-    .role-bg-art::after{
-      content:''; position:absolute; inset:0;
-      background:
-        linear-gradient(180deg,
-          rgba(6,6,6,.55) 0%,
-          rgba(6,6,6,.22) 16%,
-          rgba(6,6,6,.30) 45%,
-          rgba(8,8,8,.80) 68%,
-          var(--black) 100%);
+    .info-body{ order:3; }
+    .info p{
+      text-align:left; font-size:0.92rem; line-height:1.55;
+      margin:0 20px 12px; text-shadow:none; color:var(--white);
     }
 
-    /* the name stays over open artwork, centred, as the one display element */
-    .info h2{
-      text-align:center;
-      font-size:clamp(1.9rem, 8.5vw, 2.5rem);
-      margin-bottom:16px;
-      text-shadow:0 2px 12px rgba(0,0,0,.95), 2px 2px 0 #000;
-    }
-    /* type tuned for the wider measure: slightly smaller and tighter than the desktop scale,
-       and the heavy per-glyph text-shadows are gone — the panel provides contrast now, so the
-       shadows were only muddying the letterforms. */
-    .info p{
-      text-align:left;
-      font-size:0.95rem; line-height:1.5;
-      margin-bottom:14px;
-      text-shadow:none;
-    }
-    /* the ability block echoes the panel, tied to the role colour down its left edge */
+    /* ability box: filled colour pill for the ability name, then icon rows — a clean bordered
+       card rather than the old dashed-rule/panel treatment, closer to a printed reference card */
     .rules{
-      text-align:left;
-      margin-top:18px;
-      background:rgba(9,9,9,.86);
-      border:1px solid rgba(255,255,255,.07);
-      border-left:3px solid var(--role-color, var(--red));
-      border-radius:10px;
-      padding:15px 15px 13px;
-      font-size:0.92rem; line-height:1.5;
+      order:4; text-align:left;
+      margin:14px 20px calc(96px + env(safe-area-inset-bottom));
+      background:var(--panel2);
+      border:1px solid rgba(255,255,255,.14);
+      border-radius:12px;
+      padding:16px 16px 14px;
+      font-size:0.9rem; line-height:1.5;
       text-shadow:none;
-      box-shadow:0 10px 30px rgba(0,0,0,.55);
+      box-shadow:0 10px 26px rgba(0,0,0,.5);
     }
-    .rules div:not(.ability-name){margin-bottom:7px;}
+    .rules .ability-name{
+      display:block; width:fit-content;
+      margin-bottom:14px; padding:8px 16px;
+      border-radius:6px; font-size:0.7rem; letter-spacing:1.5px;
+    }
+    .rules div:not(.ability-name){margin-bottom:8px;}
     .rules div:not(.ability-name):last-child{margin-bottom:0;}
 
     nav.navigator{
       top:auto; bottom:0; right:0; left:0; transform:none;
       flex-direction:row; align-items:center; justify-content:center; gap:6px;
-      background:linear-gradient(0deg,#0a0a0aee,#0a0a0a99 80%,transparent);
+      /* solid, not the old fade-to-transparent gradient: the strip now sits flush against the
+         bottom of the fixed-height carousel frame instead of floating over tail-end scroll
+         content, so a soft top edge just let whatever's directly above (the back-link) show
+         through it. */
+      background:#0a0a0af5; border-top:1px solid rgba(255,255,255,.06);
       padding:10px 8px calc(10px + env(safe-area-inset-bottom));
+      z-index:20;
     }
     .navigator-track{
       display:flex; flex-direction:row; gap:4px;
@@ -316,6 +294,21 @@
       font-size:1rem;
     }
     .nav-arrow-top:hover{border-color:#fff;}
+
+    /* one-time nudge that this card scrolls sideways, not up/down; fades on first swipe/tap.
+       Fixed to the viewport (top set by JS to just under the header) rather than living inside
+       the first card, so it never scrolls underneath — and can't overlap the description/rules
+       text the way an in-card overlay would once you scroll that card. */
+    .swipe-hint{
+      position:fixed; left:50%; top:14px; transform:translateX(-50%);
+      display:flex; align-items:center; gap:8px;
+      background:rgba(10,10,10,.85); border:1px solid rgba(255,255,255,.16);
+      color:var(--yellow); font-family:'DotGothic16',monospace; font-size:0.55rem;
+      letter-spacing:1px; padding:7px 14px; border-radius:20px;
+      pointer-events:none; z-index:16; white-space:nowrap;
+      opacity:1; transition:opacity .5s ease;
+    }
+    .swipe-hint.hide{ opacity:0; }
   }
 
   .back-link{
@@ -354,41 +347,38 @@
   }
   .modal-overlay.open{opacity:1; pointer-events:auto;}
 
+  /* image-only, poster-style modal: the full card art (images/NN.png) already has the title,
+     tags and ability box baked into the artwork, so the modal's job is just to show it large —
+     no duplicate text underneath. */
   .modal{
-    background:var(--panel); border:2px solid var(--role-color, var(--red));
-    max-width:640px; width:100%; max-height:88vh; border-radius:12px;
-    overflow-y:auto; position:relative;
-    display:flex; align-items:flex-start; gap:24px; padding:28px;
+    background:transparent; border:none;
+    max-width:520px; width:100%; max-height:92vh; border-radius:14px;
+    overflow:visible; position:relative;
+    display:flex; align-items:center; justify-content:center; padding:0;
     transform:scale(.94); transition:transform .2s;
   }
   .modal-overlay.open .modal{transform:scale(1);}
 
   .modal img{
-    flex:0 0 260px; width:260px; height:auto;
-    aspect-ratio:900/1221; object-fit:contain; border-radius:8px;
+    width:100%; height:auto; max-height:92vh;
+    aspect-ratio:900/1221; object-fit:contain; border-radius:14px;
     border:2px solid var(--role-color, var(--red)); background:#000;
+    box-shadow:0 20px 50px rgba(0,0,0,.6);
   }
-  .modal .modal-body{flex:1; min-width:0;}
-  .modal .modal-body h2{
-    font-family:'Bebas Neue','Arial Narrow',sans-serif; font-weight:400;
-    font-size:2.4rem; letter-spacing:1.5px;
-    color:var(--role-color, var(--red)); margin-bottom:14px; text-shadow:2px 2px 0 #000;
-  }
-  .modal .modal-body p{font-size:1rem; line-height:1.55; margin-bottom:14px;}
-  .modal .rules{font-size:0.9rem;}
 
   .modal-close{
-    all:unset; position:absolute; top:14px; right:14px; cursor:pointer;
-    font-family:'DotGothic16',monospace; font-size:1rem; color:var(--grey);
-    line-height:1; width:28px; height:28px; border-radius:4px;
+    all:unset; position:absolute; top:-14px; right:-14px; cursor:pointer;
+    font-family:'DotGothic16',monospace; font-size:1rem; color:var(--role-text,#000);
+    line-height:1; width:32px; height:32px; border-radius:50%;
     display:flex; align-items:center; justify-content:center;
-    background:#000; border:1px solid var(--border);
+    background:var(--role-color, var(--red)); border:2px solid var(--black);
+    box-shadow:0 4px 10px rgba(0,0,0,.5);
   }
-  .modal-close:hover{color:var(--role-text,#000); background:var(--role-color, var(--red)); border-color:var(--role-color, var(--red));}
+  .modal-close:hover{ filter:brightness(1.15); }
 
   @media (max-width:640px){
-    .modal{flex-direction:column; padding:20px; max-height:92vh;}
-    .modal img{width:100%; flex:0 0 auto;}
+    .modal{ padding:0; max-height:92vh; }
+    .modal-close{ top:-12px; right:-4px; }
 
     .nav-toggle{display:block;}
     nav#mainNav{
@@ -792,11 +782,6 @@
   <div class="modal" id="modal">
     <button class="modal-close" id="modalClose" aria-label="Close">✕</button>
     <img id="modalImg" src="" alt="">
-    <div class="modal-body">
-      <h2 id="modalTitle"></h2>
-      <div id="modalText"></div>
-      <div class="rules" id="modalRules"></div>
-    </div>
   </div>
 </div>
 
@@ -821,29 +806,49 @@
   const roles = Array.from(document.querySelectorAll('.role'));
   const roleList = document.querySelector('.role-list');
 
-  // Applied HERE — before the background-art elements are built below — and not at the end of
-  // the script. Browsers don't fetch background images for display:none elements, so with the
-  // pager already active only the first character's portrait is downloaded on load; the other
-  // seventeen (~150KB each) arrive lazily the first time you actually open them. Set from JS
-  // so a script failure leaves every section visible instead of hiding all eighteen.
-  if (roleList) roleList.classList.add('js-pager');
-  if (roles[0]) roles[0].classList.add('is-current');
   const navEl = document.getElementById('navigator');
   const navTrack = document.getElementById('navigatorTrack');
   const navPrev = document.getElementById('navPrev');
   const navNext = document.getElementById('navNext');
 
   // mobile-only background art: a cropped, text-free version of each card image
-  // ("NN-bg.png" alongside the original "NN.png"), shown full-bleed behind the text.
+  // ("NN-sq.png" alongside the original "NN.png"), shown centred behind the mobile title/text.
+  // Loading is deferred per-card via IntersectionObserver below (all 18 cards now sit side by
+  // side in the DOM for the horizontal carousel, so nothing here is display:none anymore — the
+  // old "browser skips fetching hidden images" trick doesn't apply and would eagerly pull down
+  // all 18 portraits at once without this).
   roles.forEach(r => {
     const cardImg = r.querySelector('.card img');
     if (!cardImg) return;
     const bgSrc = cardImg.getAttribute('src').replace(/(\d+)(\.[a-z0-9]+)$/i, '$1-sq$2');
     const bgArt = document.createElement('div');
     bgArt.className = 'role-bg-art';
-    bgArt.style.backgroundImage = `url("${bgSrc}")`;
+    bgArt.dataset.bg = bgSrc;
     r.insertBefore(bgArt, r.firstChild);
   });
+
+  if (roleList){
+    const loadBg = el => {
+      if (el.dataset.bg && !el.style.backgroundImage){
+        el.style.backgroundImage = `url("${el.dataset.bg}")`;
+      }
+    };
+    if ('IntersectionObserver' in window){
+      // rootMargin extends left/right so the NEXT card's art is already loading before you
+      // swipe to it, not just the one currently in view.
+      const bgObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting){
+            loadBg(entry.target);
+            bgObserver.unobserve(entry.target);
+          }
+        });
+      }, { root: roleList, rootMargin: '0px 100% 0px 100%', threshold: 0.01 });
+      document.querySelectorAll('.role-bg-art').forEach(el => bgObserver.observe(el));
+    } else {
+      document.querySelectorAll('.role-bg-art').forEach(loadBg);
+    }
+  }
 
   // Wrap each role's description paragraphs in a single .info-body element. On mobile this
   // becomes one translucent panel sitting over the artwork, so the copy reads against a
@@ -865,36 +870,33 @@
     return window.matchMedia('(hover: none) and (pointer: coarse)').matches;
   }
 
-  // Pager mode is keyed to the SAME breakpoint as the CSS that hides non-current sections —
-  // deliberately not to touch capability. Keying it to touch would let a narrow desktop
-  // window show a single section while the wheel handler still tried to scroll through all
-  // eighteen, which is precisely the kind of mismatch that produced the old "it moves, then
-  // jumps" behaviour.
+  // Pager mode is keyed to the SAME breakpoint as the CSS that lays the cards out as a
+  // horizontal carousel — deliberately not to touch capability. Keying it to touch would let a
+  // narrow desktop window run the vertical wheel-scroll handler while the CSS had already
+  // switched to the sideways layout, which is exactly the kind of mismatch that produced the
+  // old "it moves, then jumps" behaviour.
   function isPagerMode(){
     return window.matchMedia('(max-width:900px)').matches;
   }
 
   let currentIndex = 0;
 
-  // Show exactly one character. The hidden sections cost nothing: browsers don't fetch
-  // background images for display:none elements, so the other seventeen portraits are only
-  // downloaded when you actually open them — a real saving on mobile data.
-  function showRole(index, opts){
-    const doScroll = !(opts && opts.scroll === false);
-    currentIndex = Math.max(0, Math.min(roles.length - 1, index));
-    roles.forEach((r, i) => r.classList.toggle('is-current', i === currentIndex));
-    setActiveNav(currentIndex);
-    if (doScroll){
-      // instant, not smooth: the character is being swapped out underneath, so animating
-      // the scroll would just show a slide of whatever happens to be on screen
-      roles[currentIndex].scrollIntoView({ behavior: 'auto', block: 'start' });
-    }
+  // Scroll the horizontal carousel to a given card. Instant on first paint / programmatic
+  // jumps that shouldn't animate, smooth otherwise — mirrors how snapToRole below behaves for
+  // the desktop vertical layout.
+  function scrollCarouselTo(index, opts){
+    if (!roleList || !roles[index]) return;
+    const behavior = (opts && opts.instant) ? 'auto' : 'smooth';
+    roleList.scrollTo({ left: roles[index].offsetLeft, top: 0, behavior });
   }
 
-  function goToRole(index){
+  function goToRole(index, opts){
     index = Math.max(0, Math.min(roles.length - 1, index));
+    currentIndex = index;
     if (isPagerMode()){
-      showRole(index);
+      scrollCarouselTo(index, opts);
+      setActiveNav(index);
+      hideSwipeHint();
     } else {
       snapToRole(index);
     }
@@ -916,7 +918,10 @@
     if (color) btn.style.setProperty('--btn-color', color);
     if (text) btn.style.setProperty('--btn-text', text);
     btn.addEventListener('click', () => {
-      goToRole(i);
+      // instant, not smooth: a direct jump can span most of the 18 cards (e.g. first to last),
+      // and animating all the way through every card in between just to land on the target
+      // reads as slow and jittery. Smooth motion is reserved for the single-card prev/next step.
+      goToRole(i, { instant:true });
     });
     navTrack.appendChild(btn);
     r._navBtn = btn;
@@ -934,7 +939,7 @@
     clone.style.cssText = src.style.cssText;
     clone.tabIndex = -1;
     clone.setAttribute('aria-hidden', 'true');
-    clone.addEventListener('click', () => goToRole(realIndex));
+    clone.addEventListener('click', () => goToRole(realIndex, { instant:true }));
     return clone;
   }
   const leadClones = document.createDocumentFragment();
@@ -996,7 +1001,9 @@
       else stepTrack(-1);
     });
     navNext.addEventListener('click', () => {
-      if (navNext.classList.contains('nav-arrow-top')) goToRole(0);
+      // "back to top" is a long jump too (last card to first) — instant, same reasoning as the
+      // nav-dot jumps above.
+      if (navNext.classList.contains('nav-arrow-top')) goToRole(0, { instant:true });
       else if (isPagerMode()) goToRole(currentIndex + 1);
       else stepTrack(1);
     });
@@ -1154,26 +1161,95 @@
     }
   });
 
+  // ---------- mobile carousel: frame height + swipe tracking ----------
+  // .role-list's height is measured rather than guessed in CSS, so the carousel frame fits
+  // exactly between the sticky header and the bottom nav strip regardless of device/font
+  // rendering. Recomputed on resize/orientation change and on visualViewport resize (covers a
+  // mobile browser's address bar collapsing, which changes available height without a normal
+  // 'resize' event on some browsers).
+  function setFrameHeight(){
+    if (!isPagerMode()){
+      document.documentElement.style.removeProperty('--frame-h');
+      return;
+    }
+    // Measure everything ABOVE .role-list (the hazard stripe + sticky header) from its own
+    // bounding box, rather than summing individual elements' heights — that way any spacing
+    // between them (margins, the hazard bar, borders) is automatically included instead of
+    // silently under-counted, which is what previously left the frame a few px too tall and
+    // let it peek out from under the fixed bottom nav.
+    const rl = roleList;
+    const topOffset = rl ? rl.getBoundingClientRect().top + window.scrollY : 0;
+    const navH = navEl ? navEl.getBoundingClientRect().height : 0;
+    const vh = (window.visualViewport && window.visualViewport.height) || window.innerHeight;
+    const frameH = Math.max(320, vh - topOffset - navH);
+    document.documentElement.style.setProperty('--frame-h', frameH + 'px');
+    if (swipeHint) swipeHint.style.top = (topOffset + 14) + 'px';
+  }
+
+  // Fixed to the viewport (not living inside the first card) so it can never end up scrolled
+  // underneath other content — see the .swipe-hint CSS comment for why that mattered.
+  const swipeHint = document.createElement('div');
+  swipeHint.className = 'swipe-hint';
+  swipeHint.textContent = '← SWIPE →';
+  document.body.appendChild(swipeHint);
+  let swipeHintTimer = setTimeout(() => hideSwipeHint(), 4000);
+  function hideSwipeHint(){
+    swipeHint.classList.add('hide');
+    clearTimeout(swipeHintTimer);
+  }
+
+  if (roleList){
+    let carouselTicking = false;
+    function onCarouselScroll(){
+      carouselTicking = false;
+      if (!isPagerMode()) return;
+      hideSwipeHint();
+      const idx = Math.round(roleList.scrollLeft / Math.max(1, roleList.clientWidth));
+      const clamped = Math.max(0, Math.min(roles.length - 1, idx));
+      if (clamped !== currentIndex){
+        currentIndex = clamped;
+        setActiveNav(currentIndex);
+      }
+    }
+    roleList.addEventListener('scroll', () => {
+      if (!carouselTicking){
+        carouselTicking = true;
+        requestAnimationFrame(onCarouselScroll);
+      }
+    });
+    roleList.addEventListener('touchstart', hideSwipeHint, { passive:true, once:true });
+  }
+
   window.addEventListener('resize', () => {
-    // crossing the breakpoint (rotation, desktop window resize) swaps between pager and the
-    // full scrolling list — re-assert the current character so neither mode is left half-applied
-    if (isPagerMode()) showRole(currentIndex, { scroll:false });
+    // crossing the breakpoint (rotation, desktop window resize) swaps between the horizontal
+    // carousel and the full vertical scrolling list — re-sync whichever mode is now active so
+    // neither is left half-applied.
+    setFrameHeight();
+    if (isPagerMode()){
+      scrollCarouselTo(currentIndex, { instant:true });
+      setActiveNav(currentIndex);
+    } else if (roleList){
+      roleList.scrollLeft = 0;
+    }
     update();
   });
+  if (window.visualViewport){
+    window.visualViewport.addEventListener('resize', setFrameHeight);
+  }
 
-  showRole(0, { scroll:false });
+  setFrameHeight();
+  setActiveNav(0);
   update();
 
   // ---------- card modal ----------
   const overlay = document.getElementById('modalOverlay');
   const modal = document.getElementById('modal');
   const modalImg = document.getElementById('modalImg');
-  const modalTitle = document.getElementById('modalTitle');
-  const modalText = document.getElementById('modalText');
-  const modalRules = document.getElementById('modalRules');
   const modalClose = document.getElementById('modalClose');
   let lastFocused = null;
 
+  // The modal just shows the full card art large — that artwork already has the title, tags
+  // and ability box baked in, so there's nothing else to duplicate here.
   function openModal(role){
     const color = role.style.getPropertyValue('--role-color') || 'var(--red)';
     const text = role.style.getPropertyValue('--role-text') || '#000';
@@ -1181,10 +1257,6 @@
     modal.style.setProperty('--role-text', text);
     modalImg.src = role.querySelector('img').src;
     modalImg.alt = role.querySelector('img').alt;
-    modalTitle.textContent = role.querySelector('h2').textContent;
-    modalText.innerHTML = Array.from(role.querySelectorAll('.info > p'))
-      .map(p => `<p>${p.innerHTML}</p>`).join('');
-    modalRules.innerHTML = role.querySelector('.rules').innerHTML;
 
     lastFocused = document.activeElement;
     overlay.classList.add('open');
