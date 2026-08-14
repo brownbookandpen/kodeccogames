@@ -75,17 +75,18 @@
   .role-inner{display:flex; gap:36px; align-items:flex-start;}
   .role-bg-art{display:none;} /* mobile-only full-bleed background art; built by JS */
 
-  /* native scroll-snap for touch devices — desktop wheel scrolling is handled entirely in JS instead.
-     scroll-snap-align:start (not center) so it actually matches the section's design: the art is
-     built flush against the top of the section (see .role-bg-art / scroll-margin-top below), and
-     goToRole()'s scrollIntoView also uses block:'start'. With align:center, short sections (their
-     height is capped, not fixed, by min-height) would settle centered in the viewport instead of
-     flush under the header — visible as a dead gap above the art and as the snap point disagreeing
-     with where nav taps land, which reads as the scroll "jumping" after it settles. */
-  @media (hover:none) and (pointer:coarse){
-    html{scroll-snap-type:y mandatory;}
-    .role{scroll-snap-align:start;}
-  }
+  /* NO scroll-snap on touch devices — deliberately. This was previously
+     `scroll-snap-type:y mandatory`, and it is incompatible with this page's content:
+     every one of the 18 role sections is TALLER than a phone's readable window (~790-1060px
+     of content vs. ~716px left after the sticky header and the bottom nav strip). "mandatory"
+     obliges the browser to come to rest on a snap point, so once a section overflows the
+     window there is no legal resting position part-way down it — scrolling to read the bottom
+     of a card gets yanked to the next section boundary the moment you lift your finger. That
+     is the "moves most of the way, then suddenly snaps" behaviour, and no amount of tuning
+     snap alignment/margins fixes it, because the constraint itself is what's wrong.
+     Plain native scrolling is used instead; the bottom nav strip is how you jump between
+     characters. Desktop wheel scrolling still gets deliberate one-card-at-a-time stepping,
+     handled entirely in JS further down (and skipped on touch). */
 
   .card{
     flex:0 0 300px;
@@ -918,6 +919,11 @@
   }
 
   window.addEventListener('wheel', (e) => {
+    // never hijack scrolling on a touch device — those get plain native scrolling. iOS doesn't
+    // emit wheel events for finger scrolling, but hybrids (iPad + trackpad, touch laptops) do,
+    // and this handler calling scrollTo mid-gesture is exactly the kind of thing that reads as
+    // the page fighting you.
+    if (isTouchDevice()) return;
     if (Math.abs(e.deltaY) < 2) return;
     e.preventDefault();
 
