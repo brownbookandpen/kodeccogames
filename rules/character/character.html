@@ -164,8 +164,25 @@
   }
   nav.navigator button:hover{color:var(--white); border-color:var(--btn-color, var(--red));}
 
-  .navigator-track{display:contents;}
-  .nav-arrow{display:none;}
+  /* Desktop: a fixed-height window that never moves. The list of buttons inside it slides so
+     that whichever character is active sits dead centre — rather than the window staying put
+     and the highlight travelling up and down the column. */
+  .navigator-track{
+    height:min(72vh, 640px);
+    overflow:hidden;
+    /* buttons that slide out of the window fade instead of being cut off mid-glyph */
+    -webkit-mask-image:linear-gradient(to bottom, transparent 0, #000 44px, #000 calc(100% - 44px), transparent 100%);
+    mask-image:linear-gradient(to bottom, transparent 0, #000 44px, #000 calc(100% - 44px), transparent 100%);
+  }
+  .navigator-inner{
+    position:relative;
+    display:flex; flex-direction:column; align-items:flex-end; gap:12px;
+    transition:transform .3s cubic-bezier(.22,.61,.36,1);
+    will-change:transform;
+  }
+  /* Specificity note: a bare `.nav-arrow` loses to `nav.navigator button`, so this rule never
+     actually applied and the ‹ › arrows were rendering on desktop too. */
+  nav.navigator button.nav-arrow{display:none;}
 
   @media (max-width:900px){
     /* ---------- horizontal card carousel ----------
@@ -314,11 +331,18 @@
       display:flex; flex-direction:row; gap:4px;
       overflow-x:hidden; scroll-behavior:smooth;
       flex:1 1 auto; min-width:0;
+      height:auto; /* undo the desktop fixed-height window */
       /* The strip is padded at both ends with clones so the first/last button can still be
          centred, which leaves a half-cut button sitting against each arrow — it read as a
          stray grey box. Fade the outer edges so partial buttons dissolve instead. */
       -webkit-mask-image:linear-gradient(to right, transparent 0, #000 18px, #000 calc(100% - 18px), transparent 100%);
       mask-image:linear-gradient(to right, transparent 0, #000 18px, #000 calc(100% - 18px), transparent 100%);
+    }
+    /* mobile keeps the horizontal scroll model, so the inner wrapper is just a plain row and
+       must not carry the desktop transform */
+    .navigator-inner{
+      flex-direction:row; gap:4px; align-items:center;
+      transform:none !important; transition:none;
     }
     nav.navigator button{
       font-size:0.65rem; min-width:34px; height:32px; padding:0 10px; white-space:nowrap;
@@ -327,7 +351,8 @@
     nav.navigator button.nav-clone{display:flex;} /* re-enabled: mobile needs them to centre the ends */
     nav.navigator button.active{transform:scale(1.1);}
 
-    .nav-arrow{
+    /* matches the specificity of the desktop hide rule above so the arrows come back on mobile */
+    nav.navigator button.nav-arrow{
       all:unset; display:flex; align-items:center; justify-content:center;
       box-sizing:border-box; cursor:pointer; flex:0 0 auto;
       width:30px; height:32px; font-size:1.2rem; color:var(--yellow);
@@ -984,10 +1009,35 @@
   navTrack.insertBefore(leadClones, navTrack.firstChild);
   for (let i = 0; i < NAV_CLONE_COUNT; i++) navTrack.appendChild(makeNavClone(i));
 
+  // Wrap every button in an inner element. On desktop this is what slides (translateY) to keep
+  // the active character centred inside a stationary window; .navigator-track is the window and
+  // stays put. Mobile ignores the wrapper and keeps scrolling the track horizontally.
+  const navInner = document.createElement('div');
+  navInner.className = 'navigator-inner';
+  while (navTrack.firstChild) navInner.appendChild(navTrack.firstChild);
+  navTrack.appendChild(navInner);
+
   // center the mobile nav strip on whichever button is currently expanded/active
   function centerActiveNavButton(btn){
     if (!navTrack || !btn) return;
-    const btnCenter = (btn.offsetLeft - navTrack.offsetLeft) + btn.offsetWidth / 2;
+
+    if (!isPagerMode()){
+      // DESKTOP — the window is stationary; the list slides behind it. A transform is used
+      // rather than scrollTop so the first and last characters can be centred too: scrolling
+      // clamps at 0 / scrollHeight, which would leave Blacksmith stuck at the top and
+      // Virologist stuck at the bottom instead of both sitting in the middle.
+      const offset = btn.offsetTop + btn.offsetHeight / 2 - navTrack.clientHeight / 2;
+      navInner.style.transform = 'translateY(' + (-offset) + 'px)';
+      return;
+    }
+
+    // MOBILE — horizontal strip, scrolled rather than transformed.
+    navInner.style.transform = '';
+    // offsetLeft is measured against .navigator-inner (it's position:relative and is now the
+    // scrolled content), so it's already in the track's scroll coordinate space — subtracting
+    // navTrack.offsetLeft, as this did before the wrapper existed, mixed two different origins
+    // and pushed the active button ~47px off centre.
+    const btnCenter = btn.offsetLeft + btn.offsetWidth / 2;
     const target = btnCenter - navTrack.clientWidth / 2;
     const max = navTrack.scrollWidth - navTrack.clientWidth;
     navTrack.scrollTo({ left: Math.max(0, Math.min(max, target)), behavior: 'smooth' });
