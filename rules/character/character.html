@@ -111,7 +111,7 @@
     image-rendering:auto;
   }
   .card img{
-    display:block; width:100%; aspect-ratio:900/1221; object-fit:cover; background:#000;
+    display:block; width:100%; aspect-ratio:var(--card-ratio, 900/1221); object-fit:cover; background:#000;
   }
 
   /* ---------- "art redesign in progress" flag ---------- */
@@ -469,7 +469,7 @@
 
   .modal img{
     width:100%; height:auto; max-height:92vh;
-    aspect-ratio:900/1221; object-fit:contain; border-radius:14px;
+    aspect-ratio:var(--card-ratio, 900/1221); object-fit:contain; border-radius:14px;
     border:2px solid var(--role-color, var(--red)); background:#000;
     box-shadow:0 20px 50px rgba(0,0,0,.6);
   }
@@ -524,10 +524,10 @@
 
 <main class="role-list" id="main">
 
-  <section class="role" data-nav="BL" style="--role-color:var(--role-green)">
+  <section class="role" data-nav="BL" style="--role-color:var(--role-green);--card-ratio:827/1241">
     <div class="role-inner">
-      <div class="card">
-      <img src="images/05.png" alt="Blacksmith">
+      <div class="card" data-modal-src="images/05.png" data-modal-alt="Blacksmith — card" data-modal-ratio="900/1221">
+      <img src="images/05-card.png" alt="Blacksmith — full readout">
     </div>
     <img class="mobile-card-img" src="images/05-card.png" alt="Blacksmith — full card" loading="lazy" decoding="async">
     <div class="info">
@@ -544,10 +544,10 @@
     </div>
   </section>
 
-  <section class="role" data-nav="BR" style="--role-color:var(--role-blue)">
+  <section class="role" data-nav="BR" style="--role-color:var(--role-blue);--card-ratio:827/1241">
     <div class="role-inner">
-      <div class="card">
-      <img src="images/07.png" alt="Brawler">
+      <div class="card" data-modal-src="images/07.png" data-modal-alt="Brawler — card" data-modal-ratio="900/1221">
+      <img src="images/07-card.png" alt="Brawler — full readout">
     </div>
     <img class="mobile-card-img" src="images/07-card.png" alt="Brawler — full card" loading="lazy" decoding="async">
     <div class="info">
@@ -564,10 +564,10 @@
     </div>
   </section>
 
-  <section class="role art-wip" data-nav="DE" style="--role-color:var(--role-blue)">
+  <section class="role art-wip" data-nav="DE" style="--role-color:var(--role-blue);--card-ratio:827/1241">
     <div class="role-inner">
-      <div class="card">
-      <img src="images/09.png" alt="Deadeye">
+      <div class="card" data-modal-src="images/09.png" data-modal-alt="Deadeye — card" data-modal-ratio="900/1221">
+      <img src="images/09-card.png" alt="Deadeye — full readout">
       <span class="art-wip-badge">Graphic Redesign<br>In Progress</span>
     </div>
     <img class="mobile-card-img" src="images/09-card.png" alt="Deadeye — full card" loading="lazy" decoding="async">
@@ -586,10 +586,10 @@
     </div>
   </section>
 
-  <section class="role art-wip" data-nav="DU" style="--role-color:var(--role-blue)">
+  <section class="role art-wip" data-nav="DU" style="--role-color:var(--role-blue);--card-ratio:827/1241">
     <div class="role-inner">
-      <div class="card">
-      <img src="images/08.png" alt="Duelist">
+      <div class="card" data-modal-src="images/08.png" data-modal-alt="Duelist — card" data-modal-ratio="900/1221">
+      <img src="images/08-card.png" alt="Duelist — full readout">
       <span class="art-wip-badge">Graphic Redesign<br>In Progress</span>
     </div>
     <img class="mobile-card-img" src="images/08-card.png" alt="Duelist — full card" loading="lazy" decoding="async">
@@ -608,10 +608,10 @@
     </div>
   </section>
 
-  <section class="role" data-nav="EN" style="--role-color:var(--red);--role-text:#fff">
+  <section class="role" data-nav="EN" style="--role-color:var(--red);--role-text:#fff;--card-ratio:827/1241">
     <div class="role-inner">
-      <div class="card">
-      <img src="images/03.png" alt="Enforcer">
+      <div class="card" data-modal-src="images/03.png" data-modal-alt="Enforcer — card" data-modal-ratio="900/1221">
+      <img src="images/03-card.png" alt="Enforcer — full readout">
     </div>
     <img class="mobile-card-img" src="images/03-card.png" alt="Enforcer — full card" loading="lazy" decoding="async">
     <div class="info">
@@ -628,10 +628,10 @@
     </div>
   </section>
 
-  <section class="role" data-nav="FO" style="--role-color:var(--role-green)">
+  <section class="role" data-nav="FO" style="--role-color:var(--role-green);--card-ratio:827/1241">
     <div class="role-inner">
-      <div class="card">
-      <img src="images/04.png" alt="Forager">
+      <div class="card" data-modal-src="images/04.png" data-modal-alt="Forager — card" data-modal-ratio="900/1221">
+      <img src="images/04-card.png" alt="Forager — full readout">
     </div>
     <img class="mobile-card-img" src="images/04-card.png" alt="Forager — full card" loading="lazy" decoding="async">
     <div class="info">
@@ -648,10 +648,10 @@
     </div>
   </section>
 
-  <section class="role" data-nav="GE" style="--role-color:var(--role-gold)">
+  <section class="role" data-nav="GE" style="--role-color:var(--role-gold);--card-ratio:827/1241">
     <div class="role-inner">
-      <div class="card">
-      <img src="images/18.png" alt="Geneticist">
+      <div class="card" data-modal-src="images/18.png" data-modal-alt="Geneticist — card" data-modal-ratio="900/1221">
+      <img src="images/18-card.png" alt="Geneticist — full readout">
     </div>
     <img class="mobile-card-img" src="images/18-card.png" alt="Geneticist — full card" loading="lazy" decoding="async">
     <div class="info">
@@ -668,10 +668,10 @@
     </div>
   </section>
 
-  <section class="role" data-nav="IN" style="--role-color:var(--red);--role-text:#fff">
+  <section class="role" data-nav="IN" style="--role-color:var(--red);--role-text:#fff;--card-ratio:827/1241">
     <div class="role-inner">
-      <div class="card">
-      <img src="images/02.png" alt="Inspector">
+      <div class="card" data-modal-src="images/02.png" data-modal-alt="Inspector — card" data-modal-ratio="900/1221">
+      <img src="images/02-card.png" alt="Inspector — full readout">
     </div>
     <img class="mobile-card-img" src="images/02-card.png" alt="Inspector — full card" loading="lazy" decoding="async">
     <div class="info">
@@ -688,10 +688,10 @@
     </div>
   </section>
 
-  <section class="role art-wip" data-nav="OL" style="--role-color:var(--role-orange)">
+  <section class="role art-wip" data-nav="OL" style="--role-color:var(--role-orange);--card-ratio:827/1241">
     <div class="role-inner">
-      <div class="card">
-      <img src="images/16.png" alt="Outlander">
+      <div class="card" data-modal-src="images/16.png" data-modal-alt="Outlander — card" data-modal-ratio="900/1221">
+      <img src="images/16-card.png" alt="Outlander — full readout">
       <span class="art-wip-badge">Graphic Redesign<br>In Progress</span>
     </div>
     <img class="mobile-card-img" src="images/16-card.png" alt="Outlander — full card" loading="lazy" decoding="async">
@@ -710,10 +710,10 @@
     </div>
   </section>
 
-  <section class="role" data-nav="OU" style="--role-color:var(--role-olive)">
+  <section class="role" data-nav="OU" style="--role-color:var(--role-olive);--card-ratio:827/1241">
     <div class="role-inner">
-      <div class="card">
-      <img src="images/15.png" alt="Outrunner">
+      <div class="card" data-modal-src="images/15.png" data-modal-alt="Outrunner — card" data-modal-ratio="900/1221">
+      <img src="images/15-card.png" alt="Outrunner — full readout">
     </div>
     <img class="mobile-card-img" src="images/15-card.png" alt="Outrunner — full card" loading="lazy" decoding="async">
     <div class="info">
@@ -730,10 +730,10 @@
     </div>
   </section>
 
-  <section class="role" data-nav="PA" style="--role-color:var(--role-olive)">
+  <section class="role" data-nav="PA" style="--role-color:var(--role-olive);--card-ratio:827/1241">
     <div class="role-inner">
-      <div class="card">
-      <img src="images/13.png" alt="Pathfinder">
+      <div class="card" data-modal-src="images/13.png" data-modal-alt="Pathfinder — card" data-modal-ratio="900/1221">
+      <img src="images/13-card.png" alt="Pathfinder — full readout">
     </div>
     <img class="mobile-card-img" src="images/13-card.png" alt="Pathfinder — full card" loading="lazy" decoding="async">
     <div class="info">
@@ -750,10 +750,10 @@
     </div>
   </section>
 
-  <section class="role" data-nav="PR" style="--role-color:var(--role-orange)">
+  <section class="role" data-nav="PR" style="--role-color:var(--role-orange);--card-ratio:827/1241">
     <div class="role-inner">
-      <div class="card">
-      <img src="images/11.png" alt="Prospector">
+      <div class="card" data-modal-src="images/11.png" data-modal-alt="Prospector — card" data-modal-ratio="900/1221">
+      <img src="images/11-card.png" alt="Prospector — full readout">
     </div>
     <img class="mobile-card-img" src="images/11-card.png" alt="Prospector — full card" loading="lazy" decoding="async">
     <div class="info">
@@ -770,10 +770,10 @@
     </div>
   </section>
 
-  <section class="role" data-nav="ST" style="--role-color:var(--role-orange)">
+  <section class="role" data-nav="ST" style="--role-color:var(--role-orange);--card-ratio:827/1241">
     <div class="role-inner">
-      <div class="card">
-      <img src="images/12.png" alt="Stranger">
+      <div class="card" data-modal-src="images/12.png" data-modal-alt="Stranger — card" data-modal-ratio="900/1221">
+      <img src="images/12-card.png" alt="Stranger — full readout">
     </div>
     <img class="mobile-card-img" src="images/12-card.png" alt="Stranger — full card" loading="lazy" decoding="async">
     <div class="info">
@@ -790,10 +790,10 @@
     </div>
   </section>
 
-  <section class="role art-wip" data-nav="SY" style="--role-color:var(--role-olive)">
+  <section class="role art-wip" data-nav="SY" style="--role-color:var(--role-olive);--card-ratio:827/1241">
     <div class="role-inner">
-      <div class="card">
-      <img src="images/14.png" alt="Surveyor">
+      <div class="card" data-modal-src="images/14.png" data-modal-alt="Surveyor — card" data-modal-ratio="900/1221">
+      <img src="images/14-card.png" alt="Surveyor — full readout">
       <span class="art-wip-badge">Graphic Redesign<br>In Progress</span>
     </div>
     <img class="mobile-card-img" src="images/14-card.png" alt="Surveyor — full card" loading="lazy" decoding="async">
@@ -812,10 +812,10 @@
     </div>
   </section>
 
-  <section class="role" data-nav="SU" style="--role-color:var(--role-green)">
+  <section class="role" data-nav="SU" style="--role-color:var(--role-green);--card-ratio:827/1241">
     <div class="role-inner">
-      <div class="card">
-      <img src="images/06.png" alt="Survivalist">
+      <div class="card" data-modal-src="images/06.png" data-modal-alt="Survivalist — card" data-modal-ratio="900/1221">
+      <img src="images/06-card.png" alt="Survivalist — full readout">
     </div>
     <img class="mobile-card-img" src="images/06-card.png" alt="Survivalist — full card" loading="lazy" decoding="async">
     <div class="info">
@@ -832,10 +832,10 @@
     </div>
   </section>
 
-  <section class="role" data-nav="TR" style="--role-color:var(--red);--role-text:#fff">
+  <section class="role" data-nav="TR" style="--role-color:var(--red);--role-text:#fff;--card-ratio:827/1241">
     <div class="role-inner">
-      <div class="card">
-      <img src="images/01.png" alt="Tracer">
+      <div class="card" data-modal-src="images/01.png" data-modal-alt="Tracer — card" data-modal-ratio="900/1221">
+      <img src="images/01-card.png" alt="Tracer — full readout">
     </div>
     <img class="mobile-card-img" src="images/01-card.png" alt="Tracer — full card" loading="lazy" decoding="async">
     <div class="info">
@@ -852,10 +852,10 @@
     </div>
   </section>
 
-  <section class="role" data-nav="TK" style="--role-color:var(--role-orange)">
+  <section class="role" data-nav="TK" style="--role-color:var(--role-orange);--card-ratio:827/1241">
     <div class="role-inner">
-      <div class="card">
-      <img src="images/10.png" alt="Trickster">
+      <div class="card" data-modal-src="images/10.png" data-modal-alt="Trickster — card" data-modal-ratio="900/1221">
+      <img src="images/10-card.png" alt="Trickster — full readout">
     </div>
     <img class="mobile-card-img" src="images/10-card.png" alt="Trickster — full card" loading="lazy" decoding="async">
     <div class="info">
@@ -872,10 +872,10 @@
     </div>
   </section>
 
-  <section class="role" data-nav="VI" style="--role-color:var(--role-gold)">
+  <section class="role" data-nav="VI" style="--role-color:var(--role-gold);--card-ratio:827/1241">
     <div class="role-inner">
-      <div class="card">
-      <img src="images/17.png" alt="Virologist">
+      <div class="card" data-modal-src="images/17.png" data-modal-alt="Virologist — card" data-modal-ratio="900/1221">
+      <img src="images/17-card.png" alt="Virologist — full readout">
     </div>
     <img class="mobile-card-img" src="images/17-card.png" alt="Virologist — full card" loading="lazy" decoding="async">
     <div class="info">
@@ -1472,19 +1472,24 @@
   const modalClose = document.getElementById('modalClose');
   let lastFocused = null;
 
-  // The modal just shows the full card art large — that artwork already has the title, tags
-  // and ability box baked in, so there's nothing else to duplicate here.
+  // The thumbnail/mobile carousel shows the full art+rules-text readout (images/NN-card.png)
+  // first; tapping/clicking it pops up the compact finished card (images/NN.png) instead —
+  // data-modal-src on .card points the popup back at that card art, with data-modal-ratio
+  // giving it its own (different) aspect ratio so it isn't stretched to the readout's shape.
   function openModal(role){
     const color = role.style.getPropertyValue('--role-color') || 'var(--red)';
     const text = role.style.getPropertyValue('--role-text') || '#000';
     modal.style.setProperty('--role-color', color);
     modal.style.setProperty('--role-text', text);
-    // Always the original full card art (images/NN.png) — same on mobile and desktop. The
-    // swipeable mobile carousel shows the newer PORTRAITS artwork, but tapping to zoom in
-    // should show the actual finished card, not that poster-style export.
-    const sourceImg = role.querySelector('.card img');
-    modalImg.src = sourceImg.src;
-    modalImg.alt = sourceImg.alt;
+
+    const cardEl = role.querySelector('.card');
+    const sourceImg = cardEl.querySelector('img');
+    modalImg.src = cardEl.dataset.modalSrc || sourceImg.src;
+    modalImg.alt = cardEl.dataset.modalAlt || sourceImg.alt;
+
+    const ratio = cardEl.dataset.modalRatio || role.style.getPropertyValue('--card-ratio');
+    if (ratio) modal.style.setProperty('--card-ratio', ratio);
+    else modal.style.removeProperty('--card-ratio');
 
     lastFocused = document.activeElement;
     overlay.classList.add('open');

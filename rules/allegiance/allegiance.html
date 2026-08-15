@@ -449,18 +449,12 @@
   </nav>
 </header>
 
-<div class="post-header">
-  <span class="tag">// MISSION BRIEF</span>
-  <h1>ALLEGIANCE</h1>
-  <div class="subtag">[SECRET ROLE]</div>
-</div>
-
 <main class="role-list" id="main">
 
-  <section class="role" data-nav="RV" style="--role-color:var(--role-green)">
+  <section class="role" data-nav="RV" style="--role-color:var(--role-green);--card-ratio:827/1241">
     <div class="role-inner">
       <div class="card" data-modal-images="images/05.png::Revivalist — variation 1|images/06.png::Revivalist — variation 2|images/07.png::Revivalist — variation 3">
-      <img src="images/05.png" alt="Revivalist">
+      <img src="images/05-card.png" alt="Revivalist — full readout">
     </div>
     <img class="mobile-card-img" src="images/05-card.png" alt="Revivalists — allegiance poster" loading="lazy" decoding="async">
     <div class="info">
@@ -477,10 +471,10 @@
     </div>
   </section>
 
-  <section class="role" data-nav="CF" style="--role-color:var(--role-gold)">
+  <section class="role" data-nav="CF" style="--role-color:var(--role-gold);--card-ratio:827/1241">
     <div class="role-inner">
-      <div class="card">
-      <img src="images/02.png" alt="Curefinder">
+      <div class="card" data-modal-images="images/02.png::Curefinder — card" data-modal-ratio="827/1122">
+      <img src="images/02-card.png" alt="Curefinder — full readout">
     </div>
     <img class="mobile-card-img" src="images/02-card.png" alt="Curefinder — allegiance poster" loading="lazy" decoding="async">
     <div class="info">
@@ -497,10 +491,10 @@
     </div>
   </section>
 
-  <section class="role" data-nav="EX" style="--role-color:var(--red);--role-text:#fff">
+  <section class="role" data-nav="EX" style="--role-color:var(--red);--role-text:#fff;--card-ratio:827/1241">
     <div class="role-inner">
-      <div class="card">
-      <img src="images/03.png" alt="Executioner">
+      <div class="card" data-modal-images="images/03.png::Executioner — card" data-modal-ratio="827/1122">
+      <img src="images/03-card.png" alt="Executioner — full readout">
     </div>
     <img class="mobile-card-img" src="images/03-card.png" alt="Executioner — allegiance poster" loading="lazy" decoding="async">
     <div class="info">
@@ -516,10 +510,10 @@
     </div>
   </section>
 
-  <section class="role" data-nav="SB" style="--role-color:var(--red);--role-text:#fff">
+  <section class="role" data-nav="SB" style="--role-color:var(--red);--role-text:#fff;--card-ratio:827/1241">
     <div class="role-inner">
-      <div class="card">
-      <img src="images/08.png" alt="Saboteur">
+      <div class="card" data-modal-images="images/08.png::Saboteur — card" data-modal-ratio="827/1122">
+      <img src="images/08-card.png" alt="Saboteur — full readout">
     </div>
     <img class="mobile-card-img" src="images/08-card.png" alt="Saboteur — allegiance poster" loading="lazy" decoding="async">
     <div class="info">
@@ -1077,11 +1071,12 @@
     modalSlides = parseModalImages(cardEl);
     modalSlideIndex = 0;
 
-    // The role's --card-ratio (if set) matches its desktop THUMBNAIL art, which for a merged
-    // role like Apprentice & Patient Zero is the wide combined poster — not the shape of the
-    // individual cards the modal actually shows. Only inherit it for the plain single-image
-    // case; multi-card modals use the standard card ratio (the default in CSS).
-    const ratio = role.style.getPropertyValue('--card-ratio');
+    // data-modal-ratio on the .card (if set) is the shape of the MODAL image specifically —
+    // used when the modal shows a different asset than the thumbnail (the thumbnail is the
+    // full art+rules-text readout; the modal shows the compact finished card). Falls back to
+    // the role's --card-ratio for the merged Apprentice & Patient Zero thumbnail case. Only
+    // applied for the plain single-image case; multi-card modals use the CSS default.
+    const ratio = cardEl.dataset.modalRatio || role.style.getPropertyValue('--card-ratio');
     if (ratio && modalSlides.length <= 1) modal.style.setProperty('--card-ratio', ratio);
     else modal.style.removeProperty('--card-ratio');
 
