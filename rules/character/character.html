@@ -96,6 +96,7 @@
      handled entirely in JS further down (and skipped on touch). */
 
   .card{
+    position:relative;
     flex:0 0 300px;
     border:2px solid var(--role-color, var(--red));
     background:var(--panel);
@@ -112,6 +113,27 @@
   .card img{
     display:block; width:100%; aspect-ratio:900/1221; object-fit:cover; background:#000;
   }
+
+  /* ---------- "art redesign in progress" flag ---------- */
+  /* A handful of characters' art is due for a redo. Greyscale the thumbnail (both the desktop
+     card and the mobile poster) and stamp a badge over it — the role still works exactly the
+     same, this is purely a visual heads-up that the art isn't final. */
+  .role.art-wip .card img,
+  .role.art-wip .mobile-card-img{
+    filter:grayscale(100%) contrast(1.05);
+    transition:filter .35s ease;
+  }
+  .role.art-wip .card:hover img{ filter:grayscale(0%); }
+  .art-wip-badge{
+    position:absolute; inset:0; z-index:3;
+    display:flex; align-items:center; justify-content:center;
+    background:rgba(0,0,0,0.55); color:var(--yellow);
+    font-family:'DotGothic16',monospace; font-size:0.62rem; letter-spacing:0.5px;
+    text-transform:uppercase; text-align:center; line-height:1.5; padding:14px;
+    pointer-events:none;
+  }
+  /* mobile-only badge — sits over .mobile-card-img instead of the (invisible on mobile) .card */
+  .art-wip-badge-mobile{ display:none; }
 
   .info{flex:1; min-width:0;}
   .info h2{
@@ -281,6 +303,19 @@
        track in .role-inner's row even with everything inside it hidden. */
     .info{ display:none; }
     .info h2, .info-body, .rules{ display:none; }
+
+    /* .role-inner is already position:relative here, so this just overlays the mobile poster —
+       .card (and its own .art-wip-badge) is invisible on mobile (opacity:0), so this is the one
+       that actually shows. Sits below .card in paint order but .card is fully transparent, so
+       taps still pass through to it and open the modal as normal. */
+    .art-wip-badge-mobile{
+      display:flex; position:absolute; inset:0; z-index:2;
+      align-items:center; justify-content:center;
+      background:rgba(0,0,0,0.55); color:var(--yellow);
+      font-family:'DotGothic16',monospace; font-size:0.75rem; letter-spacing:0.5px;
+      text-transform:uppercase; text-align:center; line-height:1.5; padding:24px;
+      pointer-events:none;
+    }
 
     .mobile-card-img{
       display:block;
@@ -529,12 +564,14 @@
     </div>
   </section>
 
-  <section class="role" data-nav="DE" style="--role-color:var(--role-blue)">
+  <section class="role art-wip" data-nav="DE" style="--role-color:var(--role-blue)">
     <div class="role-inner">
       <div class="card">
       <img src="images/09.png" alt="Deadeye">
+      <span class="art-wip-badge">Graphic Redesign<br>In Progress</span>
     </div>
     <img class="mobile-card-img" src="images/09-card.png" alt="Deadeye — full card" loading="lazy" decoding="async">
+    <span class="art-wip-badge-mobile">Graphic Redesign<br>In Progress</span>
     <div class="info">
       <h2>DEADEYE</h2>
       <p>[ACTIVE] Longshot lets the Deadeye reduce the damage required to beat a drawn Encounter by 2 points. It doesn't matter who drew the Encounter, any player's draw can trigger it, as long as it happens during Daybreak. Can be used up to twice per game.</p>
@@ -549,12 +586,14 @@
     </div>
   </section>
 
-  <section class="role" data-nav="DU" style="--role-color:var(--role-blue)">
+  <section class="role art-wip" data-nav="DU" style="--role-color:var(--role-blue)">
     <div class="role-inner">
       <div class="card">
       <img src="images/08.png" alt="Duelist">
+      <span class="art-wip-badge">Graphic Redesign<br>In Progress</span>
     </div>
     <img class="mobile-card-img" src="images/08-card.png" alt="Duelist — full card" loading="lazy" decoding="async">
+    <span class="art-wip-badge-mobile">Graphic Redesign<br>In Progress</span>
     <div class="info">
       <h2>DUELIST</h2>
       <p>[PASSIVE] Whenever the Duelist is chosen to take part in an Encounter, he may choose to contribute either 1 or 2 cards to it, instead of being locked into only giving one. This is a permanent passive ability, active during Daybreak.</p>
@@ -649,12 +688,14 @@
     </div>
   </section>
 
-  <section class="role" data-nav="OL" style="--role-color:var(--role-orange)">
+  <section class="role art-wip" data-nav="OL" style="--role-color:var(--role-orange)">
     <div class="role-inner">
       <div class="card">
       <img src="images/16.png" alt="Outlander">
+      <span class="art-wip-badge">Graphic Redesign<br>In Progress</span>
     </div>
     <img class="mobile-card-img" src="images/16-card.png" alt="Outlander — full card" loading="lazy" decoding="async">
+    <span class="art-wip-badge-mobile">Graphic Redesign<br>In Progress</span>
     <div class="info">
       <h2>OUTLANDER</h2>
       <p>[PASSIVE] As an Amnesiac, the Outlander is never allowed to look at his own secret role. Once a player receives this character, they must set that role aside without checking it and play the rest of the game not knowing their own identity.</p>
@@ -749,12 +790,14 @@
     </div>
   </section>
 
-  <section class="role" data-nav="SY" style="--role-color:var(--role-olive)">
+  <section class="role art-wip" data-nav="SY" style="--role-color:var(--role-olive)">
     <div class="role-inner">
       <div class="card">
       <img src="images/14.png" alt="Surveyor">
+      <span class="art-wip-badge">Graphic Redesign<br>In Progress</span>
     </div>
     <img class="mobile-card-img" src="images/14-card.png" alt="Surveyor — full card" loading="lazy" decoding="async">
+    <span class="art-wip-badge-mobile">Graphic Redesign<br>In Progress</span>
     <div class="info">
       <h2>SURVEYOR</h2>
       <p>[ACTIVE] Lookout lets the Surveyor look at the next 3 Encounter cards from the top of the deck, then place them back in the same order. Nothing is rearranged, this is purely information. Can only be used during Daybreak, with no limit on uses.</p>
