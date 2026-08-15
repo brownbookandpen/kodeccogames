@@ -13,14 +13,19 @@ folder — no re-typing filenames, no rebuilding the page.
       (the full art + rules-text readout — shown when you click/tap the
       card, same as the "shows the card" popup on the other pages.)
 
+  [SQUARE] THUMBNAIL.psd             -> rules/supplies/images/homepage.png
+      (a square, art-only crop — used for the Mission Brief thumbnail on
+      the homepage, index.html. Whichever PSD in this folder has "[SQUARE]"
+      in its name is the one used; there should only be one at a time.)
+
 The number "N" at the start of the filename controls which card slot on the
 page it fills — it must match the order the cards are already wired up in
 supplies.html (1=Armaments, 2=Medical, 3=Explosives, 4=Vile Samples).
 
 supplies.html already points at rules/supplies/images/0N.png and
-0N-explainer.png, so re-exporting just overwrites those files in place —
-the page picks up the new artwork the next time it's loaded. No HTML is
-touched.
+0N-explainer.png, and index.html points at rules/supplies/images/homepage.png,
+so re-exporting just overwrites those files in place — the pages pick up the
+new artwork the next time they're loaded. No HTML is touched.
 
 HOW TO USE
 ----------
@@ -71,8 +76,13 @@ def flatten_to_png(psd_path: Path, out_path: Path):
 def main():
     card_count = 0
     explainer_count = 0
+    square_files = []
 
     for f in sorted(SCRIPT_DIR.glob("*.psd")):
+        if "SQUARE" in f.name.upper():
+            square_files.append(f)
+            continue
+
         m = NUM_RE.match(f.name)
         if not m:
             print(f"  skip (expected 'N. NAME.psd'): {f.name}")
@@ -87,8 +97,20 @@ def main():
             flatten_to_png(f, IMAGES_OUT / f"{num:02d}.png")
             card_count += 1
 
-    print(f"\nDone. {card_count} card(s), {explainer_count} explainer(s) exported.")
-    print("Refresh supplies.html to see the changes.")
+    # Homepage thumbnail — whichever PSD is tagged [SQUARE].
+    homepage_exported = False
+    if len(square_files) == 1:
+        flatten_to_png(square_files[0], IMAGES_OUT / "homepage.png")
+        homepage_exported = True
+    elif len(square_files) > 1:
+        print(f"  WARNING: found {len(square_files)} [SQUARE] files, expected 1 — "
+              f"using {square_files[-1].name} for images/homepage.png.")
+        flatten_to_png(square_files[-1], IMAGES_OUT / "homepage.png")
+        homepage_exported = True
+
+    print(f"\nDone. {card_count} card(s), {explainer_count} explainer(s), "
+          f"{'1' if homepage_exported else '0'} homepage thumbnail exported.")
+    print("Refresh supplies.html / index.html to see the changes.")
 
 
 if __name__ == "__main__":
