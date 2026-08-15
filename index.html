@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>CARRIER — Kodecco Games</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=DotGothic16&family=VT323&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DotGothic16&family=VT323&display=swap" rel="stylesheet">
 <style>
   :root{
     --black:#0a0a0a;
@@ -167,8 +167,27 @@
     background:repeating-linear-gradient(45deg, var(--yellow) 0 10px, var(--black) 10px 20px);
   }
   .brief-card .icon{font-size:1.6rem; margin-bottom:14px;}
-  .brief-card h3{color:var(--red); margin-bottom:12px; font-size:0.8rem;}
-  .brief-tag{color:var(--yellow); font-size:0.65rem; letter-spacing:0.5px;}
+  .brief-card h3{
+    color:var(--brightred); margin-bottom:12px;
+    font-family:'Bebas Neue','Arial Narrow',sans-serif; font-weight:400;
+    font-size:1.5rem; letter-spacing:1.5px; text-shadow:2px 2px 0 #000;
+  }
+  .brief-tag{
+    display:inline-block; color:var(--yellow); font-size:0.6rem; letter-spacing:0.5px;
+    font-family:'DotGothic16',monospace; margin-left:6px; vertical-align:2px;
+  }
+  /* Title ribbon painted over the top of a brief-card's photo, so the category reads
+     at a glance while scrolling — before the reader ever reaches the smaller h3/tag
+     below the image. */
+  .brief-banner{
+    position:absolute; top:0; left:0; right:0; z-index:2; pointer-events:none;
+    padding:12px 14px 26px;
+    background:linear-gradient(180deg, rgba(5,5,5,.92) 0%, rgba(5,5,5,.6) 65%, transparent 100%);
+    border-top:3px solid var(--yellow);
+    font-family:'Bebas Neue','Arial Narrow',sans-serif; font-weight:400;
+    font-size:clamp(1.35rem, 5.6vw, 1.7rem); letter-spacing:2px; line-height:1.1;
+    color:var(--yellow); text-shadow:2px 2px 0 #000, 0 0 12px rgba(0,0,0,.8);
+  }
   .brief-card p{color:var(--grey); font-size:0.92rem;}
   .brief-gallery{display:block; margin-top:16px;}
   .bg-item{
@@ -592,14 +611,20 @@
     <div class="brief-card" data-slug="allegiance" data-page="rules/allegiance/allegiance.html">
       <!-- GALLERY: [MISSION BRIEF] 1. SURVIVORS -->
       <div class="brief-gallery">
-        <div class="brief-shot"><img class="wip-img" src="images/[PLACEHOLDER] WORKINPROGRESS ENCOUNTERS.png" alt="Allegiance art coming soon"><span class="wip-label">Coming Soon</span></div>
+        <div class="brief-shot">
+          <div class="brief-banner">ALLEGIANCES</div>
+          <img src="rules/allegiance/images/homepage.png" alt="Allegiance — secret role art">
+        </div>
       </div>
       <h3>ALLEGIANCE <span class="brief-tag">[SECRET ROLE]</span></h3>
     </div>
     <div class="brief-card" data-slug="character" data-page="rules/character/character.html">
       <!-- GALLERY: [MISSION BRIEF] 2. ENCOUNTERS & SUPPLIES -->
       <div class="brief-gallery">
-        <div class="brief-shot"><img class="wip-img" src="images/[PLACEHOLDER] WORKINPROGRESS SUPPLY.png" alt="Character art coming soon"><span class="wip-label">Coming Soon</span></div>
+        <div class="brief-shot">
+          <div class="brief-banner">CHARACTERS</div>
+          <img src="rules/character/images/homepage.png" alt="Character — public role art">
+        </div>
       </div>
       <h3>CHARACTER <span class="brief-tag">[PUBLIC ROLE]</span></h3>
     </div>
