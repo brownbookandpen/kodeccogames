@@ -419,6 +419,33 @@
     body .back-link, body footer{ display:none; }
   }
 
+  /* ---------- tablet fix: scroll the full card instead of clipping it ----------
+     Phones (<=700px) keep the deterministic width-driven scale above unchanged — that's the
+     mode that already looks right there. On tablet-width viewports the same width:100% scaling
+     blows the artwork up far taller than the frame, so the bottom of the card (rules text) was
+     getting clipped off with no way to reach it. Here the card stays full-width like on phone,
+     top-anchored so the art shows first, but the frame becomes vertically scrollable so the
+     reader can scroll down to reveal the rest of the card. touch-action:pan-y on the image lets
+     vertical drags scroll the card while horizontal drags still bubble up to the card-to-card
+     swipe on .role-list (which stays pan-x). No scroll-snap is set on this axis, so it's a
+     plain free scroll — no snapping. */
+  @media (min-width:701px) and (max-width:900px){
+    .role{
+      overflow-y:auto; overflow-x:hidden;
+      -webkit-overflow-scrolling:touch;
+      overscroll-behavior-y:contain;
+    }
+    .role-inner{
+      align-items:flex-start;
+      height:auto; min-height:100%;
+      overflow:visible;
+    }
+    .mobile-card-img{
+      width:100%; height:auto;
+      touch-action:pan-y;
+    }
+  }
+
   .back-link{
     display:block; max-width:900px; margin:0 auto 80px; padding:0 6%;
     color:var(--yellow); text-decoration:none; font-size:0.7rem; letter-spacing:1px;
