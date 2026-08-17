@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>ENCOUNTERS — CARRIER</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DotGothic16&family=VT323&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --black:#0a0a0a; --panel:#161616; --panel2:#1c1c1c;
+    --red:#c81d1d; --brightred:#e8341f; --darkred:#6e1010;
+    --yellow:#f2c14e; --grey:#9a9a9a; --white:#eee8dc; --border:#2a2a2a;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:auto; width:100%; max-width:100vw; overflow-x:clip;}
+  body{
+    width:100%; max-width:100vw; min-height:100vh;
+    background:var(--black); color:var(--white);
+    font-family:'VT323','Courier New',monospace; font-size:1.25rem; line-height:1.7;
+    overflow-x:clip; display:flex; flex-direction:column;
+  }
+  h1,.logo,nav a,.tag{font-family:'DotGothic16',monospace;}
+  a{color:inherit;}
+  .hazard{height:10px; background:repeating-linear-gradient(45deg, var(--yellow) 0 20px, var(--black) 20px 40px); flex:0 0 auto;}
+  header{
+    position:sticky; top:0; z-index:10001; display:flex; align-items:center; justify-content:space-between;
+    padding:12px 6%; border-bottom:2px solid var(--darkred);
+    background:rgba(22,22,22,0.92); backdrop-filter:blur(4px); flex:0 0 auto;
+  }
+  .logo-group{display:flex; align-items:center; gap:14px; cursor:pointer; transition:opacity .15s;}
+  .logo-group:hover{opacity:0.85;}
+  .logo-group img{height:52px; width:auto; display:block; filter:drop-shadow(3px 3px 0 #000) drop-shadow(0 0 10px rgba(0,0,0,0.6));}
+  nav a{
+    color:var(--grey); text-decoration:none; margin-left:22px; font-size:0.6rem;
+    text-transform:uppercase; border-bottom:2px solid transparent; padding-bottom:4px;
+  }
+  nav a:hover{color:var(--yellow); border-bottom:2px solid var(--yellow);}
+  .nav-toggle{
+    display:none; background:none; border:2px solid var(--darkred); color:var(--yellow);
+    font-size:1.2rem; line-height:1; padding:6px 10px; cursor:pointer;
+  }
+  .nav-toggle:hover{border-color:var(--yellow);}
+
+  .post-header{
+    padding:44px 6% 22px; text-align:center; flex:0 0 auto;
+    background:linear-gradient(rgba(8,8,8,0.9),rgba(8,8,8,0.94)), repeating-linear-gradient(135deg,#1a1a1a 0 40px,#141414 40px 80px);
+    border-bottom:2px solid var(--darkred);
+  }
+  .post-header .tag{
+    display:block; width:fit-content; margin:0 auto 16px; color:var(--yellow); border:2px solid var(--yellow);
+    padding:8px 14px; font-size:0.5rem; letter-spacing:1px;
+  }
+  .post-header .tag::after{ content:"_"; margin-left:3px; animation:cursorblink 1s steps(1) infinite; }
+  @keyframes cursorblink{ 50%{ opacity:0; } }
+  .post-header h1{font-size:clamp(1.4rem,4vw,2.1rem); color:var(--brightred); text-shadow:3px 3px 0 #000; margin-bottom:10px; line-height:1.5;}
+  .post-header .subtag{color:var(--grey); font-size:0.75rem; letter-spacing:1px; text-transform:uppercase;}
+
+  /* ---------- gallery ---------- */
+  main.gallery{
+    flex:1 1 auto; display:flex; flex-direction:column; align-items:center; justify-content:center;
+    padding:34px 0; min-height:0; position:relative;
+  }
+  .deck{
+    width:100%; max-width:1100px;
+    display:flex; overflow-x:auto; overflow-y:hidden;
+    scroll-snap-type:x mandatory; -webkit-overflow-scrolling:touch;
+    scrollbar-width:none; touch-action:pan-x;
+    padding:6px 0 26px;
+  }
+  .deck::-webkit-scrollbar{display:none;}
+  .deck-slide{
+    flex:0 0 100%; scroll-snap-align:center; scroll-snap-stop:always;
+    display:flex; align-items:center; justify-content:center; padding:0 6%;
+  }
+  .enc-card{
+    width:min(78vw, 320px); aspect-ratio:827/1122;
+    border:2px solid var(--red); border-radius:12px; background:var(--panel);
+    position:relative; overflow:hidden; cursor:default;
+    box-shadow:6px 6px 0 rgba(0,0,0,.5);
+    background-image:repeating-linear-gradient(135deg, #1c1c1c 0 24px, #171717 24px 48px);
+  }
+  .enc-card::before{
+    content:""; position:absolute; inset:0;
+    background:repeating-linear-gradient(45deg, var(--yellow) 0 16px, transparent 16px 32px);
+    opacity:.05;
+  }
+  .enc-card .num{
+    position:absolute; top:14px; left:14px; color:var(--yellow);
+    font-family:'DotGothic16',monospace; font-size:.65rem; letter-spacing:1px;
+    border:1px solid var(--yellow); padding:4px 8px; border-radius:4px;
+  }
+  .enc-card .mark{
+    position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+    font-size:4.2rem; color:var(--darkred); text-shadow:3px 3px 0 #000;
+  }
+  .enc-card .label{
+    position:absolute; left:0; right:0; bottom:0; padding:16px 14px;
+    background:linear-gradient(rgba(10,10,10,0), rgba(10,10,10,.92) 55%);
+    text-align:center;
+  }
+  .enc-card .label .name{
+    font-family:'Bebas Neue','Arial Narrow',sans-serif; font-size:1.4rem; letter-spacing:1.5px;
+    color:var(--brightred); text-shadow:2px 2px 0 #000;
+  }
+  .enc-card .label .status{
+    font-family:'DotGothic16',monospace; font-size:.55rem; letter-spacing:1px;
+    color:var(--grey); text-transform:uppercase; margin-top:4px;
+  }
+
+  .deck-nav{display:flex; align-items:center; justify-content:center; gap:16px;}
+  .deck-arrow{
+    all:unset; cursor:pointer; box-sizing:border-box;
+    width:36px; height:36px; display:flex; align-items:center; justify-content:center;
+    border:1px solid var(--border); border-radius:50%; background:var(--panel);
+    color:var(--yellow); font-size:1.1rem;
+  }
+  .deck-arrow:hover{border-color:var(--yellow);}
+  .deck-arrow:active{transform:scale(0.92);}
+  .deck-dots{display:flex; align-items:center; gap:8px;}
+  .deck-dots button{
+    all:unset; cursor:pointer; box-sizing:border-box;
+    width:9px; height:9px; border-radius:50%;
+    background:rgba(255,255,255,.25); border:1px solid rgba(255,255,255,.4);
+    transition:background .15s, transform .15s;
+  }
+  .deck-dots button.active{background:var(--red); border-color:var(--red); transform:scale(1.25);}
+
+  .swipe-hint{
+    text-align:center; color:var(--grey); font-family:'DotGothic16',monospace;
+    font-size:.55rem; letter-spacing:1px; margin-top:14px; opacity:.8;
+  }
+
+  .back-link{
+    display:block; text-align:center; margin:0 auto; padding:0 6% 30px;
+    color:var(--yellow); text-decoration:none; font-size:0.7rem; letter-spacing:1px;
+    font-family:'DotGothic16',monospace; flex:0 0 auto;
+  }
+  .back-link:hover{text-decoration:underline;}
+
+  footer{text-align:center; padding:26px 6%; color:#5a5a5a; font-size:0.85rem; border-top:2px solid var(--darkred); flex:0 0 auto;}
+  footer .socials a{margin:0 10px; color:var(--grey); text-decoration:none; font-weight:700;}
+  footer .socials a:hover{color:var(--red);}
+  footer p:last-child{margin-top:8px; font-size:0.6rem; color:#3f3f3f; letter-spacing:1px;}
+
+  .crt-overlay{
+    position:fixed; inset:0; pointer-events:none; z-index:9999;
+    background:repeating-linear-gradient(0deg, rgba(0,0,0,0.18) 0px, rgba(0,0,0,0.18) 1px, transparent 1px, transparent 3px);
+    mix-blend-mode:overlay; animation:crtflicker 6s infinite;
+  }
+  @keyframes crtflicker{ 0%,100%{opacity:0.85;} 92%{opacity:0.85;} 93%{opacity:0.55;} 94%{opacity:0.85;} 96%{opacity:0.65;} 97%{opacity:0.85;} }
+
+  @media (max-width:640px){
+    .nav-toggle{display:block;}
+    nav#mainNav{
+      display:none; position:absolute; top:100%; left:0; right:0;
+      flex-direction:column; gap:2px; padding:10px 6% 18px;
+      background:rgba(10,10,10,0.98); border-bottom:2px solid var(--darkred);
+      z-index:10000;
+    }
+    nav#mainNav.open{display:flex;}
+    nav#mainNav a{margin-left:0; padding:12px 0; font-size:0.8rem; border-bottom:1px solid #2b2b2b;}
+  }
+</style>
+</head>
+<body>
+
+<div class="crt-overlay"></div>
+<div class="hazard"></div>
+<header>
+  <a href="../../index.html" class="logo-group">
+    <img src="../../images/kodecco-icon.png" alt="Kodecco Games">
+  </a>
+  <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">☰</button>
+  <nav id="mainNav">
+    <a href="../../index.html#brief">Mission Brief</a>
+    <a href="../../index.html#gallery">Gallery</a>
+    <a href="../../index.html#roadmap">Roadmap</a>
+    <a href="../../index.html#journal">Dev Journal</a>
+    <a href="../../index.html#signal">Send Signal</a>
+  </nav>
+</header>
+
+<div class="post-header">
+  <span class="tag">In Development</span>
+  <h1>ENCOUNTERS</h1>
+  <span class="subtag">Card gallery preview — art & rules text coming soon</span>
+</div>
+
+<main class="gallery">
+  <div class="deck" id="deck"></div>
+  <div class="deck-nav">
+    <button class="deck-arrow" id="deckPrev" aria-label="Previous encounter">‹</button>
+    <div class="deck-dots" id="deckDots"></div>
+    <button class="deck-arrow" id="deckNext" aria-label="Next encounter">›</button>
+  </div>
+  <div class="swipe-hint">← SWIPE →</div>
+</main>
+
+<a class="back-link" href="../../index.html#brief">← Back to Mission Brief</a>
+
+<footer>
+  <div class="socials">
+    <a href="#">Instagram</a> · <a href="#">BoardGameGeek</a> · <a href="#">Email</a>
+  </div>
+  <p style="margin-top:12px;">© 2026 CARRIER — a survival board game in development.</p>
+  <p>build m8 · 2026-08-17</p>
+</footer>
+
+<script>
+  (function(){
+    var navToggle = document.getElementById('navToggle');
+    var mainNav = document.getElementById('mainNav');
+    if (navToggle && mainNav){
+      navToggle.addEventListener('click', function(){
+        var open = mainNav.classList.toggle('open');
+        navToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+      });
+      mainNav.querySelectorAll('a').forEach(function(a){
+        a.addEventListener('click', function(){
+          mainNav.classList.remove('open');
+          navToggle.setAttribute('aria-expanded', 'false');
+        });
+      });
+    }
+  })();
+
+  // Placeholder deck — swap COUNT / marks / names once real Encounter cards exist.
+  const COUNT = 10;
+  const MARKS = ['☣','☠','⚠','☣','☠','⚠','☣','☠','⚠','☣'];
+
+  const deck = document.getElementById('deck');
+  const dotsWrap = document.getElementById('deckDots');
+  const prevBtn = document.getElementById('deckPrev');
+  const nextBtn = document.getElementById('deckNext');
+
+  for (let i = 0; i < COUNT; i++){
+    const slide = document.createElement('div');
+    slide.className = 'deck-slide';
+    slide.innerHTML = `
+      <div class="enc-card">
+        <div class="num">Z${i + 1}</div>
+        <div class="mark">${MARKS[i]}</div>
+        <div class="label">
+          <div class="name">ENCOUNTER ${String(i + 1).padStart(2,'0')}</div>
+          <div class="status">Art & rules — TBD</div>
+        </div>
+      </div>`;
+    deck.appendChild(slide);
+
+    const dot = document.createElement('button');
+    dot.setAttribute('aria-label', `Go to encounter ${i + 1}`);
+    dot.addEventListener('click', () => goTo(i));
+    dotsWrap.appendChild(dot);
+  }
+
+  const slides = Array.from(deck.querySelectorAll('.deck-slide'));
+  const dots = Array.from(dotsWrap.querySelectorAll('button'));
+  let current = 0;
+
+  function setActive(i){
+    current = Math.max(0, Math.min(slides.length - 1, i));
+    dots.forEach((d, idx) => d.classList.toggle('active', idx === current));
+  }
+
+  function goTo(i, opts){
+    if (!slides[i]) return;
+    deck.scrollTo({ left: slides[i].offsetLeft, top: 0, behavior: (opts && opts.instant) ? 'auto' : 'smooth' });
+  }
+
+  prevBtn.addEventListener('click', () => goTo(Math.max(0, current - 1)));
+  nextBtn.addEventListener('click', () => goTo(Math.min(slides.length - 1, current + 1)));
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowLeft') goTo(Math.max(0, current - 1));
+    else if (e.key === 'ArrowRight') goTo(Math.min(slides.length - 1, current + 1));
+  });
+
+  let ticking = false;
+  deck.addEventListener('scroll', () => {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(() => {
+      ticking = false;
+      const center = deck.scrollLeft + deck.clientWidth / 2;
+      let closest = 0, closestDist = Infinity;
+      slides.forEach((s, i) => {
+        const dist = Math.abs((s.offsetLeft + s.offsetWidth / 2) - center);
+        if (dist < closestDist){ closestDist = dist; closest = i; }
+      });
+      setActive(closest);
+    });
+  });
+
+  setActive(0);
+</script>
+
+</body>
+</html>
