@@ -233,6 +233,11 @@
        carousel frame starts right under the sticky header, so every card gets more height */
     .post-header{ display:none; }
 
+    /* the sticky top header is dropped too on mobile — it was eating into the card art's
+       vertical space, so the frame-height calc (topOffset in setFrameHeight()) now sees no
+       header at all and the carousel gets the full viewport height instead. */
+    header{ display:none; }
+
     .role-list{
       padding:0; margin:0; max-width:none; position:relative;
       width:100%; max-width:100vw; /* explicit, not just default block sizing */
