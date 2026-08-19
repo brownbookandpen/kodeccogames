@@ -285,9 +285,7 @@
       display:flex; flex-direction:column;
       /* fixed frame: the card is sized to fit the visible area, so there is nothing to scroll
          down to and no way to drift the artwork off-screen */
-      overflow-y:auto; overflow-x:hidden;
-      -webkit-overflow-scrolling:touch; overscroll-behavior-y:contain;
-      touch-action:pan-y;
+      overflow:hidden;
       scroll-snap-align:start; scroll-snap-stop:always;
       padding:0; border-bottom:none;
       will-change:auto;
@@ -308,12 +306,12 @@
          cropped more than it needed to be. Using the full frame keeps as much of the artwork on
          screen as the device actually allows; the svh rule on .role-list is what stops the
          frame itself from moving around. */
-      height:auto; min-height:100%;
+      height:100%;
       /* Bottom-aligned + clipped. The card is scaled by WIDTH only (see .mobile-card-img), so
          the surplus is trimmed off the TOP here — empty sky — while the ability box and NOTE
          stay pinned to the bottom edge. */
-      display:flex; flex-direction:column; align-items:stretch;
-      overflow:visible;
+      display:flex; align-items:flex-end; justify-content:center;
+      overflow:hidden;
       /* No padding at all. --frame-h ALREADY subtracts the nav height, so also padding the
          bottom by --nav-clearance was subtracting the nav twice and wasting ~53px of card. */
       padding:0;
@@ -324,23 +322,15 @@
     }
     /* hide the whole .info block, not just its children: as a flex sibling it still occupied a
        track in .role-inner's row even with everything inside it hidden. */
-    /* Long-form explainer text is the primary mobile view now; the compact ability
-       card art moves to a tap-to-zoom thumbnail + modal instead (see .mobile-card-img
-       and .card below). */
-    .info{
-      display:block; width:100%;
-      padding:22px 22px 36px;
-    }
-    .info h2{ font-size:1.7rem; margin-bottom:14px; }
-    .info p{ font-size:0.98rem; line-height:1.55; margin-bottom:14px; }
-    .rules{ font-size:0.88rem; }
+    .info{ display:none; }
+    .info h2, .info-body, .rules{ display:none; }
 
     /* .role-inner is already position:relative here, so this just overlays the mobile poster —
        .card (and its own .art-wip-badge) is invisible on mobile (opacity:0), so this is the one
        that actually shows. Sits below .card in paint order but .card is fully transparent, so
        taps still pass through to it and open the modal as normal. */
     .art-wip-badge-mobile{
-      display:flex; position:absolute; top:0; left:0; right:0; height:38vh; z-index:2;
+      display:flex; position:absolute; inset:0; z-index:2;
       align-items:center; justify-content:center;
       background:rgba(0,0,0,0.55); color:var(--yellow);
       font-family:'DotGothic16',monospace; font-size:0.75rem; letter-spacing:0.5px;
@@ -360,7 +350,7 @@
          Width-driven sizing is deterministic: the scale is always screenWidth/827 no matter how
          tall the viewport is, so the card lands identically every load. Any surplus height is
          clipped off the top by .role-inner's overflow + flex-end. */
-      width:100%; height:38vh; object-fit:cover; object-position:center top;
+      width:100%; height:auto;
       flex:0 0 auto;
       margin:0;
       border-radius:0;
@@ -371,8 +361,8 @@
     /* the boxed thumbnail (original small card graphic) becomes an invisible full-frame tap
        target — it's still in the DOM only so tapping opens the modal */
     .card{
-      position:absolute; top:0; left:0; right:0; height:38vh; opacity:0; z-index:5;
-      border:none; cursor:pointer; touch-action:pan-x;
+      position:absolute; inset:0; opacity:0; z-index:5;
+      border:none; cursor:pointer;
     }
     .card img{ width:100%; height:100%; }
 
@@ -460,6 +450,23 @@
      vertical drags scroll the card while horizontal drags still bubble up to the card-to-card
      swipe on .role-list (which stays pan-x). No scroll-snap is set on this axis, so it's a
      plain free scroll — no snapping. */
+  @media (min-width:701px) and (max-width:900px){
+    .role{
+      overflow-y:auto; overflow-x:hidden;
+      -webkit-overflow-scrolling:touch;
+      overscroll-behavior-y:contain;
+    }
+    .role-inner{
+      align-items:flex-start;
+      height:auto; min-height:100%;
+      overflow:visible;
+    }
+    .mobile-card-img{
+      width:100%; height:auto;
+      touch-action:pan-y;
+    }
+  }
+
   .back-link{
     display:block; max-width:900px; margin:0 auto 80px; padding:0 6%;
     color:var(--yellow); text-decoration:none; font-size:0.7rem; letter-spacing:1px;
