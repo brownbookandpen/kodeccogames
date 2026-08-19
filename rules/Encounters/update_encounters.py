@@ -24,10 +24,13 @@ rules/Encounters/images/:
                        on the page itself (and on the mobile carousel).
 
 Source PSDs live in two places:
-  - The 4 Supply "card" PSDs (non-explainer) live in rules/supplies/
-    (e.g. "1. [SUPPLIES] ARMAMENTS.psd").
-  - Every "explainer" PSD (both Supplies and Zombies) plus the 10
-    zombie "card" PSDs live under rules/Encounters/PSD SOURCE/.
+  - Both the 4 Supply "card" PSDs AND their "explainer" PSDs live in
+    rules/supplies/ (e.g. "1. [SUPPLIES] ARMAMENTS.psd" and
+    "1. [SUPPLIES] ARMAMENTS {EXPLAINER].psd") — edit them there, not
+    in Encounters/PSD SOURCE/PORTRAITS (any duplicate copies sitting
+    in PORTRAITS are leftovers and are NOT read by this script).
+  - The 10 zombie "card" PSDs and their "explainer" PSDs live under
+    rules/Encounters/PSD SOURCE/ (CARDS/ and PORTRAITS/ respectively).
 
 FILES ARE MATCHED BY KEYWORD, NOT BY THEIR NUMBER PREFIX.
 -----------------------------------------------------------
@@ -94,14 +97,14 @@ def zpat(n):
 #  card/explainer distinguished by whether "EXPLAINER" is required, label)
 # keyword can be a compiled regex or a plain substring (case-insensitive).
 SLOTS = [
-    (1,  "Armaments",         SUPPLIES_DIR, PORTRAITS_DIR, ["ARMAMENTS"]),
+    (1,  "Armaments",         SUPPLIES_DIR, SUPPLIES_DIR,  ["ARMAMENTS"]),
     (2,  "Z1",                CARDS_DIR,    PORTRAITS_DIR, [zpat(1)]),
     (3,  "Z2",                CARDS_DIR,    PORTRAITS_DIR, [zpat(2)]),
-    (4,  "Medical Supplies",  SUPPLIES_DIR, PORTRAITS_DIR, ["MEDICAL"]),
+    (4,  "Medical Supplies",  SUPPLIES_DIR, SUPPLIES_DIR,  ["MEDICAL"]),
     (5,  "Z3",                CARDS_DIR,    PORTRAITS_DIR, [zpat(3)]),
-    (6,  "High Explosives",   SUPPLIES_DIR, PORTRAITS_DIR, ["EXPLOSIVES"]),
+    (6,  "High Explosives",   SUPPLIES_DIR, SUPPLIES_DIR,  ["EXPLOSIVES"]),
     (7,  "Z4 — Stonewall",    CARDS_DIR,    PORTRAITS_DIR, [zpat(4)]),
-    (8,  "Vile Samples",      SUPPLIES_DIR, PORTRAITS_DIR, ["VILE"]),
+    (8,  "Vile Samples",      SUPPLIES_DIR, SUPPLIES_DIR,  ["VILE"]),
     (9,  "Z5 — Bloodhound",   CARDS_DIR,    PORTRAITS_DIR, [zpat(5)]),
     (10, "Z6 — Hardshell",    CARDS_DIR,    PORTRAITS_DIR, [zpat(6)]),
     (11, "Z7 — Thornback",    CARDS_DIR,    PORTRAITS_DIR, [zpat(7)]),

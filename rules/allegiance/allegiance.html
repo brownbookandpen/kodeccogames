@@ -48,6 +48,21 @@
   }
   .nav-toggle:hover{border-color:var(--yellow);}
 
+  /* mobile-only floating way back to the homepage — the sticky header (and with it, the
+     logo-click-to-home and the "Back to Mission Brief" link) is hidden on mobile so the card
+     carousel gets full height, so this replaces both as the one way back on small screens. */
+  .mobile-home-btn{
+    display:none;
+    position:fixed; top:calc(12px + env(safe-area-inset-top)); left:12px; z-index:9998;
+    width:40px; height:40px; border-radius:50%;
+    align-items:center; justify-content:center;
+    background:rgba(10,10,10,0.82); border:2px solid var(--darkred); color:var(--yellow);
+    font-size:1.15rem; line-height:1; text-decoration:none;
+    box-shadow:3px 3px 0 rgba(0,0,0,0.5);
+    transition:border-color .15s, transform .1s;
+  }
+  .mobile-home-btn:active{ transform:scale(0.92); }
+
   .post-header{
     padding:70px 6% 40px; text-align:center;
     background:linear-gradient(rgba(8,8,8,0.9),rgba(8,8,8,0.94)), repeating-linear-gradient(135deg,#1a1a1a 0 40px,#141414 40px 80px);
@@ -197,6 +212,7 @@
        vertical space, so the frame-height calc (topOffset in setFrameHeight()) now sees no
        header at all and the carousel gets the full viewport height instead. */
     header{ display:none; }
+    .mobile-home-btn{ display:flex; }
 
     .role-list{
       padding:0; margin:0; max-width:none; position:relative;
@@ -467,6 +483,7 @@
 
 <div class="crt-overlay"></div>
 <div class="hazard"></div>
+<a href="../../index.html#brief" class="mobile-home-btn" aria-label="Back to homepage">‹</a>
 <header>
   <a href="../../index.html" class="logo-group">
     <img src="../../images/kodecco-icon.png" alt="Kodecco Games">
