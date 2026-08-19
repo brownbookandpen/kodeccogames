@@ -236,7 +236,9 @@
       position:relative;
       flex:0 0 100%; width:100%; height:100%; min-height:0;
       display:flex; flex-direction:column;
-      overflow:hidden;
+      overflow-y:auto; overflow-x:hidden;
+      -webkit-overflow-scrolling:touch; overscroll-behavior-y:contain;
+      touch-action:pan-y;
       scroll-snap-align:start; scroll-snap-stop:always;
       padding:0; border-bottom:none;
       will-change:auto;
@@ -251,21 +253,29 @@
        exactly as before, they're just hidden here on mobile. */
     .role-inner{
       position:relative; z-index:1;
-      height:100%;
-      display:flex; align-items:flex-end; justify-content:center;
-      overflow:hidden;
+      height:auto; min-height:100%;
+      display:flex; flex-direction:column; align-items:stretch;
+      overflow:visible;
       padding:0;
       gap:0;
     }
-    .info{ display:none; }
-    .info h2, .info-body, .rules{ display:none; }
+    /* Long-form explainer text is the primary mobile view now; the compact ability
+       card art moves to a tap-to-zoom thumbnail + modal instead (see .mobile-card-img
+       and .card below). */
+    .info{
+      display:block; width:100%;
+      padding:22px 22px 36px;
+    }
+    .info h2{ font-size:1.7rem; margin-bottom:14px; }
+    .info p{ font-size:0.98rem; line-height:1.55; margin-bottom:14px; }
+    .rules{ font-size:0.88rem; }
 
     .mobile-card-img{
       display:block;
       /* Scale by WIDTH ONLY — height follows the artwork's own ratio, so the scale is always
          screenWidth/827 no matter how tall the viewport is (deterministic across loads). Any
          surplus height is clipped off the top by .role-inner's overflow + flex-end. */
-      width:100%; height:auto;
+      width:100%; height:38vh; object-fit:cover; object-position:center top;
       flex:0 0 auto;
       margin:0;
       border-radius:0;
@@ -273,8 +283,8 @@
     }
 
     .card{
-      position:absolute; inset:0; opacity:0; z-index:5;
-      border:none; cursor:pointer;
+      position:absolute; top:0; left:0; right:0; height:38vh; opacity:0; z-index:5;
+      border:none; cursor:pointer; touch-action:pan-x;
     }
     .card img{ width:100%; height:100%; }
 
@@ -343,23 +353,6 @@
      vertical drags scroll the card while horizontal drags still bubble up to the card-to-card
      swipe on .role-list (which stays pan-x). No scroll-snap is set on this axis, so it's a
      plain free scroll — no snapping. */
-  @media (min-width:701px) and (max-width:900px){
-    .role{
-      overflow-y:auto; overflow-x:hidden;
-      -webkit-overflow-scrolling:touch;
-      overscroll-behavior-y:contain;
-    }
-    .role-inner{
-      align-items:flex-start;
-      height:auto; min-height:100%;
-      overflow:visible;
-    }
-    .mobile-card-img{
-      width:100%; height:auto;
-      touch-action:pan-y;
-    }
-  }
-
   .back-link{
     display:block; max-width:900px; margin:0 auto 80px; padding:0 6%;
     color:var(--yellow); text-decoration:none; font-size:0.7rem; letter-spacing:1px;
@@ -1062,18 +1055,6 @@
   update();
 
   if (roleList && isPagerMode()) scrollCarouselTo(0, { instant:true });
-
-  // Deep-link support: opening the page with #<NAV> (e.g. character.html#OL) jumps
-  // straight to that role instead of landing on the first card.
-  (function(){
-    var hash = decodeURIComponent((location.hash || '').replace('#','')).toUpperCase();
-    if (!hash) return;
-    var idx = roles.findIndex(function(r){ return r.dataset.nav === hash; });
-    if (idx !== -1){
-      currentIndex = idx;
-      goToRole(idx, { instant:true });
-    }
-  })();
 
   // ---------- card modal ----------
   const overlay = document.getElementById('modalOverlay');

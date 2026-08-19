@@ -170,18 +170,6 @@
     color:var(--grey); border-left:2px dashed var(--role-color, var(--red));
     padding-left:12px; line-height:1.6;
   }
-  /* Cards whose full rules already live on another page (Characters / Allegiances / Encounters)
-     link out instead of repeating the ability box — same badge look as .ability-name, but
-     clickable, so it still reads as part of the card rather than a generic nav link. */
-  .card-link{
-    display:inline-block; text-decoration:none;
-    background:var(--role-color, var(--red)); color:var(--role-text,#000);
-    font-family:'DotGothic16',monospace; font-size:0.75rem;
-    letter-spacing:1px; text-transform:uppercase;
-    padding:10px 16px; border-radius:4px;
-    transition:transform .15s, filter .15s;
-  }
-  .card-link:hover{transform:translateX(4px); filter:brightness(1.15);}
   .rules div:not(.ability-name){display:flex; gap:8px; align-items:flex-start; margin-bottom:4px;}
   .rules div:not(.ability-name) span.ic{
     flex:0 0 auto; color:var(--role-text,#000); background:var(--role-color, var(--red));
@@ -297,7 +285,9 @@
       display:flex; flex-direction:column;
       /* fixed frame: the card is sized to fit the visible area, so there is nothing to scroll
          down to and no way to drift the artwork off-screen */
-      overflow:hidden;
+      overflow-y:auto; overflow-x:hidden;
+      -webkit-overflow-scrolling:touch; overscroll-behavior-y:contain;
+      touch-action:pan-y;
       scroll-snap-align:start; scroll-snap-stop:always;
       padding:0; border-bottom:none;
       will-change:auto;
@@ -318,12 +308,12 @@
          cropped more than it needed to be. Using the full frame keeps as much of the artwork on
          screen as the device actually allows; the svh rule on .role-list is what stops the
          frame itself from moving around. */
-      height:100%;
+      height:auto; min-height:100%;
       /* Bottom-aligned + clipped. The card is scaled by WIDTH only (see .mobile-card-img), so
          the surplus is trimmed off the TOP here — empty sky — while the ability box and NOTE
          stay pinned to the bottom edge. */
-      display:flex; align-items:flex-end; justify-content:center;
-      overflow:hidden;
+      display:flex; flex-direction:column; align-items:stretch;
+      overflow:visible;
       /* No padding at all. --frame-h ALREADY subtracts the nav height, so also padding the
          bottom by --nav-clearance was subtracting the nav twice and wasting ~53px of card. */
       padding:0;
@@ -334,15 +324,23 @@
     }
     /* hide the whole .info block, not just its children: as a flex sibling it still occupied a
        track in .role-inner's row even with everything inside it hidden. */
-    .info{ display:none; }
-    .info h2, .info-body, .rules{ display:none; }
+    /* Long-form explainer text is the primary mobile view now; the compact ability
+       card art moves to a tap-to-zoom thumbnail + modal instead (see .mobile-card-img
+       and .card below). */
+    .info{
+      display:block; width:100%;
+      padding:22px 22px 36px;
+    }
+    .info h2{ font-size:1.7rem; margin-bottom:14px; }
+    .info p{ font-size:0.98rem; line-height:1.55; margin-bottom:14px; }
+    .rules{ font-size:0.88rem; }
 
     /* .role-inner is already position:relative here, so this just overlays the mobile poster —
        .card (and its own .art-wip-badge) is invisible on mobile (opacity:0), so this is the one
        that actually shows. Sits below .card in paint order but .card is fully transparent, so
        taps still pass through to it and open the modal as normal. */
     .art-wip-badge-mobile{
-      display:flex; position:absolute; inset:0; z-index:2;
+      display:flex; position:absolute; top:0; left:0; right:0; height:38vh; z-index:2;
       align-items:center; justify-content:center;
       background:rgba(0,0,0,0.55); color:var(--yellow);
       font-family:'DotGothic16',monospace; font-size:0.75rem; letter-spacing:0.5px;
@@ -362,7 +360,7 @@
          Width-driven sizing is deterministic: the scale is always screenWidth/827 no matter how
          tall the viewport is, so the card lands identically every load. Any surplus height is
          clipped off the top by .role-inner's overflow + flex-end. */
-      width:100%; height:auto;
+      width:100%; height:38vh; object-fit:cover; object-position:center top;
       flex:0 0 auto;
       margin:0;
       border-radius:0;
@@ -373,8 +371,8 @@
     /* the boxed thumbnail (original small card graphic) becomes an invisible full-frame tap
        target — it's still in the DOM only so tapping opens the modal */
     .card{
-      position:absolute; inset:0; opacity:0; z-index:5;
-      border:none; cursor:pointer;
+      position:absolute; top:0; left:0; right:0; height:38vh; opacity:0; z-index:5;
+      border:none; cursor:pointer; touch-action:pan-x;
     }
     .card img{ width:100%; height:100%; }
 
@@ -450,6 +448,21 @@
        (body-prefixed for specificity: the base .back-link rule is declared *after* this media
        query in the stylesheet, so a bare .back-link here would lose the cascade tie.) */
     body .back-link, body footer{ display:none; }
+
+    /* Mutation Stages has no long-form explainer elsewhere on the site (it's the one card that
+       stays self-contained here), so it keeps the old full-bleed card-art mobile view instead of
+       the text-first layout every other card just switched to. */
+    .role[data-nav="MS"] .role-inner{
+      display:flex; flex-direction:row; align-items:flex-end; justify-content:center;
+      height:100%; overflow:hidden;
+    }
+    .role[data-nav="MS"] .info{ display:none; }
+    .role[data-nav="MS"] .mobile-card-img{
+      height:auto; object-fit:initial; object-position:initial;
+    }
+    .role[data-nav="MS"] .card{
+      position:absolute; inset:0; height:auto;
+    }
   }
 
   /* ---------- tablet fix: scroll the full card instead of clipping it ----------
@@ -462,23 +475,6 @@
      vertical drags scroll the card while horizontal drags still bubble up to the card-to-card
      swipe on .role-list (which stays pan-x). No scroll-snap is set on this axis, so it's a
      plain free scroll — no snapping. */
-  @media (min-width:701px) and (max-width:900px){
-    .role{
-      overflow-y:auto; overflow-x:hidden;
-      -webkit-overflow-scrolling:touch;
-      overscroll-behavior-y:contain;
-    }
-    .role-inner{
-      align-items:flex-start;
-      height:auto; min-height:100%;
-      overflow:visible;
-    }
-    .mobile-card-img{
-      width:100%; height:auto;
-      touch-action:pan-y;
-    }
-  }
-
   .back-link{
     display:block; max-width:900px; margin:0 auto 80px; padding:0 6%;
     color:var(--yellow); text-decoration:none; font-size:0.7rem; letter-spacing:1px;
@@ -609,7 +605,12 @@
       <h2>OUTLANDER</h2>
       <p>[PASSIVE] The Outlander is the game's Amnesiac — they never see their own Secret Role, not even when it's dealt.</p>
       <p>Setup begins here: every player receives a Character first, so the table knows who's playing what before anything is hidden.</p>
-      <a class="card-link" href="../character/character.html#OL">See the full Outlander card on Characters &rarr;</a>
+      <div class="rules">
+        <div class="ability-name">Amnesiac</div>
+        <div><span class="ic">▲</span>Dealt a Character card like everyone else, and reads their ability aloud with the group.</div>
+        <div><span class="ic">◆</span>Never looks at their own Secret Role when it's dealt next — it stays face-down, even to them.</div>
+        <div><span class="ic">?</span>Setup: set aside a Character card for each player, shuffle, deal one to each player, then everyone reads their ability aloud.</div>
+      </div>
     </div>
     </div>
   </section>
@@ -645,7 +646,12 @@
       <h2>SABOTEUR</h2>
       <p>[PASSIVE] The Saboteur is infected and hiding among the Survivors. Their goal is to eliminate the Curefinder before the group can escape — without ever swinging a weapon themselves.</p>
       <p>Carriers have their own way to close out the game: reveal themselves on their turn to accuse a player directly.</p>
-      <a class="card-link" href="../allegiance/allegiance.html#SB">See the full Saboteur card on Allegiances &rarr;</a>
+      <div class="rules">
+        <div class="ability-name">Kill the Curefinder</div>
+        <div><span class="ic">▲</span>Carriers may reveal themselves by flipping their Allegiance card on their turn.</div>
+        <div><span class="ic">◆</span>Once revealed, they choose a player, who must then reveal their own Allegiance.</div>
+        <div><span class="ic">?</span>Carriers win once both Key Roles are eliminated this way: the Curefinder, and the Apprentice/Patient Zero pair. Any Allegiance revealed this way counts as an elimination — including the Carrier's own.</div>
+      </div>
     </div>
     </div>
   </section>
@@ -674,7 +680,12 @@
       <h2>TRACER</h2>
       <p>[ACTIVE] All players embody a Character, and every Character has a special ability like Tracer's — worth checking before you draw.</p>
       <p>Once you draw a card, certain abilities can no longer be activated, so check yours first. It might be exactly what the group needs.</p>
-      <a class="card-link" href="../character/character.html#TR">See the full Tracer card on Characters &rarr;</a>
+      <div class="rules">
+        <div class="ability-name">Character Ability</div>
+        <div><span class="ic">▲</span>Check your ability before drawing your card each turn.</div>
+        <div><span class="ic">◆</span>Once you draw, certain abilities can no longer be used that turn.</div>
+        <div><span class="ic">?</span>If there's an action you can take, take it before you draw — waiting can cost the group the window to use it.</div>
+      </div>
     </div>
     </div>
   </section>
@@ -689,7 +700,12 @@
       <h2>MEDICAL</h2>
       <p>[SUPPLIES] Supplies like this one aren't dealt at the start — players begin with none, and find them by chance throughout the Encounter deck.</p>
       <p>What you do with them is up to the group: keep them, or feed them into the shared inventory for anyone to draw on later.</p>
-      <a class="card-link" href="../Encounters/encounters.html#MD">See the full Medical Supplies card on Encounters &rarr;</a>
+      <div class="rules">
+        <div class="ability-name">Shared Inventory</div>
+        <div><span class="ic">▲</span>Hand Limit is 3 cards. Ending your turn with 4 or more makes you OVERENCUMBERED and unable to participate in Encounters.</div>
+        <div><span class="ic">◆</span>Before drawing from the Encounter deck, you may contribute one card to the shared inventory, or take one card from it.</div>
+        <div><span class="ic">?</span>Managing the shared pool is as important as managing your own hand.</div>
+      </div>
     </div>
     </div>
   </section>
@@ -718,7 +734,12 @@
       <h2>VILE SAMPLES</h2>
       <p>Samples are the Survivors' main objective — found by chance throughout the Encounter deck, same as Supplies.</p>
       <p>An Escape Attempt can be started by any player on their turn, before drawing a card. If the group votes it through, the nominated escape party reveals their Secret Roles and the game's outcome is decided right there.</p>
-      <a class="card-link" href="../Encounters/encounters.html#VS">See the full Vile Samples card on Encounters &rarr;</a>
+      <div class="rules">
+        <div class="ability-name">Escape Party</div>
+        <div><span class="ic">▲</span>The escape party is 3 nominated players, all of whom must be Survivors, holding a combined total of 3 Samples, with the Curefinder among them.</div>
+        <div><span class="ic">◆</span>If the Curefinder has died, the Apprentice and Patient Zero can take their place and still win it for the Survivors.</div>
+        <div><span class="ic">?</span>If Carriers are among the escape party, or the party escapes without 3 Samples, the Survivors lose instead.</div>
+      </div>
     </div>
     </div>
   </section>
@@ -747,7 +768,12 @@
       <h2>Z8 — SHRIEKER</h2>
       <p>Encounters like the Shrieker are the heart of the Game Phase. Whoever draws it becomes its "Leader" and reveals it to the group.</p>
       <p>As Leader, you choose to Fight or Run — and that choice ripples forward, because running lets zombies accumulate for future encounters.</p>
-      <a class="card-link" href="../Encounters/encounters.html#Z8">See the full Z8 Shrieker card on Encounters &rarr;</a>
+      <div class="rules">
+        <div class="ability-name">Confronting the Encounter</div>
+        <div><span class="ic">▲</span>The Leader nominates 2 to 5 players to join the encounter. Any player can contest the nomination, sending it to a group vote — an overruled vote counts as a Run.</div>
+        <div><span class="ic">◆</span>If the vote passes, every nominated player contributes one Supply card face-down; the cards are shuffled together and revealed.</div>
+        <div><span class="ic">?</span>Tally total DAMAGE against the card's DANGER. Meet or exceed it and the encounter succeeds — fall short, and it fails, triggering the debuff listed on the card.</div>
+      </div>
     </div>
     </div>
   </section>
