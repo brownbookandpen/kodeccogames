@@ -157,6 +157,30 @@
 
   /* ---------- MISSION BRIEF ---------- */
   .brief-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:20px;}
+
+  /* Mission Brief landscape banner — links straight to the How to Play page */
+  .banner-link{
+    display:block; position:relative; border:2px solid var(--darkred); overflow:hidden;
+    text-decoration:none; transition:transform .2s, border-color .2s;
+  }
+  .banner-link::before{
+    content:""; position:absolute; top:0; left:0; width:100%; height:4px; z-index:2;
+    background:repeating-linear-gradient(45deg, var(--yellow) 0 10px, var(--black) 10px 20px);
+  }
+  .banner-link:hover{transform:translateY(-4px); border-color:var(--red);}
+  .banner-link img{display:block; width:100%; height:auto;}
+  .banner-cta{
+    position:absolute; right:20px; bottom:20px; z-index:2;
+    font-size:0.62rem; text-decoration:none;
+  }
+  @media (max-width:640px){
+    .banner-link img{height:140px; object-fit:cover; object-position:left center;}
+    .banner-cta{
+      position:static; display:block; width:100%; box-sizing:border-box;
+      text-align:center; padding:12px 14px; font-size:0.6rem; box-shadow:none;
+      border-top:2px solid #000;
+    }
+  }
   .brief-card{
     background:var(--panel); border:2px solid var(--darkred); padding:24px; position:relative;
     transition:transform .2s, border-color .2s; cursor:pointer;
@@ -558,6 +582,7 @@
     0%{ transform:translate(0,0); } 25%{ transform:translate(-1px,1px); }
     50%{ transform:translate(1px,-1px); } 75%{ transform:translate(-1px,-1px); } 100%{ transform:translate(0,0); }
   }
+
 </style>
 </head>
 <body>
@@ -570,7 +595,8 @@
   </a>
   <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">☰</button>
   <nav id="mainNav">
-    <a href="#brief">Mission Brief</a>
+    <a href="rules/how-to-play/how-to-play.html">Mission Brief</a>
+    <a href="#brief">Field Report</a>
     <a href="#gallery">Gallery</a>
     <a href="#roadmap">Roadmap</a>
     <a href="#journal">Dev Journal</a>
@@ -603,9 +629,17 @@
   </div>
 </section>
 
-<section id="brief" class="reveal">
+<section id="mission-brief-banner" class="reveal">
   <div class="eyebrow">// 01</div>
-  <h2 class="section-title">Mission Brief</h2>
+  <a class="banner-link" href="rules/how-to-play/how-to-play.html" aria-label="Mission Brief — learn how to play Carrier">
+    <img src="images/[HOW TO PLAY]/mission-brief-banner.webp" alt="Carrier — Mission Brief banner, click to learn how to play">
+    <span class="banner-cta btn">Learn to Play &rarr;</span>
+  </a>
+</section>
+
+<section id="brief" class="reveal">
+  <div class="eyebrow">// 02</div>
+  <h2 class="section-title">Field Report</h2>
   <p class="section-sub">The essentials — swap in your real rules summary once they're locked.</p>
   <div class="brief-grid">
     <div class="brief-card" data-slug="allegiance" data-page="rules/allegiance/allegiance.html">
@@ -651,7 +685,7 @@
 </div>
 
 <section id="gallery" class="gallery reveal">
-  <div class="eyebrow">// 02</div>
+  <div class="eyebrow">// 03</div>
   <h2 class="section-title">Gallery</h2>
   <p class="section-sub">Prototype shots, card art, and table setups — replace these placeholders with real photos.</p>
   <div class="gallery-grid">
@@ -665,7 +699,7 @@
 <section id="roadmap" class="reveal">
   <div class="roadmap-bg"></div>
   <div class="roadmap-fade"></div>
-  <div class="eyebrow">// 03</div>
+  <div class="eyebrow">// 04</div>
   <h2 class="section-title">Roadmap</h2>
   <p class="section-sub">Where the project stands, and what's coming next.</p>
   <div class="timeline">
@@ -747,7 +781,7 @@
 </section>
 
 <section id="journal" class="journal reveal">
-  <div class="eyebrow">// 04</div>
+  <div class="eyebrow">// 05</div>
   <h2 class="section-title">Dev Journal</h2>
   <p class="section-sub">Entries documenting the build — origins, mechanics, art, and playtests.</p>
   <div class="posts">
@@ -800,7 +834,7 @@
 </section>
 
 <section id="instagram" class="reveal">
-  <div class="eyebrow">// 05</div>
+  <div class="eyebrow">// 06</div>
   <h2 class="section-title">On Instagram</h2>
   <p class="section-sub">Follow <a href="https://www.instagram.com/kodecco.games/" target="_blank" rel="noopener" style="color:var(--yellow); text-decoration:underline;">@kodecco.games</a> for behind-the-scenes shots, playtest clips, and art drops.</p>
 

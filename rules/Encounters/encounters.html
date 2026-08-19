@@ -1156,6 +1156,18 @@
 
   if (roleList && isPagerMode()) scrollCarouselTo(0, { instant:true });
 
+  // Deep-link support: opening the page with #<NAV> (e.g. character.html#OL) jumps
+  // straight to that role instead of landing on the first card.
+  (function(){
+    var hash = decodeURIComponent((location.hash || '').replace('#','')).toUpperCase();
+    if (!hash) return;
+    var idx = roles.findIndex(function(r){ return r.dataset.nav === hash; });
+    if (idx !== -1){
+      currentIndex = idx;
+      goToRole(idx, { instant:true });
+    }
+  })();
+
   const overlay = document.getElementById('modalOverlay');
   const modal = document.getElementById('modal');
   const modalStage = document.getElementById('modalStage');

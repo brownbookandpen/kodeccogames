@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>CHARACTER — CARRIER</title>
+<title>MISSION BRIEF — CARRIER</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DotGothic16&family=VT323&display=swap" rel="stylesheet">
 <style>
@@ -170,6 +170,18 @@
     color:var(--grey); border-left:2px dashed var(--role-color, var(--red));
     padding-left:12px; line-height:1.6;
   }
+  /* Cards whose full rules already live on another page (Characters / Allegiances / Encounters)
+     link out instead of repeating the ability box — same badge look as .ability-name, but
+     clickable, so it still reads as part of the card rather than a generic nav link. */
+  .card-link{
+    display:inline-block; text-decoration:none;
+    background:var(--role-color, var(--red)); color:var(--role-text,#000);
+    font-family:'DotGothic16',monospace; font-size:0.75rem;
+    letter-spacing:1px; text-transform:uppercase;
+    padding:10px 16px; border-radius:4px;
+    transition:transform .15s, filter .15s;
+  }
+  .card-link:hover{transform:translateX(4px); filter:brightness(1.15);}
   .rules div:not(.ability-name){display:flex; gap:8px; align-items:flex-start; margin-bottom:4px;}
   .rules div:not(.ability-name) span.ic{
     flex:0 0 auto; color:var(--role-text,#000); background:var(--role-color, var(--red));
@@ -552,14 +564,14 @@
 
 <div class="crt-overlay"></div>
 <div class="hazard"></div>
-<a href="../../index.html#brief" class="mobile-home-btn" aria-label="Back to homepage">‹</a>
+<a href="../../index.html" class="mobile-home-btn" aria-label="Back to homepage">‹</a>
 <header>
   <a href="../../index.html" class="logo-group">
     <img src="../../images/kodecco-icon.png" alt="Kodecco Games">
   </a>
   <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">☰</button>
   <nav id="mainNav">
-    <a href="../../index.html#brief">Mission Brief</a>
+    <a href="how-to-play.html">Mission Brief</a>
     <a href="../../index.html#gallery">Gallery</a>
     <a href="../../index.html#roadmap">Roadmap</a>
     <a href="../../index.html#journal">Dev Journal</a>
@@ -573,374 +585,206 @@
 
 <main class="role-list" id="main">
 
-  <section class="role" data-nav="BL" style="--role-color:var(--role-green);--card-ratio:827/1241">
+  <section class="role" data-nav="P1" style="--role-color:var(--role-green);--card-ratio:827/1241">
     <div class="role-inner">
-      <div class="card" data-modal-src="images/05.png" data-modal-alt="Blacksmith — card" data-modal-ratio="900/1221">
-      <img src="images/05-card.png" alt="Blacksmith — full readout">
+      <div class="card" data-modal-src="../../images/[HOW TO PLAY]/setup-phase.webp" data-modal-alt="Setup Phase — dealing Characters, Secret Roles, and forming the Game Deck" data-modal-ratio="827/1241">
+      <img src="../../images/[HOW TO PLAY]/setup-phase.webp" alt="Setup Phase — dealing Characters, Secret Roles, and forming the Game Deck">
     </div>
-    <img class="mobile-card-img" src="images/05-card.png" alt="Blacksmith — full card" loading="lazy" decoding="async">
+    <img class="mobile-card-img" src="../../images/[HOW TO PLAY]/setup-phase.webp" alt="Setup Phase — dealing Characters, Secret Roles, and forming the Game Deck" loading="lazy" decoding="async">
     <div class="info">
-      <h2>BLACKSMITH</h2>
-      <p>[ACTIVE] Reforge lets the Blacksmith shuffle the discard pile and draw 3 cards. Take a single Supply card drawn this way to either keep for yourself or give away to another player. Any non-Supply cards are returned. Can only be used during Daybreak, but can be used multiple times.</p>
-      <p>Unlike the Forager's bigger but capped haul, the Blacksmith trades scale for repetition — smaller yield, no limit.</p>
-      <div class="rules">
-        <div class="ability-name">Reforge</div>
-        <div><span class="ic">▲</span>Can only be used during "Daybreak" phase.</div>
-        <div><span class="ic">◆</span>Can be used multiple times.</div>
-        <div><span class="ic">?</span>Shuffle the discard pile, draw 3 cards. Take a Supply card to keep or give away. If no Supply is drawn, no card is taken.</div>
-      </div>
+      <h2>SETUP PHASE</h2>
+      <p>Everything starts here. Every player is dealt a Character first, then a Secret Role, and the Encounter cards get shuffled together into the Game Deck — the reference card walks through the full order step by step.</p>
+      <p>The next three cards cover Setup in more detail: Outlander, Survivor, and Saboteur, plus what makes the Amnesiac different from everyone else at the table.</p>
     </div>
     </div>
   </section>
 
-  <section class="role" data-nav="BR" style="--role-color:var(--role-blue);--card-ratio:827/1241">
+  <section class="role" data-nav="OU" style="--role-color:var(--role-green);--card-ratio:827/1122">
     <div class="role-inner">
-      <div class="card" data-modal-src="images/07.png" data-modal-alt="Brawler — card" data-modal-ratio="900/1221">
-      <img src="images/07-card.png" alt="Brawler — full readout">
+      <div class="card" data-modal-src="../../images/[HOW TO PLAY]/example-outlander.webp" data-modal-alt="Outlander — card" data-modal-ratio="827/1122">
+      <img src="../../images/[HOW TO PLAY]/example-outlander.webp" alt="Outlander — full readout">
     </div>
-    <img class="mobile-card-img" src="images/07-card.png" alt="Brawler — full card" loading="lazy" decoding="async">
-    <div class="info">
-      <h2>BRAWLER</h2>
-      <p>[ACTIVE] When the Brawler confronts an Encounter alone, every card he contributes counts as double value. This can only be triggered during Daybreak, and only once per game.</p>
-      <p>Because it's a single use, save it for an Encounter you're genuinely tackling solo and where the extra value matters, not one you'd have cleared easily anyway.</p>
-      <div class="rules">
-        <div class="ability-name">Berserk</div>
-        <div><span class="ic">▲</span>Can be used during "Daybreak" &amp; "Nightfall".</div>
-        <div><span class="ic">◆</span>Can be used once per game.</div>
-        <div><span class="ic">?</span>When confronting an Encounter alone, each card you contribute counts as double value.</div>
-      </div>
-    </div>
-    </div>
-  </section>
-
-  <section class="role art-wip" data-nav="DE" style="--role-color:var(--role-blue);--card-ratio:827/1241">
-    <div class="role-inner">
-      <div class="card" data-modal-src="images/09.png" data-modal-alt="Deadeye — card" data-modal-ratio="900/1221">
-      <img src="images/09-card.png" alt="Deadeye — full readout">
-      <span class="art-wip-badge">Graphic Redesign<br>In Progress</span>
-    </div>
-    <img class="mobile-card-img" src="images/09-card.png" alt="Deadeye — full card" loading="lazy" decoding="async">
-    <span class="art-wip-badge-mobile">Graphic Redesign<br>In Progress</span>
-    <div class="info">
-      <h2>DEADEYE</h2>
-      <p>[ACTIVE] Longshot lets the Deadeye reduce the damage required to beat a drawn Encounter by 2 points. It doesn't matter who drew the Encounter, any player's draw can trigger it, as long as it happens during Daybreak. Can be used up to twice per game.</p>
-      <p>Because it works off anyone's draw, Deadeye doesn't need to be leading or even part of the Encounter to use it.</p>
-      <div class="rules">
-        <div class="ability-name">Longshot</div>
-        <div><span class="ic">▲</span>Can only be used during "Daybreak" phase.</div>
-        <div><span class="ic">◆</span>Can be used twice per game.</div>
-        <div><span class="ic">?</span>Whenever an Encounter is drawn, use this ability to reduce the damage required by 2 points.</div>
-      </div>
-    </div>
-    </div>
-  </section>
-
-  <section class="role art-wip" data-nav="DU" style="--role-color:var(--role-blue);--card-ratio:827/1241">
-    <div class="role-inner">
-      <div class="card" data-modal-src="images/08.png" data-modal-alt="Duelist — card" data-modal-ratio="900/1221">
-      <img src="images/08-card.png" alt="Duelist — full readout">
-      <span class="art-wip-badge">Graphic Redesign<br>In Progress</span>
-    </div>
-    <img class="mobile-card-img" src="images/08-card.png" alt="Duelist — full card" loading="lazy" decoding="async">
-    <span class="art-wip-badge-mobile">Graphic Redesign<br>In Progress</span>
-    <div class="info">
-      <h2>DUELIST</h2>
-      <p>[PASSIVE] Whenever the Duelist is chosen to take part in an Encounter, he may choose to contribute either 1 or 2 cards to it, instead of being locked into only giving one. This is a permanent passive ability, active during Daybreak.</p>
-      <p>This flexibility lets him hold back and conserve his hand when the Encounter doesn't need much, or commit an extra card when it's close to failing. Worth factoring into how the party plans its contributions each round.</p>
-      <div class="rules">
-        <div class="ability-name">Dexterous</div>
-        <div><span class="ic">▲</span>Can only be used during "Daybreak" phase.</div>
-        <div><span class="ic">◆</span>Permanent passive ability.</div>
-        <div><span class="ic">?</span>When chosen for any Encounters, you choose to contribute 1 or 2 cards.</div>
-      </div>
-    </div>
-    </div>
-  </section>
-
-  <section class="role" data-nav="EN" style="--role-color:var(--red);--role-text:#fff;--card-ratio:827/1241">
-    <div class="role-inner">
-      <div class="card" data-modal-src="images/03.png" data-modal-alt="Enforcer — card" data-modal-ratio="900/1221">
-      <img src="images/03-card.png" alt="Enforcer — full readout">
-    </div>
-    <img class="mobile-card-img" src="images/03-card.png" alt="Enforcer — full card" loading="lazy" decoding="async">
-    <div class="info">
-      <h2>ENFORCER</h2>
-      <p>[ACTIVE] Investigate triggers after an Escape nomination fails. The Enforcer may then view the secret role of one of the nominated players, but only on his own next turn. Can be used during Daybreak or Nightfall, but only once per game.</p>
-      <p>If the failed nomination happens before his turn, he can investigate that same turn; if it happens after his turn, he has to wait until his next turn comes around.</p>
-      <div class="rules">
-        <div class="ability-name">Investigate</div>
-        <div><span class="ic">▲</span>Can be used during "Daybreak" &amp; "Nightfall".</div>
-        <div><span class="ic">◆</span>Can be used once per game.</div>
-        <div><span class="ic">?</span>After an unsuccessful Escape nomination, you may view the secret role of a nominated player on your next turn.</div>
-      </div>
-    </div>
-    </div>
-  </section>
-
-  <section class="role" data-nav="FO" style="--role-color:var(--role-green);--card-ratio:827/1241">
-    <div class="role-inner">
-      <div class="card" data-modal-src="images/04.png" data-modal-alt="Forager — card" data-modal-ratio="900/1221">
-      <img src="images/04-card.png" alt="Forager — full readout">
-    </div>
-    <img class="mobile-card-img" src="images/04-card.png" alt="Forager — full card" loading="lazy" decoding="async">
-    <div class="info">
-      <h2>FORAGER</h2>
-      <p>[ACTIVE] Allocate lets the Forager draw 6 cards from the discard pile and hand out Supplies among them to any player(s) of her choice. Any Encounter cards drawn this way are set right back into the discard pile. Can only be used during Daybreak, and up to twice per game.</p>
-      <p>This is one of the few ways to recover resources the party already burned through, so save it for when supplies are genuinely running low rather than early when the discard pile is thin.</p>
-      <div class="rules">
-        <div class="ability-name">Allocate</div>
-        <div><span class="ic">▲</span>Can only be used during "Daybreak" phase.</div>
-        <div><span class="ic">◆</span>Can be used twice per game.</div>
-        <div><span class="ic">?</span>Draw 6 cards from the discard pile and give the Supplies to any player(s). Return any Encounter cards to the discard pile.</div>
-      </div>
-    </div>
-    </div>
-  </section>
-
-  <section class="role" data-nav="GE" style="--role-color:var(--role-gold);--card-ratio:827/1241">
-    <div class="role-inner">
-      <div class="card" data-modal-src="images/18.png" data-modal-alt="Geneticist — card" data-modal-ratio="900/1221">
-      <img src="images/18-card.png" alt="Geneticist — full readout">
-    </div>
-    <img class="mobile-card-img" src="images/18-card.png" alt="Geneticist — full card" loading="lazy" decoding="async">
-    <div class="info">
-      <h2>GENETICIST</h2>
-      <p>[ACTIVE] Profile lets the Geneticist ask another player to reveal his secret role to him. If that player agrees, the Geneticist must also reveal his own secret role in return. Can only be used during Daybreak, and only once per game.</p>
-      <p>Unlike other role-checking abilities, this one is mutual and voluntary, the target can simply refuse. It works best on someone you already trust or someone who has just as much reason to want a trade.</p>
-      <div class="rules">
-        <div class="ability-name">Profile</div>
-        <div><span class="ic">▲</span>Can only be used during "Daybreak" phase.</div>
-        <div><span class="ic">◆</span>Can be used once per game.</div>
-        <div><span class="ic">?</span>Ask a player to reveal his secret role to you. If he agrees, you also reveal your secret role to him.</div>
-      </div>
-    </div>
-    </div>
-  </section>
-
-  <section class="role" data-nav="IN" style="--role-color:var(--red);--role-text:#fff;--card-ratio:827/1241">
-    <div class="role-inner">
-      <div class="card" data-modal-src="images/02.png" data-modal-alt="Inspector — card" data-modal-ratio="900/1221">
-      <img src="images/02-card.png" alt="Inspector — full readout">
-    </div>
-    <img class="mobile-card-img" src="images/02-card.png" alt="Inspector — full card" loading="lazy" decoding="async">
-    <div class="info">
-      <h2>INSPECTOR</h2>
-      <p>[ACTIVE] Choose two other players. You may not choose yourself. Designate one as the Checker and the other as the Target. The Checker takes the Target's secret role and examines it, then it's returned face-down. Only the Checker sees it, no one else at the table.</p>
-      <p>This can only happen once per game, during Nightfall, and both choices — who checks and who's checked — are made in the same turn.</p>
-      <div class="rules">
-        <div class="ability-name">Delegate</div>
-        <div><span class="ic">▲</span>Can only be used during "Nightfall" phase.</div>
-        <div><span class="ic">◆</span>Can be used once per game.</div>
-        <div><span class="ic">?</span>Select 2 players and designate a player to check the secret role of the other.</div>
-      </div>
-    </div>
-    </div>
-  </section>
-
-  <section class="role art-wip" data-nav="OL" style="--role-color:var(--role-orange);--card-ratio:827/1241">
-    <div class="role-inner">
-      <div class="card" data-modal-src="images/16.png" data-modal-alt="Outlander — card" data-modal-ratio="900/1221">
-      <img src="images/16-card.png" alt="Outlander — full readout">
-      <span class="art-wip-badge">Graphic Redesign<br>In Progress</span>
-    </div>
-    <img class="mobile-card-img" src="images/16-card.png" alt="Outlander — full card" loading="lazy" decoding="async">
-    <span class="art-wip-badge-mobile">Graphic Redesign<br>In Progress</span>
+    <img class="mobile-card-img" src="../../images/[HOW TO PLAY]/example-outlander.webp" alt="Outlander — full card" loading="lazy" decoding="async">
     <div class="info">
       <h2>OUTLANDER</h2>
-      <p>[PASSIVE] As an Amnesiac, the Outlander is never allowed to look at his own secret role. Once a player receives this character, they must set that role aside without checking it and play the rest of the game not knowing their own identity.</p>
-      <p>[ACTIVE] Flashback makes up for it by learning about others instead. During Daybreak, he may look at one other player's secret role, once per turn, up to 3 times total per game.</p>
-      <div class="rules">
-        <div class="ability-name">Flashback</div>
-        <div><span class="ic">▲</span>Can only be used during "Daybreak" phase.</div>
-        <div><span class="ic">◆</span>Can be used twice per game.</div>
-        <div><span class="ic">?</span>You look at another player's secret role.</div>
-      </div>
+      <p>[PASSIVE] The Outlander is the game's Amnesiac — they never see their own Secret Role, not even when it's dealt.</p>
+      <p>Setup begins here: every player receives a Character first, so the table knows who's playing what before anything is hidden.</p>
+      <a class="card-link" href="../character/character.html#OL">See the full Outlander card on Characters &rarr;</a>
     </div>
     </div>
   </section>
 
-  <section class="role" data-nav="OU" style="--role-color:var(--role-olive);--card-ratio:827/1241">
+  <section class="role" data-nav="SU" style="--role-color:var(--role-blue);--card-ratio:827/1122">
     <div class="role-inner">
-      <div class="card" data-modal-src="images/15.png" data-modal-alt="Outrunner — card" data-modal-ratio="900/1221">
-      <img src="images/15-card.png" alt="Outrunner — full readout">
+      <div class="card" data-modal-src="../../images/[HOW TO PLAY]/example-secret-role-survivor.webp" data-modal-alt="Survivor — card" data-modal-ratio="827/1122">
+      <img src="../../images/[HOW TO PLAY]/example-secret-role-survivor.webp" alt="Survivor — full readout">
     </div>
-    <img class="mobile-card-img" src="images/15-card.png" alt="Outrunner — full card" loading="lazy" decoding="async">
+    <img class="mobile-card-img" src="../../images/[HOW TO PLAY]/example-secret-role-survivor.webp" alt="Survivor — full card" loading="lazy" decoding="async">
     <div class="info">
-      <h2>OUTRUNNER</h2>
-      <p>[ACTIVE] Evade lets the Outrunner dodge a drawn Encounter entirely. Whenever an Encounter is drawn, he may reshuffle it back into the Encounter deck instead of resolving it. Can be used during Daybreak or Nightfall, up to twice per game.</p>
-      <p>This works on any drawn Encounter, not just his own, so it can bail out another player facing something the party isn't ready for. Save both uses for the moments that would genuinely hurt.</p>
+      <h2>SURVIVOR</h2>
+      <p>[SECRET ROLE] Survivor is the default Allegiance — protect the Curefinder, help the group escape, and stay alive without drawing suspicion.</p>
+      <p>Once every player has a Character, Secret Roles go out next. Each player looks at their own card and keeps it hidden — except the Amnesiac, who never looks at all.</p>
+      <p>Setup then wraps up: shuffle the Encounter cards into the Game Deck, and decide turn order.</p>
       <div class="rules">
-        <div class="ability-name">Evade</div>
-        <div><span class="ic">▲</span>Can be used during "Daybreak" &amp; "Nightfall".</div>
-        <div><span class="ic">◆</span>Can be used twice per game.</div>
-        <div><span class="ic">?</span>Whenever an Encounter is drawn, you may use this ability to reshuffle the card back into the Encounter deck.</div>
+        <div class="ability-name">Setup — Secret Role</div>
+        <div><span class="ic">▲</span>Set aside a Secret Role card for each player, shuffle, and deal one to each.</div>
+        <div><span class="ic">◆</span>Every player (except the Amnesiac) looks at their own Secret Role and keeps it hidden from the table.</div>
+        <div><span class="ic">?</span>Shuffle the Encounter cards to form the Game Deck. The youngest player goes first, and play proceeds clockwise.</div>
       </div>
     </div>
     </div>
   </section>
 
-  <section class="role" data-nav="PA" style="--role-color:var(--role-olive);--card-ratio:827/1241">
+  <section class="role" data-nav="SA" style="--role-color:var(--red);--role-text:#fff;--card-ratio:827/1122">
     <div class="role-inner">
-      <div class="card" data-modal-src="images/13.png" data-modal-alt="Pathfinder — card" data-modal-ratio="900/1221">
-      <img src="images/13-card.png" alt="Pathfinder — full readout">
+      <div class="card" data-modal-src="../../images/[HOW TO PLAY]/example-carrier-saboteur.webp" data-modal-alt="Saboteur — card" data-modal-ratio="827/1122">
+      <img src="../../images/[HOW TO PLAY]/example-carrier-saboteur.webp" alt="Saboteur — full readout">
     </div>
-    <img class="mobile-card-img" src="images/13-card.png" alt="Pathfinder — full card" loading="lazy" decoding="async">
+    <img class="mobile-card-img" src="../../images/[HOW TO PLAY]/example-carrier-saboteur.webp" alt="Saboteur — full card" loading="lazy" decoding="async">
     <div class="info">
-      <h2>PATHFINDER</h2>
-      <p>[ACTIVE] When you activate this ability, you may look at the next 6 Encounter cards from the top of the deck and rearrange them in any order you like, then place them back on top of the deck. This can only be done during Daybreak, and only once per game.</p>
-      <p>Remember, after using your ability, you will draw your card for the turn as normal, so whatever you place on top becomes your draw. Plan your order with that in mind.</p>
-      <div class="rules">
-        <div class="ability-name">Scout</div>
-        <div><span class="ic">▲</span>Can only be used during "Daybreak" phase.</div>
-        <div><span class="ic">◆</span>Can be used once per game.</div>
-        <div><span class="ic">?</span>Look at and rearrange the next 6 Encounter cards from the top of the deck.</div>
-      </div>
+      <h2>SABOTEUR</h2>
+      <p>[PASSIVE] The Saboteur is infected and hiding among the Survivors. Their goal is to eliminate the Curefinder before the group can escape — without ever swinging a weapon themselves.</p>
+      <p>Carriers have their own way to close out the game: reveal themselves on their turn to accuse a player directly.</p>
+      <a class="card-link" href="../allegiance/allegiance.html#SB">See the full Saboteur card on Allegiances &rarr;</a>
     </div>
     </div>
   </section>
 
-  <section class="role" data-nav="PR" style="--role-color:var(--role-orange);--card-ratio:827/1241">
+  <section class="role" data-nav="P2" style="--role-color:var(--role-gold);--card-ratio:827/1241">
     <div class="role-inner">
-      <div class="card" data-modal-src="images/11.png" data-modal-alt="Prospector — card" data-modal-ratio="900/1221">
-      <img src="images/11-card.png" alt="Prospector — full readout">
+      <div class="card" data-modal-src="../../images/[HOW TO PLAY]/game-phase.webp" data-modal-alt="Game Phase — Character Ability, Shared Inventory, and Kill the Curefinder rules" data-modal-ratio="827/1241">
+      <img src="../../images/[HOW TO PLAY]/game-phase.webp" alt="Game Phase — Character Ability, Shared Inventory, and Kill the Curefinder rules">
     </div>
-    <img class="mobile-card-img" src="images/11-card.png" alt="Prospector — full card" loading="lazy" decoding="async">
+    <img class="mobile-card-img" src="../../images/[HOW TO PLAY]/game-phase.webp" alt="Game Phase — Character Ability, Shared Inventory, and Kill the Curefinder rules" loading="lazy" decoding="async">
     <div class="info">
-      <h2>PROSPECTOR</h2>
-      <p>[PASSIVE] Stockpile gives the Prospector a head start. At the start of the game, she searches the deck for 2 Supply cards, adds them to her hand, then shuffles the deck. Her hand limit is 6. This is a permanent passive ability, effective during both Daybreak and Nightfall.</p>
-      <p>Because this only triggers once, at setup, it front-loads her advantage rather than paying off later. She also holds a 6-card hand limit, double the normal limit, so she can keep stockpiling supplies well beyond what other players can carry.</p>
-      <div class="rules">
-        <div class="ability-name">Stockpile</div>
-        <div><span class="ic">▲</span>Effective during "Daybreak" &amp; "Nightfall".</div>
-        <div><span class="ic">◆</span>Permanent passive ability.</div>
-        <div><span class="ic">?</span>Hand limit is 6. At the start of the game, search the deck for 2 Supply cards, add them to your hand, then shuffle the deck.</div>
-      </div>
+      <h2>GAME PHASE</h2>
+      <p>Once Setup is done, play begins. On your turn, check your Character Ability before you draw, manage Supplies through the shared inventory, and — if you're a Carrier — decide when it's worth revealing yourself.</p>
+      <p>The next two cards go deeper on Tracer's Character Ability and Medical's Supply rules.</p>
     </div>
     </div>
   </section>
 
-  <section class="role" data-nav="ST" style="--role-color:var(--role-orange);--card-ratio:827/1241">
+  <section class="role" data-nav="TR" style="--role-color:var(--role-gold);--card-ratio:827/1122">
     <div class="role-inner">
-      <div class="card" data-modal-src="images/12.png" data-modal-alt="Stranger — card" data-modal-ratio="900/1221">
-      <img src="images/12-card.png" alt="Stranger — full readout">
+      <div class="card" data-modal-src="../../images/[HOW TO PLAY]/example-character-tracer.webp" data-modal-alt="Tracer — card" data-modal-ratio="827/1122">
+      <img src="../../images/[HOW TO PLAY]/example-character-tracer.webp" alt="Tracer — full readout">
     </div>
-    <img class="mobile-card-img" src="images/12-card.png" alt="Stranger — full card" loading="lazy" decoding="async">
-    <div class="info">
-      <h2>STRANGER</h2>
-      <p>[PASSIVE] Elude makes the Stranger permanently unreadable. His secret role and inventory can never be checked by any other player's ability, effective during both Daybreak and Nightfall.</p>
-      <p>[ACTIVE] Flashback makes up for it by learning about others instead. During Daybreak, he may look at one other player's secret role, once per turn, up to 3 times total per game.</p>
-      <div class="rules">
-        <div class="ability-name">Elude</div>
-        <div><span class="ic">▲</span>Effective during "Daybreak" &amp; "Nightfall".</div>
-        <div><span class="ic">◆</span>Permanent passive ability.</div>
-        <div><span class="ic">?</span>Your secret role and inventory can never be checked by any player.</div>
-      </div>
-    </div>
-    </div>
-  </section>
-
-  <section class="role art-wip" data-nav="SY" style="--role-color:var(--role-olive);--card-ratio:827/1241">
-    <div class="role-inner">
-      <div class="card" data-modal-src="images/14.png" data-modal-alt="Surveyor — card" data-modal-ratio="900/1221">
-      <img src="images/14-card.png" alt="Surveyor — full readout">
-      <span class="art-wip-badge">Graphic Redesign<br>In Progress</span>
-    </div>
-    <img class="mobile-card-img" src="images/14-card.png" alt="Surveyor — full card" loading="lazy" decoding="async">
-    <span class="art-wip-badge-mobile">Graphic Redesign<br>In Progress</span>
-    <div class="info">
-      <h2>SURVEYOR</h2>
-      <p>[ACTIVE] Lookout lets the Surveyor look at the next 3 Encounter cards from the top of the deck, then place them back in the same order. Nothing is rearranged, this is purely information. Can only be used during Daybreak, with no limit on uses.</p>
-      <p>Unlike abilities that let you reorder the deck, this just tells you what's coming so the party can plan around it — brace for a tough Encounter, hold back resources, or push forward knowing an easy one is next.</p>
-      <div class="rules">
-        <div class="ability-name">Lookout</div>
-        <div><span class="ic">▲</span>Can only be used during "Daybreak" phase.</div>
-        <div><span class="ic">◆</span>Can be used multiple times.</div>
-        <div><span class="ic">?</span>Look at the next 3 Encounter cards from the top of the deck, then place them back in the same order.</div>
-      </div>
-    </div>
-    </div>
-  </section>
-
-  <section class="role" data-nav="SU" style="--role-color:var(--role-green);--card-ratio:827/1241">
-    <div class="role-inner">
-      <div class="card" data-modal-src="images/06.png" data-modal-alt="Survivalist — card" data-modal-ratio="900/1221">
-      <img src="images/06-card.png" alt="Survivalist — full readout">
-    </div>
-    <img class="mobile-card-img" src="images/06-card.png" alt="Survivalist — full card" loading="lazy" decoding="async">
-    <div class="info">
-      <h2>SURVIVALIST</h2>
-      <p>[PASSIVE] Whenever a Zombie Encounter the Survivalist takes part in succeeds, the Survivalist is refunded a random Supply card. Permanent passive ability, but only in effect during Daybreak.</p>
-      <p>It doesn't matter whether the Survivalist joined by their own choice or someone else's. If another player is leading the Encounter and picks the Survivalist to come along, the refund still triggers on success.</p>
-      <div class="rules">
-        <div class="ability-name">Recover</div>
-        <div><span class="ic">▲</span>Can only be used during "Daybreak" phase.</div>
-        <div><span class="ic">◆</span>Permanent passive ability.</div>
-        <div><span class="ic">?</span>Whenever a Zombie Encounter the Survivalist takes part in succeeds, the Survivalist is refunded a random Supply card.</div>
-      </div>
-    </div>
-    </div>
-  </section>
-
-  <section class="role" data-nav="TR" style="--role-color:var(--red);--role-text:#fff;--card-ratio:827/1241">
-    <div class="role-inner">
-      <div class="card" data-modal-src="images/01.png" data-modal-alt="Tracer — card" data-modal-ratio="900/1221">
-      <img src="images/01-card.png" alt="Tracer — full readout">
-    </div>
-    <img class="mobile-card-img" src="images/01-card.png" alt="Tracer — full card" loading="lazy" decoding="async">
+    <img class="mobile-card-img" src="../../images/[HOW TO PLAY]/example-character-tracer.webp" alt="Tracer — full card" loading="lazy" decoding="async">
     <div class="info">
       <h2>TRACER</h2>
-      <p>[ACTIVE] Choose the First Player. Take their hand and examine every card in it, then return it to them. Then choose the Second Player, take their hand, examine it, and return it.</p>
-      <p>Both must happen in the same turn. You can't examine the First Player now and save the Second Player for a later Daybreak.</p>
-      <div class="rules">
-        <div class="ability-name">Intercept</div>
-        <div><span class="ic">▲</span>Can only be used during "Daybreak" phase.</div>
-        <div><span class="ic">◆</span>Can be used once per game.</div>
-        <div><span class="ic">?</span>Take and examine all hand cards of 2 players of your choice.</div>
-      </div>
+      <p>[ACTIVE] All players embody a Character, and every Character has a special ability like Tracer's — worth checking before you draw.</p>
+      <p>Once you draw a card, certain abilities can no longer be activated, so check yours first. It might be exactly what the group needs.</p>
+      <a class="card-link" href="../character/character.html#TR">See the full Tracer card on Characters &rarr;</a>
     </div>
     </div>
   </section>
 
-  <section class="role" data-nav="TK" style="--role-color:var(--role-orange);--card-ratio:827/1241">
+  <section class="role" data-nav="ME" style="--role-color:var(--role-olive);--card-ratio:827/1122">
     <div class="role-inner">
-      <div class="card" data-modal-src="images/10.png" data-modal-alt="Trickster — card" data-modal-ratio="900/1221">
-      <img src="images/10-card.png" alt="Trickster — full readout">
+      <div class="card" data-modal-src="../../images/[HOW TO PLAY]/example-supplies-medical.webp" data-modal-alt="Medical — card" data-modal-ratio="827/1122">
+      <img src="../../images/[HOW TO PLAY]/example-supplies-medical.webp" alt="Medical — full readout">
     </div>
-    <img class="mobile-card-img" src="images/10-card.png" alt="Trickster — full card" loading="lazy" decoding="async">
+    <img class="mobile-card-img" src="../../images/[HOW TO PLAY]/example-supplies-medical.webp" alt="Medical — full card" loading="lazy" decoding="async">
     <div class="info">
-      <h2>TRICKSTER</h2>
-      <p>[ACTIVE] Imitate lets the Trickster swap character cards with another player. Once a swap happens, that player becomes the new Trickster, and whoever used to hold the Trickster card cannot be targeted by Imitate again. This can only be used during Nightfall, and has no limit on total uses, so long as a valid target remains.</p>
-      <p>The Imitate ability does not work on Amnesiacs.</p>
-      <div class="rules">
-        <div class="ability-name">Imitate</div>
-        <div><span class="ic">▲</span>Can only be used during "Nightfall" phase.</div>
-        <div><span class="ic">◆</span>Can be used multiple times.</div>
-        <div><span class="ic">?</span>Swap character cards with another player. Previous Tricksters cannot be targeted. This ability does not affect Amnesiacs.</div>
-      </div>
+      <h2>MEDICAL</h2>
+      <p>[SUPPLIES] Supplies like this one aren't dealt at the start — players begin with none, and find them by chance throughout the Encounter deck.</p>
+      <p>What you do with them is up to the group: keep them, or feed them into the shared inventory for anyone to draw on later.</p>
+      <a class="card-link" href="../Encounters/encounters.html#MD">See the full Medical Supplies card on Encounters &rarr;</a>
     </div>
     </div>
   </section>
 
-  <section class="role" data-nav="VI" style="--role-color:var(--role-gold);--card-ratio:827/1241">
+  <section class="role" data-nav="P3" style="--role-color:var(--role-orange);--card-ratio:827/1241">
     <div class="role-inner">
-      <div class="card" data-modal-src="images/17.png" data-modal-alt="Virologist — card" data-modal-ratio="900/1221">
-      <img src="images/17-card.png" alt="Virologist — full readout">
+      <div class="card" data-modal-src="../../images/[HOW TO PLAY]/the-mission.webp" data-modal-alt="The Mission — Escape Attempt, Escape Party, and win/loss conditions" data-modal-ratio="827/1241">
+      <img src="../../images/[HOW TO PLAY]/the-mission.webp" alt="The Mission — Escape Attempt, Escape Party, and win/loss conditions">
     </div>
-    <img class="mobile-card-img" src="images/17-card.png" alt="Virologist — full card" loading="lazy" decoding="async">
+    <img class="mobile-card-img" src="../../images/[HOW TO PLAY]/the-mission.webp" alt="The Mission — Escape Attempt, Escape Party, and win/loss conditions" loading="lazy" decoding="async">
     <div class="info">
-      <h2>VIROLOGIST</h2>
-      <p>[ACTIVE] Diagnose lets the Virologist discard 3 cards to check a player's secret role card. Can only be used during Daybreak, and up to once per turn.</p>
-      <p>The cost is steep, 3 cards for a single check, so it works best when narrowing down a specific suspicion rather than fishing blind. Since it's once per turn rather than once per game, a well-stocked Virologist can still diagnose multiple players over the course of the game.</p>
-      <div class="rules">
-        <div class="ability-name">Diagnose</div>
-        <div><span class="ic">▲</span>Can only be used during "Daybreak" phase.</div>
-        <div><span class="ic">◆</span>Can be used once per turn.</div>
-        <div><span class="ic">?</span>Discard 3 cards to check a player's secret role card.</div>
-      </div>
+      <h2>THE MISSION</h2>
+      <p>Survivors win by escaping — but only if the escape party checks every box: three Survivors, three Samples between them, and the Curefinder (or their Apprentice/Patient Zero backup) among them.</p>
+      <p>Any player may start an Escape Attempt on their turn, before drawing a card. If the group votes it through, Secret Roles are revealed and the game's outcome is decided right there.</p>
     </div>
     </div>
   </section>
 
+  <section class="role" data-nav="VS" style="--role-color:var(--role-orange);--card-ratio:827/1122">
+    <div class="role-inner">
+      <div class="card" data-modal-src="../../images/[HOW TO PLAY]/example-vile-samples.webp" data-modal-alt="Vile Samples — card" data-modal-ratio="827/1122">
+      <img src="../../images/[HOW TO PLAY]/example-vile-samples.webp" alt="Vile Samples — full readout">
+    </div>
+    <img class="mobile-card-img" src="../../images/[HOW TO PLAY]/example-vile-samples.webp" alt="Vile Samples — full card" loading="lazy" decoding="async">
+    <div class="info">
+      <h2>VILE SAMPLES</h2>
+      <p>Samples are the Survivors' main objective — found by chance throughout the Encounter deck, same as Supplies.</p>
+      <p>An Escape Attempt can be started by any player on their turn, before drawing a card. If the group votes it through, the nominated escape party reveals their Secret Roles and the game's outcome is decided right there.</p>
+      <a class="card-link" href="../Encounters/encounters.html#VS">See the full Vile Samples card on Encounters &rarr;</a>
+    </div>
+    </div>
+  </section>
+
+  <section class="role" data-nav="P4" style="--role-color:var(--role-green);--card-ratio:827/1241">
+    <div class="role-inner">
+      <div class="card" data-modal-src="../../images/[HOW TO PLAY]/encounter-phase.webp" data-modal-alt="Encounter Phase — revealing, confronting, and resolving Encounters" data-modal-ratio="827/1241">
+      <img src="../../images/[HOW TO PLAY]/encounter-phase.webp" alt="Encounter Phase — revealing, confronting, and resolving Encounters">
+    </div>
+    <img class="mobile-card-img" src="../../images/[HOW TO PLAY]/encounter-phase.webp" alt="Encounter Phase — revealing, confronting, and resolving Encounters" loading="lazy" decoding="async">
+    <div class="info">
+      <h2>ENCOUNTER PHASE</h2>
+      <p>Every Encounter drawn becomes a shared problem. Its Leader nominates 2 to 5 players to confront it, and anyone at the table can contest that nomination and force a group vote.</p>
+      <p>If the vote passes, nominated players pool their Supplies and tally total DAMAGE against the card's DANGER — clear it and the Encounter succeeds, fall short and its debuff triggers.</p>
+    </div>
+    </div>
+  </section>
+
+  <section class="role" data-nav="SH" style="--role-color:var(--role-green);--card-ratio:827/1122">
+    <div class="role-inner">
+      <div class="card" data-modal-src="../../images/[HOW TO PLAY]/example-shrieker.webp" data-modal-alt="Z8 Shrieker — card" data-modal-ratio="827/1122">
+      <img src="../../images/[HOW TO PLAY]/example-shrieker.webp" alt="Z8 Shrieker — full readout">
+    </div>
+    <img class="mobile-card-img" src="../../images/[HOW TO PLAY]/example-shrieker.webp" alt="Z8 Shrieker — full card" loading="lazy" decoding="async">
+    <div class="info">
+      <h2>Z8 — SHRIEKER</h2>
+      <p>Encounters like the Shrieker are the heart of the Game Phase. Whoever draws it becomes its "Leader" and reveals it to the group.</p>
+      <p>As Leader, you choose to Fight or Run — and that choice ripples forward, because running lets zombies accumulate for future encounters.</p>
+      <a class="card-link" href="../Encounters/encounters.html#Z8">See the full Z8 Shrieker card on Encounters &rarr;</a>
+    </div>
+    </div>
+  </section>
+
+  <section class="role" data-nav="P5" style="--role-color:var(--red);--role-text:#fff;--card-ratio:827/1241">
+    <div class="role-inner">
+      <div class="card" data-modal-src="../../images/[HOW TO PLAY]/mutations.webp" data-modal-alt="Mutations — how failed encounters escalate Mutation stages" data-modal-ratio="827/1241">
+      <img src="../../images/[HOW TO PLAY]/mutations.webp" alt="Mutations — how failed encounters escalate Mutation stages">
+    </div>
+    <img class="mobile-card-img" src="../../images/[HOW TO PLAY]/mutations.webp" alt="Mutations — how failed encounters escalate Mutation stages" loading="lazy" decoding="async">
+    <div class="info">
+      <h2>MUTATIONS</h2>
+      <p>Every failed Encounter pushes the Mutation level higher, and once a stage triggers, its effect stays active for the rest of the game — Special Encounters stack extra debuffs on top of that.</p>
+      <p>Running has its own cost too: it raises DANGER for the next Encounter, though it doesn't feed the Mutation level directly — and the group can only run 3 times total before it stops being an option.</p>
+    </div>
+    </div>
+  </section>
+
+  <section class="role" data-nav="MS" style="--role-color:var(--red);--role-text:#fff;--card-ratio:827/1122">
+    <div class="role-inner">
+      <div class="card" data-modal-src="../../images/[HOW TO PLAY]/example-mutation-stages.webp" data-modal-alt="Mutation Stages — card" data-modal-ratio="827/1122">
+      <img src="../../images/[HOW TO PLAY]/example-mutation-stages.webp" alt="Mutation Stages — full readout">
+    </div>
+    <img class="mobile-card-img" src="../../images/[HOW TO PLAY]/example-mutation-stages.webp" alt="Mutation Stages — full card" loading="lazy" decoding="async">
+    <div class="info">
+      <h2>MUTATION STAGES</h2>
+      <p>Every failed Encounter pushes the Mutation level higher — and once a stage triggers, its effect stays active for the rest of the game.</p>
+      <p>Running has its own cost too: it raises DANGER for the next Encounter, though it doesn't feed the Mutation level directly. But the group can only run so many times before it stops being an option.</p>
+      <div class="rules">
+        <div class="ability-name">Run Limit</div>
+        <div><span class="ic">▲</span>The group can run from an Encounter at most 3 times total. A 4th run hands the Carriers an instant win.</div>
+        <div><span class="ic">◆</span>Any player may forgo drawing to revisit ("Rematch") an Encounter that was previously run from, nominating players the same way as normal.</div>
+        <div><span class="ic">?</span>Special Encounters stack additional debuffs on top of raising the Mutation level — so a failed Special Encounter hurts twice.</div>
+      </div>
+    </div>
+    </div>
+  </section>
 </main>
 
 <nav class="navigator" id="navigator">
@@ -949,7 +793,7 @@
   <button class="nav-arrow nav-arrow-right" id="navNext" aria-label="Scroll right">›</button>
 </nav>
 
-<a class="back-link" href="../../index.html#brief">← Back to Mission Brief</a>
+<a class="back-link" href="../../index.html">← Back to Home</a>
 
 <footer>
   <div class="socials">
@@ -1513,18 +1357,6 @@
   // With the leading clone in place, scroll position 0 is now Geneticist-the-clone, not Tracer.
   // Park on the real first card so the page opens where it always did.
   if (roleList && isPagerMode()) scrollCarouselTo(0, { instant:true });
-
-  // Deep-link support: opening the page with #<NAV> (e.g. character.html#OL) jumps
-  // straight to that role instead of landing on the first card.
-  (function(){
-    var hash = decodeURIComponent((location.hash || '').replace('#','')).toUpperCase();
-    if (!hash) return;
-    var idx = roles.findIndex(function(r){ return r.dataset.nav === hash; });
-    if (idx !== -1){
-      currentIndex = idx;
-      goToRole(idx, { instant:true });
-    }
-  })();
 
   // ---------- card modal ----------
   const overlay = document.getElementById('modalOverlay');
