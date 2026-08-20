@@ -159,13 +159,7 @@
       border-top:2px solid #000; margin-top:-4px;
     }
   }
-  .banner-flavor{
-    color:var(--grey); font-size:1.05rem; text-align:center; max-width:640px;
-    margin:18px auto 0; padding:0 6% 50px; font-family:'VT323',monospace;
-  }
-  @media (max-width:640px){
-    .banner-flavor{font-size:0.95rem;}
-  }
+  #brief{padding-top:28px;}
   .brief-card{
     background:var(--panel); border:2px solid var(--darkred); padding:24px; position:relative;
     transition:transform .2s, border-color .2s; cursor:pointer;
@@ -590,12 +584,11 @@
   </nav>
 </header>
 
-<section id="mission-brief-banner">
+<section id="mission-brief-banner" class="reveal">
   <a class="banner-link" href="rules/how-to-play/how-to-play.html" aria-label="Mission Brief — learn how to play Carrier">
     <img src="images/[HOW TO PLAY]/mission-brief-banner.webp" alt="Carrier — Mission Brief banner, click to learn how to play">
     <span class="banner-cta btn">Learn How to Play &rarr;</span>
   </a>
-  <p class="banner-flavor">New to the outbreak? Get the full rundown&mdash;setup, roles, and how the horde wins&mdash;before your first drop.</p>
 </section>
 
 <section id="brief" class="reveal">
