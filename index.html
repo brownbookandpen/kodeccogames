@@ -135,8 +135,9 @@
   .eyebrow{color:var(--red); font-family:'DotGothic16',monospace; font-size:1.05rem; letter-spacing:2px; margin-bottom:14px; text-transform:uppercase;}
   .section-title{font-size:1.2rem; color:var(--yellow); letter-spacing:1px; margin-bottom:16px; text-transform:uppercase;}
   .section-sub{color:var(--grey); max-width:620px; margin-bottom:48px;}
-  .reveal{opacity:0; transform:translateY(24px); transition:opacity .6s ease, transform .6s ease;}
-  .reveal.in{opacity:1; transform:translateY(0);}
+  /* Sections render visible immediately — no scroll-triggered fade-in. */
+  .reveal{opacity:1; transform:none;}
+  .reveal.in{opacity:1; transform:none;}
 
   /* ---------- MISSION BRIEF ---------- */
   .brief-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:20px;}
