@@ -76,17 +76,18 @@
     background: radial-gradient(circle at 50% 0%, rgba(200,29,29,0.18), transparent 60%);
   }
   .hero-inner{position:relative; z-index:2;}
-  .hero .tag{
-    display:block; width:fit-content; margin:0 auto 34px; color:var(--yellow); border:2px solid var(--yellow);
+  .hero .tag, .banner-tag{
+    display:block; width:fit-content; margin:0 auto; color:var(--yellow); border:2px solid var(--yellow);
     padding:8px 14px; font-size:0.5rem; letter-spacing:1px;
     animation: flicker 3.5s infinite;
   }
+  .hero .tag{margin-bottom:34px;}
   @keyframes flicker{0%,92%,100%{opacity:1;} 94%{opacity:0.4;} 96%{opacity:1;} 98%{opacity:0.5;}}
   .hero p{max-width:600px; margin:0 auto 34px; color:var(--grey); font-size:1.1rem;}
 
   /* ---------- HERO MARQUEE ---------- */
   .hero-marquee{
-    width:100%; max-width:960px; margin:0 auto 40px; overflow:hidden;
+    width:100%; max-width:1100px; margin:0 auto 40px; overflow:hidden;
     -webkit-mask-image:linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
     mask-image:linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
   }
@@ -97,17 +98,20 @@
   .hero-marquee:hover .hero-marquee-track{ animation-play-state:paused; }
   @keyframes marqueeRight{ from{ transform:translateX(-50%); } to{ transform:translateX(0); } }
   .mq-item{
-    position:relative; width:160px; height:160px; flex-shrink:0; cursor:pointer; overflow:hidden;
+    position:relative; width:260px; height:260px; flex-shrink:0; cursor:pointer; overflow:hidden;
     border:2px solid var(--darkred); box-shadow:3px 3px 0 rgba(0,0,0,0.6);
     transition:border-color .2s, transform .2s;
   }
   .mq-item:hover{ border-color:var(--yellow); transform:scale(1.04); }
   .mq-item img{ width:100%; height:100%; object-fit:cover; display:block; }
   .mq-tag{
-    position:absolute; bottom:0; left:0; right:0; padding:14px 6px 6px;
+    position:absolute; bottom:0; left:0; right:0; padding:20px 10px 10px;
     background:linear-gradient(180deg, transparent, rgba(0,0,0,0.92) 65%);
-    color:var(--yellow); font-family:'DotGothic16',monospace; font-size:0.48rem;
+    color:var(--yellow); font-family:'DotGothic16',monospace; font-size:0.6rem;
     letter-spacing:0.5px; text-transform:uppercase; text-align:center; line-height:1.3;
+  }
+  @media (max-width:900px){
+    .mq-item{width:min(62vw,260px); height:min(62vw,260px);}
   }
   .btn{
     display:inline-block; background:var(--red); color:#fff;
@@ -140,7 +144,14 @@
   /* Mission Brief landscape banner — links straight to the How to Play page.
      No border/frame: the artwork's own black margins are meant to melt into the
      page background instead of sitting inside a bordered card. */
-  #mission-brief-banner{padding:0;}
+  #mission-brief-banner{padding:0 4% 0; position:relative; background:var(--black);}
+  .banner-tag{
+    position:absolute; top:20px; left:50%; transform:translateX(-50%); z-index:3;
+    font-size:0.85rem; padding:12px 20px; background:rgba(5,5,5,0.75);
+  }
+  @media (max-width:640px){
+    .banner-tag{top:10px; font-size:0.42rem; padding:6px 10px; white-space:nowrap;}
+  }
   .banner-link{
     display:block; position:relative; text-decoration:none;
     transition:filter .2s; line-height:0;
@@ -152,12 +163,15 @@
     font-size:0.62rem; text-decoration:none;
   }
   @media (max-width:640px){
-    .banner-link img{height:190px; object-fit:cover; object-position:6% center;}
     .banner-cta{
       position:static; display:block; width:100%; box-sizing:border-box;
       text-align:center; padding:12px 14px; font-size:0.6rem; box-shadow:none;
       border-top:2px solid #000; margin-top:-4px;
     }
+  }
+  .banner-flavor{
+    color:var(--grey); font-size:1.05rem; text-align:center; max-width:640px;
+    margin:24px auto 0; padding:0 6% 40px; font-family:'VT323',monospace;
   }
   #brief{padding-top:28px;}
   .brief-card{
@@ -475,14 +489,28 @@
 
   /* ---------- INSTAGRAM ---------- */
   .ig-grid{
-    display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:14px;
+    display:grid; grid-template-columns:repeat(3,1fr); gap:14px;
+  }
+  @media (max-width:640px){
+    .ig-grid{
+      display:flex; grid-template-columns:none; gap:0;
+      overflow-x:auto; scroll-snap-type:x mandatory; -webkit-overflow-scrolling:touch;
+      scrollbar-width:none; margin:0 -6%; padding:0 6%;
+    }
+    .ig-grid::-webkit-scrollbar{display:none;}
+    .ig-item{flex:0 0 100%; scroll-snap-align:center; margin-right:14px;}
   }
   .ig-item{
-    display:block; aspect-ratio:1/1; overflow:hidden; border:2px solid #2b2b2b;
+    display:block; position:relative; aspect-ratio:1/1; overflow:hidden; border:2px solid #2b2b2b;
     transition:border-color .2s, transform .2s;
   }
   .ig-item:hover{border-color:var(--yellow); transform:scale(1.03);}
   .ig-item img{width:100%; height:100%; object-fit:cover; display:block;}
+  .ig-item.video::after{
+    content:"▶"; position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+    font-size:1.6rem; color:#fff; text-shadow:0 2px 6px rgba(0,0,0,.8); pointer-events:none;
+    background:radial-gradient(circle at center, rgba(0,0,0,.15), rgba(0,0,0,.35));
+  }
   .ig-fallback{
     display:flex; flex-direction:column; align-items:center; justify-content:center;
     gap:8px; max-width:360px; margin:0 auto; padding:40px 24px; text-align:center;
@@ -587,16 +615,18 @@
 </header>
 
 <section id="mission-brief-banner" class="reveal">
+  <span class="tag banner-tag">⚠ DEVELOPMENT LOG — ONGOING</span>
   <a class="banner-link" href="rules/how-to-play/how-to-play.html" aria-label="Mission Brief — learn how to play Carrier">
     <img src="images/[HOW TO PLAY]/mission-brief-banner.webp" alt="Carrier — Mission Brief banner, click to learn how to play">
     <span class="banner-cta btn">Learn How to Play &rarr;</span>
   </a>
+  <p class="banner-flavor">A survival board game about outlasting the horde. This is the record of building it — the design decisions, the failed prototypes, and everything still being figured out.</p>
 </section>
 
 <section id="brief" class="reveal">
   <div class="eyebrow">// 01</div>
   <h2 class="section-title">Field Report</h2>
-  <p class="section-sub">The essentials — swap in your real rules summary once they're locked.</p>
+  <p class="section-sub">Your first briefing before the drop — secret allegiances, playable characters, and the threats waiting out in the field.</p>
   <div class="brief-grid">
     <div class="brief-card" data-slug="allegiance" data-page="rules/allegiance/allegiance.html">
       <!-- GALLERY: [MISSION BRIEF] 1. SURVIVORS -->
@@ -631,15 +661,21 @@
   </div>
 </section>
 
+<div class="wip-modal" id="wipModal">
+  <div class="wip-modal-box">
+    <span class="wip-modal-close" id="wipModalClose">&times;</span>
+    <img id="wipModalImg" src="" alt="">
+    <h3 id="wipModalTitle">Coming Soon</h3>
+    <p id="wipModalText">We're still hard at work on this part of Carrier, refining the mechanics and art before it's ready to share. What you're looking at right now is a placeholder standing in for the real content. Expect balance passes, visual polish, and playtesting feedback to shape what eventually goes here. We didn't want to leave this section empty while everything else comes together. Check back soon — this page will be updated as soon as it's ready.</p>
+  </div>
+</div>
+
 <section class="hero">
   <div class="hero-inner">
-    <span class="tag">⚠ DEVELOPMENT LOG — ONGOING</span>
-
     <div class="hero-marquee">
       <div class="hero-marquee-track" id="heroMarqueeTrack"></div>
     </div>
 
-    <p>A survival board game about outlasting the horde. This is the record of building it — the design decisions, the failed prototypes, and everything still being figured out.</p>
     <a class="btn" href="#journal">Read the Journal</a>
     <a class="btn ghost" href="#signal">Get Alerts</a>
 
@@ -652,19 +688,10 @@
   </div>
 </section>
 
-<div class="wip-modal" id="wipModal">
-  <div class="wip-modal-box">
-    <span class="wip-modal-close" id="wipModalClose">&times;</span>
-    <img id="wipModalImg" src="" alt="">
-    <h3 id="wipModalTitle">Coming Soon</h3>
-    <p id="wipModalText">We're still hard at work on this part of Carrier, refining the mechanics and art before it's ready to share. What you're looking at right now is a placeholder standing in for the real content. Expect balance passes, visual polish, and playtesting feedback to shape what eventually goes here. We didn't want to leave this section empty while everything else comes together. Check back soon — this page will be updated as soon as it's ready.</p>
-  </div>
-</div>
-
 <section id="gallery" class="gallery reveal">
   <div class="eyebrow">// 02</div>
   <h2 class="section-title">Gallery</h2>
-  <p class="section-sub">Prototype shots, card art, and table setups — replace these placeholders with real photos.</p>
+  <p class="section-sub">A visual record of the build so far — prototype shots, card art, and table setups from every playtest.</p>
   <div class="gallery-grid">
     <div class="shot gallery-art" id="latestDesignsShot" style="background-image:url('images/[GALLERY] 1. LATEST DESIGNS/executioner.webp'); background-size:cover; background-position:center;"><div class="cap"><b class="cap-title">Latest Designs</b><span class="cap-desc">The newest card and component art, fresh off the design table. Updated as soon as new pieces are finalized. This is where the current look of Carrier lives.</span></div></div>
     <div class="shot gallery-art" id="galleryArtShot" style="background-image:url('images/[ROADMAP] 2. PAPER PROTOTYPE/phase2-1.webp'); background-size:cover; background-position:center;"><div class="cap"><b class="cap-title">Early Prototypes</b><span class="cap-desc">Where it all started — rough shapes, testing what worked. Concept sketches, home prints, and the first sleeved decks. A look back at how far the design has come.</span></div></div>
@@ -817,6 +844,83 @@
 
   <!-- GALLERY: [INSTAGRAM] POSTS -->
   <div class="ig-grid" id="igGrid">
+    <a class="ig-item" href="https://www.instagram.com/kodecco.games/" target="_blank" rel="noopener"><img src="images/[INSTAGRAM]/ig-0001.webp" alt="Carrier — Instagram post" loading="lazy" decoding="async"></a>
+    <a class="ig-item" href="https://www.instagram.com/kodecco.games/" target="_blank" rel="noopener"><img src="images/[INSTAGRAM]/ig-0002.webp" alt="Carrier — Instagram post" loading="lazy" decoding="async"></a>
+    <a class="ig-item" href="https://www.instagram.com/kodecco.games/" target="_blank" rel="noopener"><img src="images/[INSTAGRAM]/ig-0003.webp" alt="Carrier — Instagram post" loading="lazy" decoding="async"></a>
+    <a class="ig-item" href="https://www.instagram.com/kodecco.games/" target="_blank" rel="noopener"><img src="images/[INSTAGRAM]/ig-0004.webp" alt="Carrier — Instagram post" loading="lazy" decoding="async"></a>
+    <a class="ig-item" href="https://www.instagram.com/kodecco.games/" target="_blank" rel="noopener"><img src="images/[INSTAGRAM]/ig-0005.webp" alt="Carrier — Instagram post" loading="lazy" decoding="async"></a>
+    <a class="ig-item" href="https://www.instagram.com/kodecco.games/" target="_blank" rel="noopener"><img src="images/[INSTAGRAM]/ig-0006.webp" alt="Carrier — Instagram post" loading="lazy" decoding="async"></a>
+    <a class="ig-item" href="https://www.instagram.com/kodecco.games/" target="_blank" rel="noopener"><img src="images/[INSTAGRAM]/ig-0007.webp" alt="Carrier — Instagram post" loading="lazy" decoding="async"></a>
+    <a class="ig-item" href="https://www.instagram.com/kodecco.games/" target="_blank" rel="noopener"><img src="images/[INSTAGRAM]/ig-0008.webp" alt="Carrier — Instagram post" loading="lazy" decoding="async"></a>
+    <a class="ig-item" href="https://www.instagram.com/kodecco.games/" target="_blank" rel="noopener"><img src="images/[INSTAGRAM]/ig-0009.webp" alt="Carrier — Instagram post" loading="lazy" decoding="async"></a>
+    <a class="ig-item" href="https://www.instagram.com/kodecco.games/" target="_blank" rel="noopener"><img src="images/[INSTAGRAM]/ig-0010.webp" alt="Carrier — Instagram post" loading="lazy" decoding="async"></a>
+    <a class="ig-item" href="https://www.instagram.com/kodecco.games/" target="_blank" rel="noopener"><img src="images/[INSTAGRAM]/ig-0011.webp" alt="Carrier — Instagram post" loading="lazy" decoding="async"></a>
+    <a class="ig-item" href="https://www.instagram.com/kodecco.games/" target="_blank" rel="noopener"><img src="images/[INSTAGRAM]/ig-0012.webp" alt="Carrier — Instagram post" loading="lazy" decoding="async"></a>
+    <a class="ig-item" href="https://www.instagram.com/kodecco.games/" target="_blank" rel="noopener"><img src="images/[INSTAGRAM]/ig-0013.webp" alt="Carrier — Instagram post" loading="lazy" decoding="async"></a>
+    <a class="ig-item" href="https://www.instagram.com/kodecco.games/" target="_blank" rel="noopener"><img src="images/[INSTAGRAM]/ig-0014.webp" alt="Carrier — Instagram post" loading="lazy" decoding="async"></a>
+    <a class="ig-item" href="https://www.instagram.com/kodecco.games/" target="_blank" rel="noopener"><img src="images/[INSTAGRAM]/ig-0015.webp" alt="Carrier — Instagram post" loading="lazy" decoding="async"></a>
+    <a class="ig-item" href="https://www.instagram.com/kodecco.games/" target="_blank" rel="noopener"><img src="images/[INSTAGRAM]/ig-0016.webp" alt="Carrier — Instagram post" loading="lazy" decoding="async"></a>
+    <a class="ig-item" href="https://www.instagram.com/kodecco.games/" target="_blank" rel="noopener"><img src="images/[INSTAGRAM]/ig-0017.webp" alt="Carrier — Instagram post" loading="lazy" decoding="async"></a>
+    <a class="ig-item" href="https://www.instagram.com/kodecco.games/" target="_blank" rel="noopener"><img src="images/[INSTAGRAM]/ig-0018.webp" alt="Carrier — Instagram post" loading="lazy" decoding="async"></a>
+    <a class="ig-item" href="https://www.instagram.com/kodecco.games/" target="_blank" rel="noopener"><img src="images/[INSTAGRAM]/ig-0019.webp" alt="Carrier — Instagram post" loading="lazy" decoding="async"></a>
+    <a class="ig-item" href="https://www.instagram.com/kodecco.games/" target="_blank" rel="noopener"><img src="images/[INSTAGRAM]/ig-0020.webp" alt="Carrier — Instagram post" loading="lazy" decoding="async"></a>
+    <a class="ig-item" href="https://www.instagram.com/kodecco.games/" target="_blank" rel="noopener"><img src="images/[INSTAGRAM]/ig-0021.webp" alt="Carrier — Instagram post" loading="lazy" decoding="async"></a>
+    <a class="ig-item" href="https://www.instagram.com/kodecco.games/" target="_blank" rel="noopener"><img src="images/[INSTAGRAM]/ig-0022.webp" alt="Carrier — Instagram post" loading="lazy" decoding="async"></a>
+    <a class="ig-item" href="https://www.instagram.com/kodecco.games/" target="_blank" rel="noopener"><img src="images/[INSTAGRAM]/ig-0023.webp" alt="Carrier — Instagram post" loading="lazy" decoding="async"></a>
+    <a class="ig-item" href="https://www.instagram.com/kodecco.games/" target="_blank" rel="noopener"><img src="images/[INSTAGRAM]/ig-0024.webp" alt="Carrier — Instagram post" loading="lazy" decoding="async"></a>
+    <a class="ig-item" href="https://www.instagram.com/kodecco.games/" target="_blank" rel="noopener"><img src="images/[INSTAGRAM]/ig-0025.webp" alt="Carrier — Instagram post" loading="lazy" decoding="async"></a>
+    <a class="ig-item" href="https://www.instagram.com/kodecco.games/" target="_blank" rel="noopener"><img src="images/[INSTAGRAM]/ig-0026.webp" alt="Carrier — Instagram post" loading="lazy" decoding="async"></a>
+    <a class="ig-item" href="https://www.instagram.com/kodecco.games/" target="_blank" rel="noopener"><img src="images/[INSTAGRAM]/ig-0027.webp" alt="Carrier — Instagram post" loading="lazy" decoding="async"></a>
+    <a class="ig-item" href="https://www.instagram.com/kodecco.games/" target="_blank" rel="noopener"><img src="images/[INSTAGRAM]/ig-0028.webp" alt="Carrier — Instagram post" loading="lazy" decoding="async"></a>
+    <a class="ig-item" href="https://www.instagram.com/kodecco.games/" target="_blank" rel="noopener"><img src="images/[INSTAGRAM]/ig-0029.webp" alt="Carrier — Instagram post" loading="lazy" decoding="async"></a>
+    <a class="ig-item" href="https://www.instagram.com/kodecco.games/" target="_blank" rel="noopener"><img src="images/[INSTAGRAM]/ig-0030.webp" alt="Carrier — Instagram post" loading="lazy" decoding="async"></a>
+    <a class="ig-item" href="https://www.instagram.com/kodecco.games/" target="_blank" rel="noopener"><img src="images/[INSTAGRAM]/ig-0031.webp" alt="Carrier — Instagram post" loading="lazy" decoding="async"></a>
+    <a class="ig-item" href="https://www.instagram.com/kodecco.games/" target="_blank" rel="noopener"><img src="images/[INSTAGRAM]/ig-0032.webp" alt="Carrier — Instagram post" loading="lazy" decoding="async"></a>
+    <a class="ig-item" href="https://www.instagram.com/kodecco.games/" target="_blank" rel="noopener"><img src="images/[INSTAGRAM]/ig-0033.webp" alt="Carrier — Instagram post" loading="lazy" decoding="async"></a>
+    <a class="ig-item" href="https://www.instagram.com/kodecco.games/" target="_blank" rel="noopener"><img src="images/[INSTAGRAM]/ig-0034.webp" alt="Carrier — Instagram post" loading="lazy" decoding="async"></a>
+    <a class="ig-item" href="https://www.instagram.com/kodecco.games/" target="_blank" rel="noopener"><img src="images/[INSTAGRAM]/ig-0035.webp" alt="Carrier — Instagram post" loading="lazy" decoding="async"></a>
+    <a class="ig-item" href="https://www.instagram.com/kodecco.games/" target="_blank" rel="noopener"><img src="images/[INSTAGRAM]/ig-0036.webp" alt="Carrier — Instagram post" loading="lazy" decoding="async"></a>
+    <a class="ig-item" href="https://www.instagram.com/kodecco.games/" target="_blank" rel="noopener"><img src="images/[INSTAGRAM]/ig-0037.webp" alt="Carrier — Instagram post" loading="lazy" decoding="async"></a>
+    <a class="ig-item" href="https://www.instagram.com/kodecco.games/" target="_blank" rel="noopener"><img src="images/[INSTAGRAM]/ig-0038.webp" alt="Carrier — Instagram post" loading="lazy" decoding="async"></a>
+    <a class="ig-item" href="https://www.instagram.com/kodecco.games/" target="_blank" rel="noopener"><img src="images/[INSTAGRAM]/ig-0039.webp" alt="Carrier — Instagram post" loading="lazy" decoding="async"></a>
+    <a class="ig-item" href="https://www.instagram.com/kodecco.games/" target="_blank" rel="noopener"><img src="images/[INSTAGRAM]/ig-0040.webp" alt="Carrier — Instagram post" loading="lazy" decoding="async"></a>
+    <a class="ig-item video" href="https://www.instagram.com/kodecco.games/" target="_blank" rel="noopener"><img src="images/[INSTAGRAM]/ig-0041.webp" alt="Carrier — Instagram post" loading="lazy" decoding="async"></a>
+    <a class="ig-item" href="https://www.instagram.com/kodecco.games/" target="_blank" rel="noopener"><img src="images/[INSTAGRAM]/ig-0042.webp" alt="Carrier — Instagram post" loading="lazy" decoding="async"></a>
+    <a class="ig-item" href="https://www.instagram.com/kodecco.games/" target="_blank" rel="noopener"><img src="images/[INSTAGRAM]/ig-0043.webp" alt="Carrier — Instagram post" loading="lazy" decoding="async"></a>
+    <a class="ig-item" href="https://www.instagram.com/kodecco.games/" target="_blank" rel="noopener"><img src="images/[INSTAGRAM]/ig-0044.webp" alt="Carrier — Instagram post" loading="lazy" decoding="async"></a>
+    <a class="ig-item" href="https://www.instagram.com/kodecco.games/" target="_blank" rel="noopener"><img src="images/[INSTAGRAM]/ig-0045.webp" alt="Carrier — Instagram post" loading="lazy" decoding="async"></a>
+    <a class="ig-item" href="https://www.instagram.com/kodecco.games/" target="_blank" rel="noopener"><img src="images/[INSTAGRAM]/ig-0046.webp" alt="Carrier — Instagram post" loading="lazy" decoding="async"></a>
+    <a class="ig-item" href="https://www.instagram.com/kodecco.games/" target="_blank" rel="noopener"><img src="images/[INSTAGRAM]/ig-0047.webp" alt="Carrier — Instagram post" loading="lazy" decoding="async"></a>
+    <a class="ig-item" href="https://www.instagram.com/kodecco.games/" target="_blank" rel="noopener"><img src="images/[INSTAGRAM]/ig-0048.webp" alt="Carrier — Instagram post" loading="lazy" decoding="async"></a>
+    <a class="ig-item" href="https://www.instagram.com/kodecco.games/" target="_blank" rel="noopener"><img src="images/[INSTAGRAM]/ig-0049.webp" alt="Carrier — Instagram post" loading="lazy" decoding="async"></a>
+    <a class="ig-item" href="https://www.instagram.com/kodecco.games/" target="_blank" rel="noopener"><img src="images/[INSTAGRAM]/ig-0050.webp" alt="Carrier — Instagram post" loading="lazy" decoding="async"></a>
+    <a class="ig-item" href="https://www.instagram.com/kodecco.games/" target="_blank" rel="noopener"><img src="images/[INSTAGRAM]/ig-0051.webp" alt="Carrier — Instagram post" loading="lazy" decoding="async"></a>
+    <a class="ig-item" href="https://www.instagram.com/kodecco.games/" target="_blank" rel="noopener"><img src="images/[INSTAGRAM]/ig-0052.webp" alt="Carrier — Instagram post" loading="lazy" decoding="async"></a>
+    <a class="ig-item" href="https://www.instagram.com/kodecco.games/" target="_blank" rel="noopener"><img src="images/[INSTAGRAM]/ig-0053.webp" alt="Carrier — Instagram post" loading="lazy" decoding="async"></a>
+    <a class="ig-item" href="https://www.instagram.com/kodecco.games/" target="_blank" rel="noopener"><img src="images/[INSTAGRAM]/ig-0054.webp" alt="Carrier — Instagram post" loading="lazy" decoding="async"></a>
+    <a class="ig-item" href="https://www.instagram.com/kodecco.games/" target="_blank" rel="noopener"><img src="images/[INSTAGRAM]/ig-0055.webp" alt="Carrier — Instagram post" loading="lazy" decoding="async"></a>
+    <a class="ig-item" href="https://www.instagram.com/kodecco.games/" target="_blank" rel="noopener"><img src="images/[INSTAGRAM]/ig-0056.webp" alt="Carrier — Instagram post" loading="lazy" decoding="async"></a>
+    <a class="ig-item" href="https://www.instagram.com/kodecco.games/" target="_blank" rel="noopener"><img src="images/[INSTAGRAM]/ig-0057.webp" alt="Carrier — Instagram post" loading="lazy" decoding="async"></a>
+    <a class="ig-item" href="https://www.instagram.com/kodecco.games/" target="_blank" rel="noopener"><img src="images/[INSTAGRAM]/ig-0058.webp" alt="Carrier — Instagram post" loading="lazy" decoding="async"></a>
+    <a class="ig-item" href="https://www.instagram.com/kodecco.games/" target="_blank" rel="noopener"><img src="images/[INSTAGRAM]/ig-0059.webp" alt="Carrier — Instagram post" loading="lazy" decoding="async"></a>
+    <a class="ig-item" href="https://www.instagram.com/kodecco.games/" target="_blank" rel="noopener"><img src="images/[INSTAGRAM]/ig-0060.webp" alt="Carrier — Instagram post" loading="lazy" decoding="async"></a>
+    <a class="ig-item" href="https://www.instagram.com/kodecco.games/" target="_blank" rel="noopener"><img src="images/[INSTAGRAM]/ig-0061.webp" alt="Carrier — Instagram post" loading="lazy" decoding="async"></a>
+    <a class="ig-item" href="https://www.instagram.com/kodecco.games/" target="_blank" rel="noopener"><img src="images/[INSTAGRAM]/ig-0062.webp" alt="Carrier — Instagram post" loading="lazy" decoding="async"></a>
+    <a class="ig-item" href="https://www.instagram.com/kodecco.games/" target="_blank" rel="noopener"><img src="images/[INSTAGRAM]/ig-0063.webp" alt="Carrier — Instagram post" loading="lazy" decoding="async"></a>
+    <a class="ig-item" href="https://www.instagram.com/kodecco.games/" target="_blank" rel="noopener"><img src="images/[INSTAGRAM]/ig-0064.webp" alt="Carrier — Instagram post" loading="lazy" decoding="async"></a>
+    <a class="ig-item" href="https://www.instagram.com/kodecco.games/" target="_blank" rel="noopener"><img src="images/[INSTAGRAM]/ig-0065.webp" alt="Carrier — Instagram post" loading="lazy" decoding="async"></a>
+    <a class="ig-item" href="https://www.instagram.com/kodecco.games/" target="_blank" rel="noopener"><img src="images/[INSTAGRAM]/ig-0066.webp" alt="Carrier — Instagram post" loading="lazy" decoding="async"></a>
+    <a class="ig-item video" href="https://www.instagram.com/kodecco.games/" target="_blank" rel="noopener"><img src="images/[INSTAGRAM]/ig-0067.webp" alt="Carrier — Instagram post" loading="lazy" decoding="async"></a>
+    <a class="ig-item" href="https://www.instagram.com/kodecco.games/" target="_blank" rel="noopener"><img src="images/[INSTAGRAM]/ig-0068.webp" alt="Carrier — Instagram post" loading="lazy" decoding="async"></a>
+    <a class="ig-item" href="https://www.instagram.com/kodecco.games/" target="_blank" rel="noopener"><img src="images/[INSTAGRAM]/ig-0069.webp" alt="Carrier — Instagram post" loading="lazy" decoding="async"></a>
+    <a class="ig-item" href="https://www.instagram.com/kodecco.games/" target="_blank" rel="noopener"><img src="images/[INSTAGRAM]/ig-0070.webp" alt="Carrier — Instagram post" loading="lazy" decoding="async"></a>
+    <a class="ig-item" href="https://www.instagram.com/kodecco.games/" target="_blank" rel="noopener"><img src="images/[INSTAGRAM]/ig-0071.webp" alt="Carrier — Instagram post" loading="lazy" decoding="async"></a>
+    <a class="ig-item" href="https://www.instagram.com/kodecco.games/" target="_blank" rel="noopener"><img src="images/[INSTAGRAM]/ig-0072.webp" alt="Carrier — Instagram post" loading="lazy" decoding="async"></a>
+    <a class="ig-item" href="https://www.instagram.com/kodecco.games/" target="_blank" rel="noopener"><img src="images/[INSTAGRAM]/ig-0073.webp" alt="Carrier — Instagram post" loading="lazy" decoding="async"></a>
+    <a class="ig-item" href="https://www.instagram.com/kodecco.games/" target="_blank" rel="noopener"><img src="images/[INSTAGRAM]/ig-0074.webp" alt="Carrier — Instagram post" loading="lazy" decoding="async"></a>
+    <a class="ig-item" href="https://www.instagram.com/kodecco.games/" target="_blank" rel="noopener"><img src="images/[INSTAGRAM]/ig-0075.webp" alt="Carrier — Instagram post" loading="lazy" decoding="async"></a>
+    <a class="ig-item" href="https://www.instagram.com/kodecco.games/" target="_blank" rel="noopener"><img src="images/[INSTAGRAM]/ig-0076.webp" alt="Carrier — Instagram post" loading="lazy" decoding="async"></a>
+    <a class="ig-item" href="https://www.instagram.com/kodecco.games/" target="_blank" rel="noopener"><img src="images/[INSTAGRAM]/ig-0077.webp" alt="Carrier — Instagram post" loading="lazy" decoding="async"></a>
   </div>
   <a class="ig-fallback" id="igFallback" href="https://www.instagram.com/kodecco.games/" target="_blank" rel="noopener">
     <span class="ig-fallback-icon">📷</span>
