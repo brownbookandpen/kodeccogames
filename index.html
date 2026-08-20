@@ -152,7 +152,7 @@
     font-size:0.62rem; text-decoration:none;
   }
   @media (max-width:640px){
-    .banner-link img{height:150px; object-fit:cover; object-position:left center;}
+    .banner-link img{height:190px; object-fit:cover; object-position:6% center;}
     .banner-cta{
       position:static; display:block; width:100%; box-sizing:border-box;
       text-align:center; padding:12px 14px; font-size:0.6rem; box-shadow:none;
@@ -165,10 +165,12 @@
     transition:transform .2s, border-color .2s; cursor:pointer;
   }
   .brief-card:hover{transform:translateY(-4px); border-color:var(--red);}
-  .brief-card::before{
-    content:""; position:absolute; top:0; left:0; width:100%; height:4px;
+  .brief-card::before, .brief-card::after{
+    content:""; position:absolute; left:0; width:100%; height:4px;
     background:repeating-linear-gradient(45deg, var(--yellow) 0 10px, var(--black) 10px 20px);
   }
+  .brief-card::before{top:0;}
+  .brief-card::after{bottom:0;}
   .brief-card .icon{font-size:1.6rem; margin-bottom:14px;}
   .brief-card h3{
     color:var(--brightred); margin-bottom:12px;
@@ -604,7 +606,7 @@
           <img src="rules/allegiance/images/homepage.png" alt="Allegiance — secret role art">
         </div>
       </div>
-      <h3>ALLEGIANCE <span class="brief-tag">[SECRET ROLE]</span></h3>
+      <p>Read more about the Allegiances within the game.</p>
     </div>
     <div class="brief-card" data-slug="character" data-page="rules/character/character.html">
       <!-- GALLERY: [MISSION BRIEF] 2. ENCOUNTERS & SUPPLIES -->
@@ -614,7 +616,7 @@
           <img src="rules/character/images/homepage.png" alt="Character — public role art">
         </div>
       </div>
-      <h3>CHARACTER <span class="brief-tag">[PUBLIC ROLE]</span></h3>
+      <p>Meet the Characters and the roles they play in the outbreak.</p>
     </div>
     <div class="brief-card" data-slug="encounters" data-page="rules/Encounters/encounters.html">
       <!-- GALLERY: [MISSION BRIEF] 3. ZOMBIES + 5. SUPPLIES (merged) -->
@@ -624,7 +626,7 @@
           <img src="rules/Encounters/images/homepage.png" alt="Encounters — threats and supplies art">
         </div>
       </div>
-      <h3>ENCOUNTERS &amp; SUPPLIES</h3>
+      <p>Face the Encounters ahead, and the Supplies that might save you.</p>
     </div>
   </div>
 </section>
