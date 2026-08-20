@@ -140,9 +140,10 @@
   /* Mission Brief landscape banner — links straight to the How to Play page.
      No border/frame: the artwork's own black margins are meant to melt into the
      page background instead of sitting inside a bordered card. */
+  #mission-brief-banner{padding:0;}
   .banner-link{
     display:block; position:relative; text-decoration:none;
-    transition:filter .2s;
+    transition:filter .2s; line-height:0;
   }
   .banner-link:hover{filter:brightness(1.12);}
   .banner-link img{display:block; width:100%; height:auto;}
@@ -160,10 +161,10 @@
   }
   .banner-flavor{
     color:var(--grey); font-size:1.05rem; text-align:center; max-width:640px;
-    margin:18px auto 0; font-family:'VT323',monospace;
+    margin:18px auto 0; padding:0 6% 50px; font-family:'VT323',monospace;
   }
   @media (max-width:640px){
-    .banner-flavor{font-size:0.95rem; padding:0 6%;}
+    .banner-flavor{font-size:0.95rem;}
   }
   .brief-card{
     background:var(--panel); border:2px solid var(--darkred); padding:24px; position:relative;
