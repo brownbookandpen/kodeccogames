@@ -16,8 +16,20 @@
    =================================================================== */
 
 :root{
-  /* --- surfaces --- */
-  --black:#0a0a0a;
+  /* --- surfaces ---
+     True #000, not a near-black: the key art across the site carries its own
+     pure-black margins, so any lighter base shows up as grey bars beside a
+     letterboxed image. Safe here because body copy is --white (#eee8dc) and
+     --grey, never pure #fff — the halation that makes #fff-on-#000 tiring to
+     read never occurs. The body's CRT scanline lifts the rendered page to
+     roughly #010101 anyway.
+     --panel / --panel2 stay lifted: they are what makes a card read as
+     raised, and they separate slightly better against #000. */
+  --black:#000000;
+  /* --band is the alternating section surface. Kept close enough to --black
+     that the boundary is felt rather than seen — sections fade in and out of
+     it instead of meeting at a hard rule. */
+  --band:#131313;
   --panel:#161616;
   --panel2:#1c1c1c;
 
