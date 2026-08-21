@@ -5,33 +5,40 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>CARRIER — Kodecco Games</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DotGothic16&family=VT323&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DotGothic16&family=JetBrains+Mono:wght@400;500;700&family=VT323&display=swap" rel="stylesheet">
+
+<meta name="description" content="CARRIER is a survival board game about outlasting the horde — 5-8 players, 45 minutes. Follow the build: design decisions, prototypes, and playtests.">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Kodecco Games">
+<meta property="og:url" content="https://kodeccogames.com/">
+<meta property="og:title" content="CARRIER — A Survival Board Game">
+<meta property="og:description" content="Outlast the horde. 5-8 players, 45 minutes. Follow the build from prototype to table.">
+<meta property="og:image" content="https://kodeccogames.com/images/og-cover.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="CARRIER — A Survival Board Game">
+<meta name="twitter:description" content="Outlast the horde. 5-8 players, 45 minutes. Follow the build from prototype to table.">
+<meta name="twitter:image" content="https://kodeccogames.com/images/og-cover.jpg">
+<link rel="stylesheet" href="styles.css">
 <style>
-  :root{
-    --black:#0a0a0a;
-    --panel:#161616;
-    --panel2:#1c1c1c;
-    --red:#c81d1d;
-    --brightred:#e8341f;
-    --darkred:#6e1010;
-    --yellow:#f2c14e;
-    --green:#3f8f5f;
-    --grey:#9a9a9a;
-    --white:#eee8dc;
-  }
   *{box-sizing:border-box;margin:0;padding:0;}
   html{scroll-behavior:smooth;}
   body{
     background: var(--black);
     color: var(--white);
-    font-family: 'VT323', 'Courier New', monospace;
-    font-size:1.25rem;
-    line-height:1.6;
+    font-family: var(--font-body);
+    font-size:0.95rem;
+    line-height:1.75;
+    letter-spacing:0.1px;
     background-image: repeating-linear-gradient(0deg, rgba(255,255,255,0.02) 0px, transparent 1px, transparent 2px);
     overflow-x:hidden;
   }
   h1,h2,h3,h4,.logo,nav a,.tag,.btn,.stat b,.timeline-year{ font-family:'DotGothic16', monospace; }
-  .post-meta,.brief-card p,.hero p,.section-sub,.signal p,.quote p{ font-family:'VT323', monospace; font-size:1.2rem; }
+  .post-meta,.brief-card p,.hero p,.section-sub,.signal p,.quote p{ font-family:var(--font-body); font-size:0.95rem; }
   a{color:inherit;}
 
   ::selection{background:var(--red); color:#fff;}
@@ -45,12 +52,19 @@
   header{
     position:sticky; top:0; z-index:10001;
     display:flex; align-items:center; justify-content:space-between;
-    padding:12px 6%; border-bottom:2px solid var(--darkred);
+    padding:12px 6%; border-bottom:2px solid #241414;
     background:rgba(22,22,22,0.92); backdrop-filter:blur(4px);
   }
   .logo-group{display:flex; align-items:center; gap:14px; cursor:pointer; transition:opacity .15s;}
   .logo-group:hover{opacity:0.85;}
-  .logo-group img.kodecco-mark{height:52px; width:auto; display:block; filter:drop-shadow(3px 3px 0 #000) drop-shadow(0 0 10px rgba(0,0,0,0.6));}
+  /* The studio mark is desaturated in the header so the game's palette owns the mood.
+     Full colour returns on hover, and in the footer where branding belongs. */
+  .logo-group img.kodecco-mark{
+    height:52px; width:auto; display:block;
+    filter:grayscale(1) brightness(1.5) contrast(.95) drop-shadow(3px 3px 0 #000);
+    transition:filter .25s ease;
+  }
+  .logo-group:hover img.kodecco-mark{ filter:grayscale(0) drop-shadow(3px 3px 0 #000); }
   nav a{
     color:var(--grey); text-decoration:none; margin-left:22px; font-size:0.9rem;
     text-transform:uppercase; border-bottom:2px solid transparent; padding-bottom:4px;
@@ -65,7 +79,7 @@
 
   /* ---------- HERO ---------- */
   .hero{
-    position:relative; padding:50px 6% 90px; text-align:center; overflow:hidden;
+    position:relative; padding:44px 6% 56px; text-align:center; overflow:hidden;
     background:
       linear-gradient(rgba(8,8,8,0.88),rgba(8,8,8,0.94)),
       repeating-linear-gradient(135deg, #1a1a1a 0 40px, #141414 40px 80px);
@@ -82,6 +96,10 @@
     animation: flicker 3.5s infinite;
   }
   .hero .tag{margin-bottom:34px;}
+  .mq-caption{
+    font-family:var(--font-display); color:var(--grey); font-size:.62rem;
+    letter-spacing:2px; text-transform:uppercase; margin-bottom:22px;
+  }
   @keyframes flicker{0%,92%,100%{opacity:1;} 94%{opacity:0.4;} 96%{opacity:1;} 98%{opacity:0.5;}}
   .hero p{max-width:600px; margin:0 auto 34px; color:var(--grey); font-size:1.1rem;}
 
@@ -99,10 +117,10 @@
   @keyframes marqueeRight{ from{ transform:translateX(-50%); } to{ transform:translateX(0); } }
   .mq-item{
     position:relative; width:260px; height:260px; flex-shrink:0; cursor:pointer; overflow:hidden;
-    border:2px solid var(--darkred); box-shadow:3px 3px 0 rgba(0,0,0,0.6);
-    transition:border-color .2s, transform .2s;
+    border:2px solid var(--line); box-shadow:3px 3px 0 rgba(0,0,0,0.6);
+    transition:border-color .2s, transform .2s, filter .2s;
   }
-  .mq-item:hover{ border-color:var(--yellow); transform:scale(1.04); }
+  .mq-item:hover{ border-color:var(--yellow); transform:scale(1.04); filter:brightness(1.12); }
   .mq-item img{ width:100%; height:100%; object-fit:cover; display:block; }
   .mq-tag{
     position:absolute; bottom:0; left:0; right:0; padding:20px 10px 10px;
@@ -123,18 +141,19 @@
   .btn.ghost{background:transparent; border:2px solid var(--yellow); color:var(--yellow); box-shadow:4px 4px 0 #000; margin-left:14px;}
 
   .stat-bar{
-    display:flex; justify-content:center; gap:50px; margin-top:50px; flex-wrap:wrap;
+    display:flex; justify-content:center; gap:clamp(20px,5vw,58px); margin-top:30px; flex-wrap:wrap;
     position:relative; z-index:2;
+    padding-top:26px; border-top:1px solid #222; max-width:760px; margin-left:auto; margin-right:auto;
   }
   .stat{text-align:center;}
-  .stat b{display:block; color:var(--yellow); font-size:1.4rem; margin-bottom:8px;}
+  .stat b{display:block; color:var(--yellow); font-size:clamp(1.1rem,3vw,1.5rem); margin-bottom:6px;}
   .stat span{color:var(--grey); font-size:0.6rem; letter-spacing:1px; text-transform:uppercase; font-family:'DotGothic16',monospace;}
 
   /* ---------- SECTION SHARED ---------- */
   section{padding:80px 6%;}
   .eyebrow{color:var(--red); font-family:'DotGothic16',monospace; font-size:1.05rem; letter-spacing:2px; margin-bottom:14px; text-transform:uppercase;}
   .section-title{font-size:1.2rem; color:var(--yellow); letter-spacing:1px; margin-bottom:16px; text-transform:uppercase;}
-  .section-sub{color:var(--grey); max-width:620px; margin-bottom:48px;}
+  .section-sub{color:var(--grey); max-width:660px; margin-bottom:48px; line-height:1.7;}
   /* Sections render visible immediately — no scroll-triggered fade-in. */
   .reveal{opacity:1; transform:none;}
   .reveal.in{opacity:1; transform:none;}
@@ -163,24 +182,39 @@
   }
   .banner-link:hover{filter:brightness(1.12);}
   .banner-link{margin:0; padding:0; width:100%;}
-  .banner-link img{display:block; width:100%; max-width:100%; height:auto; margin:0;}
-  .banner-cta{
-    position:absolute; right:6%; top:78%; z-index:2;
-    font-size:0.62rem; text-decoration:none;
+  /* Capped so the artwork crops instead of stranding the logo in a sea of black. */
+  .banner-link img{
+    display:block; width:100%; max-width:100%; height:auto; margin:0;
+    max-height:70vh; object-fit:cover; object-position:center 45%;
   }
   @media (max-width:640px){
-    .banner-cta{
-      position:static; display:block; width:100%; box-sizing:border-box;
-      text-align:center; padding:12px 14px; font-size:0.6rem; box-shadow:none;
-      border-top:2px solid #000; margin-top:-4px;
-    }
+    .banner-link img{max-height:46vh;}
   }
+
+  /* Hero copy sits directly under the key art: what the game is, who it's for,
+     and what to do next — the three things a first-time visitor needs. */
+  .hero-copy{
+    text-align:center; padding:34px 6% 46px;
+    background:linear-gradient(180deg, rgba(0,0,0,.85), var(--black) 55%);
+    margin-top:-2px;
+  }
+  .hero-tagline{
+    font-family:var(--font-display); color:var(--white);
+    font-size:clamp(1rem,2.4vw,1.45rem); line-height:1.45; letter-spacing:.5px;
+    max-width:760px; margin:0 auto; text-shadow:2px 2px 0 #000;
+  }
+  .hero-tagline em{ color:var(--brightred); font-style:normal; }
+  .hero-actions{ margin-top:30px; display:flex; gap:14px; justify-content:center; flex-wrap:wrap; }
+  .hero-actions .btn.ghost{ margin-left:0; }
   #brief{padding-top:28px;}
   .brief-card{
-    background:var(--panel); border:2px solid var(--darkred); padding:24px; position:relative;
-    transition:transform .2s, border-color .2s; cursor:pointer;
+    background:var(--panel); border:2px solid var(--line); padding:24px; position:relative;
+    transition:transform .2s, border-color .2s, box-shadow .2s; cursor:pointer;
   }
-  .brief-card:hover{transform:translateY(-4px); border-color:var(--red);}
+  .brief-card:hover{
+    transform:translateY(-6px); border-color:var(--red);
+    box-shadow:0 10px 26px rgba(0,0,0,.65);
+  }
   .brief-card::before, .brief-card::after{
     content:""; position:absolute; left:0; width:100%; height:4px;
     background:repeating-linear-gradient(45deg, var(--yellow) 0 10px, var(--black) 10px 20px);
@@ -265,7 +299,7 @@
     border:2px solid #2b2b2b; margin-bottom:14px;
   }
   .wip-modal-box h3{ color:var(--red); font-family:'DotGothic16',monospace; font-size:0.75rem; margin-bottom:12px; letter-spacing:0.5px; }
-  .wip-modal-box p{ color:var(--white); font-family:'VT323',monospace; font-size:0.85rem; line-height:1.5; }
+  .wip-modal-box p{ color:var(--white); font-family:var(--font-body); font-size:0.82rem; line-height:1.65; }
   .wip-modal-close{
     position:absolute; top:10px; right:14px; color:var(--yellow); font-size:1.3rem;
     font-family:'DotGothic16',monospace; cursor:pointer; line-height:1;
@@ -273,7 +307,7 @@
   .wip-modal-close:hover{ color:var(--red); }
 
   /* ---------- GALLERY ---------- */
-  .gallery{background:var(--panel2); border-top:2px solid var(--darkred); border-bottom:2px solid var(--darkred);}
+  .gallery{background:var(--panel2); border-top:2px solid #1e1e1e; border-bottom:2px solid #1e1e1e;}
   .gallery-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:18px;}
   .shot{
     aspect-ratio:1/1; border:2px solid #2b2b2b; position:relative; overflow:hidden;
@@ -284,11 +318,12 @@
     display:flex; align-items:center; justify-content:center; font-size:2.2rem; color:var(--red);
     transition:border-color .2s, transform .2s;
   }
-  .shot:hover{border-color:var(--yellow); transform:scale(1.03);}
+  .shot{filter:brightness(1);}
+  .shot:hover{border-color:var(--yellow); transform:scale(1.03); filter:brightness(1.14);}
   .shot.gallery-art{cursor:pointer;}
   .shot .cap{
     position:absolute; bottom:0; left:0; right:0; background:rgba(0,0,0,0.8);
-    font-family:'VT323',monospace; font-size:0.85rem; color:var(--grey); padding:10px 12px;
+    font-family:var(--font-body); font-size:0.8rem; color:var(--grey); padding:10px 12px;
   }
   .shot .cap-title{
     display:block; color:var(--yellow); font-family:'DotGothic16',monospace;
@@ -316,7 +351,7 @@
   #roadmap.has-expanded .roadmap-fade{ opacity:1; }
   .timeline{position:relative; max-width:720px;}
   .timeline::before{
-    content:""; position:absolute; left:14px; top:0; bottom:0; width:2px; background:var(--darkred);
+    content:""; position:absolute; left:14px; top:0; bottom:0; width:2px; background:var(--line);
   }
   .t-item{position:relative; padding-left:50px; margin-bottom:38px;}
   .t-item:last-child{margin-bottom:0;}
@@ -408,7 +443,7 @@
   }
   .side-preview-cap{
     margin-top:14px; color:var(--grey); font-size:0.9rem; line-height:1.5;
-    background:var(--panel); border:2px solid var(--darkred); padding:12px 14px;
+    background:var(--panel); border:2px solid var(--line); padding:12px 14px;
   }
   .side-preview-close{
     position:absolute; top:10px; right:10px; width:26px; height:26px; z-index:1;
@@ -436,7 +471,7 @@
     display:flex; align-items:center; justify-content:center; font-size:2rem; color:var(--red);
   }
   .t-detail .update-box{
-    margin-top:10px; background:var(--panel); border:2px solid var(--darkred); padding:12px 14px;
+    margin-top:10px; background:var(--panel); border:2px solid var(--line); padding:12px 14px;
     color:var(--grey); font-size:0.85rem; line-height:1.5;
     height:150px; overflow-x:hidden; overflow-y:hidden;
   }
@@ -458,7 +493,7 @@
   }
 
   /* ---------- JOURNAL ---------- */
-  .journal{background:var(--panel2); border-top:2px solid var(--darkred); border-bottom:2px solid var(--darkred);}
+  .journal{background:var(--panel2); border-top:2px solid #1e1e1e; border-bottom:2px solid #1e1e1e;}
   .posts{display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:18px;}
   .post-card{
     aspect-ratio:1/1; border:2px solid #2b2b2b; position:relative; overflow:hidden;
@@ -469,11 +504,11 @@
     display:flex; align-items:center; justify-content:center; font-size:2.2rem; color:var(--red);
     text-decoration:none; transition:border-color .2s, transform .2s;
   }
-  .post-card:hover{border-color:var(--yellow); transform:scale(1.03);}
+  .post-card:hover{border-color:var(--yellow); transform:scale(1.03); filter:brightness(1.12);}
   .post-thumb{ position:absolute; inset:0; }
   .post-cap{
     position:absolute; bottom:0; left:0; right:0; background:rgba(0,0,0,0.85);
-    font-family:'VT323',monospace; padding:8px 12px; height:140px; overflow:hidden;
+    font-family:var(--font-body); padding:8px 12px; height:150px; overflow:hidden;
     display:flex; flex-direction:column;
   }
   .post-cap .post-meta{color:var(--grey); font-size:0.65rem; letter-spacing:1px; text-transform:uppercase; margin-bottom:2px; display:block;}
@@ -502,11 +537,17 @@
     .ig-grid::-webkit-scrollbar{display:none;}
     .ig-item{flex:0 0 100%; scroll-snap-align:center; margin-right:14px;}
   }
+  /* Only the newest 9 posts render — the feed is a taste, not a wall.
+     Raise/remove this nth-child rule to show more. */
+  .ig-grid .ig-item:nth-child(n+10){ display:none; }
+  .ig-more{
+    display:block; width:fit-content; margin:34px auto 0;
+  }
   .ig-item{
     display:block; position:relative; aspect-ratio:1/1; overflow:hidden; border:2px solid #2b2b2b;
     transition:border-color .2s, transform .2s;
   }
-  .ig-item:hover{border-color:var(--yellow); transform:scale(1.03);}
+  .ig-item:hover{border-color:var(--yellow); transform:scale(1.03); filter:brightness(1.14);}
   .ig-item img{width:100%; height:100%; object-fit:cover; display:block;}
   .ig-item.video::after{
     content:"▶"; position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
@@ -528,13 +569,13 @@
   .quote{
     text-align:center; max-width:700px; margin:0 auto; padding:80px 6%;
   }
-  .quote p{font-size:1.4rem; color:var(--white); font-style:italic; margin-bottom:18px;}
+  .quote p{font-family:var(--font-accent); font-size:1.7rem; color:var(--white); font-style:italic; margin-bottom:18px; line-height:1.5;}
   .quote span{color:var(--grey); font-size:0.7rem; letter-spacing:1px; text-transform:uppercase;}
 
   /* ---------- SIGNAL / NEWSLETTER ---------- */
   .signal{
     text-align:center; background:var(--panel); border:2px solid var(--red);
-    margin:0 6% 80px; padding:56px 6%; box-shadow:6px 6px 0 var(--darkred);
+    margin:0 auto 80px; max-width:1180px; padding:56px 6%; box-shadow:6px 6px 0 var(--darkred);
   }
   .signal h2{color:var(--yellow); letter-spacing:1px; margin-bottom:18px; font-size:1.05rem;}
   .signal p{color:var(--grey); margin-bottom:26px;}
@@ -543,7 +584,7 @@
   .signal input:focus{outline:none; border-color:var(--yellow);}
 
   /* ---------- FOOTER ---------- */
-  footer{text-align:center; padding:38px 6%; color:#5a5a5a; font-size:0.85rem; border-top:2px solid var(--darkred);}
+  footer{text-align:center; padding:38px 6%; color:#5a5a5a; font-size:0.85rem; border-top:2px solid #1e1e1e;}
   footer .socials a{margin:0 10px; color:var(--grey); text-decoration:none; font-weight:700;}
   footer .socials a:hover{color:var(--red);}
   footer img.kodecco-footer{height:40px; margin-top:18px; opacity:0.9; filter:drop-shadow(2px 2px 0 #000);}
@@ -589,6 +630,16 @@
     100%{ text-shadow:2px 0 var(--red), -2px 0 var(--yellow); }
   }
   .logo-group:hover img{ animation:logoglitch .25s steps(2,end) infinite; }
+
+  /* Respect the visitor's OS-level motion preference: kill the marquee,
+     the flicker, the CRT pulse and every transition. */
+  @media (prefers-reduced-motion: reduce){
+    *, *::before, *::after{
+      animation-duration:.001ms !important; animation-iteration-count:1 !important;
+      transition-duration:.001ms !important; scroll-behavior:auto !important;
+    }
+    .crt-overlay{ display:none; }
+  }
   @keyframes logoglitch{
     0%{ transform:translate(0,0); } 25%{ transform:translate(-1px,1px); }
     50%{ transform:translate(1px,-1px); } 75%{ transform:translate(-1px,-1px); } 100%{ transform:translate(0,0); }
@@ -620,25 +671,29 @@
   <span class="tag banner-tag">⚠ DEVELOPMENT LOG — ONGOING</span>
   <a class="banner-link" href="rules/how-to-play/how-to-play.html" aria-label="Mission Brief — learn how to play Carrier">
     <img src="images/[HOW TO PLAY]/mission-brief-banner.webp" alt="Carrier — Mission Brief banner, click to learn how to play">
-    <span class="banner-cta btn">Learn How to Play &rarr;</span>
   </a>
-</section>
-
-<section class="hero">
-  <div class="hero-inner">
-    <div class="hero-marquee">
-      <div class="hero-marquee-track" id="heroMarqueeTrack"></div>
-    </div>
-
-    <a class="btn" href="#journal">Read the Journal</a>
-    <a class="btn ghost" href="#signal">Get Alerts</a>
-
+  <div class="hero-copy">
+    <h1 class="hero-tagline">A survival board game about <em>outlasting the horde</em>.<br>Trust no one at the table.</h1>
     <div class="stat-bar">
       <div class="stat"><b>5–8</b><span>Players</span></div>
       <div class="stat"><b>45m</b><span>Playtime</span></div>
       <div class="stat"><b>v4.0</b><span>Prototype</span></div>
       <div class="stat"><b>60+</b><span>Playtests</span></div>
     </div>
+    <div class="hero-actions">
+      <a class="btn" href="rules/how-to-play/how-to-play.html">Learn How to Play &rarr;</a>
+      <a class="btn ghost" href="#signal">Get Alerts</a>
+    </div>
+  </div>
+</section>
+
+<section class="hero">
+  <div class="hero-inner">
+    <div class="mq-caption">// From the workbench</div>
+    <div class="hero-marquee">
+      <div class="hero-marquee-track" id="heroMarqueeTrack"></div>
+    </div>
+    <a class="btn ghost" href="#journal" style="margin-left:0;">Read the Journal &rarr;</a>
   </div>
 </section>
 
@@ -774,13 +829,13 @@
     <div class="t-item">
       <div class="timeline-year">PHASE 5</div>
       <h4>Publishing / Crowdfunding <span class="t-toggle">▾</span></h4>
-      <p>TBD — placeholder for launch plans.</p>
+      <p>Bringing Carrier to a real print run — box, components, and a crowdfunding campaign. Not yet dated.</p>
       <div class="t-detail">
         <!-- GALLERY: [ROADMAP] 5. PUBLISHING & CROWDFUNDING -->
         <div class="concept-grid">
           <div class="cg-item"><img class="wip-img" src="images/[PLACEHOLDER] WORKINPROGRESS SUPPLY.png" alt="Publishing and crowdfunding details coming soon" data-caption="Launch plans, pledge tiers, and publishing details are still being worked out — check back soon."><span class="wip-label">Coming Soon</span></div>
         </div>
-        <div class="update-box"><p>Update placeholder — swap in a real photo and launch details once they're confirmed.</p></div>
+        <div class="update-box"><p>Nothing is locked in yet. Before any campaign goes live we want the rules stable, the card count settled, and the production quote signed off — announcing a date before those three things are true is how good games get shipped badly. Subscribe below and you'll hear it here first.</p></div>
       </div>
     </div>
   </div>
@@ -827,15 +882,6 @@
         <span class="post-link">Read entry →</span>
       </div>
     </a>
-    <div class="post-card">
-      🃏
-      <div class="post-cap">
-        <span class="post-meta">Draft · Untitled</span>
-        <b class="post-cap-title">Designing the Horde mechanic</b>
-        <span class="post-cap-desc">Placeholder entry — write up how the horde escalation system came together.</span>
-        <a class="post-link" href="#">Read entry →</a>
-      </div>
-    </div>
   </div>
 </section>
 
@@ -924,6 +970,7 @@
     <a class="ig-item" href="https://www.instagram.com/kodecco.games/" target="_blank" rel="noopener"><img src="images/[INSTAGRAM]/ig-0076.webp" alt="Carrier — Instagram post" loading="lazy" decoding="async"></a>
     <a class="ig-item" href="https://www.instagram.com/kodecco.games/" target="_blank" rel="noopener"><img src="images/[INSTAGRAM]/ig-0077.webp" alt="Carrier — Instagram post" loading="lazy" decoding="async"></a>
   </div>
+  <a class="btn ghost ig-more" href="https://www.instagram.com/kodecco.games/" target="_blank" rel="noopener">See all on Instagram &rarr;</a>
   <a class="ig-fallback" id="igFallback" href="https://www.instagram.com/kodecco.games/" target="_blank" rel="noopener">
     <span class="ig-fallback-icon">📷</span>
     <span class="ig-fallback-title">@kodecco.games</span>
@@ -947,7 +994,7 @@
 
 <footer>
   <div class="socials">
-    <a href="#">Instagram</a> · <a href="#">BoardGameGeek</a> · <a href="#">Email</a>
+    <a href="https://www.instagram.com/kodecco.games/" target="_blank" rel="noopener">Instagram</a> · <a href="#signal">Newsletter</a> · <a href="mailto:hello@kodeccogames.com">Email</a>
   </div>
   <p style="margin-top:12px;">© 2026 CARRIER — a survival board game in development.</p>
   <img class="kodecco-footer" src="images/kodecco-icon.png" alt="Kodecco Games">

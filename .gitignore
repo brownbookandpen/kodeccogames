@@ -1,1 +1,22 @@
-_to_delete/
+# ---------------------------------------------------------------
+# Source / working files — keep them locally, keep them out of the
+# repo. GitHub Pages serves everything that is committed, so any
+# PSD in here would be publicly downloadable.
+# ---------------------------------------------------------------
+
+# Photoshop and other layered sources
+*.psd
+*.psb
+*.ai
+*.xcf
+
+# Raw Instagram exports (the web-ready copies live in images/[INSTAGRAM]/)
+/Instagram/
+
+# OS / editor noise
+.DS_Store
+Thumbs.db
+desktop.ini
+*.swp
+.vscode/
+.idea/

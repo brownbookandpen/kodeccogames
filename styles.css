@@ -1,0 +1,67 @@
+/* ===================================================================
+   CARRIER — shared design tokens
+   -------------------------------------------------------------------
+   Single source of truth for colour and type across every page.
+   Change a value here and it updates the homepage and all four rules
+   pages at once.
+
+   Deliberately tokens-only. The rules pages use a bespoke fixed-
+   viewport pager layout and the homepage uses a normal scrolling
+   layout, so their structural CSS is genuinely different and stays
+   inline on each page.
+
+   Link it before the page's own <style> block:
+     <link rel="stylesheet" href="styles.css">          (root pages)
+     <link rel="stylesheet" href="../../styles.css">    (rules pages)
+   =================================================================== */
+
+:root{
+  /* --- surfaces --- */
+  --black:#0a0a0a;
+  --panel:#161616;
+  --panel2:#1c1c1c;
+
+  /* --- brand reds --- */
+  --red:#c81d1d;
+  --brightred:#e8341f;
+  --darkred:#6e1010;
+
+  /* --- accents --- */
+  --yellow:#f2c14e;
+  --green:#3f8f5f;
+  --grey:#9a9a9a;
+  --white:#eee8dc;
+
+  /* --- structural lines ---
+     Neutral by default: red reads as an accent, not as the page's
+     default border colour. */
+  --line:#2b2b2b;
+  --border:#2a2a2a;
+
+  /* --- role palette (rules pages) --- */
+  --role-green:#3fae4a;
+  --role-blue:#3f8cd4;
+  --role-orange:#d97a2b;
+  --role-olive:#8f9c3f;
+  --role-gold:#d9a72b;
+
+  /* --- type ---
+     body  : readable at paragraph length, keeps the terminal feel
+     display: headings, labels, stats, UI chrome
+     accent : pull quotes and decorative numerals */
+  --font-body:'JetBrains Mono','SFMono-Regular',Consolas,'Courier New',monospace;
+  --font-display:'DotGothic16',monospace;
+  --font-accent:'VT323',monospace;
+}
+
+/* Respect the visitor's OS-level motion preference across every page:
+   kills marquees, flicker, CRT pulse and transitions. */
+@media (prefers-reduced-motion: reduce){
+  *, *::before, *::after{
+    animation-duration:.001ms !important;
+    animation-iteration-count:1 !important;
+    transition-duration:.001ms !important;
+    scroll-behavior:auto !important;
+  }
+  .crt-overlay{ display:none; }
+}
