@@ -361,38 +361,82 @@
   }
   .wip-modal-close:hover{ color:var(--red); }
 
-  /* ---------- GALLERY ---------- */
-  /* Banded section: fades up out of the page black, holds --band through the
-     middle, fades back down. Replaces the old hard 2px rules top and bottom —
-     the section change should register as a shift in tone, not a drawn line.
-     The fade happens inside the section's own 80px padding, so it lands well
-     clear of the content. */
+  /* ---------- ALBUM (accordion) ----------
+     Six collapsed rows instead of six large tiles: the whole archive now fits
+     in roughly one screen, and opening a row reveals that category's images as
+     a grid of square thumbnails. Same expand-in-place behaviour as the Dev
+     Journal and the Roadmap. */
   .gallery{
     background:linear-gradient(180deg,
       var(--black) 0%, var(--band) 9%, var(--band) 91%, var(--black) 100%);
   }
-  .gallery-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:18px;}
-  .shot{
-    aspect-ratio:1/1; border:2px solid #2b2b2b; position:relative; overflow:hidden;
-    background:
-      linear-gradient(135deg,#241010,#111),
-      repeating-linear-gradient(90deg, rgba(255,255,255,0.04) 0 8px, transparent 8px 16px),
-      repeating-linear-gradient(0deg, rgba(255,255,255,0.04) 0 8px, transparent 8px 16px);
-    display:flex; align-items:center; justify-content:center; font-size:2.2rem; color:var(--red);
+  .album-list{ max-width:820px; border-top:1px solid var(--line); }
+  .album-item{ border-bottom:1px solid var(--line); }
+
+  .album-row{
+    width:100%; display:grid; grid-template-columns:1fr auto;
+    align-items:center; gap:4px 20px;
+    padding:20px 6px 20px 4px; cursor:pointer; text-align:left;
+    background:none; border:none; font:inherit; color:inherit;
+    transition:padding-left .22s ease, background-color .22s ease;
+  }
+  .album-title{
+    grid-column:1; grid-row:1;
+    font-family:'Bebas Neue','Arial Narrow',sans-serif; font-weight:400;
+    font-size:clamp(1.3rem, 4.2vw, 1.75rem); letter-spacing:1.6px; line-height:1.1;
+    color:var(--white); text-shadow:2px 2px 0 #000; transition:color .2s;
+  }
+  .album-meta{
+    grid-column:1; grid-row:2;
+    font-family:'DotGothic16',monospace; font-size:0.58rem; letter-spacing:1.2px;
+    text-transform:uppercase; color:var(--grey);
+  }
+  .album-go{
+    grid-column:2; grid-row:1 / span 2; align-self:center;
+    font-family:'DotGothic16',monospace; font-size:0.95rem; color:#4a4a4a;
+    transition:color .2s, transform .28s ease;
+  }
+  .album-row:hover, .album-row:focus-visible{
+    background:rgba(242,193,78,0.055); padding-left:16px; outline:none;
+  }
+  .album-row:hover .album-title, .album-row:focus-visible .album-title{ color:var(--yellow); }
+  .album-row:hover .album-go, .album-row:focus-visible .album-go{ color:var(--yellow); }
+  .album-item.open .album-title{ color:var(--yellow); }
+  .album-item.open .album-go{ color:var(--yellow); transform:rotate(180deg); }
+
+  .album-panel{
+    max-height:0; overflow:hidden; opacity:0;
+    transition:max-height .42s ease, opacity .3s ease;
+  }
+  .album-item.open .album-panel{ opacity:1; }
+  .album-panel-inner{ padding:2px 4px 26px; }
+  .album-desc{ color:var(--grey); font-size:0.9rem; line-height:1.6; margin-bottom:16px; }
+  .album-hint{
+    font-family:'DotGothic16',monospace; font-size:0.56rem; letter-spacing:1px;
+    text-transform:uppercase; color:#6f6f6f; margin-bottom:12px;
+  }
+
+  /* Square previews, as asked — aspect-ratio holds the box before the image
+     loads, which also keeps the panel's measured height correct. */
+  .album-thumbs{
+    display:grid; grid-template-columns:repeat(auto-fill, minmax(112px, 1fr)); gap:10px;
+  }
+  .album-thumb{
+    position:relative; aspect-ratio:1/1; overflow:hidden; cursor:pointer;
+    border:2px solid #2b2b2b; background:#0d0d0d; padding:0;
     transition:border-color .2s, transform .2s;
   }
-  .shot{filter:brightness(1);}
-  .shot:hover{border-color:var(--yellow); transform:scale(1.03); filter:brightness(1.14);}
-  .shot.gallery-art{cursor:pointer;}
-  .shot .cap{
-    position:absolute; bottom:0; left:0; right:0; background:rgba(0,0,0,0.8);
-    font-family:var(--font-body); font-size:0.8rem; color:var(--grey); padding:10px 12px;
+  .album-thumb img{ width:100%; height:100%; object-fit:cover; display:block; }
+  .album-thumb:hover, .album-thumb:focus-visible{
+    border-color:var(--yellow); transform:scale(1.05); outline:none; z-index:2;
   }
-  .shot .cap-title{
-    display:block; color:var(--yellow); font-family:'DotGothic16',monospace;
-    font-size:0.72rem; letter-spacing:0.5px; text-transform:uppercase; margin-bottom:4px;
+  @media (max-width:640px){
+    .album-row{ padding:16px 4px; }
+    /* Explicit 3 columns, not auto-fill: with a min-width the column count
+       drifts with the handset (3 at 393px, 4 at 430px). Fixed keeps every
+       phone on the same 3-wide grid. */
+    .album-thumbs{ grid-template-columns:repeat(3, 1fr); gap:8px; }
   }
-  .shot .cap-desc{ display:block; color:var(--grey); font-size:0.85rem; line-height:1.35; }
 
   /* ---------- TIMELINE / ROADMAP ---------- */
   #roadmap{ position:relative; z-index:0; }
@@ -626,15 +670,16 @@
     .entry-read{ display:block; text-align:center; }
   }
 
-  /* ---------- ALBUM SUB-HEADINGS ----------
-     The Instagram feed is a block inside the Album now, so it gets an h3
-     rather than competing with the section's own h2. */
-  .album-subhead{
-    margin-top:64px; margin-bottom:12px;
-    color:var(--yellow); font-size:1.02rem; letter-spacing:1px; text-transform:uppercase;
-  }
-  .album-subsub{ margin-bottom:28px; }
-  @media (max-width:640px){ .album-subhead{ margin-top:46px; } }
+  /* ---------- ALBUM ----------
+     Instagram is one of the Album's six tiles rather than a block with its own
+     heading, so every entry in the archive opens the same way. The old photo
+     wall stays in the DOM purely as the tile's image source. */
+  .ig-source{ display:none !important; }
+  /* Two-class selector so it outranks `.btn.ghost{margin-left:14px}`, which
+     was overriding the auto margins and pinning this to the left. */
+  /* #album prefix (1-2-0) so it also outranks the `.btn.ghost{margin-left:0}`
+     inside the <=880px nav media query, which re-pinned it left on phones. */
+  #album .btn.album-cta{ display:block; width:fit-content; margin:40px auto 0; }
 
   /* ---------- INSTAGRAM ---------- */
   .ig-grid{
@@ -942,21 +987,11 @@
   <div class="eyebrow">// 02</div>
   <h2 class="section-title">Album</h2>
   <p class="section-sub">The archive — prototype shots, card art, cut characters, table setups from every playtest, and the covers from each journal entry.</p>
-  <div class="gallery-grid">
-    <div class="shot gallery-art" id="latestDesignsShot" style="background-image:url('images/[GALLERY] 1. LATEST DESIGNS/executioner.webp'); background-size:cover; background-position:center;"><div class="cap"><b class="cap-title">Latest Designs</b><span class="cap-desc">The newest card and component art, fresh off the design table. Updated as soon as new pieces are finalized. This is where the current look of Carrier lives.</span></div></div>
-    <div class="shot gallery-art" id="galleryArtShot" style="background-image:url('images/[ROADMAP] 2. PAPER PROTOTYPE/phase2-1.webp'); background-size:cover; background-position:center;"><div class="cap"><b class="cap-title">Early Prototypes</b><span class="cap-desc">Where it all started — rough shapes, testing what worked. Concept sketches, home prints, and the first sleeved decks. A look back at how far the design has come.</span></div></div>
-    <div class="shot gallery-art" id="characterArchiveShot" style="background-image:url('images/[GALLERY] 3. CUTTING ROOM/survivalist.webp'); background-size:cover; background-position:center;"><div class="cap"><b class="cap-title">Cutting Room</b><span class="cap-desc">Characters and secret roles we pulled from the deck. Some were too overpowered, others just unfair. The rest simply didn't make the final cut.</span></div></div>
-    <div class="shot gallery-art" id="playtestSessionsShot" style="background-image:url('images/[GALLERY] 4. PLAY TEST SESSIONS/pt2.webp'); background-size:cover; background-position:center;"><div class="cap"><b class="cap-title">Playtest Sessions</b><span class="cap-desc">Snapshots from the table, where the real testing happens. Every session shapes balance, pacing, and rules. This is Carrier being pressure-tested by real players.</span></div></div>
-    <div class="shot gallery-art" id="journalCoversShot" style="background-image:url('posts/origins-of-carrier/images/latest-cover-art.avif'); background-size:cover; background-position:center;"><div class="cap"><b class="cap-title">Journal Covers</b><span class="cap-desc">The cover art from every dev journal entry, collected in one place. Head to the Dev Journal below to actually read them.</span></div></div>
-  </div>
+  <div class="album-list" id="albumList"></div>
 
-  <!-- The Instagram feed now lives inside the Album rather than in its own
-       section — it is the same archive, just published somewhere else. -->
-  <h3 class="album-subhead">On Instagram</h3>
-  <p class="section-sub album-subsub">Follow <a href="https://www.instagram.com/kodecco.games/" target="_blank" rel="noopener" style="color:var(--yellow); text-decoration:underline;">@kodecco.games</a> for behind-the-scenes shots, playtest clips, and art drops.</p>
 
   <!-- GALLERY: [INSTAGRAM] POSTS -->
-  <div class="ig-grid" id="igGrid">
+  <div class="ig-grid ig-source" id="igGrid" aria-hidden="true">
     <a class="ig-item" href="https://www.instagram.com/kodecco.games/" target="_blank" rel="noopener"><img src="images/[INSTAGRAM]/ig-0001.webp" alt="Carrier — Instagram post" loading="lazy" decoding="async"></a>
     <a class="ig-item" href="https://www.instagram.com/kodecco.games/" target="_blank" rel="noopener"><img src="images/[INSTAGRAM]/ig-0002.webp" alt="Carrier — Instagram post" loading="lazy" decoding="async"></a>
     <a class="ig-item" href="https://www.instagram.com/kodecco.games/" target="_blank" rel="noopener"><img src="images/[INSTAGRAM]/ig-0003.webp" alt="Carrier — Instagram post" loading="lazy" decoding="async"></a>
@@ -1035,7 +1070,7 @@
     <a class="ig-item" href="https://www.instagram.com/kodecco.games/" target="_blank" rel="noopener"><img src="images/[INSTAGRAM]/ig-0076.webp" alt="Carrier — Instagram post" loading="lazy" decoding="async"></a>
     <a class="ig-item" href="https://www.instagram.com/kodecco.games/" target="_blank" rel="noopener"><img src="images/[INSTAGRAM]/ig-0077.webp" alt="Carrier — Instagram post" loading="lazy" decoding="async"></a>
   </div>
-  <a class="btn ghost ig-more" href="https://www.instagram.com/kodecco.games/" target="_blank" rel="noopener">Follow us on Instagram &rarr;</a>
+  <a class="btn ghost ig-more album-cta" href="https://www.instagram.com/kodecco.games/" target="_blank" rel="noopener">Follow us on Instagram &rarr;</a>
   <a class="ig-fallback" id="igFallback" href="https://www.instagram.com/kodecco.games/" target="_blank" rel="noopener">
     <span class="ig-fallback-icon">📷</span>
     <span class="ig-fallback-title">@kodecco.games</span>
@@ -1324,11 +1359,7 @@
     if (sidePreview.classList.contains('active') &&
         !sidePreview.contains(e.target) &&
         !e.target.closest('.concept-grid img') &&
-        !e.target.closest('#galleryArtShot') &&
-        !e.target.closest('#characterArchiveShot') &&
-        !e.target.closest('#latestDesignsShot') &&
-        !e.target.closest('#journalCoversShot') &&
-        !e.target.closest('#playtestSessionsShot')){
+        !e.target.closest('.album-thumb')){
       closeSidePreview();
     }
   });
@@ -1343,43 +1374,15 @@
     { src:'images/[ROADMAP] 2. PAPER PROTOTYPE/phase2-3.webp', alt:'Cards printed at a local print shop', caption:'Later, we brought the game to a local print shop — the first time we saw glossy and matte finishes on our own cards.' },
     { src:'images/[ROADMAP] 2. PAPER PROTOTYPE/phase2-4.webp', alt:'Introducing character cards', caption:'We also introduced Characters — the public identity of a player. Carrier has secret roles and public roles.' }
   ];
-  const galleryArtShot = document.getElementById('galleryArtShot');
-  if (galleryArtShot){
-    galleryArtShot.addEventListener('click', (e)=>{ e.stopPropagation(); openGalleryPreview(artDirectionItems, 4); });
-  }
 
   const characterArchiveItems = [
     { src:'images/[GALLERY] 3. CUTTING ROOM/survivalist.webp', alt:'Survivalist character card', caption:"Survivalist (V3) — we're actually cutting down the total roster size. A lot of characters didn't have meaningful abilities; they were just there to fill up space. Going forward we'd rather have fewer, more meaningful characters, with room to add more later in future expansions." },
     { src:'images/[GALLERY] 3. CUTTING ROOM/watchman.webp', alt:'Watchman character card', caption:'Watchman — tested with a group of regulars, some of our earliest testers, and we found it too overpowered. The lesson: once a secret role gets revealed, their word becomes law. That’s far too powerful for a social deduction game built on doubt.' }
   ];
-  const characterArchiveShot = document.getElementById('characterArchiveShot');
-  if (characterArchiveShot){
-    characterArchiveShot.addEventListener('click', (e)=>{
-      e.stopPropagation();
-      if (characterArchiveItems.length > 1){
-        openGalleryPreview(characterArchiveItems, 0);
-      } else {
-        const it = characterArchiveItems[0];
-        openSidePreview(it.src, it.alt, it.caption);
-      }
-    });
-  }
 
   const latestDesignsItems = [
     { src:'images/[GALLERY] 1. LATEST DESIGNS/executioner.webp', alt:'Executioner card, renamed from Carrier', caption:"The Carrier role card is now called Executioner — a clearer, more recognizable name for new players than the old naming, which could get confused with the game's own title. If you're the Executioner, your ability is to kill whoever you think the Curefinder is." }
   ];
-  const latestDesignsShot = document.getElementById('latestDesignsShot');
-  if (latestDesignsShot){
-    latestDesignsShot.addEventListener('click', (e)=>{
-      e.stopPropagation();
-      if (latestDesignsItems.length > 1){
-        openGalleryPreview(latestDesignsItems, 0);
-      } else {
-        const it = latestDesignsItems[0];
-        openSidePreview(it.src, it.alt, it.caption);
-      }
-    });
-  }
 
   const playtestSessionsItems = [
     { src:'images/[GALLERY] 4. PLAY TEST SESSIONS/pt1.webp', alt:'Playtest session 1, May 21 2024', caption:"May 21, 2024. This was the first time we brought someone else on board to help pull in players we didn't already know. New faces meant new blind spots — the kind of honest, unfiltered feedback you just can't get from friends. Rough as it was, this was the first real test of whether Carrier could stand on its own." },
@@ -1395,13 +1398,7 @@
     { src:'images/[GALLERY] 4. PLAY TEST SESSIONS/pt12.webp', alt:'SGGA drink-up event with game designers', caption:"The SGGA drink-up event, where a few actual game designers sat down and tried Carrier. Feedback from people who design games for a living hits differently." },
     { src:'images/[GALLERY] 4. PLAY TEST SESSIONS/pt13.webp', alt:'Testing the maximum player count', caption:"After the 16-player session taught us that was already too far, we deliberately pushed further to find our real maximum player count." }
   ];
-  const playtestSessionsShot = document.getElementById('playtestSessionsShot');
-  if (playtestSessionsShot){
-    playtestSessionsShot.addEventListener('click', (e)=>{
-      e.stopPropagation();
-      openGalleryPreview(playtestSessionsItems, 1);
-    });
-  }
+
 
   // Journal cover art, archived in the Album. The entries themselves are read
   // from the Dev Journal list further down the page.
@@ -1411,13 +1408,110 @@
     { src:'posts/origins-of-carrier/images/latest-cover-art.avif', alt:'The Origins of Carrier — cover art', caption:"The Origins of Carrier (Oct 26, 2025) — how Carrier began, what inspired it, and where it's headed." },
     { src:'images/curefinder-card.avif', alt:"We're Coming Back, Soon — cover art", caption:"We're Coming Back, Soon. (Oct 19, 2025) — a mini retrospective on the break, and what's next for development." }
   ];
-  const journalCoversShot = document.getElementById('journalCoversShot');
-  if (journalCoversShot){
-    journalCoversShot.addEventListener('click', (e)=>{
-      e.stopPropagation();
-      openGalleryPreview(journalCoverItems, 0);
+
+  // ---------- Album: accordion of the whole archive ----------
+  // Rendered from the same arrays the lightbox already uses, so a category and
+  // its preview can never drift apart. Rows collapse to a title + count, which
+  // is what keeps the section down to about a screen.
+  (function(){
+    const list = document.getElementById('albumList');
+    if (!list) return;
+
+    // Instagram is read at open time so it reflects the current shuffled order.
+    const igItems = ()=> Array.from(document.querySelectorAll('#igGrid .ig-item img'))
+      .map(img=>({
+        src: img.getAttribute('src'),
+        alt: img.alt || 'Carrier — Instagram post',
+        caption: 'From @kodecco.games on Instagram.'
+      }));
+
+    const sections = [
+      { title:'Latest Designs',    desc:'The newest card and component art, fresh off the design table.', get:()=>latestDesignsItems },
+      { title:'Early Prototypes',  desc:'Where it all started — rough shapes, home prints, and the first sleeved decks.', get:()=>artDirectionItems },
+      { title:'Cutting Room',      desc:'Characters and secret roles we pulled from the deck.', get:()=>characterArchiveItems },
+      { title:'Playtest Sessions', desc:'Snapshots from the table, where the real testing happens.', get:()=>playtestSessionsItems },
+      { title:'Journal Covers',    desc:'The cover art from every dev journal entry. Head to the Dev Journal below to read them.', get:()=>journalCoverItems },
+      // preview caps the thumbnails only — the lightbox still browses the lot.
+      { title:'On Instagram',      desc:'Behind-the-scenes shots, playtest clips, and art drops from @kodecco.games.', get:igItems, preview:9 }
+    ];
+
+    const items = sections.map((sec, i)=>{
+      const count = sec.get().length;
+      const el = document.createElement('div');
+      el.className = 'album-item';
+      el.innerHTML =
+        '<button class="album-row" type="button" aria-expanded="false" aria-controls="ab-'+i+'">' +
+          '<span class="album-title">'+sec.title+'</span>' +
+          '<span class="album-meta">'+count+(count===1?' image':' images')+'</span>' +
+          '<span class="album-go" aria-hidden="true">&#9662;</span>' +
+        '</button>' +
+        '<div class="album-panel" id="ab-'+i+'" role="region">' +
+          '<div class="album-panel-inner">' +
+            '<p class="album-desc">'+sec.desc+'</p>' +
+            '<div class="album-thumbs"></div>' +
+          '</div>' +
+        '</div>';
+      list.appendChild(el);
+      return {el, sec, built:false};
     });
-  }
+
+    function build(it){
+      if (it.built) return;
+      const data = it.sec.get();                       // everything, for the lightbox
+      const cap  = it.sec.preview || data.length;      // how many thumbs to draw
+      const wrap = it.el.querySelector('.album-thumbs');
+      if (data.length > cap){
+        const hint = document.createElement('p');
+        hint.className = 'album-hint';
+        hint.textContent = 'Showing the latest ' + cap + ' — tap any to browse all ' + data.length + '.';
+        wrap.insertAdjacentElement('beforebegin', hint);
+      }
+      data.slice(0, cap).forEach((item, idx)=>{
+        const b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'album-thumb';
+        b.setAttribute('aria-label', item.alt || 'Open image');
+        b.innerHTML = '<img src="'+item.src+'" alt="" loading="lazy" decoding="async">';
+        b.addEventListener('click', (e)=>{
+          e.stopPropagation();
+          openGalleryPreview(data, idx);
+        });
+        // A late-loading thumb changes the panel height; re-measure.
+        b.querySelector('img').addEventListener('load', ()=>{
+          if (it.el.classList.contains('open')) measure(it.el);
+        });
+        wrap.appendChild(b);
+      });
+      it.built = true;
+    }
+    function measure(el){
+      const panel = el.querySelector('.album-panel');
+      panel.style.maxHeight = panel.scrollHeight + 'px';
+    }
+    function shut(it){
+      it.el.classList.remove('open');
+      it.el.querySelector('.album-row').setAttribute('aria-expanded','false');
+      it.el.querySelector('.album-panel').style.maxHeight = '';
+    }
+    function openUp(it){
+      build(it);
+      it.el.classList.add('open');
+      it.el.querySelector('.album-row').setAttribute('aria-expanded','true');
+      measure(it.el);
+    }
+
+    items.forEach(it=>{
+      it.el.querySelector('.album-row').addEventListener('click', ()=>{
+        const wasOpen = it.el.classList.contains('open');
+        items.forEach(shut);
+        if (!wasOpen) openUp(it);
+      });
+    });
+    window.addEventListener('resize', ()=>{
+      const open = items.find(i=>i.el.classList.contains('open'));
+      if (open) measure(open.el);
+    });
+  })();
 
   // Latest 10 items across the site, newest first. Add new entries to the TOP
   // and drop the oldest to keep this at 10 whenever something new goes live.
@@ -1518,21 +1612,6 @@
     grid.insertAdjacentElement('afterend', hint);
   });
 
-  // ---------- Gallery captions: match every box to the tallest one ----------
-  (function(){
-    const caps = Array.from(document.querySelectorAll('.gallery-grid .shot .cap'));
-    if (!caps.length) return;
-    function syncCapHeights(){
-      caps.forEach(c => c.style.minHeight = '');
-      const tallest = Math.max(...caps.map(c => c.scrollHeight));
-      caps.forEach(c => c.style.minHeight = tallest + 'px');
-    }
-    syncCapHeights();
-    window.addEventListener('resize', () => {
-      clearTimeout(window._capResizeT);
-      window._capResizeT = setTimeout(syncCapHeights, 150);
-    });
-  })();
 
   // ---------- Instagram grid: shuffle on load, fall back if empty ----------
   (function(){
