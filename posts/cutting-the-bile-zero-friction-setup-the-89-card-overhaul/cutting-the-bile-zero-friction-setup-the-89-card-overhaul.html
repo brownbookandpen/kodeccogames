@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Too Many Characters — CARRIER</title>
+<title>Cutting the Bile — Zero-Friction Setup & The 89-Card Overhaul — CARRIER</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DotGothic16&family=VT323&display=swap" rel="stylesheet">
 <style>
@@ -166,112 +166,147 @@
 
 <div class="post-header">
   <span class="tag">// DEV JOURNAL</span>
-  <h1>Too Many Characters</h1>
-  <div class="meta">Aug 8, 2026 · 3 min read</div>
-  
+  <h1>Cutting the Bile — Zero-Friction Setup & The 89-Card Overhaul</h1>
+  <div class="meta">Aug 22, 2026 · 4 min read</div>
+  <div class="byline">By Seah Bi Yang · Game Design & Balancing</div>
 </div>
 
 <div class="post-body">
 
-  <p>During a playtest session with Version 3, we kept expanding the characters. More classes, more abilities, more variety — it felt like progress at the time.</p>
-
-  <p>Then we laid them all out on the table.</p>
-
   <figure>
 
-    <img src="images/01.avif" alt="Character Roster">
+    <img src="images/01.jpg" alt="The streamlined Carrier box with the Encounter deck, Starting Gear and Supply cards laid out on a table">
 
-    <figcaption>At this point, we had 5 Characters per class, and 8 classes, that meant we had 40 unique Characters.</figcaption>
+    <figcaption>The new streamlined build — one Encounter deck instead of four separate piles to sort before every game.</figcaption>
 
   </figure>
 
-  <p>Turns out "more" wasn't the same as "better." A lot of these characters were doing versions of the same thing with a different coat of paint. Different name, different flavor text, same job at the table. New players couldn't keep track of who did what, and honestly, neither could we half the time.</p>
+  <h2>The Pre-Game Sorting Nightmare</h2>
 
-  <p>Of course, there were good Characters like the Tracer, who has been tested and refined more as we playtested — Characters we were confident in.</p>
+  <p>Every major playtest teaches you something humbling. In our earlier iterations — what we'll call <strong>Version 2.0</strong> — getting a game of Carrier to the table felt like managing inventory before you could actually play.</p>
 
-  <figure>
+  <p>Because every player had to start with 3 Supplies and 3 Samples, the host had to:</p>
 
-    <img src="images/02.avif" alt="The Tracer">
+  <ul>
+    <li>Dig through the box to separate the 42 Supply cards and 42 Sample cards from the rest of the decks.</li>
+    <li>Count out exactly 3 Supplies and 3 Samples for every single player — 84 cards purely for setup.</li>
+    <li>Make sure everyone had the right cards before even touching Character or Allegiance cards.</li>
+    <li>Spend several minutes tediously sorting and resetting all 84 cards back into their piles after every match.</li>
+  </ul>
 
-    <figcaption>The Tracer is one of the earliest developed Characters, back when she was called 'Codebreaker'</figcaption>
+  <p>When you added up the entire box, the bloat was staggering:</p>
 
-  </figure>
+  <ul>
+    <li>Starting Gear (Supplies & Samples): <strong>84 cards</strong></li>
+    <li>Characters & Secret Roles: <strong>51 cards</strong></li>
+    <li>Disasters & Special Conditions: <strong>14 cards</strong></li>
+    <li>Encounter Deck & Support Kits: <strong>49 cards</strong></li>
+  </ul>
 
-  <p>But there's also new ones, like the Pickpocket, who seems basic — just take someone's card each turn, right? But what if, in the end game, everyone is severely drained of supplies and the Pickpocket is a Carrier actively stealing from the good players, turning the game into one of attrition? That was not very fun.</p>
-
-  <figure>
-
-    <img src="images/03.avif" alt="The Pickpocket">
-
-    <figcaption>On deployment, and after 2 rounds, we knew the simple mechanic of Pickpocket was extremely overpowered in a game like this.</figcaption>
-
-  </figure>
-
-  <p>Of course, it's through experimenting that we can find Characters that work, with abilities that are fair and helpful regardless of which side you're on. That's the essence of Carrier: no matter which side you're on, Carrier or Survivor, your odds of winning shouldn't be affected.</p>
-
-  <figure>
-
-    <img src="images/04.avif" alt="The Brawler">
-
-    <figcaption>The 'Hunter Class' one of our favourite additions to the game.</figcaption>
-
-  </figure>
-
-  <p>It's through this testing that we actually found unique new ways of solving problems. The Brawler, for one, was specifically implemented for lower player counts, because if you've only got so many players, a player who counts as 2 participants changes a lot — it also encourages players to actually give out their limited supplies, but you have to build trust first. That changed the dynamic; it was way too static previously, with everyone just surviving on their own, and we wanted to implement even more characters that required teamwork.</p>
+  <p><strong>Total: 198 cards</strong> spread across multiple separate piles. We were spending more time sorting and resetting cardboard than actually playing. It was friction where there should have been immediate tension.</p>
 
   <figure>
 
-    <img src="images/05.avif" alt="The Watcher">
+    <img src="images/02.avif" alt="Supply card design">
 
-    <figcaption>The latest, and most recent addition to the game, The Scrapper Classes. </figcaption>
+    <figcaption>Simplistic Design for 'Supply' — a fixed setup card given to the players at the start of the game.</figcaption>
 
   </figure>
 
-  <p>But we also have classes like The Scrapper class, which leaned too close to our OG class, The Rangers, to really distinguish itself as a unique class of its own — turning it into a replica of existing Characters with small differences, and making it feel really redundant.</p>
+  <h2>1. The 30-Second Setup: Deal, Deal, Shuffle, Play</h2>
+
+  <p>We eliminated starting gear and separate supply decks entirely. Supplies, Weapons and Samples are now shuffled directly into the single <strong>65-card Encounter Deck</strong>.</p>
+
+  <p>The entire setup and reset flow is now three steps:</p>
+
+  <ol class="steps">
+    <li>Deal Characters (Public Roles).</li>
+    <li>Deal Allegiances (Secret Roles).</li>
+    <li>Shuffle the Encounter Deck and start the game.</li>
+  </ol>
+
+  <p>Setup time dropped from several minutes of card administration to <strong>under 30 seconds</strong>. Resetting between back-to-back games is now completely frictionless.</p>
+
+  <p>Along with this, we removed Support Kits — Supply Drop, Demolisher, Decoy Drones. Instead of diluting the draw pile with situational one-off cards, we baked that utility directly into stronger, more impactful Character abilities.</p>
 
   <figure>
 
-    <img src="images/06.avif" alt="The Amnesiacs">
+    <img src="images/03.avif" alt="Encounter deck with a Bloodhound encounter and an Armaments supply drawn from it">
+
+    <figcaption>Supplies can now only be found through the Encounter deck. Players draw directly from it, so it's entirely up to chance — with bad luck, they may face Encounters before securing any Supplies.</figcaption>
 
   </figure>
 
-  <p>However, that is also exactly why we want to change things up. Merging the characters who are too similar, removing those who truly feel like they are not impactful, and, most importantly, cutting what's NOT FUN.   Our goal, at the end of the day, is to ensure every character you get doesn't make you feel like you can't contribute to a game.   On top of redesigning Characters' abilities, because of the plans to overhaul the battle mechanics, we also need to consider how the current indicators work.</p>
+  <h2>2. Replacing "Escape Tokens" with Live Samples</h2>
+
+  <p>Previously, victory relied on collecting abstract "Escape Tokens" scattered across the deck. We've retired them completely and tied the win condition directly into the core survival loop: the group must find and secure real Samples to formulate the cure.</p>
+
+  <p><strong>The Escape Requirement.</strong> The final escape party must hold at least 3 Samples in their collective inventory to win. Reach extraction without them and you lose.</p>
+
+  <p><strong>The Dual-Edged Sabotage.</strong> Samples aren't just passive items — they carry real tactical risk during encounters. In the hands of a hidden Carrier, playing a Sample contributes a <strong>-3 DMG Sabotage</strong>, letting them quietly derail a fight under the guise of helping collect the cure.</p>
 
   <figure>
 
-    <img src="images/07.avif" alt="The Class Indicator">
+    <img src="images/04.avif" alt="Samples card showing the Sabotaged effect at minus 3 damage">
+
+    <figcaption>Samples now replace Escape Tokens, and are also found in the Encounter Deck. This removes the previous 'Hard Limit' of 12 fixed escape chances. Instead, everyone gathers Samples — and drawing one doesn't require revealing it. This gives a Carrier deniability, but since Samples also empower the zombies, a Carrier can also use them to sabotage Encounters.</figcaption>
 
   </figure>
 
-  <p>Currently, with 8 different classes, we definitely foresee that some are going to be removed, and merged into more meaningful groupings.</p>
+  <h2>3. Dynamic Party Sizes & Weapon Tiers</h2>
+
+  <p>In V2.0, encounters forced an artificial, rigid player count — "choose 4 players to participate". Under the new system, weapons scale by damage and rarity instead:</p>
+
+  <ul>
+    <li><strong>Tier 1 Weapons</strong> — 1 Damage (20 cards)</li>
+    <li><strong>Tier 2 Weapons</strong> — 2 Damage (10 cards)</li>
+    <li><strong>Tier 3 Weapons</strong> — 3 Damage (5 cards)</li>
+  </ul>
+
+  <p>Because damage output is tied to weapon quality rather than a fixed headcount, encounter party sizes are completely dynamic. The party leader makes the call:</p>
+
+  <ul>
+    <li>Armed with heavy explosives and high-tier weapons? Send a lean 2-person strike team and conserve resources.</li>
+    <li>Carrying basic tools and low-tier weapons? You'll need to rally more players to combine enough damage to beat the horde threshold.</li>
+  </ul>
 
   <figure>
 
-    <img src="images/08.avif" alt="The Character Art">
+    <img src="images/05.avif" alt="3 Tiers of Weapons, offering various damage values.">
+
+    <figcaption>With this, our hope is to give the Leader more strategic options — bring 3 players with explosives, and you can beat even the toughest Encounter in the game. Under our old system, this choice simply wasn't possible.</figcaption>
 
   </figure>
 
-  <p>Of course, just like the Secret Roles, we also want to change up the poses of some of the Characters, making them more dynamic and unique.</p>
+  <h2>4. The "Run" Mechanic: Mitigating Early Bad Luck</h2>
+
+  <p>Without guaranteed starting supplies in hand from turn one, an unlucky opening draw could occasionally trap an under-geared team. To address that, we introduced the <strong>Run / Runaway</strong> mechanic.</p>
+
+  <p>The leader can choose to temporarily evade a drawn encounter, up to <strong>3 Runaways per game</strong>. Fleeing doesn't delete the threat — the leader can return and tackle that parked encounter later, once the group has scavenged better gear.</p>
 
   <figure>
 
-    <img src="images/09.avif" alt="The Participant Indicator">
+    <img src="images/06.avif" alt="Running Limit">
+
+    <figcaption>Running from Encounters has its downsides, adding Danger to the next Encounter. A [+1] might not seem like much, but that could mean the difference between winning the Encounter and failing it. Use [Run] sparingly, or you will find yourself in a tough spot.</figcaption>
 
   </figure>
 
-  <p>Currently, in V3, all encounters read out exactly how many participants are required for any given encounter — we want to change that. If a group encounters a Horde of zombies, it makes sense to want more players to participate, so why are we limiting it to 5 participants only, when your group has 8 people? It makes sense that you would want to send everyone, but what the player would have to consider is that all players and resources are limited — you must take the risk while minimising the danger to the group. This new mechanic is still being worked on, and will be updated soon on the Dev Journal, but essentially, this change would make the Participant Indicator Icon obsolete.</p>
+  <ol class="steps">
+    <li>The Math: 198 Down to 89</li>
+  </ol>
 
-  <figure>
+  <p>By eliminating separate starting piles, token systems and redundant kits, our card footprint dropped dramatically:</p>
 
-    <img src="images/10.avif" alt="Supply & Samples">
+  <p>| Deck component | Version 2.0 | Streamlined | | --- | --- | --- | | Encounter & Loot Deck | 49 + 84 + 14 | 65 | | Characters & Allegiances | 51 | 24 | | Total card count | 198 | 89 |</p>
 
-    <figcaption>Supply & Samples will be removed when V4 rolls out.</figcaption>
+  <p>Targeting a final production box of around 100 cards, cutting down to 89 gives us roughly <strong>11 cards of healthy design headroom</strong> — room to experiment with new mechanics without re-introducing bloat.</p>
 
-  </figure>
+  <h2>What's Next?</h2>
 
-  <p>Another benefit to changing the participants is that we remove over 72 cards (3 supply + 3 Samples for each player) from the game, removing a "fixed" hand. Players will instead be given a whole new way of resolving Encounters.</p>
+  <p>Setup is now instantaneous, the table footprint is clean, and every card in the deck serves a direct, active purpose.</p>
 
-  <p>None of this is set in stone yet, but the direction is clear: fewer Characters, each one earning its spot. If a Character doesn't make a table feel different when it's in play, it doesn't belong in V4. We'll be sharing the redesigned roster as it comes together — for now, back to the drawing board.</p>
+  <p>With this 89-card layout locked in, we're printing fresh prototype sets and heading straight back to the table for our next wave of playtests.</p>
 
 </div>
 
