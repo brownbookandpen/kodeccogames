@@ -34,8 +34,41 @@
     font-size:0.95rem;
     line-height:1.75;
     letter-spacing:0.1px;
-    background-image: repeating-linear-gradient(0deg, rgba(255,255,255,0.02) 0px, transparent 1px, transparent 2px);
     overflow-x:hidden;
+  }
+  /* Page texture — drawn in CSS, not loaded as an image.
+     The wallpaper is a pure two-tone 45-degree stripe (#040404 / #070707), so
+     it reproduces exactly as a gradient. That matters: a hard diagonal edge
+     always softens when the browser rescales a 2500px bitmap into the
+     viewport, which is where the blur came from. A gradient is resolution
+     independent — crisp at any width, any zoom, any DPI — and weighs nothing.
+
+     Layer order, top to bottom: CRT scanline, the fade, the stripes, black.
+     The fade is a black wash across the middle, so the texture reads in the
+     page margins and drops away behind the centred content column where the
+     text lives.
+
+     Fixed positioning rather than background-attachment:fixed, which iOS
+     Safari handles badly. Sits BEHIND every section that paints its own
+     background, so the carousel keeps its true #000 and the key art's black
+     margins still melt into the page. */
+  body::before{
+    content:""; position:fixed; inset:0; z-index:-1; pointer-events:none;
+    background:
+      linear-gradient(90deg,
+        rgba(0,0,0,0) 0%, rgba(0,0,0,.72) 24%,
+        rgba(0,0,0,.72) 76%, rgba(0,0,0,0) 100%),
+      repeating-linear-gradient(135deg, #070707 0 53px, #040404 53px 106px),
+      #000;
+  }
+  @media (max-width:640px){
+    /* A 106px band spans a third of a phone. Tighten it, and skip the centre
+       fade — there are no margins to frame at this width. */
+    body::before{
+      background:
+        repeating-linear-gradient(135deg, #070707 0 32px, #040404 32px 64px),
+        #000;
+    }
   }
   h1,h2,h3,h4,.logo,nav a,.tag,.btn,.stat b,.timeline-year{ font-family:'DotGothic16', monospace; }
   .post-meta,.brief-card p,.hero p,.section-sub,.signal p,.quote p{ font-family:var(--font-body); font-size:0.95rem; }
@@ -84,7 +117,7 @@
      only the last stretch eases into var(--black) to meet the section below. */
   .hero{
     position:relative; padding:44px 6% 56px; text-align:center; overflow:hidden;
-    background:linear-gradient(180deg, #000 0%, #000 78%, var(--black) 100%);
+    background:transparent;
   }
   .hero-inner{position:relative; z-index:2;}
   .hero .tag, .banner-tag{
@@ -147,7 +180,12 @@
   .stat span{color:var(--grey); font-size:0.6rem; letter-spacing:1px; text-transform:uppercase; font-family:'DotGothic16',monospace;}
 
   /* ---------- SECTION SHARED ---------- */
-  section{padding:80px 6%;}
+  /* Content sits in a centred column instead of hugging the left edge on wide
+     screens. Done with padding rather than max-width so the section itself
+     stays full-bleed — the Album/Journal band gradients still span the page.
+     820px matches .album-list / .entry-list, so every block shares one left
+     edge; text inside stays left-aligned. */
+  section{ padding:80px max(6%, calc((100% - 820px) / 2)); }
   .eyebrow{color:var(--red); font-family:'DotGothic16',monospace; font-size:1.05rem; letter-spacing:2px; margin-bottom:14px; text-transform:uppercase;}
   .section-title{font-size:1.2rem; color:var(--yellow); letter-spacing:1px; margin-bottom:16px; text-transform:uppercase;}
   .section-sub{color:var(--grey); max-width:660px; margin-bottom:48px; line-height:1.7;}
@@ -248,9 +286,9 @@
      and what to do next — the three things a first-time visitor needs. */
   .hero-copy{
     text-align:center; padding:34px 6% 46px;
-    /* Solid true black: the carousel above and the marquee below are both
-       #000, so this stays flat rather than dipping to --black and back. */
-    background:#000;
+    /* Fades from the carousel's solid black into the page texture below, so
+       there is no hard line where the fixed backdrop starts showing. */
+    background:linear-gradient(180deg, #000 0%, rgba(0,0,0,0) 100%);
     margin-top:-2px;
   }
   .hero-tagline{
@@ -367,8 +405,11 @@
      a grid of square thumbnails. Same expand-in-place behaviour as the Dev
      Journal and the Roadmap. */
   .gallery{
+    /* rgba, not solid: the band still lifts the section but the page texture
+       reads through it, and the edges still fade instead of ruling a line. */
     background:linear-gradient(180deg,
-      var(--black) 0%, var(--band) 9%, var(--band) 91%, var(--black) 100%);
+      rgba(19,19,19,0) 0%, rgba(19,19,19,.92) 9%,
+      rgba(19,19,19,.92) 91%, rgba(19,19,19,0) 100%);
   }
   .album-list{ max-width:820px; border-top:1px solid var(--line); }
   .album-item{ border-bottom:1px solid var(--line); }
@@ -411,6 +452,12 @@
   .album-item.open .album-panel{ opacity:1; }
   .album-panel-inner{ padding:2px 4px 26px; }
   .album-desc{ color:var(--grey); font-size:0.9rem; line-height:1.6; margin-bottom:16px; }
+  /* Both panel actions share one row, aligned to the grid's left edge.
+     Two-class selectors so they outrank `.btn.ghost{margin-left:14px}`, which
+     otherwise pins them at an arbitrary 14px offset. */
+  .btn.album-more, .btn.album-more-btn{
+    display:inline-block; margin:20px 12px 0 0; font-size:0.58rem; vertical-align:top;
+  }
   .album-hint{
     font-family:'DotGothic16',monospace; font-size:0.56rem; letter-spacing:1px;
     text-transform:uppercase; color:#6f6f6f; margin-bottom:12px;
@@ -421,8 +468,33 @@
   .album-thumbs{
     display:grid; grid-template-columns:repeat(auto-fill, minmax(112px, 1fr)); gap:10px;
   }
+  /* Card sections are a horizontal strip, not a grid: four fill the content
+     column and the rest are reached by dragging or swiping sideways. Keeps
+     every card readable without the panel growing to four rows deep. */
+  .album-thumbs.cards{
+    display:flex; grid-template-columns:none; gap:14px;
+    overflow-x:auto; overflow-y:hidden; overscroll-behavior-x:contain;
+    -webkit-overflow-scrolling:touch; scrollbar-width:none;
+    scroll-snap-type:x proximity; cursor:grab; padding-bottom:2px;
+    /* fades hint at content past either edge; JS clears them at the ends */
+    --fade-l:0px; --fade-r:56px;
+    -webkit-mask-image:linear-gradient(90deg, transparent 0, #000 var(--fade-l),
+      #000 calc(100% - var(--fade-r)), transparent 100%);
+    mask-image:linear-gradient(90deg, transparent 0, #000 var(--fade-l),
+      #000 calc(100% - var(--fade-r)), transparent 100%);
+  }
+  .album-thumbs.cards::-webkit-scrollbar{ display:none; }
+  .album-thumbs.cards.dragging{ cursor:grabbing; scroll-snap-type:none; }
+  .album-thumbs.cards.at-start{ --fade-l:0px; }
+  .album-thumbs.cards.at-end{ --fade-r:0px; }
+  .album-thumbs.cards .album-thumb{
+    flex:0 0 calc((100% - 42px) / 4);   /* 4 across, 3 gaps of 14px */
+    scroll-snap-align:start;
+  }
+  .album-thumbs.cards img{ pointer-events:none; }   /* never hijack the drag */
+  .album-thumbs{ --thumb-ratio:1/1; }
   .album-thumb{
-    position:relative; aspect-ratio:1/1; overflow:hidden; cursor:pointer;
+    position:relative; aspect-ratio:var(--thumb-ratio); overflow:hidden; cursor:pointer;
     border:2px solid #2b2b2b; background:#0d0d0d; padding:0;
     transition:border-color .2s, transform .2s;
   }
@@ -436,6 +508,9 @@
        drifts with the handset (3 at 393px, 4 at 430px). Fixed keeps every
        phone on the same 3-wide grid. */
     .album-thumbs{ grid-template-columns:repeat(3, 1fr); gap:8px; }
+    /* Two across on a phone — a quarter-width card is illegible. */
+    .album-thumbs.cards{ gap:10px; --fade-r:34px; }
+    .album-thumbs.cards .album-thumb{ flex:0 0 calc((100% - 10px) / 2); }
   }
 
   /* ---------- TIMELINE / ROADMAP ---------- */
@@ -548,6 +623,7 @@
     display:block; width:100%; height:auto; max-height:64vh; object-fit:contain;
     border:none; filter:drop-shadow(0 14px 28px rgba(0,0,0,0.6));
   }
+  .side-preview.has-stages img{ cursor:pointer; }
   .side-preview-cap{
     margin-top:14px; color:var(--grey); font-size:0.9rem; line-height:1.5;
     background:var(--panel); border:2px solid var(--line); padding:12px 14px;
@@ -601,8 +677,11 @@
 
   /* ---------- JOURNAL ---------- */
   .journal{
+    /* rgba, not solid: the band still lifts the section but the page texture
+       reads through it, and the edges still fade instead of ruling a line. */
     background:linear-gradient(180deg,
-      var(--black) 0%, var(--band) 9%, var(--band) 91%, var(--black) 100%);
+      rgba(19,19,19,0) 0%, rgba(19,19,19,.92) 9%,
+      rgba(19,19,19,.92) 91%, rgba(19,19,19,0) 100%);
   }
 
   /* ---------- DEV JOURNAL ENTRY LIST ----------
@@ -793,10 +872,27 @@
     .signal .btn{width:100%;}
   }
 
+
+  /* Desktop drops the alternating grey band entirely. Every section then
+     reads the same way — page texture out at the margins, fading to black
+     behind the centred content column — instead of some sections sitting on
+     a lighter surface. Mobile keeps the bands (they read well at that width,
+     where there are no margins for the texture to live in). */
+  @media (min-width:641px){
+    .gallery, .journal{ background:transparent; }
+  }
+
   /* ---------- CRT / RETRO FX ---------- */
   .crt-overlay{
     position:fixed; inset:0; pointer-events:none; z-index:9999;
-    background:repeating-linear-gradient(0deg, rgba(0,0,0,0.18) 0px, rgba(0,0,0,0.18) 1px, transparent 1px, transparent 3px);
+    /* Soft-edged scanlines. A hard 1px line on a 3px period aliases badly on
+       any display that is not at a whole-number scale (125%, 150%, most
+       laptop panels), which reads as shimmer and dirt rather than CRT. Ramping
+       the line instead of stepping it resamples cleanly at every zoom level —
+       same darkness, same 3px pitch, no interference. */
+    background:repeating-linear-gradient(0deg,
+      rgba(0,0,0,0.16) 0px, rgba(0,0,0,0.16) 0.5px,
+      rgba(0,0,0,0) 1.6px, rgba(0,0,0,0) 3px);
     mix-blend-mode:overlay;
     animation:crtflicker 6s infinite;
   }
@@ -843,7 +939,7 @@
   <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">☰</button>
   <nav id="mainNav">
     <a href="rules/how-to-play/how-to-play.html">Mission Brief</a>
-    <a href="#brief">Field Report</a>
+    <a href="#brief">Components</a>
     <a href="#album">Album</a>
     <a href="#roadmap">Roadmap</a>
     <a href="#journal">Dev Journal</a>
@@ -873,11 +969,11 @@
   <button class="topcar-arrow topcar-next" id="topcarNext" type="button" aria-label="Next panel">&rsaquo;</button>
 
   <div class="topcar-track" id="topcarTrack" tabindex="0" aria-label="Swipe or use the arrow keys to browse panels">
-    <a class="topcar-slide" href="rules/allegiance/allegiance.html" aria-label="Allegiances — the secret roles">
+    <a class="topcar-slide" href="rules/how-to-play/how-to-play.html" aria-label="Learn how to play Carrier">
       <picture>
         <!-- Wide 2480x1543 panels for desktop; the portrait 1240x1543 cut for phones. -->
-        <source media="(min-width:900px)" srcset="images/%5BTOP%20CAROUSEL%5D/allegiances-wide.webp" width="2480" height="1543">
-        <img src="images/[TOP CAROUSEL]/allegiances.webp" alt="Allegiances — secret roles key art" width="1240" height="1543" fetchpriority="high" decoding="async">
+        <source media="(min-width:900px)" srcset="images/%5BTOP%20CAROUSEL%5D/how-to-play-wide.webp" width="2480" height="1543">
+        <img src="images/[TOP CAROUSEL]/how-to-play.webp" alt="Learn how to play Carrier key art" width="1240" height="1543" fetchpriority="high" decoding="async">
       </picture>
     </a>
     <a class="topcar-slide" href="rules/character/character.html" aria-label="Characters — the public roles">
@@ -887,18 +983,18 @@
         <img src="images/[TOP CAROUSEL]/characters.webp" alt="Characters — public roles key art" width="1240" height="1543" loading="lazy" decoding="async">
       </picture>
     </a>
+    <a class="topcar-slide" href="rules/allegiance/allegiance.html" aria-label="Allegiances — the secret roles">
+      <picture>
+        <!-- Wide 2480x1543 panels for desktop; the portrait 1240x1543 cut for phones. -->
+        <source media="(min-width:900px)" srcset="images/%5BTOP%20CAROUSEL%5D/allegiances-wide.webp" width="2480" height="1543">
+        <img src="images/[TOP CAROUSEL]/allegiances.webp" alt="Allegiances — secret roles key art" width="1240" height="1543" fetchpriority="high" decoding="async">
+      </picture>
+    </a>
     <a class="topcar-slide" href="rules/Encounters/encounters.html" aria-label="Supplies and Encounters">
       <picture>
         <!-- Wide 2480x1543 panels for desktop; the portrait 1240x1543 cut for phones. -->
         <source media="(min-width:900px)" srcset="images/%5BTOP%20CAROUSEL%5D/supplies-encounters-wide.webp" width="2480" height="1543">
         <img src="images/[TOP CAROUSEL]/supplies-encounters.webp" alt="Supplies and Encounters key art" width="1240" height="1543" loading="lazy" decoding="async">
-      </picture>
-    </a>
-    <a class="topcar-slide" href="rules/how-to-play/how-to-play.html" aria-label="Learn how to play Carrier">
-      <picture>
-        <!-- Wide 2480x1543 panels for desktop; the portrait 1240x1543 cut for phones. -->
-        <source media="(min-width:900px)" srcset="images/%5BTOP%20CAROUSEL%5D/how-to-play-wide.webp" width="2480" height="1543">
-        <img src="images/[TOP CAROUSEL]/how-to-play.webp" alt="Learn how to play Carrier key art" width="1240" height="1543" loading="lazy" decoding="async">
       </picture>
     </a>
   </div>
@@ -934,40 +1030,9 @@
 
 <section id="brief" class="reveal">
   <div class="eyebrow">// 01</div>
-  <h2 class="section-title">Field Report</h2>
-  <p class="section-sub">Your first briefing before the drop — secret allegiances, playable characters, and the threats waiting out in the field.</p>
-  <div class="brief-grid">
-    <div class="brief-card" data-slug="allegiance" data-page="rules/allegiance/allegiance.html">
-      <!-- GALLERY: [MISSION BRIEF] 1. SURVIVORS -->
-      <div class="brief-gallery">
-        <div class="brief-shot">
-          <div class="brief-banner">ALLEGIANCES</div>
-          <img src="rules/allegiance/images/homepage.png" alt="Allegiance — secret role art">
-        </div>
-      </div>
-      <p>Read more about the Allegiances within the game.</p>
-    </div>
-    <div class="brief-card" data-slug="character" data-page="rules/character/character.html">
-      <!-- GALLERY: [MISSION BRIEF] 2. ENCOUNTERS & SUPPLIES -->
-      <div class="brief-gallery">
-        <div class="brief-shot">
-          <div class="brief-banner">CHARACTERS</div>
-          <img src="rules/character/images/homepage.png" alt="Character — public role art">
-        </div>
-      </div>
-      <p>Meet the Characters and the roles they play in the outbreak.</p>
-    </div>
-    <div class="brief-card" data-slug="encounters" data-page="rules/Encounters/encounters.html">
-      <!-- GALLERY: [MISSION BRIEF] 3. ZOMBIES + 5. SUPPLIES (merged) -->
-      <div class="brief-gallery">
-        <div class="brief-shot">
-          <div class="brief-banner">ENCOUNTERS &amp; SUPPLIES</div>
-          <img src="rules/Encounters/images/homepage.png" alt="Encounters — threats and supplies art">
-        </div>
-      </div>
-      <p>Face the Encounters ahead, and the Supplies that might save you.</p>
-    </div>
-  </div>
+  <h2 class="section-title">Components</h2>
+  <p class="section-sub">What comes in the box — secret allegiances, playable characters, and the threats and supplies waiting out in the field.</p>
+  <div class="album-list" id="componentList"></div>
 </section>
 
 <div class="wip-modal" id="wipModal">
@@ -1309,14 +1374,40 @@
   let galleryItems = null;
   let galleryIndex = 0;
 
+  // An item may carry a second stage (`card`). Stage 0 is the explainer, stage 1
+  // the game card; clicking the image steps between them. Everything else in the
+  // site passes single-stage items and is unaffected.
+  let previewStage = 0;
+  const stagesOf = (item)=> item && item.card ? [item.src, item.card] : [item && item.src];
+
   function renderSidePreview(item){
-    sidePreviewImg.src = item.src;
+    const stages = stagesOf(item);
+    if (previewStage >= stages.length) previewStage = 0;
+    sidePreviewImg.src = stages[previewStage];
     sidePreviewImg.alt = item.alt || '';
-    sidePreviewCap.textContent = item.caption || '';
-    sidePreviewCap.style.display = item.caption ? 'block' : 'none';
+    const multi = stages.length > 1;
+    sidePreview.classList.toggle('has-stages', multi);
+    let cap = item.caption || '';
+    if (multi){
+      cap += (cap ? ' — ' : '') + (previewStage === 0
+        ? 'tap the image to see the card'
+        : 'tap the image to go back');
+    }
+    sidePreviewCap.textContent = cap;
+    sidePreviewCap.style.display = cap ? 'block' : 'none';
   }
+  function stepPreviewStage(){
+    if (!galleryItems) return;
+    const item = galleryItems[galleryIndex];
+    const stages = stagesOf(item);
+    if (stages.length < 2) return;
+    previewStage = (previewStage + 1) % stages.length;
+    renderSidePreview(item);
+  }
+  sidePreviewImg.addEventListener('click', (e)=>{ e.stopPropagation(); stepPreviewStage(); });
   function openSidePreview(src, alt, caption){
     galleryItems = null;
+    previewStage = 0;
     sidePreview.classList.remove('gallery-mode');
     renderSidePreview({src, alt, caption});
     sidePreview.classList.add('active');
@@ -1325,6 +1416,7 @@
   function openGalleryPreview(items, startIndex){
     galleryItems = items;
     galleryIndex = startIndex || 0;
+    previewStage = 0;
     sidePreview.classList.add('gallery-mode');
     renderSidePreview(galleryItems[galleryIndex]);
     sidePreview.classList.add('active');
@@ -1342,12 +1434,14 @@
     e.stopPropagation();
     if(!galleryItems) return;
     galleryIndex = (galleryIndex - 1 + galleryItems.length) % galleryItems.length;
+    previewStage = 0;
     renderSidePreview(galleryItems[galleryIndex]);
   });
   document.getElementById('sidePreviewNext').addEventListener('click', (e)=>{
     e.stopPropagation();
     if(!galleryItems) return;
     galleryIndex = (galleryIndex + 1) % galleryItems.length;
+    previewStage = 0;
     renderSidePreview(galleryItems[galleryIndex]);
   });
   window.addEventListener('keydown', (e)=>{
@@ -1359,7 +1453,8 @@
     if (sidePreview.classList.contains('active') &&
         !sidePreview.contains(e.target) &&
         !e.target.closest('.concept-grid img') &&
-        !e.target.closest('.album-thumb')){
+        !e.target.closest('.album-thumb') &&
+        e.target !== sidePreviewImg){
       closeSidePreview();
     }
   });
@@ -1409,84 +1504,192 @@
     { src:'images/curefinder-card.avif', alt:"We're Coming Back, Soon — cover art", caption:"We're Coming Back, Soon. (Oct 19, 2025) — a mini retrospective on the break, and what's next for development." }
   ];
 
-  // ---------- Album: accordion of the whole archive ----------
-  // Rendered from the same arrays the lightbox already uses, so a category and
-  // its preview can never drift apart. Rows collapse to a title + count, which
-  // is what keeps the section down to about a screen.
-  (function(){
-    const list = document.getElementById('albumList');
+  // ---------- Components: card data lifted from the rules pages ----------
+  const componentSets = {
+    allegiance: [
+        { thumb:'rules/allegiance/images/thumbs/_back.webp', src:'rules/allegiance/images/thumbs/_back.webp', alt:'Secret Role card back', caption:'Secret Role card back', back:true },
+        { thumb:'rules/allegiance/images/thumbs/apprentice.webp', src:'rules/allegiance/images/01-card.png', card:'rules/allegiance/images/01.png', alt:'Apprentice', caption:'Apprentice' },
+        { thumb:'rules/allegiance/images/thumbs/curefinder.webp', src:'rules/allegiance/images/02-card.png', card:'rules/allegiance/images/02.png', alt:'Curefinder', caption:'Curefinder' },
+        { thumb:'rules/allegiance/images/thumbs/executioner.webp', src:'rules/allegiance/images/03-card.png', card:'rules/allegiance/images/03.png', alt:'Executioner', caption:'Executioner' },
+        { thumb:'rules/allegiance/images/thumbs/patient-zero.webp', src:'rules/allegiance/images/04-card.png', card:'rules/allegiance/images/04.png', alt:'Patient Zero', caption:'Patient Zero' },
+        { thumb:'rules/allegiance/images/thumbs/revivalist-v1.webp', src:'rules/allegiance/images/05-card.png', card:'rules/allegiance/images/05.png', alt:'Revivalist (V1)', caption:'Revivalist (V1)' },
+        { thumb:'rules/allegiance/images/thumbs/revivalist-v2.webp', src:'rules/allegiance/images/06-card.png', card:'rules/allegiance/images/06.png', alt:'Revivalist (V2)', caption:'Revivalist (V2)' },
+        { thumb:'rules/allegiance/images/thumbs/revivalist-v3.webp', src:'rules/allegiance/images/07-card.png', card:'rules/allegiance/images/07.png', alt:'Revivalist (V3)', caption:'Revivalist (V3)' },
+        { thumb:'rules/allegiance/images/thumbs/saboteur.webp', src:'rules/allegiance/images/08-card.png', card:'rules/allegiance/images/08.png', alt:'Saboteur', caption:'Saboteur' }
+    ],
+    character: [
+        { thumb:'rules/character/images/thumbs/_back.webp', src:'rules/character/images/thumbs/_back.webp', alt:'Character card back', caption:'Character card back', back:true },
+        { thumb:'rules/character/images/thumbs/blacksmith.webp', src:'rules/character/images/05-card.png', card:'rules/character/images/05.png', alt:'Blacksmith', caption:'Blacksmith' },
+        { thumb:'rules/character/images/thumbs/brawler.webp', src:'rules/character/images/07-card.png', card:'rules/character/images/07.png', alt:'Brawler', caption:'Brawler' },
+        { thumb:'rules/character/images/thumbs/enforcer.webp', src:'rules/character/images/03-card.png', card:'rules/character/images/03.png', alt:'Enforcer', caption:'Enforcer' },
+        { thumb:'rules/character/images/thumbs/forager.webp', src:'rules/character/images/04-card.png', card:'rules/character/images/04.png', alt:'Forager', caption:'Forager' },
+        { thumb:'rules/character/images/thumbs/geneticist.webp', src:'rules/character/images/18-card.png', card:'rules/character/images/18.png', alt:'Geneticist', caption:'Geneticist' },
+        { thumb:'rules/character/images/thumbs/inspector.webp', src:'rules/character/images/02-card.png', card:'rules/character/images/02.png', alt:'Inspector', caption:'Inspector' },
+        { thumb:'rules/character/images/thumbs/outrunner.webp', src:'rules/character/images/15-card.png', card:'rules/character/images/15.png', alt:'Outrunner', caption:'Outrunner' },
+        { thumb:'rules/character/images/thumbs/pathfinder.webp', src:'rules/character/images/13-card.png', card:'rules/character/images/13.png', alt:'Pathfinder', caption:'Pathfinder' },
+        { thumb:'rules/character/images/thumbs/prospector.webp', src:'rules/character/images/11-card.png', card:'rules/character/images/11.png', alt:'Prospector', caption:'Prospector' },
+        { thumb:'rules/character/images/thumbs/stranger.webp', src:'rules/character/images/12-card.png', card:'rules/character/images/12.png', alt:'Stranger', caption:'Stranger' },
+        { thumb:'rules/character/images/thumbs/survivalist.webp', src:'rules/character/images/06-card.png', card:'rules/character/images/06.png', alt:'Survivalist', caption:'Survivalist' },
+        { thumb:'rules/character/images/thumbs/tracer.webp', src:'rules/character/images/01-card.png', card:'rules/character/images/01.png', alt:'Tracer', caption:'Tracer' },
+        { thumb:'rules/character/images/thumbs/trickster.webp', src:'rules/character/images/10-card.png', card:'rules/character/images/10.png', alt:'Trickster', caption:'Trickster' },
+        { thumb:'rules/character/images/thumbs/virologist.webp', src:'rules/character/images/17-card.png', card:'rules/character/images/17.png', alt:'Virologist', caption:'Virologist' }
+    ],
+    encounters: [
+        { thumb:'rules/Encounters/images/thumbs/_back.webp', src:'rules/Encounters/images/thumbs/_back.webp', alt:'Encounter card back', caption:'Encounter card back', back:true },
+        { thumb:'rules/Encounters/images/thumbs/armaments.webp', src:'rules/Encounters/images/01-explainer.webp', card:'rules/Encounters/images/01.webp', alt:'Armaments', caption:'Armaments' },
+        { thumb:'rules/Encounters/images/thumbs/undead-horde.webp', src:'rules/Encounters/images/02-explainer.webp', card:'rules/Encounters/images/02.webp', alt:'Undead Horde', caption:'Undead Horde' },
+        { thumb:'rules/Encounters/images/thumbs/undead-horde-v2.webp', src:'rules/Encounters/images/03-explainer.webp', card:'rules/Encounters/images/03.webp', alt:'Undead Horde (V2)', caption:'Undead Horde (V2)' },
+        { thumb:'rules/Encounters/images/thumbs/medical-supplies.webp', src:'rules/Encounters/images/04-explainer.webp', card:'rules/Encounters/images/04.webp', alt:'Medical Supplies', caption:'Medical Supplies' },
+        { thumb:'rules/Encounters/images/thumbs/undead-horde-v3.webp', src:'rules/Encounters/images/05-explainer.webp', card:'rules/Encounters/images/05.webp', alt:'Undead Horde (V3)', caption:'Undead Horde (V3)' },
+        { thumb:'rules/Encounters/images/thumbs/high-explosives.webp', src:'rules/Encounters/images/06-explainer.webp', card:'rules/Encounters/images/06.webp', alt:'High Explosives', caption:'High Explosives' },
+        { thumb:'rules/Encounters/images/thumbs/stonewall.webp', src:'rules/Encounters/images/07-explainer.webp', card:'rules/Encounters/images/07.webp', alt:'Stonewall', caption:'Stonewall' },
+        { thumb:'rules/Encounters/images/thumbs/vile-samples.webp', src:'rules/Encounters/images/08-explainer.webp', card:'rules/Encounters/images/08.webp', alt:'Vile Samples', caption:'Vile Samples' },
+        { thumb:'rules/Encounters/images/thumbs/bloodhound.webp', src:'rules/Encounters/images/09-explainer.webp', card:'rules/Encounters/images/09.webp', alt:'Bloodhound', caption:'Bloodhound' },
+        { thumb:'rules/Encounters/images/thumbs/hardshell.webp', src:'rules/Encounters/images/10-explainer.webp', card:'rules/Encounters/images/10.webp', alt:'Hardshell', caption:'Hardshell' },
+        { thumb:'rules/Encounters/images/thumbs/thornback.webp', src:'rules/Encounters/images/11-explainer.webp', card:'rules/Encounters/images/11.webp', alt:'Thornback', caption:'Thornback' },
+        { thumb:'rules/Encounters/images/thumbs/shrieker.webp', src:'rules/Encounters/images/12-explainer.webp', card:'rules/Encounters/images/12.webp', alt:'Shrieker', caption:'Shrieker' },
+        { thumb:'rules/Encounters/images/thumbs/behemoth.webp', src:'rules/Encounters/images/13-explainer.webp', card:'rules/Encounters/images/13.webp', alt:'Behemoth', caption:'Behemoth' },
+        { thumb:'rules/Encounters/images/thumbs/matriarch.webp', src:'rules/Encounters/images/14-explainer.webp', card:'rules/Encounters/images/14.webp', alt:'Matriarch', caption:'Matriarch' }
+    ]
+  };
+
+  // Drag-to-scroll for the card strips. Touch already scrolls natively, so this
+  // handles mouse/pen only.
+  //
+  // Deliberately NOT using setPointerCapture: capturing retargets the click that
+  // follows to the strip itself, so the thumbnail's own handler never fires and
+  // tapping a card stops opening the lightbox. Document-level move/up listeners
+  // track the drag without disturbing click targeting.
+  function enableDragScroll(el){
+    let down = false, startX = 0, startLeft = 0, moved = 0;
+
+    const onMove = (e)=>{
+      if (!down) return;
+      const dx = e.clientX - startX;
+      if (Math.abs(dx) > moved) moved = Math.abs(dx);
+      if (moved > 3) e.preventDefault();          // don't start a text selection
+      el.scrollLeft = startLeft - dx;
+    };
+    const onUp = ()=>{
+      if (!down) return;
+      down = false;
+      el.classList.remove('dragging');
+      document.removeEventListener('pointermove', onMove);
+      document.removeEventListener('pointerup', onUp);
+      document.removeEventListener('pointercancel', onUp);
+    };
+
+    el.addEventListener('pointerdown', (e)=>{
+      if (e.pointerType === 'touch' || e.button !== 0) return;
+      down = true; moved = 0;
+      startX = e.clientX; startLeft = el.scrollLeft;
+      el.classList.add('dragging');
+      document.addEventListener('pointermove', onMove);
+      document.addEventListener('pointerup', onUp);
+      document.addEventListener('pointercancel', onUp);
+    });
+
+    // Swallow the click that ends a real drag; let a genuine tap through.
+    el.addEventListener('click', (e)=>{
+      if (moved > 6){ e.preventDefault(); e.stopPropagation(); }
+      moved = 0;
+    }, true);
+
+    const edges = ()=>{
+      const max = el.scrollWidth - el.clientWidth;
+      el.classList.toggle('at-start', el.scrollLeft <= 1);
+      el.classList.toggle('at-end', max <= 0 || el.scrollLeft >= max - 1);
+    };
+    el.addEventListener('scroll', edges, {passive:true});
+    window.addEventListener('resize', edges);
+    requestAnimationFrame(edges);
+  }
+
+  // ---------- Shared accordion (Album + Components) ----------
+  // One implementation, two lists. Rows collapse to a title + count; opening a
+  // row builds its square thumbnails on first use and reveals an optional
+  // "see all" link. A thumbnail may use a different image (`thumb`) from the
+  // full-size `src` handed to the lightbox.
+  function buildAccordion(listId, sections){
+    const list = document.getElementById(listId);
     if (!list) return;
 
-    // Instagram is read at open time so it reflects the current shuffled order.
-    const igItems = ()=> Array.from(document.querySelectorAll('#igGrid .ig-item img'))
-      .map(img=>({
-        src: img.getAttribute('src'),
-        alt: img.alt || 'Carrier — Instagram post',
-        caption: 'From @kodecco.games on Instagram.'
-      }));
-
-    const sections = [
-      { title:'Latest Designs',    desc:'The newest card and component art, fresh off the design table.', get:()=>latestDesignsItems },
-      { title:'Early Prototypes',  desc:'Where it all started — rough shapes, home prints, and the first sleeved decks.', get:()=>artDirectionItems },
-      { title:'Cutting Room',      desc:'Characters and secret roles we pulled from the deck.', get:()=>characterArchiveItems },
-      { title:'Playtest Sessions', desc:'Snapshots from the table, where the real testing happens.', get:()=>playtestSessionsItems },
-      { title:'Journal Covers',    desc:'The cover art from every dev journal entry. Head to the Dev Journal below to read them.', get:()=>journalCoverItems },
-      // preview caps the thumbnails only — the lightbox still browses the lot.
-      { title:'On Instagram',      desc:'Behind-the-scenes shots, playtest clips, and art drops from @kodecco.games.', get:igItems, preview:9 }
-    ];
-
     const items = sections.map((sec, i)=>{
-      const count = sec.get().length;
+      // A card back is a tile, not a card — keep it out of the count.
+      const count = sec.get().filter(d=>!d.back).length;
+      const unit  = sec.unit || 'image';
       const el = document.createElement('div');
       el.className = 'album-item';
       el.innerHTML =
-        '<button class="album-row" type="button" aria-expanded="false" aria-controls="ab-'+i+'">' +
+        '<button class="album-row" type="button" aria-expanded="false" aria-controls="'+listId+'-'+i+'">' +
           '<span class="album-title">'+sec.title+'</span>' +
-          '<span class="album-meta">'+count+(count===1?' image':' images')+'</span>' +
+          '<span class="album-meta">'+count+' '+unit+(count===1?'':'s')+'</span>' +
           '<span class="album-go" aria-hidden="true">&#9662;</span>' +
         '</button>' +
-        '<div class="album-panel" id="ab-'+i+'" role="region">' +
+        '<div class="album-panel" id="'+listId+'-'+i+'" role="region">' +
           '<div class="album-panel-inner">' +
             '<p class="album-desc">'+sec.desc+'</p>' +
-            '<div class="album-thumbs"></div>' +
+            '<div class="album-thumbs"'+(sec.ratio?' style="--thumb-ratio:'+sec.ratio+'"':'')+'></div>' +
+            (sec.link ? '<a class="btn ghost album-more" href="'+sec.link+'">See all '+sec.title+' &rarr;</a>' : '') +
           '</div>' +
         '</div>';
       list.appendChild(el);
       return {el, sec, built:false};
     });
 
+    function measure(el){
+      const panel = el.querySelector('.album-panel');
+      panel.style.maxHeight = panel.scrollHeight + 'px';
+    }
     function build(it){
       if (it.built) return;
-      const data = it.sec.get();                       // everything, for the lightbox
-      const cap  = it.sec.preview || data.length;      // how many thumbs to draw
+      const data = it.sec.get();                    // everything, for the lightbox
+      const cap  = it.sec.preview || data.length;   // how many thumbs to show first
       const wrap = it.el.querySelector('.album-thumbs');
-      if (data.length > cap){
-        const hint = document.createElement('p');
-        hint.className = 'album-hint';
-        hint.textContent = 'Showing the latest ' + cap + ' — tap any to browse all ' + data.length + '.';
-        wrap.insertAdjacentElement('beforebegin', hint);
-      }
-      data.slice(0, cap).forEach((item, idx)=>{
+
+      // A thumbnail always opens the lightbox over the FULL set at its own
+      // index, whether or not the grid has been expanded — "view more" only
+      // controls how many tiles are drawn, never what is browsable.
+      const addThumb = (item, idx)=>{
         const b = document.createElement('button');
         b.type = 'button';
         b.className = 'album-thumb';
         b.setAttribute('aria-label', item.alt || 'Open image');
-        b.innerHTML = '<img src="'+item.src+'" alt="" loading="lazy" decoding="async">';
-        b.addEventListener('click', (e)=>{
-          e.stopPropagation();
-          openGalleryPreview(data, idx);
-        });
-        // A late-loading thumb changes the panel height; re-measure.
+        b.innerHTML = '<img src="'+(item.thumb || item.src)+'" alt="" loading="lazy" decoding="async">';
+        b.addEventListener('click', (e)=>{ e.stopPropagation(); openGalleryPreview(data, idx); });
         b.querySelector('img').addEventListener('load', ()=>{
           if (it.el.classList.contains('open')) measure(it.el);
         });
         wrap.appendChild(b);
-      });
+      };
+
+      data.slice(0, cap).forEach(addThumb);
+
+      if (it.sec.cols){
+        // Horizontal strip: everything is present, reached by dragging.
+        wrap.classList.add('cards');
+        enableDragScroll(wrap);
+        if (data.length > 4){
+          const hint = document.createElement('p');
+          hint.className = 'album-hint';
+          const n = data.filter(d=>!d.back).length;
+          hint.textContent = 'Drag or swipe to browse all ' + n + ' \u2192';
+          wrap.insertAdjacentElement('beforebegin', hint);
+        }
+      } else if (data.length > cap){
+        const more = document.createElement('button');
+        more.type = 'button';
+        more.className = 'btn ghost album-more-btn';
+        more.textContent = 'View more (' + (data.length - cap) + ') \u2192';
+        more.addEventListener('click', (e)=>{
+          e.stopPropagation();
+          data.slice(cap).forEach((item, i)=> addThumb(item, cap + i));
+          more.remove();
+          measure(it.el);        // panel grew — remeasure or the rest is clipped
+        });
+        wrap.insertAdjacentElement('afterend', more);
+      }
       it.built = true;
-    }
-    function measure(el){
-      const panel = el.querySelector('.album-panel');
-      panel.style.maxHeight = panel.scrollHeight + 'px';
     }
     function shut(it){
       it.el.classList.remove('open');
@@ -1511,7 +1714,36 @@
       const open = items.find(i=>i.el.classList.contains('open'));
       if (open) measure(open.el);
     });
-  })();
+  }
+
+  // Components — what's in the box. Each row links out to its full rules page.
+  buildAccordion('componentList', [
+    { title:'Allegiances', unit:'card',
+      desc:'The secret roles dealt at the start of the game — who you really are, and who you are trying to outlast.',
+      link:'rules/allegiance/allegiance.html', get:()=>componentSets.allegiance, ratio:'827/1241', cols:4 },
+    { title:'Characters', unit:'card',
+      desc:'The public roles everyone can see, each with an ability that shapes how you play the table.',
+      link:'rules/character/character.html', get:()=>componentSets.character, ratio:'827/1241', cols:4 },
+    { title:'Encounters & Supplies', unit:'card',
+      desc:'Everything drawn from the Encounter deck — the threats that come for you, and the supplies that might save you.',
+      link:'rules/Encounters/encounters.html', get:()=>componentSets.encounters, ratio:'827/1241', cols:4 }
+  ]);
+
+  // Album — the archive.
+  buildAccordion('albumList', [
+    { title:'Latest Designs',    desc:'The newest card and component art, fresh off the design table.', get:()=>latestDesignsItems },
+    { title:'Early Prototypes',  desc:'Where it all started — rough shapes, home prints, and the first sleeved decks.', get:()=>artDirectionItems },
+    { title:'Cutting Room',      desc:'Characters and secret roles we pulled from the deck.', get:()=>characterArchiveItems },
+    { title:'Playtest Sessions', desc:'Snapshots from the table, where the real testing happens.', get:()=>playtestSessionsItems },
+    { title:'Journal Covers',    desc:'The cover art from every dev journal entry. Head to the Dev Journal below to read them.', get:()=>journalCoverItems },
+    // preview caps the thumbnails only — the lightbox still browses the lot.
+    { title:'On Instagram',      desc:'Behind-the-scenes shots, playtest clips, and art drops from @kodecco.games.',
+      get:()=>Array.from(document.querySelectorAll('#igGrid .ig-item img')).map(img=>({
+        src: img.getAttribute('src'),
+        alt: img.alt || 'Carrier — Instagram post',
+        caption: 'From @kodecco.games on Instagram.'
+      })), preview:9 }
+  ]);
 
   // Latest 10 items across the site, newest first. Add new entries to the TOP
   // and drop the oldest to keep this at 10 whenever something new goes live.
