@@ -1684,7 +1684,9 @@
 
     const items = sections.map((sec, i)=>{
       // A card back is a tile, not a card — keep it out of the count.
-      const count = sec.get().filter(d=>!d.back).length;
+      // sec.count lets a section state its real total (e.g. cards still
+      // pending art) instead of just counting the thumbnails on hand.
+      const count = sec.count!=null ? sec.count : sec.get().filter(d=>!d.back).length;
       const unit  = sec.unit || 'image';
       const el = document.createElement('div');
       el.className = 'album-item';
@@ -1792,7 +1794,7 @@
     { title:'Characters', unit:'card',
       desc:'The public roles everyone can see, each with an ability that shapes how you play the table.',
       link:'rules/character/', get:()=>componentSets.character, ratio:'827/1241', cols:4 },
-    { title:'Encounters & Supplies', unit:'card',
+    { title:'Encounters & Supplies', unit:'card', count:65,
       desc:'Everything drawn from the Encounter deck — the threats that come for you, and the supplies that might save you.',
       link:'rules/Encounters/', get:()=>componentSets.encounters, ratio:'827/1241', cols:4 }
   ]);
