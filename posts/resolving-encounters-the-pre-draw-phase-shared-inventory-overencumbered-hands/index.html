@@ -71,6 +71,9 @@
   .tally td:not(:first-child){text-align:right; white-space:nowrap;}
   .tally .was{color:var(--grey);}
   .tally .now{color:var(--yellow);}
+  /* This post's tables hold prose, not was/now numeric comparisons — let the
+     description column wrap instead of running off the right edge. */
+  .tally td.now{white-space:normal; word-break:break-word; text-align:left;}
   .tally tfoot td{background:rgba(200,29,29,0.10); border-top:2px solid var(--darkred); border-bottom:none;}
   .tally tfoot td:first-child{font-family:'DotGothic16',monospace; font-size:0.68rem; letter-spacing:1px; text-transform:uppercase;}
   @media (max-width:560px){ .tally{font-size:0.95rem;} .tally th, .tally td{padding:9px 8px;} }
