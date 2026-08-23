@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Too Many Characters — CARRIER</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DotGothic16&family=VT323&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --black:#0a0a0a; --panel:#161616; --panel2:#1c1c1c;
+    --red:#c81d1d; --brightred:#e8341f; --darkred:#6e1010;
+    --yellow:#f2c14e; --grey:#9a9a9a; --white:#eee8dc;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--black); color:var(--white);
+    font-family:'VT323','Courier New',monospace; font-size:1.25rem; line-height:1.7;
+  }
+  h1,h2,.logo,nav a,.tag{font-family:'DotGothic16',monospace;}
+  a{color:inherit;}
+  .hazard{height:10px; background:repeating-linear-gradient(45deg, var(--yellow) 0 20px, var(--black) 20px 40px);}
+  header{
+    position:sticky; top:0; z-index:10001; display:flex; align-items:center; justify-content:space-between;
+    padding:12px 6%; border-bottom:2px solid var(--darkred);
+    background:rgba(22,22,22,0.92); backdrop-filter:blur(4px);
+  }
+  .logo-group{display:flex; align-items:center; gap:14px; cursor:pointer; transition:opacity .15s;}
+  .logo-group:hover{opacity:0.85;}
+  .logo-group img{height:52px; width:auto; display:block; filter:drop-shadow(3px 3px 0 #000) drop-shadow(0 0 10px rgba(0,0,0,0.6));}
+  nav a{
+    color:var(--grey); text-decoration:none; margin-left:22px; font-size:0.6rem;
+    text-transform:uppercase; border-bottom:2px solid transparent; padding-bottom:4px;
+  }
+  nav a:hover{color:var(--yellow); border-bottom:2px solid var(--yellow);}
+
+  .post-header{
+    padding:70px 6% 40px; text-align:center;
+    background:linear-gradient(rgba(8,8,8,0.9),rgba(8,8,8,0.94)), repeating-linear-gradient(135deg,#1a1a1a 0 40px,#141414 40px 80px);
+    border-bottom:2px solid var(--darkred);
+  }
+  .post-header .tag{
+    display:block; width:fit-content; margin:0 auto 22px; color:var(--yellow); border:2px solid var(--yellow);
+    padding:8px 14px; font-size:0.5rem; letter-spacing:1px;
+  }
+  .post-header h1{font-size:clamp(1.4rem,4vw,2.1rem); color:var(--brightred); text-shadow:3px 3px 0 #000; margin-bottom:18px; line-height:1.5;}
+  .post-header .meta{color:var(--grey); font-size:0.9rem;}
+
+  .post-body{max-width:720px; margin:0 auto; padding:60px 6% 40px;}
+  .post-body p{color:var(--white); margin-bottom:24px; font-size:1.15rem;}
+  .post-body h2{color:var(--red); font-size:1.2rem; margin:36px 0 16px;}
+  .post-body strong{color:var(--yellow); font-weight:normal;}
+  .post-body ul, .post-body ol{margin:0 0 24px 1.4em; color:var(--white);}
+  .post-body li{margin-bottom:10px; font-size:1.12rem;}
+  .post-body li::marker{color:var(--red);}
+  .steps{list-style:none; margin-left:0; counter-reset:step;}
+  .steps li{counter-increment:step; position:relative; padding-left:44px; margin-bottom:14px;}
+  .steps li::before{
+    content:counter(step); position:absolute; left:0; top:2px;
+    width:28px; height:28px; display:flex; align-items:center; justify-content:center;
+    background:var(--red); color:#fff; border:2px solid #000;
+    font-family:'DotGothic16',monospace; font-size:0.72rem;
+  }
+  .tally{width:100%; border-collapse:collapse; margin:0 0 30px; border:2px solid var(--darkred); font-size:1.05rem;}
+  .tally th, .tally td{padding:11px 13px; text-align:left; border-bottom:1px solid #2b2b2b;}
+  .tally thead th{
+    background:var(--panel); color:var(--yellow); font-family:'DotGothic16',monospace;
+    font-size:0.62rem; letter-spacing:1px; text-transform:uppercase;
+  }
+  .tally td:not(:first-child){text-align:right; white-space:nowrap;}
+  .tally .was{color:var(--grey);}
+  .tally .now{color:var(--yellow);}
+  .tally tfoot td{background:rgba(200,29,29,0.10); border-top:2px solid var(--darkred); border-bottom:none;}
+  .tally tfoot td:first-child{font-family:'DotGothic16',monospace; font-size:0.68rem; letter-spacing:1px; text-transform:uppercase;}
+  @media (max-width:560px){ .tally{font-size:0.95rem;} .tally th, .tally td{padding:9px 8px;} }
+  .post-header .byline{color:#6f6f6f; font-size:0.82rem; margin-top:6px;}
+  .post-body figure{margin:0 0 32px;}
+  .post-body figure img{display:block; width:100%; height:auto; border:2px solid var(--darkred); cursor:zoom-in; transition:border-color .2s;}
+  .post-body figure img:hover{border-color:var(--yellow);}
+  .post-body figcaption{color:var(--grey); font-size:0.9rem; margin-top:10px; line-height:1.5;}
+
+  .card-row{
+    display:grid; grid-template-columns:220px 1fr; grid-template-areas:"title title" "img text";
+    column-gap:28px; row-gap:16px; margin:0 0 32px;
+    background:var(--panel); border:2px solid var(--darkred); padding:22px 26px;
+  }
+  .card-row .card-title{
+    grid-area:title; color:var(--red); font-family:'DotGothic16',monospace; font-size:1.05rem;
+    letter-spacing:0.5px; text-transform:uppercase;
+  }
+  .card-row .card-img{grid-area:img; width:220px;}
+  .card-row .card-img img{display:block; width:100%; height:auto; cursor:zoom-in; transition:filter .2s;}
+  .card-row .card-img img:hover{filter:brightness(1.08);}
+  .card-row .card-text{grid-area:text; min-width:0;}
+  .card-row .card-text p{color:var(--white); margin-bottom:16px; font-size:1.05rem; line-height:1.6;}
+  @media (max-width:560px){
+    .card-row{grid-template-columns:1fr; grid-template-areas:"title" "img" "text"; text-align:center;}
+    .card-row .card-img{width:100%; max-width:260px; margin:0 auto;}
+  }
+
+  .lightbox{
+    position:fixed; inset:0; background:rgba(5,5,5,0.94); display:none;
+    align-items:center; justify-content:center; z-index:20000; padding:40px; cursor:zoom-out;
+  }
+  .lightbox.active{display:flex;}
+  .lightbox img{
+    max-width:92vw; max-height:88vh; border:2px solid var(--darkred);
+    box-shadow:0 0 40px rgba(0,0,0,0.6); cursor:zoom-in;
+    transition:transform .25s ease; transform-origin:center center;
+  }
+  .lightbox img.zoomed{transform:scale(1.9); cursor:zoom-out;}
+  .lightbox-close{
+    position:absolute; top:22px; right:34px; color:var(--yellow); font-size:2.4rem;
+    font-family:'DotGothic16',monospace; cursor:pointer; line-height:1; z-index:20001;
+  }
+  .lightbox-close:hover{color:var(--red);}
+  .lightbox-hint{
+    position:absolute; bottom:22px; left:0; right:0; text-align:center;
+    color:var(--grey); font-size:0.7rem; letter-spacing:0.5px; text-transform:uppercase;
+    font-family:'DotGothic16',monospace; pointer-events:none;
+  }
+
+  .back-link{
+    display:block; max-width:720px; margin:0 auto 80px; padding:0 6%;
+    color:var(--yellow); text-decoration:none; font-size:0.7rem; letter-spacing:1px;
+    font-family:'DotGothic16',monospace;
+  }
+  .back-link:hover{text-decoration:underline;}
+
+  footer{text-align:center; padding:38px 6%; color:#5a5a5a; font-size:0.85rem; border-top:2px solid var(--darkred);}
+  footer .socials a{margin:0 10px; color:var(--grey); text-decoration:none; font-weight:700;}
+  footer .socials a:hover{color:var(--red);}
+
+  .crt-overlay{
+    position:fixed; inset:0; pointer-events:none; z-index:9999;
+    background:repeating-linear-gradient(0deg, rgba(0,0,0,0.18) 0px, rgba(0,0,0,0.18) 1px, transparent 1px, transparent 3px);
+    mix-blend-mode:overlay;
+    animation:crtflicker 6s infinite;
+  }
+  @keyframes crtflicker{
+    0%,100%{opacity:0.85;} 92%{opacity:0.85;} 93%{opacity:0.55;} 94%{opacity:0.85;} 96%{opacity:0.65;} 97%{opacity:0.85;}
+  }
+  .post-header .tag::after{
+    content:"_"; margin-left:3px; animation:cursorblink 1s steps(1) infinite;
+  }
+  @keyframes cursorblink{ 50%{ opacity:0; } }
+
+  /* ---------- DESKTOP READING LAYOUT ----------
+     The pixel font reads fine on a phone, where lines are short and the text is
+     physically small. On a wide monitor the same font over several hundred words
+     is hard work. From 900px up the column widens and body copy switches to the
+     same serif the editor composes in, so a finished post reads the way it looked
+     while you were writing it. Below 900px nothing here applies and the original
+     styling stands. */
+  @media (min-width:900px){
+    .post-body{max-width:980px; padding:64px 44px 48px;}
+    .post-body p,
+    .post-body li,
+    .post-body figcaption,
+    .post-body .card-row .card-text p{
+      font-family:Georgia,'Times New Roman',serif; letter-spacing:0.1px;
+    }
+    .post-body p{font-size:1.08rem; line-height:1.78; margin-bottom:22px; color:#f3ede2;}
+    .post-body li{font-size:1.05rem; line-height:1.72; margin-bottom:12px;}
+    .post-body ul, .post-body ol{margin-bottom:26px;}
+    .post-body h2{
+      font-family:Georgia,'Times New Roman',serif; color:var(--yellow);
+      font-size:1.55rem; letter-spacing:0.2px; margin:48px 0 18px;
+    }
+    .post-body strong{color:var(--yellow); font-weight:700;}
+    .post-body figure{margin-bottom:40px;}
+    .post-body figcaption{font-size:0.95rem; color:#a8a29a; line-height:1.6; margin-top:12px;}
+    .post-body .tally{font-size:1rem;}
+    .post-body .tally td{font-family:Georgia,'Times New Roman',serif;}
+    .post-body .card-row{grid-template-columns:250px 1fr; column-gap:32px; padding:26px 30px;}
+    .post-body .card-row .card-img{width:250px;}
+    .post-body .card-row .card-text p{font-size:1.03rem; line-height:1.7;}
+    .post-header{padding:84px 6% 46px;}
+    .post-header h1{font-size:clamp(1.8rem,3vw,2.5rem);}
+    .post-header .meta{font-size:1rem;}
+    .back-link{max-width:980px; padding:0 44px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="crt-overlay"></div>
+<div class="hazard"></div>
+<header>
+  <a href="../../" class="logo-group">
+    <img src="../../images/kodecco-icon.png" alt="Kodecco Games">
+  </a>
+  <nav>
+    <a href="../../#brief">Components</a>
+    <a href="../../#album">Album</a>
+    <a href="../../#roadmap">Roadmap</a>
+    <a href="../../#journal">Dev Journal</a>
+    <a href="../../#signal">Send Signal</a>
+  </nav>
+</header>
+
+<div class="post-header">
+  <span class="tag">// DEV JOURNAL</span>
+  <h1>Too Many Characters</h1>
+  <div class="meta">Aug 8, 2026 · 3 min read</div>
+  
+</div>
+
+<div class="post-body">
+
+  <p>During a playtest session with Version 3, we kept expanding the characters. More classes, more abilities, more variety — it felt like progress at the time.</p>
+
+  <p>Then we laid them all out on the table.</p>
+
+  <figure>
+
+    <img src="images/01.avif" alt="Character Roster">
+
+    <figcaption>At this point, we had 5 Characters per class, and 8 classes, that meant we had 40 unique Characters.</figcaption>
+
+  </figure>
+
+  <p>Turns out "more" wasn't the same as "better." A lot of these characters were doing versions of the same thing with a different coat of paint. Different name, different flavor text, same job at the table. New players couldn't keep track of who did what, and honestly, neither could we half the time.</p>
+
+  <p>Of course, there were good Characters like the Tracer, who has been tested and refined more as we playtested — Characters we were confident in.</p>
+
+  <figure>
+
+    <img src="images/02.avif" alt="The Tracer">
+
+    <figcaption>The Tracer is one of the earliest developed Characters, back when she was called 'Codebreaker'</figcaption>
+
+  </figure>
+
+  <p>But there's also new ones, like the Pickpocket, who seems basic — just take someone's card each turn, right? But what if, in the end game, everyone is severely drained of supplies and the Pickpocket is a Carrier actively stealing from the good players, turning the game into one of attrition? That was not very fun.</p>
+
+  <figure>
+
+    <img src="images/03.avif" alt="The Pickpocket">
+
+    <figcaption>On deployment, and after 2 rounds, we knew the simple mechanic of Pickpocket was extremely overpowered in a game like this.</figcaption>
+
+  </figure>
+
+  <p>Of course, it's through experimenting that we can find Characters that work, with abilities that are fair and helpful regardless of which side you're on. That's the essence of Carrier: no matter which side you're on, Carrier or Survivor, your odds of winning shouldn't be affected.</p>
+
+  <figure>
+
+    <img src="images/04.avif" alt="The Brawler">
+
+    <figcaption>The 'Hunter Class' one of our favourite additions to the game.</figcaption>
+
+  </figure>
+
+  <p>It's through this testing that we actually found unique new ways of solving problems. The Brawler, for one, was specifically implemented for lower player counts, because if you've only got so many players, a player who counts as 2 participants changes a lot — it also encourages players to actually give out their limited supplies, but you have to build trust first. That changed the dynamic; it was way too static previously, with everyone just surviving on their own, and we wanted to implement even more characters that required teamwork.</p>
+
+  <figure>
+
+    <img src="images/05.avif" alt="The Watcher">
+
+    <figcaption>The latest, and most recent addition to the game, The Scrapper Classes. </figcaption>
+
+  </figure>
+
+  <p>But we also have classes like The Scrapper class, which leaned too close to our OG class, The Rangers, to really distinguish itself as a unique class of its own — turning it into a replica of existing Characters with small differences, and making it feel really redundant.</p>
+
+  <figure>
+
+    <img src="images/06.avif" alt="The Amnesiacs">
+
+  </figure>
+
+  <p>However, that is also exactly why we want to change things up. Merging the characters who are too similar, removing those who truly feel like they are not impactful, and, most importantly, cutting what's NOT FUN.   Our goal, at the end of the day, is to ensure every character you get doesn't make you feel like you can't contribute to a game.   On top of redesigning Characters' abilities, because of the plans to overhaul the battle mechanics, we also need to consider how the current indicators work.</p>
+
+  <figure>
+
+    <img src="images/07.avif" alt="The Class Indicator">
+
+  </figure>
+
+  <p>Currently, with 8 different classes, we definitely foresee that some are going to be removed, and merged into more meaningful groupings.</p>
+
+  <figure>
+
+    <img src="images/08.avif" alt="The Character Art">
+
+  </figure>
+
+  <p>Of course, just like the Secret Roles, we also want to change up the poses of some of the Characters, making them more dynamic and unique.</p>
+
+  <figure>
+
+    <img src="images/09.avif" alt="The Participant Indicator">
+
+  </figure>
+
+  <p>Currently, in V3, all encounters read out exactly how many participants are required for any given encounter — we want to change that. If a group encounters a Horde of zombies, it makes sense to want more players to participate, so why are we limiting it to 5 participants only, when your group has 8 people? It makes sense that you would want to send everyone, but what the player would have to consider is that all players and resources are limited — you must take the risk while minimising the danger to the group. This new mechanic is still being worked on, and will be updated soon on the Dev Journal, but essentially, this change would make the Participant Indicator Icon obsolete.</p>
+
+  <figure>
+
+    <img src="images/10.avif" alt="Supply & Samples">
+
+    <figcaption>Supply & Samples will be removed when V4 rolls out.</figcaption>
+
+  </figure>
+
+  <p>Another benefit to changing the participants is that we remove over 72 cards (3 supply + 3 Samples for each player) from the game, removing a "fixed" hand. Players will instead be given a whole new way of resolving Encounters.</p>
+
+  <p>None of this is set in stone yet, but the direction is clear: fewer Characters, each one earning its spot. If a Character doesn't make a table feel different when it's in play, it doesn't belong in V4. We'll be sharing the redesigned roster as it comes together — for now, back to the drawing board.</p>
+
+</div>
+
+<a class="back-link" href="../../#journal">← Back to Dev Journal</a>
+
+<footer>
+  <div class="socials">
+    <a href="#">Instagram</a> · <a href="#">BoardGameGeek</a> · <a href="#">Email</a>
+  </div>
+  <p style="margin-top:12px;">© 2026 CARRIER — a survival board game in development.</p>
+</footer>
+
+<div class="lightbox" id="lightbox">
+  <span class="lightbox-close" id="lightboxClose">&times;</span>
+  <img id="lightboxImg" src="" alt="">
+  <span class="lightbox-hint">Click image to zoom · Click outside or press Esc to close</span>
+</div>
+
+<script>
+  (function(){
+    var lb = document.getElementById('lightbox');
+    var lbImg = document.getElementById('lightboxImg');
+    var closeBtn = document.getElementById('lightboxClose');
+
+    document.querySelectorAll('.post-body figure img, .post-body .card-row img').forEach(function(img){
+      img.addEventListener('click', function(){
+        lbImg.src = img.getAttribute('src');
+        lbImg.alt = img.getAttribute('alt') || '';
+        lbImg.classList.remove('zoomed');
+        lb.classList.add('active');
+      });
+    });
+
+    lbImg.addEventListener('click', function(e){
+      e.stopPropagation();
+      lbImg.classList.toggle('zoomed');
+    });
+
+    function closeLightbox(){
+      lb.classList.remove('active');
+      lbImg.classList.remove('zoomed');
+    }
+    closeBtn.addEventListener('click', closeLightbox);
+    lb.addEventListener('click', function(e){ if(e.target === lb) closeLightbox(); });
+    document.addEventListener('keydown', function(e){ if(e.key === 'Escape') closeLightbox(); });
+  })();
+</script>
+
+</body>
+</html>

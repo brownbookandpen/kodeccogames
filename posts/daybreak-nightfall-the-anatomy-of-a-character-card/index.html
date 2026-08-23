@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Daybreak, Nightfall & The Anatomy of a Character Card — CARRIER</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DotGothic16&family=VT323&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --black:#0a0a0a; --panel:#161616; --panel2:#1c1c1c;
+    --red:#c81d1d; --brightred:#e8341f; --darkred:#6e1010;
+    --yellow:#f2c14e; --grey:#9a9a9a; --white:#eee8dc;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--black); color:var(--white);
+    font-family:'VT323','Courier New',monospace; font-size:1.25rem; line-height:1.7;
+  }
+  h1,h2,.logo,nav a,.tag{font-family:'DotGothic16',monospace;}
+  a{color:inherit;}
+  .hazard{height:10px; background:repeating-linear-gradient(45deg, var(--yellow) 0 20px, var(--black) 20px 40px);}
+  header{
+    position:sticky; top:0; z-index:10001; display:flex; align-items:center; justify-content:space-between;
+    padding:12px 6%; border-bottom:2px solid var(--darkred);
+    background:rgba(22,22,22,0.92); backdrop-filter:blur(4px);
+  }
+  .logo-group{display:flex; align-items:center; gap:14px; cursor:pointer; transition:opacity .15s;}
+  .logo-group:hover{opacity:0.85;}
+  .logo-group img{height:52px; width:auto; display:block; filter:drop-shadow(3px 3px 0 #000) drop-shadow(0 0 10px rgba(0,0,0,0.6));}
+  nav a{
+    color:var(--grey); text-decoration:none; margin-left:22px; font-size:0.6rem;
+    text-transform:uppercase; border-bottom:2px solid transparent; padding-bottom:4px;
+  }
+  nav a:hover{color:var(--yellow); border-bottom:2px solid var(--yellow);}
+
+  .post-header{
+    padding:70px 6% 40px; text-align:center;
+    background:linear-gradient(rgba(8,8,8,0.9),rgba(8,8,8,0.94)), repeating-linear-gradient(135deg,#1a1a1a 0 40px,#141414 40px 80px);
+    border-bottom:2px solid var(--darkred);
+  }
+  .post-header .tag{
+    display:block; width:fit-content; margin:0 auto 22px; color:var(--yellow); border:2px solid var(--yellow);
+    padding:8px 14px; font-size:0.5rem; letter-spacing:1px;
+  }
+  .post-header h1{font-size:clamp(1.4rem,4vw,2.1rem); color:var(--brightred); text-shadow:3px 3px 0 #000; margin-bottom:18px; line-height:1.5;}
+  .post-header .meta{color:var(--grey); font-size:0.9rem;}
+
+  .post-body{max-width:720px; margin:0 auto; padding:60px 6% 40px;}
+  .post-body p{color:var(--white); margin-bottom:24px; font-size:1.15rem;}
+  .post-body h2{color:var(--red); font-size:1.2rem; margin:36px 0 16px;}
+  .post-body strong{color:var(--yellow); font-weight:normal;}
+  .post-body ul, .post-body ol{margin:0 0 24px 1.4em; color:var(--white);}
+  .post-body li{margin-bottom:10px; font-size:1.12rem;}
+  .post-body li::marker{color:var(--red);}
+  .steps{list-style:none; margin-left:0; counter-reset:step;}
+  .steps li{counter-increment:step; position:relative; padding-left:44px; margin-bottom:14px;}
+  .steps li::before{
+    content:counter(step); position:absolute; left:0; top:2px;
+    width:28px; height:28px; display:flex; align-items:center; justify-content:center;
+    background:var(--red); color:#fff; border:2px solid #000;
+    font-family:'DotGothic16',monospace; font-size:0.72rem;
+  }
+  .tally{width:100%; border-collapse:collapse; margin:0 0 30px; border:2px solid var(--darkred); font-size:1.05rem;}
+  .tally th, .tally td{padding:11px 13px; text-align:left; border-bottom:1px solid #2b2b2b;}
+  .tally thead th{
+    background:var(--panel); color:var(--yellow); font-family:'DotGothic16',monospace;
+    font-size:0.62rem; letter-spacing:1px; text-transform:uppercase;
+  }
+  .tally td:not(:first-child){text-align:right; white-space:nowrap;}
+  .tally .was{color:var(--grey);}
+  .tally .now{color:var(--yellow);}
+  .tally tfoot td{background:rgba(200,29,29,0.10); border-top:2px solid var(--darkred); border-bottom:none;}
+  .tally tfoot td:first-child{font-family:'DotGothic16',monospace; font-size:0.68rem; letter-spacing:1px; text-transform:uppercase;}
+  @media (max-width:560px){ .tally{font-size:0.95rem;} .tally th, .tally td{padding:9px 8px;} }
+  .post-header .byline{color:#6f6f6f; font-size:0.82rem; margin-top:6px;}
+  .post-body figure{margin:0 0 32px;}
+  .post-body figure img{display:block; width:100%; height:auto; border:2px solid var(--darkred); cursor:zoom-in; transition:border-color .2s;}
+  .post-body figure img:hover{border-color:var(--yellow);}
+  .post-body figcaption{color:var(--grey); font-size:0.9rem; margin-top:10px; line-height:1.5;}
+
+  .card-row{
+    display:grid; grid-template-columns:220px 1fr; grid-template-areas:"title title" "img text";
+    column-gap:28px; row-gap:16px; margin:0 0 32px;
+    background:var(--panel); border:2px solid var(--darkred); padding:22px 26px;
+  }
+  .card-row .card-title{
+    grid-area:title; color:var(--red); font-family:'DotGothic16',monospace; font-size:1.05rem;
+    letter-spacing:0.5px; text-transform:uppercase;
+  }
+  .card-row .card-img{grid-area:img; width:220px;}
+  .card-row .card-img img{display:block; width:100%; height:auto; cursor:zoom-in; transition:filter .2s;}
+  .card-row .card-img img:hover{filter:brightness(1.08);}
+  .card-row .card-text{grid-area:text; min-width:0;}
+  .card-row .card-text p{color:var(--white); margin-bottom:16px; font-size:1.05rem; line-height:1.6;}
+  @media (max-width:560px){
+    .card-row{grid-template-columns:1fr; grid-template-areas:"title" "img" "text"; text-align:center;}
+    .card-row .card-img{width:100%; max-width:260px; margin:0 auto;}
+  }
+
+  .lightbox{
+    position:fixed; inset:0; background:rgba(5,5,5,0.94); display:none;
+    align-items:center; justify-content:center; z-index:20000; padding:40px; cursor:zoom-out;
+  }
+  .lightbox.active{display:flex;}
+  .lightbox img{
+    max-width:92vw; max-height:88vh; border:2px solid var(--darkred);
+    box-shadow:0 0 40px rgba(0,0,0,0.6); cursor:zoom-in;
+    transition:transform .25s ease; transform-origin:center center;
+  }
+  .lightbox img.zoomed{transform:scale(1.9); cursor:zoom-out;}
+  .lightbox-close{
+    position:absolute; top:22px; right:34px; color:var(--yellow); font-size:2.4rem;
+    font-family:'DotGothic16',monospace; cursor:pointer; line-height:1; z-index:20001;
+  }
+  .lightbox-close:hover{color:var(--red);}
+  .lightbox-hint{
+    position:absolute; bottom:22px; left:0; right:0; text-align:center;
+    color:var(--grey); font-size:0.7rem; letter-spacing:0.5px; text-transform:uppercase;
+    font-family:'DotGothic16',monospace; pointer-events:none;
+  }
+
+  .back-link{
+    display:block; max-width:720px; margin:0 auto 80px; padding:0 6%;
+    color:var(--yellow); text-decoration:none; font-size:0.7rem; letter-spacing:1px;
+    font-family:'DotGothic16',monospace;
+  }
+  .back-link:hover{text-decoration:underline;}
+
+  footer{text-align:center; padding:38px 6%; color:#5a5a5a; font-size:0.85rem; border-top:2px solid var(--darkred);}
+  footer .socials a{margin:0 10px; color:var(--grey); text-decoration:none; font-weight:700;}
+  footer .socials a:hover{color:var(--red);}
+
+  .crt-overlay{
+    position:fixed; inset:0; pointer-events:none; z-index:9999;
+    background:repeating-linear-gradient(0deg, rgba(0,0,0,0.18) 0px, rgba(0,0,0,0.18) 1px, transparent 1px, transparent 3px);
+    mix-blend-mode:overlay;
+    animation:crtflicker 6s infinite;
+  }
+  @keyframes crtflicker{
+    0%,100%{opacity:0.85;} 92%{opacity:0.85;} 93%{opacity:0.55;} 94%{opacity:0.85;} 96%{opacity:0.65;} 97%{opacity:0.85;}
+  }
+  .post-header .tag::after{
+    content:"_"; margin-left:3px; animation:cursorblink 1s steps(1) infinite;
+  }
+  @keyframes cursorblink{ 50%{ opacity:0; } }
+
+  /* ---------- DESKTOP READING LAYOUT ----------
+     The pixel font reads fine on a phone, where lines are short and the text is
+     physically small. On a wide monitor the same font over several hundred words
+     is hard work. From 900px up the column widens and body copy switches to the
+     same serif the editor composes in, so a finished post reads the way it looked
+     while you were writing it. Below 900px nothing here applies and the original
+     styling stands. */
+  @media (min-width:900px){
+    .post-body{max-width:980px; padding:64px 44px 48px;}
+    .post-body p,
+    .post-body li,
+    .post-body figcaption,
+    .post-body .card-row .card-text p{
+      font-family:Georgia,'Times New Roman',serif; letter-spacing:0.1px;
+    }
+    .post-body p{font-size:1.08rem; line-height:1.78; margin-bottom:22px; color:#f3ede2;}
+    .post-body li{font-size:1.05rem; line-height:1.72; margin-bottom:12px;}
+    .post-body ul, .post-body ol{margin-bottom:26px;}
+    .post-body h2{
+      font-family:Georgia,'Times New Roman',serif; color:var(--yellow);
+      font-size:1.55rem; letter-spacing:0.2px; margin:48px 0 18px;
+    }
+    .post-body strong{color:var(--yellow); font-weight:700;}
+    .post-body figure{margin-bottom:40px;}
+    .post-body figcaption{font-size:0.95rem; color:#a8a29a; line-height:1.6; margin-top:12px;}
+    .post-body .tally{font-size:1rem;}
+    .post-body .tally td{font-family:Georgia,'Times New Roman',serif;}
+    .post-body .card-row{grid-template-columns:250px 1fr; column-gap:32px; padding:26px 30px;}
+    .post-body .card-row .card-img{width:250px;}
+    .post-body .card-row .card-text p{font-size:1.03rem; line-height:1.7;}
+    .post-header{padding:84px 6% 46px;}
+    .post-header h1{font-size:clamp(1.8rem,3vw,2.5rem);}
+    .post-header .meta{font-size:1rem;}
+    .back-link{max-width:980px; padding:0 44px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="crt-overlay"></div>
+<div class="hazard"></div>
+<header>
+  <a href="../../" class="logo-group">
+    <img src="../../images/kodecco-icon.png" alt="Kodecco Games">
+  </a>
+  <nav>
+    <a href="../../#brief">Components</a>
+    <a href="../../#album">Album</a>
+    <a href="../../#roadmap">Roadmap</a>
+    <a href="../../#journal">Dev Journal</a>
+    <a href="../../#signal">Send Signal</a>
+  </nav>
+</header>
+
+<div class="post-header">
+  <span class="tag">// DEV JOURNAL</span>
+  <h1>Daybreak, Nightfall & The Anatomy of a Character Card</h1>
+  <div class="meta">Aug 16, 2026 · 3 min read</div>
+  
+</div>
+
+<div class="post-body">
+
+  <figure>
+
+    <img src="images/01.avif" alt="">
+
+  </figure>
+
+  <h2>The World Turns: Understanding Daybreak & Nightfall</h2>
+
+  <p>Before diving into character abilities, it’s important to understand how time moves in <em>Carrier</em>.</p>
+
+  <p>Survival isn't a static standoff—the world constantly cycles between daylight preparation and nighttime dread. This cycle is controlled by a central phase card and a straightforward round structure:</p>
+
+  <ol class="steps">
+    <li><strong>Setting the Journey:</strong> At the start of the game, the first player chooses whether the group begins their journey in <strong>Daybreak</strong> or <strong>Nightfall</strong>.</li>
+    <li><strong>A Full Table Rotation:</strong> That chosen phase remains active for a complete round while every player at the table takes their turn.</li>
+    <li><strong>Flipping the Phase:</strong> When play circles back to the first player to start the next round, they flip the central phase card over to the opposite phase (e.g., Daybreak flips into Nightfall, and vice versa).</li>
+  </ol>
+
+  <p>This alternating rhythm creates a predictable heartbeat for the game—setting the stage for when characters can deploy their most potent skills.</p>
+
+  <h2>The Problem with Consecutive Power Spikes</h2>
+
+  <p>In earlier playtests without this cycle, character abilities caused a serious pacing headache.</p>
+
+  <p>While players were allowed to trigger abilities on their turn, many of these powers—like digging through discards for supplies, seizing player hands, or inspecting secret roles—are inherently game-shifting. When players chained these massive abilities consecutively back-to-back in the same round, it completely warped the game.</p>
+
+  <p>The horde was trivialized, information flooded the table too quickly, and social deduction collapsed. In short: when every single turn became an uninterrupted barrage of superpowers, the game lost its tension and stopped being fun.</p>
+
+  <p>To balance the power curve and give the table a natural breathing rhythm, we anchored every character's skill directly to this Day/Night cycle: <strong>Daybreak</strong>, <strong>Nightfall</strong>, or <strong>All Phase</strong>.</p>
+
+  <h2>The Anatomy of the New Character Cards</h2>
+
+  <p>We rebuilt the card frame from the ground up to give players complete visual clarity across the table. Every card now communicates its role and timing instantly:</p>
+
+  <figure>
+
+    <img src="images/02.avif" alt="">
+
+  </figure>
+
+  <p><strong>Top-Left Class Badge:</strong> Categorizes the character's functional archetype (e.g., <strong>Rangers</strong> in Green for supply management, <strong>Detectives</strong> in Red for intel and deduction).</p>
+
+  <figure>
+
+    <img src="images/03.avif" alt="">
+
+  </figure>
+
+  <p><strong>Top-Right Phase Indicator:</strong> A high-contrast, color-coded badge showing whether the card activates during Daybreak, Nightfall, or across both.</p>
+
+  <figure>
+
+    <img src="images/04.avif" alt="">
+
+  </figure>
+
+  <figure>
+
+    <img src="images/05.avif" alt="">
+
+  </figure>
+
+  <figure>
+
+    <img src="images/06.avif" alt="">
+
+  </figure>
+
+  <h2>Daybreak (Preparation & Scavenging)</h2>
+
+  <p>Daybreak represents daytime camp operations—scavenging resources, repairing gear, and assessing the group before facing the horde.</p>
+
+  <ul>
+    <li><strong>Tracer (<em>Detective</em>):</strong> Uses INTERCEPT during Daybreak to seize and inspect the full hand of 2 chosen players, uncovering who is hoarding weapons or holding sabotage cards.</li>
+    <li><strong>Forager (<em>Ranger</em>):</strong> Uses ALLOCATE (twice per game) to draw 6 cards from the discard pile and distribute any found Supplies to teammates.</li>
+    <li><strong>Blacksmith (<em>Ranger</em>):</strong> Uses REFORGE repeatedly throughout the game to sift through discarded scrap and pull fresh Supplies.</li>
+    <li><strong>Survivalist (<em>Ranger</em>):</strong> Features RECOVER, a permanent passive that refunds a random Supply card whenever a zombie encounter they participate in succeeds.</li>
+  </ul>
+
+  <figure>
+
+    <img src="images/07.avif" alt="">
+
+  </figure>
+
+  <h2>Nightfall (Crisis & High Stakes)</h2>
+
+  <p>When Nightfall arrives, the atmosphere turns tense and dangerous. Nightfall abilities are opportunistic, secretive, and high-impact:<strong>Inspector (<em>Detective</em>):</strong> Uses DELEGATE once per game during Nightfall to choose two players and force one to secretly inspect the other’s role—planting crucial intel (or deep paranoia) under the cover of night.</p>
+
+  <figure>
+
+    <img src="images/08.avif" alt="">
+
+  </figure>
+
+  <h2>All Phase (Reactive & Flexible)</h2>
+
+  <p>Certain tactical roles need to respond dynamically regardless of whether the sun is up or down:</p>
+
+  <ul>
+    <li><strong>Enforcer (<em>Detective</em>):</strong> Uses INVESTIGATE across either Daybreak or Nightfall. Following an unsuccessful escape nomination, the Enforcer can inspect the secret role of a nominated player on their next turn.</li>
+  </ul>
+
+  <figure>
+
+    <img src="images/09.avif" alt="">
+
+  </figure>
+
+  <h2>Why This Fixed the Table Flow</h2>
+
+  <ol class="steps">
+    <li><strong>No More Ability Clustering:</strong> By splitting daytime scavengers from nighttime operatives, players can no longer pile all their powers into a single overwhelming turn. The power curve is distributed evenly across rounds.</li>
+    <li><strong>Instant Table Readability:</strong> Glancing across the table, players can instantly see the <strong>Yellow</strong>, <strong>Blue</strong>, or <strong>White</strong> badges on everyone’s cards and immediately know whose turn it is to shine.</li>
+    <li><strong>Strategic Starting Choice:</strong> Giving the first player the choice to open in Daybreak or Nightfall creates an immediate tactical decision: <em>Do we start by stocking up on supplies with our Rangers, or do we start in the dark with our Detectives?</em></li>
+  </ol>
+
+  <h2>What’s Next?</h2>
+
+  <p>With the Daybreak/Nightfall rhythm established and card UI standardized, games feel tighter, turns move faster, and every ability feels like a calculated event rather than a spammed action.</p>
+
+  <p>We’re getting these new cards onto the table in our upcoming playtests—stay tuned for more updates!</p>
+
+</div>
+
+<a class="back-link" href="../../#journal">← Back to Dev Journal</a>
+
+<footer>
+  <div class="socials">
+    <a href="#">Instagram</a> · <a href="#">BoardGameGeek</a> · <a href="#">Email</a>
+  </div>
+  <p style="margin-top:12px;">© 2026 CARRIER — a survival board game in development.</p>
+</footer>
+
+<div class="lightbox" id="lightbox">
+  <span class="lightbox-close" id="lightboxClose">&times;</span>
+  <img id="lightboxImg" src="" alt="">
+  <span class="lightbox-hint">Click image to zoom · Click outside or press Esc to close</span>
+</div>
+
+<script>
+  (function(){
+    var lb = document.getElementById('lightbox');
+    var lbImg = document.getElementById('lightboxImg');
+    var closeBtn = document.getElementById('lightboxClose');
+
+    document.querySelectorAll('.post-body figure img, .post-body .card-row img').forEach(function(img){
+      img.addEventListener('click', function(){
+        lbImg.src = img.getAttribute('src');
+        lbImg.alt = img.getAttribute('alt') || '';
+        lbImg.classList.remove('zoomed');
+        lb.classList.add('active');
+      });
+    });
+
+    lbImg.addEventListener('click', function(e){
+      e.stopPropagation();
+      lbImg.classList.toggle('zoomed');
+    });
+
+    function closeLightbox(){
+      lb.classList.remove('active');
+      lbImg.classList.remove('zoomed');
+    }
+    closeBtn.addEventListener('click', closeLightbox);
+    lb.addEventListener('click', function(e){ if(e.target === lb) closeLightbox(); });
+    document.addEventListener('keydown', function(e){ if(e.key === 'Escape') closeLightbox(); });
+  })();
+</script>
+
+</body>
+</html>

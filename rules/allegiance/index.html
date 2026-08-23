@@ -1,0 +1,1224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>SECRET ROLES — CARRIER</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DotGothic16&family=VT323&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0;}
+  /* overflow-x must be CLIP, not HIDDEN. `hidden` turns html/body into a scroll container,
+     which silently kills `position:sticky` on descendants — that's why the site header used to
+     scroll away on desktop instead of staying pinned. `clip` suppresses the same overflow
+     without creating a scroll port, so sticky keeps working. */
+  html{scroll-behavior:auto; width:100%; max-width:100vw; overflow-x:clip;}
+  body{
+    width:100%; max-width:100vw;
+    background:var(--black); color:var(--white);
+    font-family:'VT323','Courier New',monospace; font-size:1.25rem; line-height:1.7;
+    overflow-x:clip;
+  }
+  h1,.logo,nav a,.tag{font-family:'DotGothic16',monospace;}
+  a{color:inherit;}
+  .hazard{height:10px; background:repeating-linear-gradient(45deg, var(--yellow) 0 20px, var(--black) 20px 40px);}
+  header{
+    position:sticky; top:0; z-index:10001; display:flex; align-items:center; justify-content:space-between;
+    padding:12px 6%; border-bottom:2px solid var(--darkred);
+    background:rgba(22,22,22,0.92); backdrop-filter:blur(4px);
+  }
+  .logo-group{display:flex; align-items:center; gap:14px; cursor:pointer; transition:opacity .15s;}
+  .logo-group:hover{opacity:0.85;}
+  .logo-group img{height:52px; width:auto; display:block; filter:drop-shadow(3px 3px 0 #000) drop-shadow(0 0 10px rgba(0,0,0,0.6));}
+  nav a{
+    color:var(--grey); text-decoration:none; margin-left:22px; font-size:0.6rem;
+    text-transform:uppercase; border-bottom:2px solid transparent; padding-bottom:4px;
+  }
+  nav a:hover{color:var(--yellow); border-bottom:2px solid var(--yellow);}
+  .nav-toggle{
+    display:none; background:none; border:2px solid var(--darkred); color:var(--yellow);
+    font-size:1.2rem; line-height:1; padding:6px 10px; cursor:pointer;
+  }
+  .nav-toggle:hover{border-color:var(--yellow);}
+
+  /* mobile-only floating way back to the homepage — the sticky header (and with it, the
+     logo-click-to-home and the "Back to Mission Brief" link) is hidden on mobile so the card
+     carousel gets full height, so this replaces both as the one way back on small screens. */
+  .mobile-home-btn{
+    display:none;
+    position:fixed; top:calc(28px + env(safe-area-inset-top)); left:14px; z-index:9998;
+    width:40px; height:40px; border-radius:50%;
+    align-items:center; justify-content:center;
+    background:rgba(10,10,10,0.82); border:2px solid var(--darkred); color:var(--yellow);
+    font-size:1.15rem; line-height:1; text-decoration:none;
+    box-shadow:3px 3px 0 rgba(0,0,0,0.5);
+    transition:border-color .15s, transform .1s;
+  }
+  .mobile-home-btn:active{ transform:scale(0.92); }
+
+  .post-header{
+    padding:70px 6% 40px; text-align:center;
+    background:linear-gradient(rgba(8,8,8,0.9),rgba(8,8,8,0.94)), repeating-linear-gradient(135deg,#1a1a1a 0 40px,#141414 40px 80px);
+    border-bottom:2px solid var(--darkred);
+  }
+  .post-header .tag{
+    display:block; width:fit-content; margin:0 auto 22px; color:var(--yellow); border:2px solid var(--yellow);
+    padding:8px 14px; font-size:0.5rem; letter-spacing:1px;
+  }
+  .post-header h1{font-size:clamp(1.4rem,4vw,2.1rem); color:var(--brightred); text-shadow:3px 3px 0 #000; margin-bottom:14px; line-height:1.5;}
+  .post-header .subtag{color:var(--yellow); font-size:0.85rem; letter-spacing:1px; text-transform:uppercase;}
+  .post-header .tag::after{
+    content:"_"; margin-left:3px; animation:cursorblink 1s steps(1) infinite;
+  }
+  @keyframes cursorblink{ 50%{ opacity:0; } }
+
+  /* ---------- role list ---------- */
+  .role-list{max-width:1200px; margin:0 auto; padding:50px 100px 60px 6%; position:relative;}
+
+  .role{
+    display:flex; flex-direction:column; justify-content:center;
+    padding:56px 0; border-bottom:1px solid var(--border);
+    will-change:transform,opacity;
+    transform-origin:left center;
+    transition:transform .15s linear, opacity .15s linear;
+    min-height:calc(100vh - 90px);
+  }
+
+  .role:last-child{border-bottom:none;}
+  .role-inner{display:flex; gap:36px; align-items:flex-start;}
+  .mobile-card-img{display:none;} /* mobile-only: the flattened full-poster artwork (see @media below) */
+  /* loop clones exist only for the mobile carousel — never render them in the desktop list */
+  .role-clone{display:none !important;}
+
+  /* NO scroll-snap on touch devices — deliberately, same reasoning as the character page: every
+     role section here is taller than a phone's readable window, so "mandatory" y-snap has no
+     legal resting position part-way down a section. Plain native scrolling + the bottom nav
+     strip is what moves you between roles. Desktop wheel scrolling still gets deliberate
+     one-card-at-a-time stepping, handled in JS further down (and skipped on touch). */
+
+  .card{
+    flex:0 0 300px;
+    border:2px solid var(--role-color, var(--red));
+    background:var(--panel);
+    overflow:hidden; border-radius:10px; cursor:pointer;
+    transition:transform .12s steps(3), box-shadow .12s steps(3);
+  }
+  .card:hover{
+    transform:translate(-3px,-3px);
+    box-shadow:5px 5px 0 var(--role-color, var(--red));
+  }
+  .card img, .modal img{
+    image-rendering:auto;
+  }
+  .card img{
+    display:block; width:100%; aspect-ratio:var(--card-ratio, 827/1122); object-fit:cover; background:#000;
+  }
+
+  .info{flex:1; min-width:0;}
+  .info h2{
+    font-family:'Bebas Neue','Arial Narrow',sans-serif; font-weight:400;
+    font-size:clamp(2.2rem,4.4vw,3.1rem); letter-spacing:1.5px;
+    margin-bottom:14px; color:var(--role-color, var(--red));
+    text-shadow:2px 2px 0 #000;
+  }
+  .info p{font-size:1.1rem; line-height:1.6; color:var(--white); margin-bottom:16px;}
+  .ability-name{
+    display:inline-block;
+    background:var(--role-color, var(--red)); color:var(--role-text,#000);
+    font-family:'DotGothic16',monospace; font-size:0.75rem;
+    letter-spacing:1px; text-transform:uppercase;
+    padding:8px 14px; margin-bottom:12px; border-radius:4px;
+  }
+  .rules{
+    font-family:'VT323',monospace; font-size:0.95rem;
+    color:var(--grey); border-left:2px dashed var(--role-color, var(--red));
+    padding-left:12px; line-height:1.6;
+  }
+  .rules div:not(.ability-name){display:flex; gap:8px; align-items:flex-start; margin-bottom:4px;}
+  .rules div:not(.ability-name) span.ic{
+    flex:0 0 auto; color:var(--role-text,#000); background:var(--role-color, var(--red));
+    display:inline-flex; align-items:center; justify-content:center;
+    width:18px; height:18px; font-size:0.7rem; margin-top:3px;
+  }
+
+  /* right-side navigator */
+  nav.navigator{
+    position:fixed; top:50%; right:24px; transform:translateY(-50%);
+    display:flex; flex-direction:column; align-items:flex-end; gap:12px; z-index:10;
+  }
+  /* The strip is padded at both ends with clones of the opposite end so the mobile carousel can
+     centre its first/last button. Desktop lays the same strip out vertically with everything
+     visible, so those clones showed up as duplicate entries running past the top and bottom of
+     the screen. Only the real buttons belong here. */
+  nav.navigator button.nav-clone{display:none;}
+  nav.navigator button{
+    all:unset; cursor:pointer; box-sizing:border-box;
+    font-family:'DotGothic16',monospace; font-size:0.65rem; color:#5a5a5a;
+    min-width:30px; height:26px; padding:0 8px; white-space:nowrap;
+    display:flex; align-items:center; justify-content:center;
+    background:var(--panel); border:1px solid var(--border); border-radius:4px;
+    transition:color .1s, background .1s, transform .1s;
+  }
+  nav.navigator button.active{
+    color:var(--btn-text,#000); background:var(--btn-color, var(--red)); border-color:var(--btn-color, var(--red));
+    transform:scale(1.15); letter-spacing:0.5px;
+  }
+  nav.navigator button:hover{color:var(--white); border-color:var(--btn-color, var(--red));}
+
+  /* Desktop: a fixed-height window that never moves. The list of buttons inside it slides so
+     that whichever role is active sits dead centre — rather than the window staying put and the
+     highlight travelling up and down the column. */
+  .navigator-track{
+    height:min(72vh, 640px);
+    overflow:hidden;
+    -webkit-mask-image:linear-gradient(to bottom, transparent 0, #000 44px, #000 calc(100% - 44px), transparent 100%);
+    mask-image:linear-gradient(to bottom, transparent 0, #000 44px, #000 calc(100% - 44px), transparent 100%);
+  }
+  .navigator-inner{
+    position:relative;
+    display:flex; flex-direction:column; align-items:flex-end; gap:12px;
+    transition:transform .3s cubic-bezier(.22,.61,.36,1);
+    will-change:transform;
+  }
+  nav.navigator button.nav-arrow{display:none;}
+
+  @media (max-width:900px){
+    /* ---------- horizontal card carousel ----------
+       Same mechanism as the character page: all roles sit in a single row inside .role-list, a
+       fixed-height "frame" (measured by JS to fit exactly between the sticky header and the
+       bottom nav strip) with native horizontal scroll-snap. Swiping left/right moves between
+       roles; a role whose text runs long scrolls vertically WITHIN its own frame — the frame
+       itself never moves. --frame-h is set by JS on load/resize/orientation change; the vh value
+       below is only the pre-JS fallback. */
+    :root{ --frame-h:72vh; }
+
+    html, body{
+      height:100%; overflow:hidden;
+      overscroll-behavior:none;
+      touch-action:pan-x;
+      -webkit-text-size-adjust:100%;
+    }
+
+    .post-header{ display:none; }
+
+    /* the sticky top header is dropped too on mobile — it was eating into the card art's
+       vertical space, so the frame-height calc (topOffset in setFrameHeight()) now sees no
+       header at all and the carousel gets the full viewport height instead. */
+    header{ display:none; }
+    .mobile-home-btn{ display:flex; }
+
+    .role-list{
+      padding:0; margin:0; max-width:none; position:relative;
+      width:100%; max-width:100vw;
+      display:flex; flex-direction:row; align-items:stretch;
+      height:var(--frame-h);
+      overflow-x:auto; overflow-y:hidden;
+      scroll-snap-type:x mandatory; scroll-behavior:auto;
+      -webkit-overflow-scrolling:touch;
+      scrollbar-width:none;
+      touch-action:pan-x;
+    }
+    .role-list::-webkit-scrollbar{ display:none; }
+
+    @supports (height:100svh){
+      .role-list{ height:calc(100svh - var(--chrome-offset, 141px)); }
+      html, body{ height:100svh; }
+    }
+
+    .role{
+      position:relative;
+      flex:0 0 100%; width:100%; height:100%; min-height:0;
+      display:flex; flex-direction:column;
+      overflow:hidden;
+      scroll-snap-align:start; scroll-snap-stop:always;
+      padding:0; border-bottom:none;
+      will-change:auto;
+      scrollbar-width:none;
+    }
+    .role::-webkit-scrollbar{ display:none; }
+    .role-clone{display:flex !important;}
+
+    /* The mobile card is the finished poster artwork (images/NN-card.png — the full-text
+       allegiance poster) shown as a single image, not a title/art/text/rules layout built out
+       of HTML. Desktop is untouched: it still uses .role-inner's h2/art/paragraphs/rules
+       exactly as before, they're just hidden here on mobile. */
+    .role-inner{
+      position:relative; z-index:1;
+      height:100%;
+      display:flex; align-items:flex-end; justify-content:center;
+      overflow:hidden;
+      padding:0;
+      gap:0;
+    }
+    .info{ display:none; }
+    .info h2, .info-body, .rules{ display:none; }
+
+    .mobile-card-img{
+      display:block;
+      /* Scale by WIDTH ONLY — height follows the artwork's own ratio, so the scale is always
+         screenWidth/827 no matter how tall the viewport is (deterministic across loads). Any
+         surplus height is clipped off the top by .role-inner's overflow + flex-end. */
+      width:100%; height:auto;
+      flex:0 0 auto;
+      margin:0;
+      border-radius:0;
+      touch-action:pan-x;
+    }
+
+    .card{
+      position:absolute; inset:0; opacity:0; z-index:5;
+      border:none; cursor:pointer;
+    }
+    .card img{ width:100%; height:100%; }
+
+    nav.navigator{
+      top:auto; bottom:0; right:0; left:0; transform:none;
+      width:100%;
+      flex-direction:row; align-items:center; justify-content:center; gap:6px;
+      background:#0a0a0af5; border-top:1px solid rgba(255,255,255,.06);
+      padding:10px 8px calc(10px + env(safe-area-inset-bottom));
+      z-index:20;
+    }
+    .navigator-track{
+      display:flex; flex-direction:row; gap:4px;
+      overflow-x:hidden; scroll-behavior:smooth;
+      flex:1 1 auto; min-width:0;
+      height:auto;
+      -webkit-mask-image:linear-gradient(to right, transparent 0, #000 18px, #000 calc(100% - 18px), transparent 100%);
+      mask-image:linear-gradient(to right, transparent 0, #000 18px, #000 calc(100% - 18px), transparent 100%);
+    }
+    .navigator-inner{
+      flex-direction:row; gap:4px; align-items:center;
+      transform:none !important; transition:none;
+    }
+    nav.navigator button{
+      font-size:0.65rem; min-width:34px; height:32px; padding:0 10px; white-space:nowrap;
+      flex:0 0 auto;
+    }
+    nav.navigator button.nav-clone{display:flex;}
+    nav.navigator button.active{transform:scale(1.1);}
+
+    nav.navigator button.nav-arrow{
+      all:unset; display:flex; align-items:center; justify-content:center;
+      box-sizing:border-box; cursor:pointer; flex:0 0 auto;
+      width:30px; height:32px; font-size:1.2rem; color:var(--yellow);
+      background:var(--panel); border:1px solid var(--border); border-radius:4px;
+    }
+    .nav-arrow:hover{border-color:var(--yellow);}
+    .nav-arrow:active{transform:scale(0.92);}
+    .nav-arrow-top{
+      color:var(--black); background:var(--yellow); border-color:var(--yellow);
+      font-size:1rem;
+    }
+    .nav-arrow-top:hover{border-color:#fff;}
+
+    .swipe-hint{
+      position:fixed; left:50%; top:14px; transform:translateX(-50%);
+      display:flex; align-items:center; gap:8px;
+      background:rgba(10,10,10,.85); border:1px solid rgba(255,255,255,.16);
+      color:var(--yellow); font-family:'DotGothic16',monospace; font-size:0.55rem;
+      letter-spacing:1px; padding:7px 14px; border-radius:20px;
+      pointer-events:none; z-index:16; white-space:nowrap;
+      opacity:1; transition:opacity .5s ease;
+    }
+    .swipe-hint.hide{ opacity:0; }
+
+    body .back-link, body footer{ display:none; }
+  }
+
+  /* ---------- tablet fix: scroll the full card instead of clipping it ----------
+     Phones (<=700px) keep the deterministic width-driven scale above unchanged — that's the
+     mode that already looks right there. On tablet-width viewports the same width:100% scaling
+     blows the artwork up far taller than the frame, so the bottom of the card (rules text) was
+     getting clipped off with no way to reach it. Here the card stays full-width like on phone,
+     top-anchored so the art shows first, but the frame becomes vertically scrollable so the
+     reader can scroll down to reveal the rest of the card. touch-action:pan-y on the image lets
+     vertical drags scroll the card while horizontal drags still bubble up to the card-to-card
+     swipe on .role-list (which stays pan-x). No scroll-snap is set on this axis, so it's a
+     plain free scroll — no snapping. */
+  @media (min-width:701px) and (max-width:900px){
+    .role{
+      overflow-y:auto; overflow-x:hidden;
+      -webkit-overflow-scrolling:touch;
+      overscroll-behavior-y:contain;
+    }
+    .role-inner{
+      align-items:flex-start;
+      height:auto; min-height:100%;
+      overflow:visible;
+    }
+    .mobile-card-img{
+      width:100%; height:auto;
+      touch-action:pan-y;
+    }
+  }
+
+  .back-link{
+    display:block; max-width:900px; margin:0 auto 80px; padding:0 6%;
+    color:var(--yellow); text-decoration:none; font-size:0.7rem; letter-spacing:1px;
+    font-family:'DotGothic16',monospace;
+  }
+  .back-link:hover{text-decoration:underline;}
+
+  footer{text-align:center; padding:38px 6%; color:#5a5a5a; font-size:0.85rem; border-top:2px solid var(--darkred);}
+  footer .socials a{margin:0 10px; color:var(--grey); text-decoration:none; font-weight:700;}
+  footer .socials a:hover{color:var(--red);}
+
+  .crt-overlay{
+    position:fixed; inset:0; pointer-events:none; z-index:9999;
+    background:repeating-linear-gradient(0deg, rgba(0,0,0,0.18) 0px, rgba(0,0,0,0.18) 1px, transparent 1px, transparent 3px);
+    mix-blend-mode:overlay;
+    animation:crtflicker 6s infinite;
+  }
+  @keyframes crtflicker{
+    0%,100%{opacity:0.85;} 92%{opacity:0.85;} 93%{opacity:0.55;} 94%{opacity:0.85;} 96%{opacity:0.65;} 97%{opacity:0.85;}
+  }
+
+  ::selection{background:var(--red); color:#000;}
+  ::-webkit-scrollbar{width:12px;}
+  ::-webkit-scrollbar-track{background:var(--black);}
+  ::-webkit-scrollbar-thumb{background:#333; border:2px solid var(--black);}
+  ::-webkit-scrollbar-thumb:hover{background:var(--red);}
+
+  /* ---------- modal ---------- */
+  .modal-overlay{
+    position:fixed; inset:0; background:rgba(5,5,5,0.94);
+    display:flex; align-items:center; justify-content:center;
+    padding:24px; z-index:20000;
+    opacity:0; pointer-events:none; transition:opacity .2s;
+  }
+  .modal-overlay.open{opacity:1; pointer-events:auto;}
+
+  /* image-only, poster-style modal: the full card art (images/NN.png) already has the title,
+     tags and rules box baked into the artwork, so the modal's job is just to show it large —
+     no duplicate text underneath. This is what makes tapping/clicking a card show "the card". */
+  .modal{
+    background:transparent; border:none;
+    max-width:520px; width:100%; max-height:92vh; border-radius:14px;
+    overflow:visible; position:relative;
+    display:flex; flex-direction:column; align-items:center; justify-content:center; gap:14px; padding:0;
+    transform:scale(.94); transition:transform .2s;
+  }
+  .modal-overlay.open .modal{transform:scale(1);}
+
+  /* the image itself sits in its own wrapper so the prev/next arrows can be positioned
+     relative to JUST the artwork (vertically centred on it), not the whole modal — which
+     also has the dot strip stacked underneath it. */
+  .modal-stage{ position:relative; width:100%; display:flex; justify-content:center; touch-action:pan-y; }
+
+  .modal img{
+    width:100%; height:auto; max-height:92vh;
+    aspect-ratio:var(--card-ratio, 827/1122); object-fit:contain; border-radius:14px;
+    border:2px solid var(--role-color, var(--red)); background:#000;
+    box-shadow:0 20px 50px rgba(0,0,0,.6);
+    user-select:none; -webkit-user-drag:none;
+  }
+
+  .modal-close{
+    all:unset; position:absolute; top:-14px; right:-14px; cursor:pointer; z-index:2;
+    font-family:'DotGothic16',monospace; font-size:1rem; color:var(--role-text,#000);
+    line-height:1; width:32px; height:32px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    background:var(--role-color, var(--red)); border:2px solid var(--black);
+    box-shadow:0 4px 10px rgba(0,0,0,.5);
+  }
+  .modal-close:hover{ filter:brightness(1.15); }
+
+  /* ---------- multi-card modal (Apprentice & Patient Zero, the 3 Revivalists) ---------- */
+  /* Hidden by default; JS adds .has-multi to .modal only when a role has more than 1 image,
+     so single-image roles keep the plain popup exactly as before. */
+  /* No buttons — just a plain text cue that the art is swipeable. Click/tap it (or the card
+     itself, or the keyboard arrows) to move between cards. */
+  .modal-scroll-hint{
+    all:unset; cursor:pointer; box-sizing:border-box;
+    display:none; align-items:center; justify-content:center;
+    font-family:'DotGothic16',monospace; font-size:0.7rem; letter-spacing:1.5px;
+    color:var(--role-color, var(--red)); text-transform:uppercase;
+  }
+  .modal-scroll-hint:hover{ filter:brightness(1.25); }
+
+  .modal-dots{
+    display:none; align-items:center; justify-content:center; gap:8px;
+  }
+  .modal-dots button{
+    all:unset; cursor:pointer; box-sizing:border-box;
+    width:9px; height:9px; border-radius:50%;
+    background:rgba(255,255,255,.25); border:1px solid rgba(255,255,255,.4);
+    transition:background .15s, transform .15s;
+  }
+  .modal-dots button.active{
+    background:var(--role-color, var(--red)); border-color:var(--role-color, var(--red));
+    transform:scale(1.25);
+  }
+
+  /* Only shown when JS adds .has-multi to .modal (roles with more than 1 image),
+     so single-image roles keep the plain popup exactly as before. Placed after the
+     base rules above so it correctly overrides their display:none. */
+  .modal.has-multi .modal-scroll-hint, .modal.has-multi .modal-dots{ display:flex; }
+
+  @media (max-width:640px){
+    .modal{ padding:0; max-height:92vh; }
+    .modal-close{ top:-12px; right:-4px; }
+
+    .nav-toggle{display:block;}
+    nav#mainNav{
+      display:none; position:absolute; top:100%; left:0; right:0;
+      flex-direction:column; gap:2px; padding:10px 6% 18px;
+      background:rgba(10,10,10,0.98); border-bottom:2px solid var(--darkred);
+      z-index:10000;
+    }
+    nav#mainNav.open{display:flex;}
+    nav#mainNav a{margin-left:0; padding:12px 0; font-size:0.8rem; border-bottom:1px solid #2b2b2b;}
+  }
+</style>
+</head>
+<body>
+
+<div class="crt-overlay"></div>
+<div class="hazard"></div>
+<a href="../../#brief" class="mobile-home-btn" aria-label="Back to homepage">‹</a>
+<header>
+  <a href="../../" class="logo-group">
+    <img src="../../images/kodecco-icon.png" alt="Kodecco Games">
+  </a>
+  <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">☰</button>
+  <nav id="mainNav">
+    <a href="../../#brief">Mission Brief</a>
+    <a href="../../#gallery">Gallery</a>
+    <a href="../../#roadmap">Roadmap</a>
+    <a href="../../#journal">Dev Journal</a>
+    <a href="../../#signal">Send Signal</a>
+  </nav>
+</header>
+
+<main class="role-list" id="main">
+
+  <section class="role" data-nav="RV" style="--role-color:var(--role-green);--card-ratio:827/1241">
+    <div class="role-inner">
+      <div class="card" data-modal-images="images/05.png::Revivalist — variation 1|images/06.png::Revivalist — variation 2|images/07.png::Revivalist — variation 3">
+      <img src="images/05-card.png" alt="Revivalist — full readout">
+    </div>
+    <img class="mobile-card-img" src="images/05-card.png" alt="Revivalists — allegiance poster" loading="lazy" decoding="async">
+    <div class="info">
+      <h2>REVIVALIST</h2>
+      <p>Your mission is to protect the Custodians. You don't know who the Curefinder, Apprentice, or Patient Zero are — and you don't know who the Carriers are either. Use deduction and your unique character abilities to survive and root out the Carriers before they get a chance to kill the key roles.</p>
+      <p>Goal: Get the Curefinder into the Escape Party, along with 2 Survivors. If the Curefinder dies, it's not over — the Apprentice and Patient Zero can take their place instead, but you'll need to nominate both of them, plus 1 Survivor.</p>
+      <div class="rules">
+        <div class="ability-name">Allegiance: Survivors</div>
+        <div><span class="ic">▲</span>Assist the Custodians in escaping safely, without the Carriers.</div>
+        <div><span class="ic">◆</span>Every failed Encounter empowers the Carriers by escalating danger.</div>
+        <div><span class="ic">?</span>Avoid letting the Carriers escape, or the Survivors lose.</div>
+      </div>
+    </div>
+    </div>
+  </section>
+
+  <section class="role" data-nav="CF" style="--role-color:var(--role-gold);--card-ratio:827/1241">
+    <div class="role-inner">
+      <div class="card" data-modal-images="images/02.png::Curefinder — card" data-modal-ratio="827/1122">
+      <img src="images/02-card.png" alt="Curefinder — full readout">
+    </div>
+    <img class="mobile-card-img" src="images/02-card.png" alt="Curefinder — allegiance poster" loading="lazy" decoding="async">
+    <div class="info">
+      <h2>CUREFINDER</h2>
+      <p>You hold the formula to end the infection. Escape safely to create the cure. You are the primary target — the Carriers know eliminating you deals the heaviest blow to the Survivors' chances.</p>
+      <p>The Survivors want to find you, protect you, and help you formulate the Cure — but they don't know who to trust, and you don't know who the Carriers are either. You'll need to convince the Survivors you belong in the Escape Convoy, without revealing too much and giving yourself away to the Carriers along the way.</p>
+      <div class="rules">
+        <div class="ability-name">Allegiance: Survivors</div>
+        <div><span class="ic">▲</span>You are the Carriers' primary target.</div>
+        <div><span class="ic">◆</span>If you die, the Apprentice and Patient Zero must escape together to complete your work.</div>
+        <div><span class="ic">?</span>You lose if Carriers escape with you.</div>
+      </div>
+    </div>
+    </div>
+  </section>
+
+  <section class="role" data-nav="EX" style="--role-color:var(--red);--role-text:#fff;--card-ratio:827/1241">
+    <div class="role-inner">
+      <div class="card" data-modal-images="images/03.png::Executioner — card" data-modal-ratio="827/1122">
+      <img src="images/03-card.png" alt="Executioner — full readout">
+    </div>
+    <img class="mobile-card-img" src="images/03-card.png" alt="Executioner — allegiance poster" loading="lazy" decoding="async">
+    <div class="info">
+      <h2>EXECUTIONER</h2>
+      <p>You are infected, hiding among the Survivors. Your goal is to eliminate the Custodians before they escape. Blend in with the group while figuring out who the Curefinder, the Apprentice, and Patient Zero are — then work together with the other Carriers to eliminate them before they find the cure to the infection.</p>
+      <div class="rules">
+        <div class="ability-name">Eliminate</div>
+        <div><span class="ic">▲</span>Can only be used on your own turn, during any phase.</div>
+        <div><span class="ic">◆</span>One-time ability — once used, you and your target are both eliminated.</div>
+        <div><span class="ic">?</span>On your turn, you may reveal yourself and strike. Choose one player — they're removed from the game, immediately and permanently.</div>
+      </div>
+    </div>
+    </div>
+  </section>
+
+  <section class="role" data-nav="SB" style="--role-color:var(--red);--role-text:#fff;--card-ratio:827/1241">
+    <div class="role-inner">
+      <div class="card" data-modal-images="images/08.png::Saboteur — card" data-modal-ratio="827/1122">
+      <img src="images/08-card.png" alt="Saboteur — full readout">
+    </div>
+    <img class="mobile-card-img" src="images/08-card.png" alt="Saboteur — allegiance poster" loading="lazy" decoding="async">
+    <div class="info">
+      <h2>SABOTEUR</h2>
+      <p>You are infected, hiding among the Survivors. Your goal is to eliminate the Custodians before they escape. Blend in with the group while figuring out who the Curefinder, the Apprentice, and Patient Zero are — then work together with the other Carriers to eliminate them before they find the cure to the infection.</p>
+      <div class="rules">
+        <div class="ability-name">Sabotage</div>
+        <div><span class="ic">▲</span>You may not kill — you aid the Carriers by causing failed Encounters instead.</div>
+        <div><span class="ic">◆</span>Every failed Encounter empowers the Carriers by escalating danger.</div>
+        <div><span class="ic">?</span>Whenever you participate in a mission, choose to sabotage it by placing a SAMPLE card (raises the Encounter's difficulty), or contribute the required Supplies to maintain your cover.</div>
+      </div>
+    </div>
+    </div>
+  </section>
+
+  <section class="role" data-nav="AP" style="--role-color:var(--role-orange);--card-ratio:827/1241">
+    <div class="role-inner">
+      <div class="card" data-modal-images="images/01.png::Apprentice|images/04.png::Patient Zero">
+      <img src="images/01-card.png" alt="Apprentice and Patient Zero">
+    </div>
+    <img class="mobile-card-img" src="images/01-card.png" alt="Apprentice and Patient Zero — allegiance poster" loading="lazy" decoding="async">
+    <div class="info">
+      <h2>APPRENTICE &amp; PATIENT ZERO</h2>
+      <p>The Apprentice and Patient Zero only come into play if the Curefinder dies. The Survivors don't know your identities, and you don't know who the Carriers are either.</p>
+      <p>If the Curefinder dies, both of you must reach the Escape Party together, along with 1 Survivor, or the Cure is lost for good. The Carriers know this too, and once the Curefinder is gone, you become their next target.</p>
+      <div class="rules">
+        <div class="ability-name">Allegiance: Survivors</div>
+        <div><span class="ic">▲</span>Comes into play only if the Curefinder dies.</div>
+        <div><span class="ic">◆</span>Both Apprentice and Patient Zero must reach the Escape Party together, plus 1 Survivor.</div>
+        <div><span class="ic">?</span>You lose if the Carriers escape with you.</div>
+      </div>
+    </div>
+    </div>
+  </section>
+
+</main>
+
+<nav class="navigator" id="navigator">
+  <button class="nav-arrow nav-arrow-left" id="navPrev" aria-label="Scroll left">‹</button>
+  <div class="navigator-track" id="navigatorTrack"></div>
+  <button class="nav-arrow nav-arrow-right" id="navNext" aria-label="Scroll right">›</button>
+</nav>
+
+<a class="back-link" href="../../#brief">← Back to Mission Brief</a>
+
+<footer>
+  <div class="socials">
+    <a href="#">Instagram</a> · <a href="#">BoardGameGeek</a> · <a href="#">Email</a>
+  </div>
+  <p style="margin-top:12px;">© 2026 CARRIER — a survival board game in development.</p>
+  <p style="margin-top:8px; font-size:0.6rem; color:#3f3f3f; letter-spacing:1px;">build m8 · 2026-08-15</p>
+</footer>
+
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal" id="modal">
+    <button class="modal-close" id="modalClose" aria-label="Close">✕</button>
+    <div class="modal-stage" id="modalStage">
+      <img id="modalImg" src="" alt="">
+    </div>
+    <button class="modal-scroll-hint" id="modalScrollHint" aria-label="Show next card">&lt; Scroll &gt;</button>
+    <div class="modal-dots" id="modalDots"></div>
+  </div>
+</div>
+
+<script>
+  (function(){
+    var navToggle = document.getElementById('navToggle');
+    var mainNav = document.getElementById('mainNav');
+    if (navToggle && mainNav){
+      navToggle.addEventListener('click', function(){
+        var open = mainNav.classList.toggle('open');
+        navToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+      });
+      mainNav.querySelectorAll('a').forEach(function(a){
+        a.addEventListener('click', function(){
+          mainNav.classList.remove('open');
+          navToggle.setAttribute('aria-expanded', 'false');
+        });
+      });
+    }
+  })();
+
+  const roles = Array.from(document.querySelectorAll('.role'));
+  const roleList = document.querySelector('.role-list');
+
+  const navEl = document.getElementById('navigator');
+  const navTrack = document.getElementById('navigatorTrack');
+  const navPrev = document.getElementById('navPrev');
+  const navNext = document.getElementById('navNext');
+
+  // Wrap each role's description paragraphs in a single .info-body element. On mobile this
+  // becomes one translucent panel sitting over the artwork, so the copy reads against a
+  // consistent dark surface instead of directly against the character's face. Styling the
+  // <p>s individually would produce a stack of separate slabs with gaps between them; one
+  // wrapper keeps it as a single readable block. No visual effect on desktop.
+  roles.forEach(r => {
+    const info = r.querySelector('.info');
+    if (!info) return;
+    const paras = Array.from(info.children).filter(el => el.tagName === 'P');
+    if (!paras.length) return;
+    const body = document.createElement('div');
+    body.className = 'info-body';
+    info.insertBefore(body, paras[0]);
+    paras.forEach(p => body.appendChild(p));
+  });
+
+  function isTouchDevice(){
+    return window.matchMedia('(hover: none) and (pointer: coarse)').matches;
+  }
+
+  function isPagerMode(){
+    return window.matchMedia('(max-width:900px)').matches;
+  }
+
+  let currentIndex = 0;
+
+  function scrollCarouselTo(index, opts){
+    if (!roleList || !roles[index]) return;
+    const behavior = (opts && opts.instant) ? 'auto' : 'smooth';
+    roleList.scrollTo({ left: roles[index].offsetLeft, top: 0, behavior });
+  }
+
+  function goToRole(index, opts){
+    index = Math.max(0, Math.min(roles.length - 1, index));
+    currentIndex = index;
+    if (isPagerMode()){
+      scrollCarouselTo(index, opts);
+      setActiveNav(index);
+      hideSwipeHint();
+    } else {
+      snapToRole(index);
+    }
+  }
+
+  // build side-navigator buttons from data-nav
+  roles.forEach((r, i) => {
+    const btn = document.createElement('button');
+    const abbr = r.dataset.nav;
+    const fullName = r.querySelector('h2').textContent;
+    btn.textContent = abbr;
+    btn.dataset.abbr = abbr;
+    btn.dataset.full = fullName;
+    const color = r.style.getPropertyValue('--role-color');
+    const text = r.style.getPropertyValue('--role-text');
+    if (color) btn.style.setProperty('--btn-color', color);
+    if (text) btn.style.setProperty('--btn-text', text);
+    btn.addEventListener('click', () => {
+      goToRole(i, { instant:true });
+    });
+    navTrack.appendChild(btn);
+    r._navBtn = btn;
+  });
+
+  // pad both ends of the strip with clones of the opposite end, so the first/last
+  // button can be perfectly centered too
+  const NAV_CLONE_COUNT = Math.min(6, roles.length - 1);
+  function makeNavClone(realIndex){
+    const src = roles[realIndex]._navBtn;
+    const clone = document.createElement('button');
+    clone.className = 'nav-clone';
+    clone.textContent = src.dataset.abbr;
+    clone.dataset.abbr = src.dataset.abbr;
+    clone.dataset.full = src.dataset.full;
+    clone.style.cssText = src.style.cssText;
+    clone.tabIndex = -1;
+    clone.setAttribute('aria-hidden', 'true');
+    clone.addEventListener('click', () => goToRole(realIndex, { instant:true }));
+    return clone;
+  }
+  const leadClones = document.createDocumentFragment();
+  for (let i = roles.length - NAV_CLONE_COUNT; i < roles.length; i++) leadClones.appendChild(makeNavClone(i));
+  navTrack.insertBefore(leadClones, navTrack.firstChild);
+  for (let i = 0; i < NAV_CLONE_COUNT; i++) navTrack.appendChild(makeNavClone(i));
+
+  const navInner = document.createElement('div');
+  navInner.className = 'navigator-inner';
+  while (navTrack.firstChild) navInner.appendChild(navTrack.firstChild);
+  navTrack.appendChild(navInner);
+
+  function centerActiveNavButton(btn){
+    if (!navTrack || !btn) return;
+
+    if (!isPagerMode()){
+      const offset = btn.offsetTop + btn.offsetHeight / 2 - navTrack.clientHeight / 2;
+      navInner.style.transform = 'translateY(' + (-offset) + 'px)';
+      return;
+    }
+
+    navInner.style.transform = '';
+    const btnCenter = btn.offsetLeft + btn.offsetWidth / 2;
+    const target = btnCenter - navTrack.clientWidth / 2;
+    const max = navTrack.scrollWidth - navTrack.clientWidth;
+    navTrack.scrollTo({ left: Math.max(0, Math.min(max, target)), behavior: 'smooth' });
+  }
+
+  function setActiveNav(index){
+    roles.forEach((r, i) => {
+      if (!r._navBtn) return;
+      const isActive = i === index;
+      if (r._navBtn.classList.contains('active') !== isActive){
+        r._navBtn.classList.toggle('active', isActive);
+        r._navBtn.textContent = isActive ? r._navBtn.dataset.full : r._navBtn.dataset.abbr;
+      }
+    });
+    if (roles[index] && roles[index]._navBtn) centerActiveNavButton(roles[index]._navBtn);
+    updateNavArrowState(index);
+  }
+
+  function updateNavArrowState(activeIndex){
+    const looping = isPagerMode();
+    const atEnd = activeIndex === roles.length - 1;
+    if (navNext){
+      const showTop = atEnd && !looping;
+      navNext.textContent = showTop ? '⤒' : '›';
+      navNext.setAttribute('aria-label', showTop ? 'Back to the first role' : 'Next role');
+      navNext.classList.toggle('nav-arrow-top', showTop);
+    }
+    if (navPrev){
+      navPrev.setAttribute('aria-label', 'Previous role');
+      const atStart = !looping && activeIndex === 0;
+      navPrev.disabled = atStart;
+      navPrev.style.opacity = atStart ? '0.3' : '';
+    }
+  }
+
+  if (navPrev && navNext && navTrack){
+    const stepTrack = (dir) => {
+      const amount = Math.max(navTrack.clientWidth * 0.7, 80);
+      navTrack.scrollBy({left: dir * amount, behavior: 'smooth'});
+    };
+    navPrev.addEventListener('click', () => {
+      if (isPagerMode()) stepSlide(-1);
+      else stepTrack(-1);
+    });
+    navNext.addEventListener('click', () => {
+      if (navNext.classList.contains('nav-arrow-top')) goToRole(0, { instant:true });
+      else if (isPagerMode()) stepSlide(1);
+      else stepTrack(1);
+    });
+  }
+
+  // ---------- wheel scrolling: 1:1 live tracking, snaps to a section once you pause ----------
+  function scrollInstant(y){
+    window.scrollTo({ top: y, left: 0, behavior: 'auto' });
+  }
+
+  function closestRoleIndexAt(y){
+    if (y === undefined) y = window.scrollY;
+    const viewportCenterDoc = y + window.innerHeight / 2;
+    let idx = 0, closestDist = Infinity;
+    roles.forEach((r, i) => {
+      const rect = r.getBoundingClientRect();
+      const docCenter = rect.top + window.scrollY + rect.height / 2;
+      const dist = Math.abs(viewportCenterDoc - docCenter);
+      if (dist < closestDist){ closestDist = dist; idx = i; }
+    });
+    return idx;
+  }
+
+  function maxScrollY(){
+    return document.documentElement.scrollHeight - window.innerHeight;
+  }
+
+  function normalizeDeltaY(e){
+    if (e.deltaMode === 1) return e.deltaY * 20;
+    if (e.deltaMode === 2) return e.deltaY * window.innerHeight;
+    return e.deltaY;
+  }
+
+  let snapping = false;
+  let snapTargetY = window.scrollY;
+
+  function snapStep(){
+    if (!snapping) return;
+    const currentY = window.scrollY;
+    const diff = snapTargetY - currentY;
+    if (Math.abs(diff) < 0.5){
+      scrollInstant(snapTargetY);
+      snapping = false;
+      return;
+    }
+    scrollInstant(currentY + diff * 0.35);
+    requestAnimationFrame(snapStep);
+  }
+
+  function snapToRole(index){
+    index = Math.max(0, Math.min(roles.length - 1, index));
+    const r = roles[index];
+    const rect = r.getBoundingClientRect();
+    snapTargetY = Math.max(0, Math.min(maxScrollY(), window.scrollY + rect.top + rect.height / 2 - window.innerHeight / 2));
+    if (!snapping){
+      snapping = true;
+      requestAnimationFrame(snapStep);
+    }
+  }
+
+  let wheelIdleTimer = null;
+  function wheelMultiplier(){
+    return (window.innerHeight * 0.9) / 110;
+  }
+
+  window.addEventListener('wheel', (e) => {
+    if (isTouchDevice()) return;
+    if (Math.abs(e.deltaY) < 2) return;
+    e.preventDefault();
+
+    snapping = false;
+
+    const dy = normalizeDeltaY(e) * wheelMultiplier();
+    scrollInstant(Math.max(0, Math.min(maxScrollY(), window.scrollY + dy)));
+
+    clearTimeout(wheelIdleTimer);
+    wheelIdleTimer = setTimeout(() => {
+      snapToRole(closestRoleIndexAt(window.scrollY));
+    }, 110);
+  }, { passive:false });
+
+  let ticking = false;
+
+  function update(){
+    ticking = false;
+    if (isPagerMode()) return;
+
+    const vh = window.innerHeight;
+    const center = vh / 2;
+    let closest = null, closestDist = Infinity;
+    const touch = isTouchDevice();
+
+    roles.forEach(r => {
+      const rect = r.getBoundingClientRect();
+      const rCenter = rect.top + rect.height / 2;
+      const dist = Math.abs(center - rCenter);
+
+      if (!touch){
+        const norm = Math.min(dist / (vh * 0.7), 1);
+        const scale = 1.12 - norm * 0.3;
+        const opacity = 1 - norm * 0.55;
+
+        r.style.transform = `scale(${scale})`;
+        r.style.opacity = opacity;
+      }
+
+      if (dist < closestDist){ closestDist = dist; closest = r; }
+    });
+
+    let activeChanged = false;
+    roles.forEach(r => {
+      const isActive = r === closest;
+      const wasActive = r._navBtn.classList.contains('active');
+      if (isActive !== wasActive){
+        r._navBtn.classList.toggle('active', isActive);
+        r._navBtn.textContent = isActive ? r._navBtn.dataset.full : r._navBtn.dataset.abbr;
+        if (isActive) activeChanged = true;
+      }
+    });
+    if (activeChanged && closest){
+      centerActiveNavButton(closest._navBtn);
+      updateNavArrowState(roles.indexOf(closest));
+    }
+  }
+
+  window.addEventListener('scroll', () => {
+    if (!ticking){
+      requestAnimationFrame(update);
+      ticking = true;
+    }
+  });
+
+  // ---------- mobile carousel: frame height + swipe tracking ----------
+  function setFrameHeight(){
+    if (!isPagerMode()){
+      document.documentElement.style.removeProperty('--frame-h');
+      return;
+    }
+    const rl = roleList;
+    const topOffset = rl ? rl.getBoundingClientRect().top + window.scrollY : 0;
+    const navH = navEl ? navEl.getBoundingClientRect().height : 0;
+    const vh = (window.visualViewport && window.visualViewport.height) || window.innerHeight;
+    const frameH = Math.max(160, vh - topOffset - navH);
+    document.documentElement.style.setProperty('--frame-h', frameH + 'px');
+
+    document.documentElement.style.setProperty('--chrome-offset', (topOffset + navH) + 'px');
+    document.documentElement.style.setProperty('--nav-clearance', (navH + 12) + 'px');
+    if (swipeHint) swipeHint.style.top = (topOffset + 14) + 'px';
+  }
+
+  const swipeHint = document.createElement('div');
+  swipeHint.className = 'swipe-hint';
+  swipeHint.textContent = '← SWIPE →';
+  document.body.appendChild(swipeHint);
+  let swipeHintTimer = setTimeout(() => hideSwipeHint(), 4000);
+  function hideSwipeHint(){
+    swipeHint.classList.add('hide');
+    clearTimeout(swipeHintTimer);
+  }
+
+  // ---------- infinite loop ----------
+  let loopClones = null;
+  function buildLoopClones(){
+    if (!roleList || loopClones || roles.length < 2) return;
+    const first = roles[0];
+    const last = roles[roles.length - 1];
+    const head = last.cloneNode(true);
+    const tail = first.cloneNode(true);
+    [head, tail].forEach(c => {
+      c.classList.add('role-clone');
+      c.setAttribute('aria-hidden', 'true');
+      c.removeAttribute('id');
+      c.querySelectorAll('[id]').forEach(n => n.removeAttribute('id'));
+      const card = c.querySelector('.card');
+      const source = (c === head) ? last : first;
+      if (card) card.addEventListener('click', () => openModal(source));
+    });
+    roleList.insertBefore(head, first);
+    roleList.appendChild(tail);
+    loopClones = { head, tail };
+  }
+
+  function realIndexFor(slide){
+    const n = roles.length;
+    if (slide <= 0) return n - 1;
+    if (slide >= n + 1) return 0;
+    return slide - 1;
+  }
+  function currentSlide(){
+    if (!roleList) return 0;
+    return Math.round(roleList.scrollLeft / Math.max(1, roleList.clientWidth));
+  }
+
+  function teleportTo(realIdx){
+    if (!roleList || !roles[realIdx]) return;
+    const prevSnap = roleList.style.scrollSnapType;
+    roleList.style.scrollSnapType = 'none';
+    roleList.scrollLeft = roles[realIdx].offsetLeft;
+    roleList.style.scrollSnapType = prevSnap || '';
+    currentIndex = realIdx;
+    setActiveNav(realIdx);
+  }
+
+  function stepSlide(dir){
+    if (!roleList || !isPagerMode()) return;
+    const slides = roleList.querySelectorAll('.role');
+    const target = Math.max(0, Math.min(slides.length - 1, currentSlide() + dir));
+    const el = slides[target];
+    if (el) roleList.scrollTo({ left: el.offsetLeft, top: 0, behavior: 'smooth' });
+    hideSwipeHint();
+  }
+
+  if (roleList){
+    buildLoopClones();
+
+    let carouselTicking = false;
+    let settleTimer = null;
+    function onSettle(){
+      if (!isPagerMode() || !loopClones) return;
+      const s = currentSlide();
+      if (s === 0 || s === roles.length + 1) teleportTo(realIndexFor(s));
+    }
+    function onCarouselScroll(){
+      carouselTicking = false;
+      if (!isPagerMode()) return;
+      hideSwipeHint();
+      const real = realIndexFor(currentSlide());
+      if (real !== currentIndex){
+        currentIndex = real;
+        setActiveNav(currentIndex);
+      }
+    }
+    roleList.addEventListener('scroll', () => {
+      if (!carouselTicking){
+        carouselTicking = true;
+        requestAnimationFrame(onCarouselScroll);
+      }
+      clearTimeout(settleTimer);
+      settleTimer = setTimeout(onSettle, 140);
+    });
+    if ('onscrollend' in window) roleList.addEventListener('scrollend', onSettle);
+    roleList.addEventListener('touchstart', hideSwipeHint, { passive:true, once:true });
+  }
+
+  window.addEventListener('resize', () => {
+    setFrameHeight();
+    if (isPagerMode()){
+      scrollCarouselTo(currentIndex, { instant:true });
+      setActiveNav(currentIndex);
+    } else if (roleList){
+      roleList.scrollLeft = 0;
+    }
+    update();
+  });
+  if (window.visualViewport){
+    window.visualViewport.addEventListener('resize', setFrameHeight);
+  }
+
+  setFrameHeight();
+  setActiveNav(0);
+  update();
+
+  if (roleList && isPagerMode()) scrollCarouselTo(0, { instant:true });
+
+  // Deep-link support: opening the page with #<NAV> (e.g. character.html#OL) jumps
+  // straight to that role instead of landing on the first card.
+  (function(){
+    var hash = decodeURIComponent((location.hash || '').replace('#','')).toUpperCase();
+    if (!hash) return;
+    var idx = roles.findIndex(function(r){ return r.dataset.nav === hash; });
+    if (idx !== -1){
+      currentIndex = idx;
+      goToRole(idx, { instant:true });
+    }
+  })();
+
+  // ---------- card modal ----------
+  const overlay = document.getElementById('modalOverlay');
+  const modal = document.getElementById('modal');
+  const modalStage = document.getElementById('modalStage');
+  const modalImg = document.getElementById('modalImg');
+  const modalClose = document.getElementById('modalClose');
+  const modalScrollHint = document.getElementById('modalScrollHint');
+  const modalDots = document.getElementById('modalDots');
+  let lastFocused = null;
+
+  // Some roles (Apprentice & Patient Zero, the 3 Revivalist portraits) are more than one
+  // physical card sharing a single spot on the page — data-modal-images on .card lists all of
+  // them as "src::alt" pairs separated by "|". Roles with just one card have no such attribute;
+  // the modal falls back to the single .card img exactly as before.
+  let modalSlides = [];
+  let modalSlideIndex = 0;
+
+  function parseModalImages(cardEl){
+    const raw = cardEl.dataset.modalImages;
+    if (!raw) {
+      const img = cardEl.querySelector('img');
+      return [{ src: img.src, alt: img.alt }];
+    }
+    return raw.split('|').map(entry => {
+      const [src, alt] = entry.split('::');
+      return { src, alt: alt || '' };
+    });
+  }
+
+  function renderModalSlide(){
+    const slide = modalSlides[modalSlideIndex];
+    modalImg.src = slide.src;
+    modalImg.alt = slide.alt;
+    modalDots.querySelectorAll('button').forEach((b, i) => {
+      b.classList.toggle('active', i === modalSlideIndex);
+    });
+  }
+
+  function goToModalSlide(i){
+    const n = modalSlides.length;
+    modalSlideIndex = (i + n) % n; // wrap both directions
+    renderModalSlide();
+  }
+
+  // Clicking/tapping a role's card shows the full card art large in a popup — that artwork
+  // already has the title, tags and rules box baked in, so there's nothing else to duplicate.
+  // When a role has multiple cards, arrows/dots appear and the popup becomes swipeable.
+  function openModal(role){
+    const color = role.style.getPropertyValue('--role-color') || 'var(--red)';
+    const text = role.style.getPropertyValue('--role-text') || '#000';
+    modal.style.setProperty('--role-color', color);
+    modal.style.setProperty('--role-text', text);
+
+    const cardEl = role.querySelector('.card');
+    modalSlides = parseModalImages(cardEl);
+    modalSlideIndex = 0;
+
+    // data-modal-ratio on the .card (if set) is the shape of the MODAL image specifically —
+    // used when the modal shows a different asset than the thumbnail (the thumbnail is the
+    // full art+rules-text readout; the modal shows the compact finished card). Falls back to
+    // the role's --card-ratio for the merged Apprentice & Patient Zero thumbnail case. Only
+    // applied for the plain single-image case; multi-card modals use the CSS default.
+    const ratio = cardEl.dataset.modalRatio || role.style.getPropertyValue('--card-ratio');
+    if (ratio && modalSlides.length <= 1) modal.style.setProperty('--card-ratio', ratio);
+    else modal.style.removeProperty('--card-ratio');
+
+    modal.classList.toggle('has-multi', modalSlides.length > 1);
+
+    modalDots.innerHTML = '';
+    if (modalSlides.length > 1){
+      modalSlides.forEach((_, i) => {
+        const dot = document.createElement('button');
+        dot.setAttribute('aria-label', `Card ${i + 1} of ${modalSlides.length}`);
+        dot.addEventListener('click', () => goToModalSlide(i));
+        modalDots.appendChild(dot);
+      });
+    }
+    renderModalSlide();
+
+    lastFocused = document.activeElement;
+    overlay.classList.add('open');
+    modalClose.focus();
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal(){
+    overlay.classList.remove('open');
+    document.body.style.overflow = '';
+    if (lastFocused) lastFocused.focus();
+  }
+
+  roles.forEach(r => {
+    r.querySelector('.card').addEventListener('click', () => openModal(r));
+  });
+
+  // no arrow buttons — clicking the "< Scroll >" text just advances to the next card
+  // (wraps back to the first once you've seen them all), same as tapping through a deck
+  modalScrollHint.addEventListener('click', e => { e.stopPropagation(); goToModalSlide(modalSlideIndex + 1); });
+
+  document.addEventListener('keydown', e => {
+    if (!overlay.classList.contains('open') || modalSlides.length <= 1) return;
+    if (e.key === 'ArrowLeft') goToModalSlide(modalSlideIndex - 1);
+    else if (e.key === 'ArrowRight') goToModalSlide(modalSlideIndex + 1);
+  });
+
+  // swipe left/right on the card art itself to move between cards
+  (function modalSwipe(){
+    let startX = 0, startY = 0, tracking = false;
+    modalStage.addEventListener('touchstart', e => {
+      if (modalSlides.length <= 1) return;
+      const t = e.touches[0];
+      startX = t.clientX; startY = t.clientY; tracking = true;
+    }, { passive:true });
+    modalStage.addEventListener('touchend', e => {
+      if (!tracking) return;
+      tracking = false;
+      const t = e.changedTouches[0];
+      const dx = t.clientX - startX, dy = t.clientY - startY;
+      if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)){
+        goToModalSlide(modalSlideIndex + (dx < 0 ? 1 : -1));
+      }
+    }, { passive:true });
+  })();
+
+  // ---------- lock zoom on mobile ----------
+  (function lockZoom(){
+    const block = e => { if (isPagerMode()) e.preventDefault(); };
+    ['gesturestart','gesturechange','gestureend'].forEach(evt =>
+      document.addEventListener(evt, block, { passive:false }));
+
+    document.addEventListener('touchmove', e => {
+      if (isPagerMode() && e.touches.length > 1) e.preventDefault();
+    }, { passive:false });
+
+    let lastTap = 0;
+    document.addEventListener('touchend', e => {
+      const now = e.timeStamp;
+      if (isPagerMode() && now - lastTap < 320) e.preventDefault();
+      lastTap = now;
+    }, { passive:false });
+  })();
+
+  modalClose.addEventListener('click', closeModal);
+  overlay.addEventListener('click', e => {
+    if (e.target === overlay) closeModal();
+  });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && overlay.classList.contains('open')) closeModal();
+  });
+</script>
+
+</body>
+</html>

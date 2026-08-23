@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SIGNAL LOST — CARRIER</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DotGothic16&family=JetBrains+Mono:wght@400;500&family=VT323&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    min-height:100vh; background:var(--black); color:var(--white);
+    font-family:var(--font-body); font-size:0.95rem; line-height:1.75;
+    background-image:repeating-linear-gradient(0deg, rgba(255,255,255,0.02) 0px, transparent 1px, transparent 2px);
+    display:flex; flex-direction:column;
+  }
+  a{color:inherit;}
+  .hazard{
+    height:10px;
+    background:repeating-linear-gradient(45deg, var(--yellow) 0 20px, var(--black) 20px 40px);
+  }
+  main{
+    flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center;
+    text-align:center; padding:70px 6%;
+  }
+  .code{
+    font-family:var(--font-display); color:var(--red);
+    font-size:clamp(4rem,18vw,9rem); line-height:1; letter-spacing:4px;
+    text-shadow:4px 4px 0 #000; margin-bottom:10px;
+  }
+  .code::after{ content:"_"; color:var(--yellow); animation:blink 1s steps(1) infinite; }
+  @keyframes blink{ 50%{opacity:0;} }
+  h1{
+    font-family:var(--font-display); color:var(--yellow);
+    font-size:clamp(.95rem,3.4vw,1.25rem); letter-spacing:2px; text-transform:uppercase;
+    margin-bottom:20px;
+  }
+  p{ color:var(--grey); max-width:520px; margin:0 auto 34px; }
+  .actions{ display:flex; gap:14px; justify-content:center; flex-wrap:wrap; }
+  .btn{
+    display:inline-block; background:var(--red); color:#fff;
+    font-family:var(--font-display); padding:15px 24px; text-decoration:none;
+    font-size:0.62rem; border:2px solid #000; box-shadow:4px 4px 0 var(--darkred);
+    transition:transform .15s, box-shadow .15s;
+  }
+  .btn:hover{ transform:translate(-2px,-2px); box-shadow:6px 6px 0 var(--darkred); }
+  .btn.ghost{ background:transparent; border:2px solid var(--yellow); color:var(--yellow); box-shadow:4px 4px 0 #000; }
+  footer{
+    text-align:center; padding:30px 6%; color:#5a5a5a; font-size:0.8rem;
+    border-top:2px solid #1e1e1e;
+  }
+</style>
+</head>
+<body>
+<div class="hazard"></div>
+<main>
+  <div class="code">404</div>
+  <h1>⚠ Signal Lost</h1>
+  <p>This page isn't on the map. It was either cut in a balance pass, or it never made it out of the prototype.</p>
+  <div class="actions">
+    <a class="btn" href="/">Back to Base &rarr;</a>
+    <a class="btn ghost" href="/rules/how-to-play/how-to-play.html">Mission Brief</a>
+  </div>
+</main>
+<footer>&copy; 2026 CARRIER — a survival board game in development.</footer>
+</body>
+</html>
