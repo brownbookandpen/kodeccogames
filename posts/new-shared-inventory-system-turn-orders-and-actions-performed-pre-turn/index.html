@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Cutting the Bile — Zero-Friction Setup & The 89-Card Overhaul — CARRIER</title>
+<title>New Shared Inventory System, Turn Orders, and Actions Performed Pre-Turn — CARRIER</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DotGothic16&family=VT323&display=swap" rel="stylesheet">
 <style>
@@ -202,172 +202,194 @@
 
 <div class="post-header">
   <span class="tag">// DEV JOURNAL</span>
-  <h1>Cutting the Bile — Zero-Friction Setup & The 89-Card Overhaul</h1>
-  <div class="meta">Aug 22, 2026 · 4 min read</div>
-  <div class="byline">By Seah Bi Yang · Game Design & Balancing</div>
+  <h1>New Shared Inventory System, Turn Orders, and Actions Performed Pre-Turn</h1>
+  <div class="meta">Aug 23, 2026 · 3 min read</div>
+  
 </div>
 
 <div class="post-body">
 
   <figure>
 
-    <img src="images/01.jpg" alt="The streamlined Carrier box with the Encounter deck, Starting Gear and Supply cards laid out on a table">
-
-    <figcaption>The new streamlined build — one Encounter deck instead of four separate piles to sort before every game.</figcaption>
+    <img src="images/01.avif" alt="">
 
   </figure>
 
-  <h2>The Pre-Game Sorting Nightmare</h2>
+  <h2>Cleaning Up the Turn Loop</h2>
 
-  <p>Every major playtest teaches you something humbling. In our earlier iterations — what we'll call <strong>Version 2.0</strong> — getting a game of Carrier to the table felt like managing inventory before you could actually play.</p>
+  <p>When we stripped down <em>Carrier</em> from 198 cards to 89, we fixed our setup bloat. But streamlining the deck forced us to take a hard look at the actual turn-to-turn mechanics: <strong>What happens right before an Encounter is drawn, and how do players manage their gear?</strong></p>
 
-  <p>Because every player had to start with 3 Supplies and 3 Samples, the host had to:</p>
+  <p>In earlier versions, trading was messy, players hoarded cards indefinitely, and Carriers would shout out revelations in the middle of other players' actions—often triggering arguments when an encounter card was drawn at the exact same split-second.</p>
+
+  <p>To fix this, we structured the turn around a strict <strong>Pre-Draw Action Window</strong>, introduced a <strong>Shared Group Inventory</strong>, and re-engineered the <strong>Carrier elimination timing</strong>.</p>
+
+  <p>Here is how a turn flows in the new build.</p>
+
+  <figure>
+
+    <img src="images/02.avif" alt="">
+
+  </figure>
+
+  <h2>1. Setting the Stage: The First Turn</h2>
+
+  <p>Once every player receives their <strong>Character</strong> <em>(Public Role)</em> and their <strong>Allegiance</strong> <em>(Secret Role)</em>, the game is ready to begin.</p>
 
   <ul>
-    <li>Dig through the box to separate the 42 Supply cards and 42 Sample cards from the rest of the decks.</li>
-    <li>Count out exactly 3 Supplies and 3 Samples for every single player — 84 cards purely for setup.</li>
-    <li>Make sure everyone had the right cards before even touching Character or Allegiance cards.</li>
-    <li>Spend several minutes tediously sorting and resetting all 84 cards back into their piles after every match.</li>
+    <li><strong>First Player:</strong> The youngest player at the table takes the first turn.</li>
+    <li><strong>The Opening Call:</strong> The starting player decides whether the group begins the journey in <strong>Daybreak</strong> or <strong>Nightfall</strong>, setting the active phase for the entire first rotation around the table.</li>
   </ul>
 
-  <p>When you added up the entire box, the bloat was staggering:</p>
+  <h2>2. The Pre-Draw Window (Actions Before You Draw)</h2>
 
-  <ul>
-    <li>Starting Gear (Supplies & Samples): <strong>84 cards</strong></li>
-    <li>Characters & Secret Roles: <strong>51 cards</strong></li>
-    <li>Disasters & Special Conditions: <strong>14 cards</strong></li>
-    <li>Encounter Deck & Support Kits: <strong>49 cards</strong></li>
-  </ul>
+  <p>Before a player touches the Encounter Deck, they enter their Pre-Draw window. Any pre-draw actions <strong>must be completed before drawing an encounter card</strong>.</p>
 
-  <p><strong>Total: 198 cards</strong> spread across multiple separate piles. We were spending more time sorting and resetting cardboard than actually playing. It was friction where there should have been immediate tension.</p>
+  <p>On your turn, you may take any of the following actions:</p>
+
+  <p><strong>Activate Character Ability:</strong> If your character matches the current phase (Daybreak, Nightfall, or All Phase) and you have remaining uses.</p>
 
   <figure>
 
-    <img src="images/02.avif" alt="Supply card design">
-
-    <figcaption>Simplistic Design for 'Supply' — a fixed setup card given to the players at the start of the game.</figcaption>
+    <img src="images/03.avif" alt="">
 
   </figure>
 
-  <h2>1. The 30-Second Setup: Deal, Deal, Shuffle, Play</h2>
+  <p><strong>Interact with the Shared Inventory:</strong> Contribute an item to—or take an item from—the group's central inventory pool.</p>
 
-  <p>We eliminated starting gear and separate supply decks entirely. Supplies, Weapons and Samples are now shuffled directly into the single <strong>65-card Encounter Deck</strong>.</p>
-
-  <p>The entire setup and reset flow is now three steps:</p>
-
-  <ol class="steps">
-    <li>Deal Characters (Public Roles).</li>
-    <li>Deal Allegiances (Secret Roles).</li>
-    <li>Shuffle the Encounter Deck and start the game.</li>
-  </ol>
-
-  <p>Setup time dropped from several minutes of card administration to <strong>under 30 seconds</strong>. Resetting between back-to-back games is now completely frictionless.</p>
-
-  <p>Along with this, we removed Support Kits — Supply Drop, Demolisher, Decoy Drones. Instead of diluting the draw pile with situational one-off cards, we baked that utility directly into stronger, more impactful Character abilities.</p>
+  <p>Contributing to the Shared Inventory is done <strong>anonymously</strong>.</p>
 
   <figure>
 
-    <img src="images/03.avif" alt="Encounter deck with a Bloodhound encounter and an Armaments supply drawn from it">
-
-    <figcaption>Supplies can now only be found through the Encounter deck. Players draw directly from it, so it's entirely up to chance — with bad luck, they may face Encounters before securing any Supplies.</figcaption>
+    <img src="images/04.avif" alt="">
 
   </figure>
 
-  <h2>2. Replacing "Escape Tokens" with Live Samples</h2>
-
-  <p>Previously, victory relied on collecting abstract "Escape Tokens" scattered across the deck. We've retired them completely and tied the win condition directly into the core survival loop: the group must find and secure real Samples to formulate the cure.</p>
-
-  <p><strong>The Escape Requirement.</strong> The final escape party must hold at least 3 Samples in their collective inventory to win. Reach extraction without them and you lose.</p>
-
-  <p><strong>The Dual-Edged Sabotage.</strong> Samples aren't just passive items — they carry real tactical risk during encounters. In the hands of a hidden Carrier, playing a Sample contributes a <strong>-3 DMG Sabotage</strong>, letting them quietly derail a fight under the guise of helping collect the cure.</p>
+  <p>But when you wish to take from the Shared Inventory, you can go through all the cards and choose the one you want to take.</p>
 
   <figure>
 
-    <img src="images/04.avif" alt="Samples card showing the Sabotaged effect at minus 3 damage">
-
-    <figcaption>Samples now replace Escape Tokens, and are also found in the Encounter Deck. This removes the previous 'Hard Limit' of 12 fixed escape chances. Instead, everyone gathers Samples — and drawing one doesn't require revealing it. This gives a Carrier deniability, but since Samples also empower the zombies, a Carrier can also use them to sabotage Encounters.</figcaption>
+    <img src="images/05.avif" alt="">
 
   </figure>
 
-  <h2>3. Dynamic Party Sizes & Weapon Tiers</h2>
-
-  <p>In V2.0, encounters forced an artificial, rigid player count — "choose 4 players to participate". Under the new system, weapons scale by damage and rarity instead:</p>
-
-  <ul>
-    <li><strong>Tier 1 Weapons</strong> — 1 Damage (20 cards)</li>
-    <li><strong>Tier 2 Weapons</strong> — 2 Damage (10 cards)</li>
-    <li><strong>Tier 3 Weapons</strong> — 3 Damage (5 cards)</li>
-  </ul>
-
-  <p>Because damage output is tied to weapon quality rather than a fixed headcount, encounter party sizes are completely dynamic. The party leader makes the call:</p>
-
-  <ul>
-    <li>Armed with heavy explosives and high-tier weapons? Send a lean 2-person strike team and conserve resources.</li>
-    <li>Carrying basic tools and low-tier weapons? You'll need to rally more players to combine enough damage to beat the horde threshold.</li>
-  </ul>
+  <p><strong>Carrier Reveal & Elimination:</strong> If you are a Carrier, you may choose this moment to reveal your secret role and eliminate a player.</p>
 
   <figure>
 
-    <img src="images/05.avif" alt="3 Tiers of Weapons, offering various damage values.">
-
-    <figcaption>With this, our hope is to give the Leader more strategic options — bring 3 players with explosives, and you can beat even the toughest Encounter in the game. Under our old system, this choice simply wasn't possible.</figcaption>
+    <img src="images/06.avif" alt="">
 
   </figure>
 
-  <h2>4. The "Run" Mechanic: Mitigating Early Bad Luck</h2>
+  <p>Once these actions are resolved (or passed), the player draws from the Encounter Deck to face the horde.</p>
 
-  <p>Without guaranteed starting supplies in hand from turn one, an unlucky opening draw could occasionally trap an under-geared team. To address that, we introduced the <strong>Run / Runaway</strong> mechanic.</p>
+  <h2>3. The Shared Group Inventory & The "Overencumbered" Rule</h2>
 
-  <p>The leader can choose to temporarily evade a drawn encounter, up to <strong>3 Runaways per game</strong>. Fleeing doesn't delete the threat — the leader can return and tackle that parked encounter later, once the group has scavenged better gear.</p>
+  <p>Direct player-to-player card passing caused downtime and clunky negotiations. We replaced private trading with a <strong>Central Shared Inventory</strong>.</p>
 
-  <figure>
+  <p>Instead of handing cards directly across the table, players deposit useful items into the common pool or pull gear out to prepare for upcoming fights.</p>
 
-    <img src="images/06.avif" alt="Running Limit">
-
-    <figcaption>Running from Encounters has its downsides, adding Danger to the next Encounter. A [+1] might not seem like much, but that could mean the difference between winning the Encounter and failing it. Use [Run] sparingly, or you will find yourself in a tough spot.</figcaption>
-
-  </figure>
-
-  <h2>5. The Math: 198 Down to 89</h2>
-
-  <p>By eliminating separate starting piles, token systems and redundant kits, our card footprint dropped dramatically:</p>
+  <p>To keep gear moving and prevent players from sitting on massive armories, we introduced a strict hand size rule:</p>
 
   <table class="tally">
     <thead>
       <tr>
-        <th>Deck Component</th>
-        <th>Version 2.0</th>
-        <th>New Streamlined Build</th>
+        <th>Hand Size</th>
+        <th>Status</th>
+        <th>Encounters</th>
       </tr>
     </thead>
     <tbody>
       <tr>
-        <td>Encounter & Loot Deck</td>
-        <td class="was">49 + 84 + 14</td>
-        <td class="now">65 Cards</td>
-      </tr>
-      <tr>
-        <td>Characters & Allegiances</td>
-        <td class="was">51 Cards</td>
-        <td class="now">24 Cards</td>
+        <td>Up to 3 cards</td>
+        <td class="was">Standard Capacity</td>
+        <td class="now">Eligible to fight</td>
       </tr>
     </tbody>
     <tfoot>
       <tr>
-        <td>Total Card Count</td>
-        <td class="was">198 Cards</td>
-        <td class="now">89 Cards</td>
+        <td>4+ cards</td>
+        <td class="was"><strong>Overencumbered</strong></td>
+        <td class="now">Cannot fight</td>
       </tr>
     </tfoot>
   </table>
 
-  <p>Targeting a final production box of around 100 cards, cutting down to 89 gives us roughly <strong>11 cards of healthy design headroom</strong> — room to experiment with new mechanics without re-introducing bloat.</p>
+  <p><strong>Why allow hoarding? The strategy of being Overencumbered</strong></p>
+
+  <p>A player <em>can</em> technically hold more than 3 cards, but doing so marks them as <strong>Overencumbered</strong>.</p>
+
+  <ul>
+    <li><strong>The Restriction:</strong> An overencumbered player <strong>cannot participate in any Encounters</strong> until they reduce their hand size back down to 3 cards or fewer.</li>
+    <li><strong>The Tactical Dilemma (Survivor):</strong> Do you temporarily sideline yourself from combat to safely transport multiple high-tier weapons or vital Samples for the cure—or to keep some in reserve for your Character ability, if it requires them?</li>
+    <li><strong>The Tactical Dilemma (Carrier):</strong> As a hidden Carrier, do you intentionally hoard items under the guise of "holding resources," quietly removing yourself from fights and forcing the rest of the group to face the horde shorthanded?</li>
+  </ul>
+
+  <h2>4. Fixing the Carrier Misfire: No More Mid-Turn Kills</h2>
+
+  <p>One of the biggest procedural changes in this build is how and when Carriers can strike.</p>
+
+  <p>Previously, Carriers could reveal their secret role at almost any time, including between other players' turns. While exciting in theory, in practice it created constant table friction: a player would reach to draw an encounter, a Carrier would yell to reveal, and the table would get bogged down arguing over which action took priority.</p>
+
+  <p><strong>The New Rule:</strong> Carriers can no longer reveal between turns. A Carrier must wait until <strong>their own turn</strong> and reveal during their <strong>Pre-Draw action window</strong> to eliminate a target.</p>
+
+  <p>What this means for balance:</p>
+
+  <ul>
+    <li><strong>Zero Timing Disputes:</strong> No more overlapping actions, misfired card draws, or contested priority calls.</li>
+    <li><strong>A Distinct Trade-off:</strong> This does give Survivors a slight predictability window—you know you won't be assassinated mid-draw on your own turn. However, it forces Carriers to play far more calculatingly, timing their turn order and using the Pre-Draw window to strike with maximum psychological impact.</li>
+  </ul>
+
+  <h2>5. The New Turn Cycle at a Glance</h2>
+
+  <table class="tally">
+    <thead>
+      <tr>
+        <th>Step</th>
+        <th>Phase</th>
+        <th>What Happens</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>1</td>
+        <td class="was">Start Turn</td>
+        <td class="now">The active player begins their turn.</td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td class="was">Pre-Draw Actions</td>
+        <td class="now">Choose any/all: use Character Ability (if Phase matches); deposit to/withdraw from the Shared Inventory; reveal as Carrier to eliminate (optional).</td>
+      </tr>
+      <tr>
+        <td>3</td>
+        <td class="was">Check Hand Capacity</td>
+        <td class="now">Over 3 cards = Overencumbered.</td>
+      </tr>
+      <tr>
+        <td>4</td>
+        <td class="was">Draw Encounter Card</td>
+        <td class="now">The player draws from the Encounter Deck.</td>
+      </tr>
+      <tr>
+        <td>5</td>
+        <td class="was">Resolve Encounter</td>
+        <td class="now">The Leader selects the participating party; Overencumbered players cannot fight.</td>
+      </tr>
+    </tbody>
+    <tfoot>
+      <tr>
+        <td>6</td>
+        <td class="was">End Turn</td>
+        <td class="now">Play passes to the next player.</td>
+      </tr>
+    </tfoot>
+  </table>
 
   <h2>What's Next?</h2>
 
-  <p>Setup is now instantaneous, the table footprint is clean, and every card in the deck serves a direct, active purpose.</p>
+  <p>Restricting the Carrier kill window is a deliberate design choice to prioritize smooth table flow over chaotic interruptions. We'll be watching this closely during upcoming playtests to see if Carriers feel appropriately lethal or if they need compensatory tools.</p>
 
-  <p>With this 89-card layout locked in, we're printing fresh prototype sets and heading straight back to the table for our next wave of playtests.</p>
+  <p>Stay tuned for our upcoming playtest reports!</p>
 
 </div>
 

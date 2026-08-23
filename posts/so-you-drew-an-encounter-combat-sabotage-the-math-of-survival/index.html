@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>So You Drew an Encounter — Combat, Sabotage & The Math of Survival — CARRIER</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DotGothic16&family=VT323&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --black:#0a0a0a; --panel:#161616; --panel2:#1c1c1c;
+    --red:#c81d1d; --brightred:#e8341f; --darkred:#6e1010;
+    --yellow:#f2c14e; --grey:#9a9a9a; --white:#eee8dc;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--black); color:var(--white);
+    font-family:'VT323','Courier New',monospace; font-size:1.25rem; line-height:1.7;
+  }
+  h1,h2,.logo,nav a,.tag{font-family:'DotGothic16',monospace;}
+  a{color:inherit;}
+  .hazard{height:10px; background:repeating-linear-gradient(45deg, var(--yellow) 0 20px, var(--black) 20px 40px);}
+  header{
+    position:sticky; top:0; z-index:10001; display:flex; align-items:center; justify-content:space-between;
+    padding:12px 6%; border-bottom:2px solid var(--darkred);
+    background:rgba(22,22,22,0.92); backdrop-filter:blur(4px);
+  }
+  .logo-group{display:flex; align-items:center; gap:14px; cursor:pointer; transition:opacity .15s;}
+  .logo-group:hover{opacity:0.85;}
+  .logo-group img{height:52px; width:auto; display:block; filter:drop-shadow(3px 3px 0 #000) drop-shadow(0 0 10px rgba(0,0,0,0.6));}
+  nav a{
+    color:var(--grey); text-decoration:none; margin-left:22px; font-size:0.6rem;
+    text-transform:uppercase; border-bottom:2px solid transparent; padding-bottom:4px;
+  }
+  nav a:hover{color:var(--yellow); border-bottom:2px solid var(--yellow);}
+
+  .post-header{
+    padding:70px 6% 40px; text-align:center;
+    background:linear-gradient(rgba(8,8,8,0.9),rgba(8,8,8,0.94)), repeating-linear-gradient(135deg,#1a1a1a 0 40px,#141414 40px 80px);
+    border-bottom:2px solid var(--darkred);
+  }
+  .post-header .tag{
+    display:block; width:fit-content; margin:0 auto 22px; color:var(--yellow); border:2px solid var(--yellow);
+    padding:8px 14px; font-size:0.5rem; letter-spacing:1px;
+  }
+  .post-header h1{font-size:clamp(1.4rem,4vw,2.1rem); color:var(--brightred); text-shadow:3px 3px 0 #000; margin-bottom:18px; line-height:1.5;}
+  .post-header .meta{color:var(--grey); font-size:0.9rem;}
+
+  .post-body{max-width:720px; margin:0 auto; padding:60px 6% 40px;}
+  .post-body p{color:var(--white); margin-bottom:24px; font-size:1.15rem;}
+  .post-body h2{color:var(--red); font-size:1.2rem; margin:36px 0 16px;}
+  .post-body strong{color:var(--yellow); font-weight:normal;}
+  .post-body ul, .post-body ol{margin:0 0 24px 1.4em; color:var(--white);}
+  .post-body li{margin-bottom:10px; font-size:1.12rem;}
+  .post-body li::marker{color:var(--red);}
+  .steps{list-style:none; margin-left:0; counter-reset:step;}
+  .steps li{counter-increment:step; position:relative; padding-left:44px; margin-bottom:14px;}
+  .steps li::before{
+    content:counter(step); position:absolute; left:0; top:2px;
+    width:28px; height:28px; display:flex; align-items:center; justify-content:center;
+    background:var(--red); color:#fff; border:2px solid #000;
+    font-family:'DotGothic16',monospace; font-size:0.72rem;
+  }
+  .tally{width:100%; border-collapse:collapse; margin:0 0 30px; border:2px solid var(--darkred); font-size:1.05rem;}
+  .tally th, .tally td{padding:11px 13px; text-align:left; border-bottom:1px solid #2b2b2b;}
+  .tally thead th{
+    background:var(--panel); color:var(--yellow); font-family:'DotGothic16',monospace;
+    font-size:0.62rem; letter-spacing:1px; text-transform:uppercase;
+  }
+  .tally td:not(:first-child){text-align:right; white-space:nowrap;}
+  .tally .was{color:var(--grey);}
+  .tally .now{color:var(--yellow);}
+  .tally tfoot td{background:rgba(200,29,29,0.10); border-top:2px solid var(--darkred); border-bottom:none;}
+  .tally tfoot td:first-child{font-family:'DotGothic16',monospace; font-size:0.68rem; letter-spacing:1px; text-transform:uppercase;}
+  @media (max-width:560px){ .tally{font-size:0.95rem;} .tally th, .tally td{padding:9px 8px;} }
+  .post-header .byline{color:#6f6f6f; font-size:0.82rem; margin-top:6px;}
+  .post-body figure{margin:0 0 32px;}
+  .post-body figure img{display:block; width:100%; height:auto; border:2px solid var(--darkred); cursor:zoom-in; transition:border-color .2s;}
+  .post-body figure img:hover{border-color:var(--yellow);}
+  .post-body figcaption{color:var(--grey); font-size:0.9rem; margin-top:10px; line-height:1.5;}
+
+  .card-row{
+    display:grid; grid-template-columns:220px 1fr; grid-template-areas:"title title" "img text";
+    column-gap:28px; row-gap:16px; margin:0 0 32px;
+    background:var(--panel); border:2px solid var(--darkred); padding:22px 26px;
+  }
+  .card-row .card-title{
+    grid-area:title; color:var(--red); font-family:'DotGothic16',monospace; font-size:1.05rem;
+    letter-spacing:0.5px; text-transform:uppercase;
+  }
+  .card-row .card-img{grid-area:img; width:220px;}
+  .card-row .card-img img{display:block; width:100%; height:auto; cursor:zoom-in; transition:filter .2s;}
+  .card-row .card-img img:hover{filter:brightness(1.08);}
+  .card-row .card-text{grid-area:text; min-width:0;}
+  .card-row .card-text p{color:var(--white); margin-bottom:16px; font-size:1.05rem; line-height:1.6;}
+  @media (max-width:560px){
+    .card-row{grid-template-columns:1fr; grid-template-areas:"title" "img" "text"; text-align:center;}
+    .card-row .card-img{width:100%; max-width:260px; margin:0 auto;}
+  }
+
+  .lightbox{
+    position:fixed; inset:0; background:rgba(5,5,5,0.94); display:none;
+    align-items:center; justify-content:center; z-index:20000; padding:40px; cursor:zoom-out;
+  }
+  .lightbox.active{display:flex;}
+  .lightbox img{
+    max-width:92vw; max-height:88vh; border:2px solid var(--darkred);
+    box-shadow:0 0 40px rgba(0,0,0,0.6); cursor:zoom-in;
+    transition:transform .25s ease; transform-origin:center center;
+  }
+  .lightbox img.zoomed{transform:scale(1.9); cursor:zoom-out;}
+  .lightbox-close{
+    position:absolute; top:22px; right:34px; color:var(--yellow); font-size:2.4rem;
+    font-family:'DotGothic16',monospace; cursor:pointer; line-height:1; z-index:20001;
+  }
+  .lightbox-close:hover{color:var(--red);}
+  .lightbox-hint{
+    position:absolute; bottom:22px; left:0; right:0; text-align:center;
+    color:var(--grey); font-size:0.7rem; letter-spacing:0.5px; text-transform:uppercase;
+    font-family:'DotGothic16',monospace; pointer-events:none;
+  }
+
+  .back-link{
+    display:block; max-width:720px; margin:0 auto 80px; padding:0 6%;
+    color:var(--yellow); text-decoration:none; font-size:0.7rem; letter-spacing:1px;
+    font-family:'DotGothic16',monospace;
+  }
+  .back-link:hover{text-decoration:underline;}
+
+  footer{text-align:center; padding:38px 6%; color:#5a5a5a; font-size:0.85rem; border-top:2px solid var(--darkred);}
+  footer .socials a{margin:0 10px; color:var(--grey); text-decoration:none; font-weight:700;}
+  footer .socials a:hover{color:var(--red);}
+
+  .crt-overlay{
+    position:fixed; inset:0; pointer-events:none; z-index:9999;
+    background:repeating-linear-gradient(0deg, rgba(0,0,0,0.18) 0px, rgba(0,0,0,0.18) 1px, transparent 1px, transparent 3px);
+    mix-blend-mode:overlay;
+    animation:crtflicker 6s infinite;
+  }
+  @keyframes crtflicker{
+    0%,100%{opacity:0.85;} 92%{opacity:0.85;} 93%{opacity:0.55;} 94%{opacity:0.85;} 96%{opacity:0.65;} 97%{opacity:0.85;}
+  }
+  .post-header .tag::after{
+    content:"_"; margin-left:3px; animation:cursorblink 1s steps(1) infinite;
+  }
+  @keyframes cursorblink{ 50%{ opacity:0; } }
+
+  /* ---------- DESKTOP READING LAYOUT ----------
+     The pixel font reads fine on a phone, where lines are short and the text is
+     physically small. On a wide monitor the same font over several hundred words
+     is hard work. From 900px up the column widens and body copy switches to the
+     same serif the editor composes in, so a finished post reads the way it looked
+     while you were writing it. Below 900px nothing here applies and the original
+     styling stands. */
+  @media (min-width:900px){
+    .post-body{max-width:980px; padding:64px 44px 48px;}
+    .post-body p,
+    .post-body li,
+    .post-body figcaption,
+    .post-body .card-row .card-text p{
+      font-family:Georgia,'Times New Roman',serif; letter-spacing:0.1px;
+    }
+    .post-body p{font-size:1.08rem; line-height:1.78; margin-bottom:22px; color:#f3ede2;}
+    .post-body li{font-size:1.05rem; line-height:1.72; margin-bottom:12px;}
+    .post-body ul, .post-body ol{margin-bottom:26px;}
+    .post-body h2{
+      font-family:Georgia,'Times New Roman',serif; color:var(--yellow);
+      font-size:1.55rem; letter-spacing:0.2px; margin:48px 0 18px;
+    }
+    .post-body strong{color:var(--yellow); font-weight:700;}
+    .post-body figure{margin-bottom:40px;}
+    .post-body figcaption{font-size:0.95rem; color:#a8a29a; line-height:1.6; margin-top:12px;}
+    .post-body .tally{font-size:1rem;}
+    .post-body .tally td{font-family:Georgia,'Times New Roman',serif;}
+    .post-body .card-row{grid-template-columns:250px 1fr; column-gap:32px; padding:26px 30px;}
+    .post-body .card-row .card-img{width:250px;}
+    .post-body .card-row .card-text p{font-size:1.03rem; line-height:1.7;}
+    .post-header{padding:84px 6% 46px;}
+    .post-header h1{font-size:clamp(1.8rem,3vw,2.5rem);}
+    .post-header .meta{font-size:1rem;}
+    .back-link{max-width:980px; padding:0 44px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="crt-overlay"></div>
+<div class="hazard"></div>
+<header>
+  <a href="../../" class="logo-group">
+    <img src="../../images/kodecco-icon.png" alt="Kodecco Games">
+  </a>
+  <nav>
+    <a href="../../#brief">Components</a>
+    <a href="../../#album">Album</a>
+    <a href="../../#roadmap">Roadmap</a>
+    <a href="../../#journal">Dev Journal</a>
+    <a href="../../#signal">Send Signal</a>
+  </nav>
+</header>
+
+<div class="post-header">
+  <span class="tag">// DEV JOURNAL</span>
+  <h1>So You Drew an Encounter — Combat, Sabotage & The Math of Survival</h1>
+  <div class="meta">Aug 23, 2026 · 3 min read</div>
+  
+</div>
+
+<div class="post-body">
+
+  <h2>The Moment the Card Flips</h2>
+
+  <p>You’ve finished your pre-draw actions: your character ability is on cooldown, you deposited a spare tool into the Shared Inventory, and nobody revealed themselves as a Carrier.</p>
+
+  <p>You reach for the central deck, flip the top card, and the room goes quiet.</p>
+
+  <p><strong>It’s an Encounter.</strong></p>
+
+  <p>Whether it’s a standard <em>Undead Horde</em> (5 DMG), a hulking <em>Behemoth</em> (7 DMG), or <em>The Matriarch</em> (8 DMG), the table suddenly shifts from resource planning into immediate crisis management.</p>
+
+  <p>Here's exactly how an Encounter resolves under the new v4.0 rules.</p>
+
+  <h2>Step 1: Assess the Threat & Check the Danger Gauge</h2>
+
+  <p>Every Encounter card displays a <strong>Target Damage Threshold</strong> representing the horde’s strength.</p>
+
+  <p>Taking the <strong>Undead Horde</strong> as our example, the card shows a clear requirement: <strong>5 DAMAGE TO CLEAR.</strong></p>
+
+  <figure>
+
+    <img src="images/01.avif" alt="">
+
+    <figcaption>Undead Horde encounter card in Carrier, showing 5 Danger required to clear, a Run penalty of +1 Danger, and a Failure penalty of +1 Mutation.</figcaption>
+
+  </figure>
+
+  <figure>
+
+    <img src="images/02.avif" alt="">
+
+  </figure>
+
+  <h2>Step 2: The Leader's Call — Fight or Run?</h2>
+
+  <p>As the active player (the Turn Leader), the call is yours: fight, or run.</p>
+
+  <p>### Option A: Call a "RUN" (Flee the Encounter)</p>
+
+  <p>If the table is caught off-guard with empty hands or weak weapons, you can choose to <strong>Run</strong> (up to <strong>3 Runaways allowed per game</strong>).</p>
+
+  <ul>
+    <li><strong>The Immediate Effect:</strong> The Undead Horde is temporarily bypassed and parked for later.</li>
+    <li><strong>The Cost (Next Encounter Penalty):</strong> As shown on the card (RUN: [+1] DANGER), fleeing adds <strong>+1 Danger to the NEXT Zombie Encounter</strong> your team faces.</li>
+  </ul>
+
+  <p><strong>Example:</strong> If you choose to run from this <strong>Undead Horde</strong>, the very next zombie threat drawn will have its target damage increased by <strong>+1</strong>. Running buys you breathing room now, but makes the very next fight harder to survive.</p>
+
+  <p><em>(Tip: You can actually reclaim spent Run attempts later in the game — more details on this in the Additional Note below.)</em></p>
+
+  <figure>
+
+    <img src="images/03.avif" alt="Three bypassed zombie encounter cards (Undead Horde, Stonewall, Undead Horde) placed face-up in a row to track active runaway encounters.">
+
+    <figcaption>If you choose to **Run**, place the bypassed Encounter **face-up on the table** so the entire group can clearly see the threat you've parked.</figcaption>
+
+  </figure>
+
+  <p>Keep in mind: the group is allowed a <strong>maximum of 3 Run attempts in total</strong> across the entire game. Once all 3 slots are filled, you can no longer flee and must stand and fight.</p>
+
+  <p><em>(Note: Running is distinct from a <strong>Failure</strong> — fleeing temporarily evades the fight at the cost of Danger, whereas failing occurs when your strike team enters combat and falls short of the damage threshold.)</em></p>
+
+  <p>### Option B: Stand & Assemble the Strike Team</p>
+
+  <p>If the Leader decides the group is ready to confront the <strong>Undead Horde</strong>, you forgo running and commit to combat.</p>
+
+  <h2>Dynamic Team Sizing (No Fixed Headcounts)</h2>
+
+  <p>Unlike older versions that forced an artificial player count (e.g., <em>"Choose exactly 4 players"</em>), <strong>party size is completely flexible</strong>. The Leader chooses who joins the fight based on what weapons players claim to hold:</p>
+
+  <ul>
+    <li>Armed with heavy Tier 2 or Tier 3 weapons? You can send a lean 2-person strike team to conserve team resources.</li>
+    <li>Carrying basic Tier 1 weapons? You’ll need to rally more players to combine enough attacks to hit the <strong>5 Damage</strong> threshold.</li>
+  </ul>
+
+  <p>### The [OVERENCUMBERED] Restriction</p>
+
+  <p>Only active, agile survivors can fight. Any player holding <strong>4 or more cards</strong> in hand is marked as <strong>[OVERENCUMBERED]</strong> and <strong>cannot be chosen</strong> to participate in the encounter until they reduce their hand size to 3 cards or fewer.</p>
+
+  <figure>
+
+    <img src="images/04.avif" alt="">
+
+  </figure>
+
+  <p>### The Social Deduction Dilemma</p>
+
+  <p>Before locking in the squad, the Leader relies on verbal table talk. Everyone will claim they can contribute damage — but every player you invite into the strike team is another opportunity for a hidden <strong>Carrier</strong> to infiltrate the fight and sabotage the outcome.</p>
+
+  <h2>Contesting the Strike Team (The Group Veto)</h2>
+
+  <p>Once the Leader nominates the players for the fight, the rest of the table gets a say. If the group distrusts the Leader's selection or suspects that a hidden Carrier was placed on the team, the group can choose to CONTEST the encounter.</p>
+
+  <p>What happens when an encounter is Contested:</p>
+
+  <ul>
+    <li>The nomination is immediately cancelled and automatically counts as a RUN.</li>
+    <li>The encounter card is placed face-up on the table as a parked threat.</li>
+    <li>This consumes 1 of the group's 3 maximum Run attempts.</li>
+    <li>The standard Run penalty applies: +1 Danger is added to the next Zombie Encounter.</li>
+  </ul>
+
+  <p>Contesting gives the survivors a vital emergency brake if they suspect the Leader is setting up a sabotaged team — but it costs a precious Run attempt and raises the danger for the next fight.</p>
+
+  <h2>Step 3: Submitting Combat Cards (Face-Down & Sabotage)</h2>
+
+  <p>Once the Leader locks in the strike team, each participating player secretly chooses <strong>1 card from their hand</strong> and places it <strong>face-down</strong> into a central combat pile.</p>
+
+  <figure>
+
+    <img src="images/05.avif" alt="Four encounter cards placed face-down in the combat pool, representing secret card submissions from four chosen strike team players.">
+
+    <figcaption>In this example, the Leader selects a **4-player strike team** to take on the **Undead Horde (5 DMG)**. Each of the 4 players secretly submits **1 card face-down** into the center combat pile. Because cards are hidden, the Leader must trust that everyone is contributing real weapons rather than a -3 Sample sabotage.</figcaption>
+
+  </figure>
+
+  <p>Here is what can be contributed:</p>
+
+  <table class="tally">
+    <thead>
+      <tr>
+        <th>Card Type</th>
+        <th>Effect</th>
+        <th>Deck Count</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Tier 1 Weapons</td>
+        <td class="was">+1 Attack Damage</td>
+        <td class="now">20 cards</td>
+      </tr>
+      <tr>
+        <td>Tier 2 Weapons</td>
+        <td class="was">+2 Attack Damage</td>
+        <td class="now">10 cards</td>
+      </tr>
+      <tr>
+        <td>Tier 3 Weapons</td>
+        <td class="was">+3 Attack Damage</td>
+        <td class="now">5 cards</td>
+      </tr>
+    </tbody>
+    <tfoot>
+      <tr>
+        <td>Live Samples (Sabotage)</td>
+        <td class="was">-3 Attack Damage</td>
+        <td class="now">15 cards</td>
+      </tr>
+    </tfoot>
+  </table>
+
+  <p>### The -3 Sabotage Dilemma</p>
+
+  <ul>
+    <li><strong>Survivors</strong> want to contribute their best weapons to reach the <strong>5 Damage</strong> needed to clear the Undead Horde.</li>
+    <li><strong>Carriers</strong> want the encounter to fail. By submitting a <strong>Sample</strong>, they inflict a massive <strong>-3 DMG penalty</strong> on the group's total attack score.</li>
+  </ul>
+
+  <figure>
+
+    <img src="images/06.avif" alt="">
+
+  </figure>
+
+  <h2>Step 4: Shuffle, Reveal & Calculate Damage</h2>
+
+  <p>To protect players' hidden identities and maintain social deduction tension, all submitted combat cards are gathered together, <strong>shuffled thoroughly</strong>, and then flipped face-up in the center of the table.</p>
+
+  <p><strong>Total Team Damage = (Sum of Weapon Damage) − (Sum of Sample Sabotages)</strong></p>
+
+  <p>### Scenario A: A Clean Victory (As Shown in Photo)</p>
+
+  <table class="tally">
+    <thead>
+      <tr>
+        <th></th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Revealed Cards</td>
+        <td class="was">Armaments (+1), Armaments (+1), Medical (+2), Armaments (+1)</td>
+      </tr>
+      <tr>
+        <td>Calculation</td>
+        <td class="was">1 + 1 + 2 + 1 = 5 Total Damage</td>
+      </tr>
+    </tbody>
+    <tfoot>
+      <tr>
+        <td>Result</td>
+        <td class="was">VICTORY (5 is equal to or greater than 5). The horde is defeated with zero sabotage.</td>
+      </tr>
+    </tfoot>
+  </table>
+
+  <figure>
+
+    <img src="images/07.avif" alt="Total Damage: 1 + 1 + 2 + 1 = 5 Total Team Damage.">
+
+    <figcaption>Four revealed combat cards: three Armaments cards (+1 DMG each) and one Medical card (+2 DMG), totaling 5 Attack Damage against the horde.</figcaption>
+
+  </figure>
+
+  <p>The reveal: <strong>Armaments (+1)</strong>, <strong>Armaments (+1)</strong>, <strong>Medical (+2)</strong>, and <strong>Armaments (+1)</strong>.</p>
+
+  <p>With zero sabotage cards played, the strike team successfully hits the <strong>5 Damage</strong> threshold needed to clear the <strong>Undead Horde</strong>!</p>
+
+  <p>### Scenario B: The Carrier Sabotage</p>
+
+  <p>Let's say one player secretly dropped a Sample instead of a weapon:</p>
+
+  <table class="tally">
+    <thead>
+      <tr>
+        <th></th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Revealed Cards</td>
+        <td class="was">Armaments (+1), Medical (+2), Medical (+2), Sample (-3)</td>
+      </tr>
+      <tr>
+        <td>Calculation</td>
+        <td class="was">1 + 2 + 2 − 3 = 2 Total Damage</td>
+      </tr>
+    </tbody>
+    <tfoot>
+      <tr>
+        <td>Result</td>
+        <td class="was">DEFEAT (2 is less than 5). The fight crashes because a hidden Carrier successfully sabotaged the squad.</td>
+      </tr>
+    </tfoot>
+  </table>
+
+  <figure>
+
+    <img src="images/08.avif" alt="Total Damage: 1 + 2 - 3 + 2 = 2 Total Team Damage.">
+
+    <figcaption>The 4 face-down cards are revealed for Scenario B: Armaments (+1), Medical (+2), Samples (-3 Sabotage), and Medical (+2).</figcaption>
+
+  </figure>
+
+  <p>Because a hidden Carrier secretly contributed a Sample (-3 DMG Sabotage) instead of a weapon, the team only dealt 2 damage out of the 5 required to clear the Undead Horde. The encounter fails, the group suffers the [+1] Mutation penalty, and the table immediately begins interrogating the 4 strike team members to figure out who dropped the sabotage.</p>
+
+  <h2>Step 5: Outcome — Victory vs. Defeat</h2>
+
+  <p>Once the damage is tallied against the Undead Horde's 5 Damage threshold, resolve the encounter based on the total.</p>
+
+  <p>### On Victory (Total Damage is 5 or higher)</p>
+
+  <ul>
+    <li>The Undead Horde is defeated and placed into the discard pile.</li>
+    <li>All 4 submitted combat cards go to the discard pile (ready for Rangers like the Forager or Blacksmith to scavenge later during Daybreak).</li>
+    <li>Participating character passives activate (such as the Survivalist's RECOVER ability granting a random Supply card refund).</li>
+    <li>Any active Danger modifier on this fight is cleared.</li>
+  </ul>
+
+  <p>### On Defeat (Total Damage is less than 5)</p>
+
+  <ul>
+    <li>The group suffers the penalty listed on the card: FAILURE: [+1] MUTATION. Advance the mutation tracker by 1.</li>
+    <li>Any active Danger penalties remain in effect.</li>
+    <li>The Interrogation Phase Begins: The table now has concrete proof that a Carrier was on the strike team and secretly dropped the -3 Sample sabotage. Accusations, bluffs, and deductions start immediately as players try to figure out who lied about their hand!</li>
+  </ul>
+
+  <h2>Additional Note: Reclaiming Run Attempts</h2>
+
+  <p>Encounters the group ran from earlier don't have to stay parked forever. Once you've scavenged better weapons, you can choose to go back and clear them.</p>
+
+  <p>On any turn, a player may skip their normal draw entirely and instead challenge one of the face-up encounters they bypassed earlier.</p>
+
+  <p>If the strike team successfully defeats that parked encounter:</p>
+
+  <ol class="steps">
+    <li>The encounter card is cleared and placed into the discard pile.</li>
+    <li>The team reduces its accumulated run count, successfully reclaiming 1 spent Run attempt for future emergencies.</li>
+    <li>Failed Encounters are placed into the discard pile, with their debuff enacted onto the group.</li>
+  </ol>
+
+  <p>This gives the survivors a meaningful tactical choice: spend a turn to eliminate a known threat and regain an emergency escape slot, or keep pushing deeper into the unknown deck.</p>
+
+  <figure>
+
+    <img src="images/09.avif" alt="">
+
+  </figure>
+
+  <h2>What This Brings to the Table</h2>
+
+  <p>By connecting encounter resolution directly to tiered weapon math, dynamic team sizes, and the ever-present threat of a -3 Sample sabotage, combat in Carrier is no longer just a numbers check. Every encounter becomes a high-stakes interrogation.</p>
+
+  <p>As the Leader, you're constantly weighing the odds: risk bringing along a player you don't fully trust because you desperately need their firepower, or head into the horde shorthanded and hope your basic weapons are enough?</p>
+
+  <p>We're bringing this updated combat system to our next playtest sessions to see how players handle the pressure. Let us know your thoughts — see you in the next dev log!</p>
+
+</div>
+
+<a class="back-link" href="../../#journal">← Back to Dev Journal</a>
+
+<footer>
+  <div class="socials">
+    <a href="#">Instagram</a> · <a href="#">BoardGameGeek</a> · <a href="#">Email</a>
+  </div>
+  <p style="margin-top:12px;">© 2026 CARRIER — a survival board game in development.</p>
+</footer>
+
+<div class="lightbox" id="lightbox">
+  <span class="lightbox-close" id="lightboxClose">&times;</span>
+  <img id="lightboxImg" src="" alt="">
+  <span class="lightbox-hint">Click image to zoom · Click outside or press Esc to close</span>
+</div>
+
+<script>
+  (function(){
+    var lb = document.getElementById('lightbox');
+    var lbImg = document.getElementById('lightboxImg');
+    var closeBtn = document.getElementById('lightboxClose');
+
+    document.querySelectorAll('.post-body figure img, .post-body .card-row img').forEach(function(img){
+      img.addEventListener('click', function(){
+        lbImg.src = img.getAttribute('src');
+        lbImg.alt = img.getAttribute('alt') || '';
+        lbImg.classList.remove('zoomed');
+        lb.classList.add('active');
+      });
+    });
+
+    lbImg.addEventListener('click', function(e){
+      e.stopPropagation();
+      lbImg.classList.toggle('zoomed');
+    });
+
+    function closeLightbox(){
+      lb.classList.remove('active');
+      lbImg.classList.remove('zoomed');
+    }
+    closeBtn.addEventListener('click', closeLightbox);
+    lb.addEventListener('click', function(e){ if(e.target === lb) closeLightbox(); });
+    document.addEventListener('keydown', function(e){ if(e.key === 'Escape') closeLightbox(); });
+  })();
+</script>
+
+</body>
+</html>
