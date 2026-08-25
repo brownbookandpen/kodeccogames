@@ -6,7 +6,7 @@
 <title>CARRIER — Kodecco Games</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DotGothic16&family=JetBrains+Mono:wght@400;500;700&family=VT323&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DotGothic16&family=JetBrains+Mono:wght@400;500;700&family=VT323&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 
 <meta name="description" content="CARRIER is a survival board game about outlasting the horde — 5-8 players, 45 minutes. Follow the build: design decisions, prototypes, and playtests.">
 <link rel="icon" href="favicon.ico" sizes="any">
@@ -71,7 +71,9 @@
     }
   }
   h1,h2,h3,h4,.logo,nav a,.tag,.btn,.stat b,.timeline-year{ font-family:'DotGothic16', monospace; }
-  .post-meta,.brief-card p,.hero p,.section-sub,.signal p,.quote p{ font-family:var(--font-body); font-size:0.95rem; }
+  p{ font-family:var(--font-read); }
+  .post-meta,.quote p{ font-family:var(--font-body); font-size:0.95rem; }
+  .brief-card p,.hero p,.section-sub,.signal p{ font-family:var(--font-read); font-size:0.98rem; }
   a{color:inherit;}
 
   ::selection{background:var(--red); color:#fff;}
@@ -122,7 +124,7 @@
   .hero-inner{position:relative; z-index:2;}
   .hero .tag, .banner-tag{
     display:block; width:fit-content; margin:0 auto; color:var(--yellow); border:2px solid var(--yellow);
-    padding:8px 14px; font-size:0.5rem; letter-spacing:1px;
+    padding:8px 14px; font-size:0.65rem; letter-spacing:1px;
     animation: flicker 3.5s infinite;
   }
   .hero .tag{margin-bottom:34px;}
@@ -131,7 +133,7 @@
     letter-spacing:2px; text-transform:uppercase; margin-bottom:22px;
   }
   @keyframes flicker{0%,92%,100%{opacity:1;} 94%{opacity:0.4;} 96%{opacity:1;} 98%{opacity:0.5;}}
-  .hero p{max-width:600px; margin:0 auto 34px; color:var(--grey); font-size:1.1rem;}
+  .hero p{max-width:600px; margin:0 auto 34px; color:var(--white); font-size:1.1rem; line-height:1.65;}
 
   /* ---------- HERO MARQUEE ---------- */
   .hero-marquee{
@@ -188,7 +190,7 @@
   section{ padding:80px max(6%, calc((100% - 820px) / 2)); }
   .eyebrow{color:var(--red); font-family:'DotGothic16',monospace; font-size:1.05rem; letter-spacing:2px; margin-bottom:14px; text-transform:uppercase;}
   .section-title{font-size:1.2rem; color:var(--yellow); letter-spacing:1px; margin-bottom:16px; text-transform:uppercase;}
-  .section-sub{color:var(--grey); max-width:660px; margin-bottom:48px; line-height:1.7;}
+  .section-sub{color:var(--white); max-width:660px; margin-bottom:48px; line-height:1.7;}
   /* Sections render visible immediately — no scroll-triggered fade-in. */
   .reveal{opacity:1; transform:none;}
   .reveal.in{opacity:1; transform:none;}
@@ -279,7 +281,7 @@
      floating over the key art, which the panels are too busy to carry. */
   .banner-tag{ margin-bottom:20px; font-size:0.62rem; padding:9px 14px; }
   @media (max-width:640px){
-    .banner-tag{ font-size:0.5rem; padding:7px 11px; white-space:nowrap; }
+    .banner-tag{ font-size:0.65rem; padding:7px 11px; white-space:nowrap; }
   }
 
   /* Hero copy sits directly under the key art: what the game is, who it's for,
@@ -336,7 +338,7 @@
     font-size:clamp(1.35rem, 5.6vw, 1.7rem); letter-spacing:2px; line-height:1.1;
     color:var(--yellow); text-shadow:2px 2px 0 #000, 0 0 12px rgba(0,0,0,.8);
   }
-  .brief-card p{color:var(--grey); font-size:0.92rem;}
+  .brief-card p{color:var(--white); font-size:0.95rem; line-height:1.6;}
   .brief-gallery{display:block; margin-top:16px;}
   .bg-item{
     position:relative; width:52px; height:52px; overflow:hidden; flex:0 0 52px;
@@ -591,7 +593,7 @@
   .cg-title{
     position:absolute; bottom:0; left:0; right:0; padding:10px 6px 5px;
     background:linear-gradient(180deg, transparent, rgba(0,0,0,0.9) 65%);
-    color:var(--yellow); font-family:'DotGothic16',monospace; font-size:0.55rem;
+    color:var(--yellow); font-family:'DotGothic16',monospace; font-size:0.65rem;
     letter-spacing:0.5px; text-transform:uppercase; text-align:center;
     pointer-events:none;
   }
@@ -814,7 +816,7 @@
     margin:0 auto 80px; max-width:1180px; padding:56px 6%; box-shadow:6px 6px 0 var(--darkred);
   }
   .signal h2{color:var(--yellow); letter-spacing:1px; margin-bottom:18px; font-size:1.05rem;}
-  .signal p{color:var(--grey); margin-bottom:26px;}
+  .signal p{color:var(--white); margin-bottom:26px; line-height:1.6;}
   .signal form{display:flex; justify-content:center; gap:10px; flex-wrap:wrap;}
   .signal input{padding:13px 16px; border:2px solid #333; background:#0d0d0d; color:#fff; width:100%; max-width:280px; font-family:inherit; font-size:1rem;}
   .signal input:focus{outline:none; border-color:var(--yellow);}

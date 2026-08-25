@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>CHARACTER — CARRIER</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DotGothic16&family=VT323&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DotGothic16&family=VT323&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../../styles.css">
 <style>
   *{box-sizing:border-box;margin:0;padding:0;}
@@ -21,6 +21,7 @@
     overflow-x:clip;
   }
   h1,.logo,nav a,.tag{font-family:'DotGothic16',monospace;}
+  p{font-family:var(--font-read); font-size:1rem; line-height:1.65;}
   a{color:inherit;}
   .hazard{height:10px; background:repeating-linear-gradient(45deg, var(--yellow) 0 20px, var(--black) 20px 40px);}
   header{
@@ -64,7 +65,7 @@
   }
   .post-header .tag{
     display:block; width:fit-content; margin:0 auto 22px; color:var(--yellow); border:2px solid var(--yellow);
-    padding:8px 14px; font-size:0.5rem; letter-spacing:1px;
+    padding:8px 14px; font-size:0.65rem; letter-spacing:1px;
   }
   .post-header h1{font-size:clamp(1.4rem,4vw,2.1rem); color:var(--brightred); text-shadow:3px 3px 0 #000; margin-bottom:14px; line-height:1.5;}
   .post-header .subtag{color:var(--yellow); font-size:0.85rem; letter-spacing:1px; text-transform:uppercase;}
@@ -419,7 +420,7 @@
       position:fixed; left:50%; top:14px; transform:translateX(-50%);
       display:flex; align-items:center; gap:8px;
       background:rgba(10,10,10,.85); border:1px solid rgba(255,255,255,.16);
-      color:var(--yellow); font-family:'DotGothic16',monospace; font-size:0.55rem;
+      color:var(--yellow); font-family:'DotGothic16',monospace; font-size:0.65rem;
       letter-spacing:1px; padding:7px 14px; border-radius:20px;
       pointer-events:none; z-index:16; white-space:nowrap;
       opacity:1; transition:opacity .5s ease;

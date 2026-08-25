@@ -42,7 +42,7 @@
   --yellow:#f2c14e;
   --green:#3f8f5f;
   --grey:#9a9a9a;
-  --white:#eee8dc;
+  --white:#f5f2ea;
 
   /* --- structural lines ---
      Neutral by default: red reads as an accent, not as the page's
@@ -63,6 +63,7 @@
      accent : pull quotes and decorative numerals */
   --font-body:'JetBrains Mono','SFMono-Regular',Consolas,'Courier New',monospace;
   --font-display:'DotGothic16',monospace;
+  --font-read:'Inter',-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
   --font-accent:'VT323',monospace;
 }
 

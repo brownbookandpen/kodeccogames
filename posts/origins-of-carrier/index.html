@@ -5,12 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The Origins of Carrier — CARRIER</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=DotGothic16&family=JetBrains+Mono:wght@400;500;700&family=VT323&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DotGothic16&family=JetBrains+Mono:wght@400;500;700&family=VT323&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root{
     --black:#0a0a0a; --panel:#161616; --panel2:#1c1c1c;
     --red:#c81d1d; --brightred:#e8341f; --darkred:#6e1010;
-    --yellow:#f2c14e; --grey:#9a9a9a; --white:#eee8dc;
+    --yellow:#f2c14e; --grey:#9a9a9a; --white:#f5f2ea;
+    --font-read:'Inter',-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
   }
   *{box-sizing:border-box;margin:0;padding:0;}
   html{scroll-behavior:smooth;}
@@ -42,7 +43,7 @@
   }
   .post-header .tag{
     display:block; width:fit-content; margin:0 auto 22px; color:var(--yellow); border:2px solid var(--yellow);
-    padding:8px 14px; font-size:0.5rem; letter-spacing:1px;
+    padding:8px 14px; font-size:0.65rem; letter-spacing:1px;
   }
   .post-header h1{font-size:clamp(1.4rem,4vw,2.1rem); color:var(--brightred); text-shadow:3px 3px 0 #000; margin-bottom:18px; line-height:1.5;}
   .post-header .dek{color:var(--grey); font-size:1.05rem; max-width:600px; margin:0 auto 20px;}
@@ -50,7 +51,7 @@
 
   .post-body{max-width:720px; margin:0 auto; padding:60px 6% 40px;}
   .post-body h2{color:var(--yellow); font-size:1.1rem; margin:56px 0 24px; line-height:1.6;}
-  .post-body p{color:var(--white); margin-bottom:24px; font-size:1.15rem;}
+  .post-body p{color:var(--white); margin-bottom:22px; font-size:1.05rem; line-height:1.75; font-family:var(--font-read);}
   figure{margin:36px 0; position:relative; z-index:10000;}
   figure img{display:block; width:100%; height:auto; filter:drop-shadow(6px 6px 0 #000); cursor:zoom-in;}
   figcaption{color:var(--grey); font-size:0.95rem; margin-top:14px; font-style:italic; line-height:1.5;}
@@ -128,9 +129,9 @@
     .post-body li,
     .post-body figcaption,
     .post-body .card-row .card-text p{
-      font-family:'JetBrains Mono','SFMono-Regular',Consolas,'Courier New',monospace; letter-spacing:0.1px;
+      font-family:var(--font-read);
     }
-    .post-body p{font-size:1.08rem; line-height:1.78; margin-bottom:22px; color:#f3ede2;}
+    .post-body p{font-size:1.08rem; line-height:1.8; margin-bottom:22px; color:var(--white);}
     .post-body li{font-size:1.05rem; line-height:1.72; margin-bottom:12px;}
     .post-body ul, .post-body ol{margin-bottom:26px;}
     .post-body h2{
