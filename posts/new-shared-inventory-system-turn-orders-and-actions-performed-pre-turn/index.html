@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>New Shared Inventory System, Turn Orders, and Actions Performed Pre-Turn — CARRIER</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=DotGothic16&family=JetBrains+Mono:wght@400;500;700&family=VT323&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
     --black:#0a0a0a; --panel:#161616; --panel2:#1c1c1c;
@@ -17,9 +17,9 @@
   html{scroll-behavior:smooth;}
   body{
     background:var(--black); color:var(--white);
-    font-family:'JetBrains Mono','SFMono-Regular',Consolas,'Courier New',monospace; font-size:1.05rem; line-height:1.7;
+    font-family:var(--font-read); font-size:1.05rem; line-height:1.7;
   }
-  h1,h2,.logo,nav a,.tag{font-family:'DotGothic16',monospace;}
+  h1,h2,.logo,nav a,.tag{font-family:var(--font-read);}
   a{color:inherit;}
   .hazard{height:10px; background:repeating-linear-gradient(45deg, var(--yellow) 0 20px, var(--black) 20px 40px);}
   header{
@@ -61,19 +61,19 @@
     content:counter(step); position:absolute; left:0; top:2px;
     width:28px; height:28px; display:flex; align-items:center; justify-content:center;
     background:var(--red); color:#fff; border:2px solid #000;
-    font-family:'DotGothic16',monospace; font-size:0.72rem;
+    font-family:var(--font-read); font-size:0.72rem;
   }
   .tally{width:100%; border-collapse:collapse; margin:0 0 30px; border:2px solid var(--darkred); font-size:1.05rem;}
   .tally th, .tally td{padding:11px 13px; text-align:left; border-bottom:1px solid #2b2b2b;}
   .tally thead th{
-    background:var(--panel); color:var(--yellow); font-family:'DotGothic16',monospace;
+    background:var(--panel); color:var(--yellow); font-family:var(--font-read);
     font-size:0.62rem; letter-spacing:1px; text-transform:uppercase;
   }
   .tally td:not(:first-child){text-align:right; white-space:normal; word-break:break-word;}
   .tally .was{color:var(--grey);}
   .tally .now{color:var(--yellow);}
   .tally tfoot td{background:rgba(200,29,29,0.10); border-top:2px solid var(--darkred); border-bottom:none;}
-  .tally tfoot td:first-child{font-family:'DotGothic16',monospace; font-size:0.68rem; letter-spacing:1px; text-transform:uppercase;}
+  .tally tfoot td:first-child{font-family:var(--font-read); font-size:0.68rem; letter-spacing:1px; text-transform:uppercase;}
   @media (max-width:560px){ .tally{font-size:0.95rem;} .tally th, .tally td{padding:9px 8px;} }
   .post-header .byline{color:#6f6f6f; font-size:0.82rem; margin-top:6px;}
   .post-body figure{margin:0 0 32px;}
@@ -87,7 +87,7 @@
     background:var(--panel); border:2px solid var(--darkred); padding:22px 26px;
   }
   .card-row .card-title{
-    grid-area:title; color:var(--red); font-family:'DotGothic16',monospace; font-size:1.05rem;
+    grid-area:title; color:var(--red); font-family:var(--font-read); font-size:1.05rem;
     letter-spacing:0.5px; text-transform:uppercase;
   }
   .card-row .card-img{grid-area:img; width:220px;}
@@ -113,19 +113,19 @@
   .lightbox img.zoomed{transform:scale(1.9); cursor:zoom-out;}
   .lightbox-close{
     position:absolute; top:22px; right:34px; color:var(--yellow); font-size:2.4rem;
-    font-family:'DotGothic16',monospace; cursor:pointer; line-height:1; z-index:20001;
+    font-family:var(--font-read); cursor:pointer; line-height:1; z-index:20001;
   }
   .lightbox-close:hover{color:var(--red);}
   .lightbox-hint{
     position:absolute; bottom:22px; left:0; right:0; text-align:center;
     color:var(--grey); font-size:0.7rem; letter-spacing:0.5px; text-transform:uppercase;
-    font-family:'DotGothic16',monospace; pointer-events:none;
+    font-family:var(--font-read); pointer-events:none;
   }
 
   .back-link{
     display:block; max-width:720px; margin:0 auto 80px; padding:0 6%;
     color:var(--yellow); text-decoration:none; font-size:0.7rem; letter-spacing:1px;
-    font-family:'DotGothic16',monospace;
+    font-family:var(--font-read);
   }
   .back-link:hover{text-decoration:underline;}
 
@@ -166,14 +166,14 @@
     .post-body li{font-size:1.05rem; line-height:1.72; margin-bottom:12px;}
     .post-body ul, .post-body ol{margin-bottom:26px;}
     .post-body h2{
-      font-family:'JetBrains Mono','SFMono-Regular',Consolas,'Courier New',monospace; color:var(--yellow);
+      font-family:var(--font-read); color:var(--yellow);
       font-size:1.55rem; letter-spacing:0.2px; margin:48px 0 18px;
     }
     .post-body strong{color:var(--yellow); font-weight:700;}
     .post-body figure{margin-bottom:40px;}
     .post-body figcaption{font-size:0.95rem; color:#a8a29a; line-height:1.6; margin-top:12px;}
     .post-body .tally{font-size:1rem;}
-    .post-body .tally td{font-family:'JetBrains Mono','SFMono-Regular',Consolas,'Courier New',monospace;}
+    .post-body .tally td{font-family:var(--font-read);}
     .post-body .card-row{grid-template-columns:250px 1fr; column-gap:32px; padding:26px 30px;}
     .post-body .card-row .card-img{width:250px;}
     .post-body .card-row .card-text p{font-size:1.03rem; line-height:1.7;}
@@ -210,86 +210,73 @@
 
 <div class="post-body">
 
-  <figure>
-
-    <img src="images/01.avif" alt="">
-
-  </figure>
-
   <h2>Cleaning Up the Turn Loop</h2>
 
-  <p>When we stripped down <em>Carrier</em> from 198 cards to 89, we fixed our setup bloat. But streamlining the deck forced us to take a hard look at the actual turn-to-turn mechanics: <strong>What happens right before an Encounter is drawn, and how do players manage their gear?</strong></p>
+  <p>When we stripped down Carrier from 198 cards to 89, we fixed our setup bloat. But streamlining the deck forced us to take a hard look at the actual turn-to-turn mechanics: what happens right before an Encounter is drawn, and how do players manage their gear?</p>
 
-  <p>In earlier versions, trading was messy, players hoarded cards indefinitely, and Carriers would shout out revelations in the middle of other players' actions—often triggering arguments when an encounter card was drawn at the exact same split-second.</p>
+  <p>In earlier versions, trading was messy, players hoarded cards indefinitely, and Carriers would shout out revelations in the middle of other players' actions — often triggering arguments when an encounter card was drawn at the exact same split-second.</p>
 
-  <p>To fix this, we structured the turn around a strict <strong>Pre-Draw Action Window</strong>, introduced a <strong>Shared Group Inventory</strong>, and re-engineered the <strong>Carrier elimination timing</strong>.</p>
+  <p>To fix this, we structured the turn around a strict Pre-Draw Action Window, introduced a Shared Group Inventory, and re-engineered the Carrier elimination timing. Here is how a turn flows in the new build.</p>
 
-  <p>Here is how a turn flows in the new build.</p>
+  <h2>Setting the Stage: The First Turn</h2>
 
-  <figure>
+  <p>Once every player receives their Character (a public role) and their Allegiance (a secret role), the game is ready to begin. The youngest player at the table takes the first turn.</p>
 
-    <img src="images/02.avif" alt="">
-
-  </figure>
-
-  <h2>1. Setting the Stage: The First Turn</h2>
-
-  <p>Once every player receives their <strong>Character</strong> <em>(Public Role)</em> and their <strong>Allegiance</strong> <em>(Secret Role)</em>, the game is ready to begin.</p>
-
-  <ul>
-    <li><strong>First Player:</strong> The youngest player at the table takes the first turn.</li>
-    <li><strong>The Opening Call:</strong> The starting player decides whether the group begins the journey in <strong>Daybreak</strong> or <strong>Nightfall</strong>, setting the active phase for the entire first rotation around the table.</li>
-  </ul>
-
-  <h2>2. The Pre-Draw Window (Actions Before You Draw)</h2>
-
-  <p>Before a player touches the Encounter Deck, they enter their Pre-Draw window. Any pre-draw actions <strong>must be completed before drawing an encounter card</strong>.</p>
-
-  <p>On your turn, you may take any of the following actions:</p>
-
-  <p><strong>Activate Character Ability:</strong> If your character matches the current phase (Daybreak, Nightfall, or All Phase) and you have remaining uses.</p>
+  <p>The starting player also makes the opening call: whether the group begins the journey in Daybreak or Nightfall. This sets the active phase for the entire first rotation around the table, and it matters immediately — most character abilities only work during a specific phase.</p>
 
   <figure>
-
-    <img src="images/03.avif" alt="">
-
+    <img src="images/01.avif" alt="Enforcer and Forager character cards, each showing their Investigate and Allocate abilities and the phase they can be used in.">
+    <figcaption>Every character card lists which phase its ability belongs to — the Enforcer's Investigate works in either phase, the Forager's Allocate only works during Daybreak.</figcaption>
   </figure>
-
-  <p><strong>Interact with the Shared Inventory:</strong> Contribute an item to—or take an item from—the group's central inventory pool.</p>
-
-  <p>Contributing to the Shared Inventory is done <strong>anonymously</strong>.</p>
 
   <figure>
-
-    <img src="images/04.avif" alt="">
-
+    <img src="images/02.avif" alt="Close-up of a Daybreak phase marker printed on a character card.">
+    <figcaption>The phase marker is what the opening call sets for the whole first rotation.</figcaption>
   </figure>
 
-  <p>But when you wish to take from the Shared Inventory, you can go through all the cards and choose the one you want to take.</p>
+  <h2>The Pre-Draw Window</h2>
+
+  <p>Before a player touches the Encounter Deck, they enter their Pre-Draw window. Any pre-draw actions must be completed before drawing an encounter card. On your turn, you may take any of the following.</p>
+
+  <h2>Activate Character Ability</h2>
+
+  <p>If your character matches the current phase — Daybreak, Nightfall, or All Phase — and you still have uses remaining, you may activate it now.</p>
 
   <figure>
-
-    <img src="images/05.avif" alt="">
-
+    <img src="images/03.avif" alt="Intercept ability card: usable during Daybreak, once per game, letting the player examine the hand cards of two chosen players.">
+    <figcaption>Some abilities, like Intercept, exist specifically to counter hidden information — using them at the right moment is a big part of the strategy.</figcaption>
   </figure>
 
-  <p><strong>Carrier Reveal & Elimination:</strong> If you are a Carrier, you may choose this moment to reveal your secret role and eliminate a player.</p>
+  <h2>Interact with the Shared Inventory</h2>
+
+  <p>You may contribute an item to, or take an item from, the group's central inventory pool. Contributing is done anonymously — nobody sees who deposited what.</p>
 
   <figure>
-
-    <img src="images/06.avif" alt="">
-
+    <img src="images/04.avif" alt="Reinforced and Explosives supply cards, showing the anonymous contribution rule and their attack damage bonus.">
+    <figcaption>Contributions go into the pool face-down and anonymous — the group only sees the card once it's been added.</figcaption>
   </figure>
 
-  <p>Once these actions are resolved (or passed), the player draws from the Encounter Deck to face the horde.</p>
+  <p>When you wish to take from the Shared Inventory instead, you can go through all the cards openly and choose the one you want.</p>
 
-  <h2>3. The Shared Group Inventory & The "Overencumbered" Rule</h2>
+  <figure>
+    <img src="images/05.avif" alt="A fan of supply cards in the Shared Inventory — Armaments, Explosives, Samples, and Reinforced — laid out for a player to choose from.">
+    <figcaption>Withdrawing is the opposite of contributing: it's done in the open, so you know exactly what you're taking.</figcaption>
+  </figure>
 
-  <p>Direct player-to-player card passing caused downtime and clunky negotiations. We replaced private trading with a <strong>Central Shared Inventory</strong>.</p>
+  <h2>Carrier Reveal and Elimination</h2>
 
-  <p>Instead of handing cards directly across the table, players deposit useful items into the common pool or pull gear out to prepare for upcoming fights.</p>
+  <p>If you are a Carrier, you may choose this moment to reveal your secret role and eliminate a player. Once these actions are resolved, or passed, the player draws from the Encounter Deck to face the horde.</p>
 
-  <p>To keep gear moving and prevent players from sitting on massive armories, we introduced a strict hand size rule:</p>
+  <figure>
+    <img src="images/06.avif" alt="Carrier allegiance card, Executioner role, showing the eliminate-one-player ability used on your own turn.">
+    <figcaption>A Carrier's kill is now tied to their own Pre-Draw window, not to whenever they feel like interrupting.</figcaption>
+  </figure>
+
+  <h2>The Shared Group Inventory and the Overencumbered Rule</h2>
+
+  <p>Direct player-to-player card passing caused downtime and clunky negotiations, so we replaced private trading with a central shared inventory. Instead of handing cards directly across the table, players deposit useful items into the common pool or pull gear out to prepare for upcoming fights.</p>
+
+  <p>To keep gear moving and stop players from sitting on massive armories, we introduced a strict hand size rule.</p>
 
   <table class="tally">
     <thead>
@@ -309,38 +296,25 @@
     <tfoot>
       <tr>
         <td>4+ cards</td>
-        <td class="was"><strong>Overencumbered</strong></td>
+        <td class="was">Overencumbered</td>
         <td class="now">Cannot fight</td>
       </tr>
     </tfoot>
   </table>
 
-  <p><strong>Why allow hoarding? The strategy of being Overencumbered</strong></p>
+  <p>A player can technically hold more than 3 cards, but doing so marks them as <strong>Overencumbered</strong>, and an overencumbered player cannot participate in any Encounters until their hand is back down to 3 cards or fewer.</p>
 
-  <p>A player <em>can</em> technically hold more than 3 cards, but doing so marks them as <strong>Overencumbered</strong>.</p>
+  <p>That restriction creates two different tactical dilemmas. A Survivor has to decide whether to sideline themselves from combat to safely transport multiple high-tier weapons or vital Samples for the cure — or to keep some in reserve for a Character ability that requires them. A hidden Carrier faces a quieter version of the same choice: hoard items under the guise of "holding resources," and you remove yourself from fights while forcing the rest of the group to face the horde shorthanded.</p>
 
-  <ul>
-    <li><strong>The Restriction:</strong> An overencumbered player <strong>cannot participate in any Encounters</strong> until they reduce their hand size back down to 3 cards or fewer.</li>
-    <li><strong>The Tactical Dilemma (Survivor):</strong> Do you temporarily sideline yourself from combat to safely transport multiple high-tier weapons or vital Samples for the cure—or to keep some in reserve for your Character ability, if it requires them?</li>
-    <li><strong>The Tactical Dilemma (Carrier):</strong> As a hidden Carrier, do you intentionally hoard items under the guise of "holding resources," quietly removing yourself from fights and forcing the rest of the group to face the horde shorthanded?</li>
-  </ul>
+  <h2>Fixing the Carrier Misfire: No More Mid-Turn Kills</h2>
 
-  <h2>4. Fixing the Carrier Misfire: No More Mid-Turn Kills</h2>
+  <p>One of the biggest procedural changes in this build is how and when Carriers can strike. Previously, Carriers could reveal their secret role at almost any time, including between other players' turns. While exciting in theory, it created constant table friction — a player would reach to draw an encounter, a Carrier would yell to reveal, and the table would get bogged down arguing over which action took priority.</p>
 
-  <p>One of the biggest procedural changes in this build is how and when Carriers can strike.</p>
+  <p>The new rule: Carriers can no longer reveal between turns. A Carrier must wait until their own turn and reveal during their Pre-Draw action window to eliminate a target.</p>
 
-  <p>Previously, Carriers could reveal their secret role at almost any time, including between other players' turns. While exciting in theory, in practice it created constant table friction: a player would reach to draw an encounter, a Carrier would yell to reveal, and the table would get bogged down arguing over which action took priority.</p>
+  <p>That removes timing disputes entirely — no more overlapping actions, misfired card draws, or contested priority calls. It also gives Survivors a slight predictability window, since nobody gets assassinated mid-draw on their own turn. In exchange, Carriers have to play more calculatingly, timing their turn order and using the Pre-Draw window to strike with maximum psychological impact.</p>
 
-  <p><strong>The New Rule:</strong> Carriers can no longer reveal between turns. A Carrier must wait until <strong>their own turn</strong> and reveal during their <strong>Pre-Draw action window</strong> to eliminate a target.</p>
-
-  <p>What this means for balance:</p>
-
-  <ul>
-    <li><strong>Zero Timing Disputes:</strong> No more overlapping actions, misfired card draws, or contested priority calls.</li>
-    <li><strong>A Distinct Trade-off:</strong> This does give Survivors a slight predictability window—you know you won't be assassinated mid-draw on your own turn. However, it forces Carriers to play far more calculatingly, timing their turn order and using the Pre-Draw window to strike with maximum psychological impact.</li>
-  </ul>
-
-  <h2>5. The New Turn Cycle at a Glance</h2>
+  <h2>The New Turn Cycle at a Glance</h2>
 
   <table class="tally">
     <thead>
@@ -393,6 +367,7 @@
   <p>Stay tuned for our upcoming playtest reports!</p>
 
 </div>
+
 
 <a class="back-link" href="../../#journal">← Back to Dev Journal</a>
 

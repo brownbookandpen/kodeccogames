@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Daybreak, Nightfall & The Anatomy of a Character Card — CARRIER</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=DotGothic16&family=JetBrains+Mono:wght@400;500;700&family=VT323&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
     --black:#0a0a0a; --panel:#161616; --panel2:#1c1c1c;
@@ -17,9 +17,9 @@
   html{scroll-behavior:smooth;}
   body{
     background:var(--black); color:var(--white);
-    font-family:'JetBrains Mono','SFMono-Regular',Consolas,'Courier New',monospace; font-size:1.05rem; line-height:1.7;
+    font-family:var(--font-read); font-size:1.05rem; line-height:1.7;
   }
-  h1,h2,.logo,nav a,.tag{font-family:'DotGothic16',monospace;}
+  h1,h2,.logo,nav a,.tag{font-family:var(--font-read);}
   a{color:inherit;}
   .hazard{height:10px; background:repeating-linear-gradient(45deg, var(--yellow) 0 20px, var(--black) 20px 40px);}
   header{
@@ -61,19 +61,19 @@
     content:counter(step); position:absolute; left:0; top:2px;
     width:28px; height:28px; display:flex; align-items:center; justify-content:center;
     background:var(--red); color:#fff; border:2px solid #000;
-    font-family:'DotGothic16',monospace; font-size:0.72rem;
+    font-family:var(--font-read); font-size:0.72rem;
   }
   .tally{width:100%; border-collapse:collapse; margin:0 0 30px; border:2px solid var(--darkred); font-size:1.05rem;}
   .tally th, .tally td{padding:11px 13px; text-align:left; border-bottom:1px solid #2b2b2b;}
   .tally thead th{
-    background:var(--panel); color:var(--yellow); font-family:'DotGothic16',monospace;
+    background:var(--panel); color:var(--yellow); font-family:var(--font-read);
     font-size:0.62rem; letter-spacing:1px; text-transform:uppercase;
   }
   .tally td:not(:first-child){text-align:right; white-space:nowrap;}
   .tally .was{color:var(--grey);}
   .tally .now{color:var(--yellow);}
   .tally tfoot td{background:rgba(200,29,29,0.10); border-top:2px solid var(--darkred); border-bottom:none;}
-  .tally tfoot td:first-child{font-family:'DotGothic16',monospace; font-size:0.68rem; letter-spacing:1px; text-transform:uppercase;}
+  .tally tfoot td:first-child{font-family:var(--font-read); font-size:0.68rem; letter-spacing:1px; text-transform:uppercase;}
   @media (max-width:560px){ .tally{font-size:0.95rem;} .tally th, .tally td{padding:9px 8px;} }
   .post-header .byline{color:#6f6f6f; font-size:0.82rem; margin-top:6px;}
   .post-body figure{margin:0 0 32px;}
@@ -87,7 +87,7 @@
     background:var(--panel); border:2px solid var(--darkred); padding:22px 26px;
   }
   .card-row .card-title{
-    grid-area:title; color:var(--red); font-family:'DotGothic16',monospace; font-size:1.05rem;
+    grid-area:title; color:var(--red); font-family:var(--font-read); font-size:1.05rem;
     letter-spacing:0.5px; text-transform:uppercase;
   }
   .card-row .card-img{grid-area:img; width:220px;}
@@ -113,19 +113,19 @@
   .lightbox img.zoomed{transform:scale(1.9); cursor:zoom-out;}
   .lightbox-close{
     position:absolute; top:22px; right:34px; color:var(--yellow); font-size:2.4rem;
-    font-family:'DotGothic16',monospace; cursor:pointer; line-height:1; z-index:20001;
+    font-family:var(--font-read); cursor:pointer; line-height:1; z-index:20001;
   }
   .lightbox-close:hover{color:var(--red);}
   .lightbox-hint{
     position:absolute; bottom:22px; left:0; right:0; text-align:center;
     color:var(--grey); font-size:0.7rem; letter-spacing:0.5px; text-transform:uppercase;
-    font-family:'DotGothic16',monospace; pointer-events:none;
+    font-family:var(--font-read); pointer-events:none;
   }
 
   .back-link{
     display:block; max-width:720px; margin:0 auto 80px; padding:0 6%;
     color:var(--yellow); text-decoration:none; font-size:0.7rem; letter-spacing:1px;
-    font-family:'DotGothic16',monospace;
+    font-family:var(--font-read);
   }
   .back-link:hover{text-decoration:underline;}
 
@@ -166,14 +166,14 @@
     .post-body li{font-size:1.05rem; line-height:1.72; margin-bottom:12px;}
     .post-body ul, .post-body ol{margin-bottom:26px;}
     .post-body h2{
-      font-family:'JetBrains Mono','SFMono-Regular',Consolas,'Courier New',monospace; color:var(--yellow);
+      font-family:var(--font-read); color:var(--yellow);
       font-size:1.55rem; letter-spacing:0.2px; margin:48px 0 18px;
     }
     .post-body strong{color:var(--yellow); font-weight:700;}
     .post-body figure{margin-bottom:40px;}
     .post-body figcaption{font-size:0.95rem; color:#a8a29a; line-height:1.6; margin-top:12px;}
     .post-body .tally{font-size:1rem;}
-    .post-body .tally td{font-family:'JetBrains Mono','SFMono-Regular',Consolas,'Courier New',monospace;}
+    .post-body .tally td{font-family:var(--font-read);}
     .post-body .card-row{grid-template-columns:250px 1fr; column-gap:32px; padding:26px 30px;}
     .post-body .card-row .card-img{width:250px;}
     .post-body .card-row .card-text p{font-size:1.03rem; line-height:1.7;}
