@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Kodecco Post Editor</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DotGothic16&family=JetBrains+Mono:wght@400;500;700&family=VT323&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --black:#0a0a0a; --panel:#161616; --panel2:#1c1c1c;
+    --red:#c81d1d; --brightred:#e8341f; --darkred:#6e1010;
+    --yellow:#f2c14e; --grey:#9a9a9a; --white:#f5f2ea;
+    --font-read:'Inter',-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+    --ui-bg:#0e0e10; --ui-panel:#17171a; --ui-border:#2a2a2e; --ui-text:#e8e6e0; --ui-accent:#f2c14e;
+  }
+  *{box-sizing:border-box;}
+  html,body{height:100%;}
+  body{margin:0; background:var(--ui-bg); color:var(--ui-text); font-family:'JetBrains Mono','SFMono-Regular',Consolas,monospace; font-size:14px;}
+  a{color:inherit;}
+  button{font-family:inherit; cursor:pointer;}
+
+  /* ---------- APP SHELL ---------- */
+  #app{display:flex; flex-direction:column; height:100%;}
+  #topbar{
+    display:flex; align-items:center; gap:10px; padding:10px 16px;
+    background:var(--ui-panel); border-bottom:2px solid var(--darkred); flex-wrap:wrap;
+  }
+  #topbar .title{font-weight:bold; color:var(--yellow); margin-right:10px; letter-spacing:0.5px;}
+  .btn{
+    background:#222; color:var(--ui-text); border:1px solid var(--ui-border); padding:7px 12px;
+    border-radius:4px; font-size:12.5px;
+  }
+  .btn:hover{border-color:var(--yellow); color:var(--yellow);}
+  .btn.primary{background:var(--red); border-color:var(--red); color:#fff; font-weight:bold;}
+  .btn.primary:hover{background:var(--brightred); color:#fff;}
+  .btn:disabled{opacity:0.35; cursor:not-allowed;}
+  .spacer{flex:1;}
+  #status{font-size:12px; color:var(--grey);}
+  #status.saved{color:#7bc87b;}
+  #status.dirty{color:var(--yellow);}
+  #status.error{color:var(--brightred);}
+
+  #main{flex:1; display:flex; min-height:0;}
+  #sidebar{
+    width:230px; flex-shrink:0; background:var(--ui-panel); border-right:2px solid var(--ui-border);
+    overflow-y:auto; padding:10px;
+  }
+  #sidebar h3{font-size:11px; color:var(--grey); text-transform:uppercase; letter-spacing:1px; margin:6px 0 8px;}
+  .post-item{
+    padding:9px 10px; border-radius:4px; margin-bottom:4px; cursor:pointer; font-size:12.5px;
+    border:1px solid transparent; line-height:1.4;
+  }
+  .post-item:hover{background:#222;}
+  .post-item.active{background:rgba(200,29,29,0.18); border-color:var(--darkred); color:var(--yellow);}
+  .post-item .slug{display:block; color:var(--grey); font-size:10.5px; margin-top:2px;}
+
+  #editorArea{flex:1; overflow-y:auto; padding:26px 30px; min-width:0;}
+  #emptyState{color:var(--grey); padding:60px 20px; text-align:center; max-width:480px; margin:0 auto; line-height:1.7;}
+  #emptyState h2{color:var(--yellow); margin-bottom:14px; font-size:16px;}
+
+  .field-row{display:flex; gap:14px; margin-bottom:14px; flex-wrap:wrap;}
+  .field{flex:1; min-width:220px;}
+  .field label{display:block; font-size:11px; color:var(--grey); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:5px;}
+  .field input{
+    width:100%; background:#1a1a1a; border:1px solid var(--ui-border); color:var(--ui-text);
+    padding:9px 10px; border-radius:4px; font-family:inherit; font-size:13.5px;
+  }
+  .field input:focus{outline:none; border-color:var(--yellow);}
+
+  #toolbar{
+    display:flex; gap:6px; flex-wrap:wrap; margin:18px 0 14px; padding:10px; background:var(--ui-panel);
+    border:1px solid var(--ui-border); border-radius:6px; position:sticky; top:0; z-index:5;
+  }
+  #toolbar button{
+    background:#222; border:1px solid var(--ui-border); color:var(--ui-text); padding:6px 10px;
+    border-radius:4px; font-size:12px; white-space:nowrap;
+  }
+  #toolbar button:hover{border-color:var(--yellow); color:var(--yellow);}
+  #toolbar .sep{width:1px; background:var(--ui-border); margin:2px 4px;}
+
+  /* ---------- LIVE PREVIEW (real site styling, scoped) ---------- */
+  #previewWrap{background:var(--black); border:2px solid var(--darkred); border-radius:2px; overflow:hidden;}
+  .kg-scope{color:var(--white); font-family:'JetBrains Mono','SFMono-Regular',Consolas,monospace; font-size:1.05rem; line-height:1.7;}
+  .kg-scope h1,.kg-scope h2,.kg-scope .tag{font-family:'DotGothic16','JetBrains Mono',monospace;}
+  .kg-post-header{
+    padding:46px 6% 34px; text-align:center;
+    background:linear-gradient(rgba(8,8,8,0.9),rgba(8,8,8,0.94)), repeating-linear-gradient(135deg,#1a1a1a 0 40px,#141414 40px 80px);
+    border-bottom:2px solid var(--darkred);
+  }
+  .kg-post-header .tag{
+    display:inline-block; margin:0 auto 18px; color:var(--yellow); border:2px solid var(--yellow);
+    padding:7px 12px; font-size:0.65rem; letter-spacing:1px;
+  }
+  .kg-post-header h1{font-size:clamp(1.3rem,3vw,1.9rem); color:var(--brightred); text-shadow:3px 3px 0 #000; margin:0 0 14px; line-height:1.5;}
+  .kg-post-header .meta{color:var(--grey); font-size:0.85rem;}
+  .kg-post-body{max-width:720px; margin:0 auto; padding:40px 6% 40px;}
+  .kg-post-body p{color:var(--white); margin:0 0 22px; font-size:1.05rem; line-height:1.75; font-family:var(--font-read);}
+  .kg-post-body h2{color:var(--red); font-size:1.2rem; margin:36px 0 16px;}
+  .kg-post-body h3{color:var(--yellow); font-size:0.95rem; letter-spacing:0.5px; text-transform:uppercase; margin:28px 0 12px; font-family:'DotGothic16',monospace;}
+  .kg-post-body strong{color:var(--yellow); font-weight:700;}
+  .kg-post-body em{color:#d8d4c8;}
+  .kg-post-body ul, .kg-post-body ol{margin:0 0 24px 1.4em; color:var(--white);}
+  .kg-post-body li{margin-bottom:10px; font-size:1.05rem; font-family:var(--font-read);}
+  .kg-post-body li::marker{color:var(--red);}
+  .kg-post-body .steps{list-style:none; margin-left:0; counter-reset:step;}
+  .kg-post-body .steps li{counter-increment:step; position:relative; padding-left:44px; margin-bottom:14px;}
+  .kg-post-body .steps li::before{
+    content:counter(step); position:absolute; left:0; top:2px;
+    width:28px; height:28px; display:flex; align-items:center; justify-content:center;
+    background:var(--red); color:#fff; border:2px solid #000;
+    font-family:'DotGothic16',monospace; font-size:0.72rem;
+  }
+  .kg-post-body .tally{width:100%; border-collapse:collapse; margin:0 0 30px; border:2px solid var(--darkred); font-size:1rem;}
+  .kg-post-body .tally th, .kg-post-body .tally td{padding:11px 13px; text-align:left; border-bottom:1px solid #2b2b2b;}
+  .kg-post-body .tally thead th{background:var(--panel); color:var(--yellow); font-family:'DotGothic16',monospace; font-size:0.62rem; letter-spacing:1px; text-transform:uppercase;}
+  .kg-post-body .tally td:not(:first-child){text-align:right;}
+  .kg-post-body .tally .was{color:var(--grey);}
+  .kg-post-body .tally .now{color:var(--yellow);}
+  .kg-post-body .tally tfoot td{background:rgba(200,29,29,0.10); border-top:2px solid var(--darkred); border-bottom:none;}
+  .kg-post-body figure{margin:0 0 32px;}
+  .kg-post-body figure img{display:block; width:100%; height:auto; border:2px solid var(--darkred); max-width:100%;}
+  .kg-post-body figcaption{color:var(--grey); font-size:0.88rem; margin-top:10px; line-height:1.5; font-family:var(--font-read);}
+  .kg-post-body figcaption:empty:before{content:"Click to add a caption\2026"; color:#555; font-style:italic;}
+  .kg-post-body .card-row{
+    display:grid; grid-template-columns:180px 1fr; grid-template-areas:"title title" "img text";
+    column-gap:22px; row-gap:14px; margin:0 0 32px;
+    background:var(--panel); border:2px solid var(--darkred); padding:20px 22px;
+  }
+  .kg-post-body .card-row .card-title{grid-area:title; color:var(--red); font-family:'DotGothic16',monospace; font-size:1rem; letter-spacing:0.5px; text-transform:uppercase;}
+  .kg-post-body .card-row .card-img{grid-area:img; width:180px;}
+  .kg-post-body .card-row .card-img img{display:block; width:100%; height:auto;}
+  .kg-post-body .card-row .card-text{grid-area:text; min-width:0;}
+  .kg-post-body .card-row .card-text p{color:var(--white); margin:0 0 14px; font-size:1rem; line-height:1.6;}
+
+  #bodyEditor{outline:none; min-height:200px;}
+  #bodyEditor:focus{box-shadow:inset 0 0 0 2px rgba(242,193,78,0.25);}
+  #bodyEditor img{cursor:default;}
+  #bodyEditor figure, #bodyEditor .card-row, #bodyEditor table{position:relative;}
+  #bodyEditor .kg-del{
+    position:absolute; top:-10px; right:-10px; background:var(--red); color:#fff; border:2px solid #000;
+    width:22px; height:22px; border-radius:50%; font-size:12px; line-height:18px; text-align:center;
+    cursor:pointer; user-select:none; font-weight:bold;
+  }
+  #bodyEditor .kg-del:hover{background:var(--brightred);}
+
+  /* ---------- MODALS ---------- */
+  .modal-backdrop{
+    position:fixed; inset:0; background:rgba(0,0,0,0.7); display:none;
+    align-items:center; justify-content:center; z-index:1000;
+  }
+  .modal-backdrop.active{display:flex;}
+  .modal{
+    background:var(--ui-panel); border:2px solid var(--darkred); border-radius:6px; padding:24px;
+    width:440px; max-width:92vw; max-height:86vh; overflow-y:auto;
+  }
+  .modal h3{color:var(--yellow); margin:0 0 16px; font-size:15px;}
+  .modal .field{margin-bottom:14px;}
+  .modal-actions{display:flex; justify-content:flex-end; gap:8px; margin-top:18px;}
+  #rawHtmlArea{
+    width:100%; height:60vh; background:#0c0c0c; color:#d8d4c8; border:1px solid var(--ui-border);
+    font-family:'JetBrains Mono',monospace; font-size:12px; padding:10px; border-radius:4px; resize:vertical;
+  }
+  .hint{color:var(--grey); font-size:11.5px; line-height:1.6; margin-top:6px;}
+  .dropzone{
+    border:2px dashed var(--ui-border); border-radius:6px; padding:26px; text-align:center; color:var(--grey);
+    font-size:12.5px; margin-bottom:10px;
+  }
+  .dropzone.drag{border-color:var(--yellow); color:var(--yellow); background:rgba(242,193,78,0.06);}
+</style>
+</head>
+<body>
+
+<div id="app">
+  <div id="topbar">
+    <div class="title">▚ KODECCO POST EDITOR</div>
+    <button class="btn" id="btnOpenRoot">Open Project Folder…</button>
+    <button class="btn" id="btnNewPost" disabled>+ New Post</button>
+    <button class="btn" id="btnPreviewTab" disabled>Open Full Preview ↗</button>
+    <button class="btn" id="btnRaw" disabled>View / Edit Raw HTML</button>
+    <div class="spacer"></div>
+    <span id="status"></span>
+    <button class="btn primary" id="btnSave" disabled>Save to Disk</button>
+  </div>
+
+  <div id="main">
+    <div id="sidebar">
+      <h3>Dev Journal Posts</h3>
+      <div id="postList" style="color:var(--grey); font-size:12px;">Open your project folder to begin.</div>
+    </div>
+
+    <div id="editorArea">
+      <div id="emptyState">
+        <h2>No post open</h2>
+        <p>Click <strong>"Open Project Folder…"</strong> above and select your <code>kodeccogames</code> repo folder (the one containing <code>index.html</code>, <code>posts/</code>, etc). Chrome will ask you to confirm access — that's normal.</p>
+        <p style="margin-top:10px;">Once open, pick a post on the left to edit it with a real live preview, or create a new one. Images you insert are saved straight into that post's <code>images/</code> folder, and Save writes the finished HTML back to disk — no server, no build step.</p>
+      </div>
+
+      <div id="editorWrap" style="display:none;">
+        <div class="field-row">
+          <div class="field">
+            <label>Tag</label>
+            <input id="fieldTag" placeholder="// DEV JOURNAL">
+          </div>
+          <div class="field" style="flex:2;">
+            <label>Title (H1)</label>
+            <input id="fieldTitle" placeholder="Post title">
+          </div>
+          <div class="field">
+            <label>Meta line</label>
+            <input id="fieldMeta" placeholder="Aug 25, 2026 · 3 min read">
+          </div>
+        </div>
+
+        <div id="toolbar">
+          <button data-cmd="p">Paragraph</button>
+          <button data-cmd="h2">H2</button>
+          <button data-cmd="h3">H3</button>
+          <div class="sep"></div>
+          <button data-cmd="bold"><b>B</b></button>
+          <button data-cmd="italic"><i>I</i></button>
+          <div class="sep"></div>
+          <button data-cmd="ul">• List</button>
+          <button data-cmd="ol">1. List</button>
+          <button data-cmd="steps">Numbered Steps</button>
+          <div class="sep"></div>
+          <button data-cmd="image">🖼 Insert Image</button>
+          <button data-cmd="cardrow">▦ Card Row</button>
+          <button data-cmd="table">▤ Table</button>
+          <div class="sep"></div>
+          <button data-cmd="undo">↶ Undo</button>
+          <button data-cmd="redo">↷ Redo</button>
+        </div>
+
+        <div id="previewWrap">
+          <div class="kg-scope">
+            <div class="kg-post-header">
+              <span class="tag" id="previewTag">// DEV JOURNAL</span>
+              <h1 id="previewTitle">Post title</h1>
+              <div class="meta" id="previewMeta">Aug 25, 2026 · 3 min read</div>
+            </div>
+            <div class="kg-post-body" id="bodyEditor" contenteditable="true" spellcheck="true"></div>
+          </div>
+        </div>
+        <p class="hint" style="margin-top:10px;">This is styled exactly like the live site — what you see here is what visitors will see. Type directly into the body above; use the toolbar to add headings, lists, images, tables and card blocks.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<input type="file" id="imageFileInput" accept="image/*" multiple style="display:none;">
+
+<!-- New Post modal -->
+<div class="modal-backdrop" id="newPostModal">
+  <div class="modal">
+    <h3>New Dev Journal Post</h3>
+    <div class="field">
+      <label>Title</label>
+      <input id="npTitle" placeholder="e.g. The Foraging Rework">
+    </div>
+    <div class="field">
+      <label>Folder / URL slug</label>
+      <input id="npSlug" placeholder="auto-generated-from-title">
+    </div>
+    <div class="field">
+      <label>Tag</label>
+      <input id="npTag" value="// DEV JOURNAL">
+    </div>
+    <div class="field">
+      <label>Meta line</label>
+      <input id="npMeta" value="Aug 25, 2026 · 3 min read">
+    </div>
+    <div class="hint">Creates <code>posts/&lt;slug&gt;/index.html</code> and an <code>images/</code> subfolder, using the same styling and page structure as your other posts.</div>
+    <div class="modal-actions">
+      <button class="btn" id="npCancel">Cancel</button>
+      <button class="btn primary" id="npCreate">Create Post</button>
+    </div>
+  </div>
+</div>
+
+<!-- Raw HTML modal -->
+<div class="modal-backdrop" id="rawModal">
+  <div class="modal" style="width:720px;">
+    <h3>Raw HTML — <span id="rawFileName"></span></h3>
+    <textarea id="rawHtmlArea" spellcheck="false"></textarea>
+    <div class="hint">Edit directly if you need something the toolbar can't do. Click "Apply" to load your changes back into the visual editor (this does not save to disk by itself — use Save afterward).</div>
+    <div class="modal-actions">
+      <button class="btn" id="rawCancel">Close</button>
+      <button class="btn primary" id="rawApply">Apply to Editor</button>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  'use strict';
+
+  // ---------- state ----------
+  var rootHandle = null, postsHandle = null;
+  var currentSlug = null, currentPostDir = null, currentImagesDir = null;
+  var currentDoc = null; // parsed Document of the open post's index.html
+  var dirty = false;
+
+  var el = {};
+  ['btnOpenRoot','btnNewPost','btnPreviewTab','btnRaw','btnSave','status','postList',
+   'emptyState','editorWrap','fieldTag','fieldTitle','fieldMeta',
+   'previewTag','previewTitle','previewMeta','bodyEditor','toolbar',
+   'imageFileInput','newPostModal','npTitle','npSlug','npTag','npMeta','npCancel','npCreate',
+   'rawModal','rawHtmlArea','rawFileName','rawCancel','rawApply'
+  ].forEach(function(id){ el[id] = document.getElementById(id); });
+
+  function setStatus(text, cls){
+    el.status.textContent = text;
+    el.status.className = cls || '';
+  }
+  function markDirty(){ dirty = true; setStatus('Unsaved changes', 'dirty'); }
+
+  document.execCommand && document.execCommand('defaultParagraphSeparator', false, 'p');
+
+  // ---------- permission helper ----------
+  async function ensureRW(handle){
+    var opts = {mode:'readwrite'};
+    if((await handle.queryPermission(opts)) === 'granted') return true;
+    if((await handle.requestPermission(opts)) === 'granted') return true;
+    return false;
+  }
+
+  // ---------- open project ----------
+  el.btnOpenRoot.addEventListener('click', async function(){
+    if(!window.showDirectoryPicker){
+      alert('Your browser does not support the File System Access API. Please use Google Chrome or Microsoft Edge on desktop.');
+      return;
+    }
+    try{
+      rootHandle = await window.showDirectoryPicker();
+      if(!(await ensureRW(rootHandle))){
+        alert('Read/write permission is needed to edit and save posts.');
+        return;
+      }
+      postsHandle = await rootHandle.getDirectoryHandle('posts');
+      el.btnNewPost.disabled = false;
+      await refreshPostList();
+      setStatus('Project opened', 'saved');
+    }catch(err){
+      if(err.name !== 'AbortError'){
+        console.error(err);
+        alert('Could not open that folder as a Kodecco project (expected a "posts" subfolder). ' + err.message);
+      }
+    }
+  });
+
+  async function refreshPostList(){
+    var items = [];
+    for await (var entry of postsHandle.values()){
+      if(entry.kind === 'directory') items.push(entry.name);
+    }
+    items.sort();
+    el.postList.innerHTML = '';
+    for(var i=0;i<items.length;i++){
+      (function(slug){
+        var div = document.createElement('div');
+        div.className = 'post-item' + (slug === currentSlug ? ' active' : '');
+        div.innerHTML = '<span class="name">'+slug.replace(/-/g,' ')+'</span><span class="slug">'+slug+'</span>';
+        div.addEventListener('click', function(){ openPost(slug); });
+        el.postList.appendChild(div);
+      })(items[i]);
+    }
+    if(items.length === 0){
+      el.postList.innerHTML = '<div style="color:var(--grey);font-size:12px;">No posts found.</div>';
+    }
+  }
+
+  // ---------- open a post ----------
+  async function openPost(slug){
+    if(dirty && !confirm('You have unsaved changes in the current post. Discard them and switch posts?')) return;
+    try{
+      currentPostDir = await postsHandle.getDirectoryHandle(slug);
+      var fileHandle = await currentPostDir.getFileHandle('index.html');
+      var file = await fileHandle.getFile();
+      var text = await file.text();
+      currentImagesDir = await currentPostDir.getDirectoryHandle('images', {create:true});
+
+      var doc = new DOMParser().parseFromString(text, 'text/html');
+      currentDoc = doc;
+      currentSlug = slug;
+
+      var tagEl = doc.querySelector('.post-header .tag');
+      var h1El = doc.querySelector('.post-header h1');
+      var metaEl = doc.querySelector('.post-header .meta');
+      var bodyEl = doc.querySelector('.post-body');
+
+      el.fieldTag.value = tagEl ? tagEl.textContent.trim() : '// DEV JOURNAL';
+      el.fieldTitle.value = h1El ? h1El.textContent.trim() : '';
+      el.fieldMeta.value = metaEl ? metaEl.textContent.trim() : '';
+      el.bodyEditor.innerHTML = bodyEl ? bodyEl.innerHTML : '';
+      await loadImagePreviews();
+
+      syncPreviewHeader();
+      attachDeleteHandles();
+
+      el.emptyState.style.display = 'none';
+      el.editorWrap.style.display = 'block';
+      el.btnSave.disabled = false;
+      el.btnPreviewTab.disabled = false;
+      el.btnRaw.disabled = false;
+      dirty = false;
+      setStatus('Loaded ' + slug, 'saved');
+      await refreshPostList();
+    }catch(err){
+      console.error(err);
+      alert('Could not open that post: ' + err.message);
+    }
+  }
+
+  function syncPreviewHeader(){
+    el.previewTag.textContent = el.fieldTag.value || '// DEV JOURNAL';
+    el.previewTitle.textContent = el.fieldTitle.value || 'Untitled Post';
+    el.previewMeta.textContent = el.fieldMeta.value || '';
+  }
+  [el.fieldTag, el.fieldTitle, el.fieldMeta].forEach(function(input){
+    input.addEventListener('input', function(){ syncPreviewHeader(); markDirty(); });
+  });
+  el.bodyEditor.addEventListener('input', markDirty);
+
+  // ---------- delete handles on inserted blocks ----------
+  function attachDeleteHandles(){
+    el.bodyEditor.querySelectorAll(':scope > figure, :scope > .card-row, :scope > table').forEach(function(block){
+      if(block.querySelector(':scope > .kg-del')) return;
+      var del = document.createElement('span');
+      del.className = 'kg-del';
+      del.textContent = '×';
+      del.title = 'Remove this block';
+      del.contentEditable = 'false';
+      del.addEventListener('click', function(e){
+        e.stopPropagation();
+        if(confirm('Remove this block?')){ block.remove(); markDirty(); }
+      });
+      block.style.position = 'relative';
+      block.appendChild(del);
+    });
+  }
+  var observer = new MutationObserver(function(){ attachDeleteHandles(); });
+  observer.observe(el.bodyEditor, {childList:true, subtree:false});
+
+  // ---------- paste as plain text ----------
+  el.bodyEditor.addEventListener('paste', function(e){
+    e.preventDefault();
+    var text = (e.clipboardData || window.clipboardData).getData('text/plain');
+    document.execCommand('insertText', false, text);
+  });
+
+  // ---------- toolbar ----------
+  el.toolbar.addEventListener('click', function(e){
+    var btn = e.target.closest('button[data-cmd]');
+    if(!btn) return;
+    el.bodyEditor.focus();
+    var cmd = btn.getAttribute('data-cmd');
+    switch(cmd){
+      case 'p': document.execCommand('formatBlock', false, 'p'); break;
+      case 'h2': document.execCommand('formatBlock', false, 'h2'); break;
+      case 'h3': document.execCommand('formatBlock', false, 'h3'); break;
+      case 'bold': document.execCommand('bold'); break;
+      case 'italic': document.execCommand('italic'); break;
+      case 'ul': document.execCommand('insertUnorderedList'); break;
+      case 'ol': document.execCommand('insertOrderedList'); break;
+      case 'undo': document.execCommand('undo'); break;
+      case 'redo': document.execCommand('redo'); break;
+      case 'steps':
+        document.execCommand('insertOrderedList');
+        var sel = window.getSelection();
+        if(sel.anchorNode){
+          var ol = sel.anchorNode.nodeType === 1 ? sel.anchorNode.closest('ol') : sel.anchorNode.parentElement.closest('ol');
+          if(ol) ol.className = 'steps';
+        }
+        break;
+      case 'cardrow':
+        document.execCommand('insertHTML', false,
+          '<div class="card-row">'+
+            '<div class="card-title" contenteditable="true">CARD NAME</div>'+
+            '<div class="card-img"><img src="" alt=""></div>'+
+            '<div class="card-text"><p>Describe the card here.</p></div>'+
+          '</div><p><br></p>');
+        break;
+      case 'table':
+        document.execCommand('insertHTML', false,
+          '<table class="tally">'+
+            '<thead><tr><th>Column A</th><th>Column B</th></tr></thead>'+
+            '<tbody><tr><td>Row 1</td><td class="was">Value</td></tr>'+
+            '<tr><td>Row 2</td><td class="was">Value</td></tr></tbody>'+
+            '<tfoot><tr><td>Result</td><td class="was">Outcome</td></tr></tfoot>'+
+          '</table><p><br></p>');
+        break;
+      case 'image':
+        el.imageFileInput.click();
+        break;
+    }
+    markDirty();
+    attachDeleteHandles();
+  });
+
+  // ---------- image insert ----------
+  var savedRange = null;
+  el.bodyEditor.addEventListener('keyup', saveRange);
+  el.bodyEditor.addEventListener('mouseup', saveRange);
+  function saveRange(){
+    var sel = window.getSelection();
+    if(sel.rangeCount > 0 && el.bodyEditor.contains(sel.anchorNode)) savedRange = sel.getRangeAt(0).cloneRange();
+  }
+
+  el.imageFileInput.addEventListener('change', async function(){
+    var files = Array.prototype.slice.call(el.imageFileInput.files || []);
+    el.imageFileInput.value = '';
+    if(!files.length || !currentImagesDir) return;
+    if(!(await ensureRW(currentImagesDir))){ alert('Write permission needed for the images folder.'); return; }
+
+    // find next available number
+    var used = [];
+    for await (var entry of currentImagesDir.values()){
+      if(entry.kind === 'file'){
+        var m = entry.name.match(/^(\d+)\.\w+$/);
+        if(m) used.push(parseInt(m[1], 10));
+      }
+    }
+    var next = used.length ? Math.max.apply(null, used) + 1 : 1;
+
+    el.bodyEditor.focus();
+    if(savedRange){
+      var sel = window.getSelection();
+      sel.removeAllRanges();
+      sel.addRange(savedRange);
+    }
+
+    for(var i=0;i<files.length;i++){
+      var f = files[i];
+      var ext = (f.name.split('.').pop() || 'png').toLowerCase();
+      var filename = String(next).padStart(2,'0') + '.' + ext;
+      next++;
+      try{
+        var fh = await currentImagesDir.getFileHandle(filename, {create:true});
+        var ws = await fh.createWritable();
+        await ws.write(f);
+        await ws.close();
+      }catch(err){
+        alert('Could not save image "'+f.name+'": ' + err.message);
+        continue;
+      }
+      var blobUrl = URL.createObjectURL(f);
+      var html = '<figure><img src="'+blobUrl+'" data-src="images/'+filename+'" alt=""><figcaption contenteditable="true"></figcaption></figure><p><br></p>';
+      document.execCommand('insertHTML', false, html);
+    }
+    markDirty();
+    attachDeleteHandles();
+  });
+
+  // ---------- resolve on-disk image paths to viewable blob URLs ----------
+  async function loadImagePreviews(){
+    if(!currentImagesDir) return;
+    var imgs = el.bodyEditor.querySelectorAll('img[src]:not([data-src])');
+    for(var i=0;i<imgs.length;i++){
+      var img = imgs[i];
+      var src = img.getAttribute('src');
+      if(!src || /^(blob:|data:|https?:)/i.test(src)) continue;
+      var filename = src.replace(/^.*\//, '');
+      if(!filename) continue;
+      try{
+        var fh = await currentImagesDir.getFileHandle(filename);
+        var file = await fh.getFile();
+        var url = URL.createObjectURL(file);
+        img.setAttribute('data-src', src);
+        img.setAttribute('src', url);
+      }catch(err){
+        // file missing from images/ folder — leave src as-is (will show broken)
+        img.setAttribute('data-src', src);
+      }
+    }
+  }
+
+  // drag & drop images straight into the editor
+  el.bodyEditor.addEventListener('dragover', function(e){ e.preventDefault(); });
+  el.bodyEditor.addEventListener('drop', function(e){
+    e.preventDefault();
+    var files = Array.prototype.filter.call(e.dataTransfer.files, function(f){ return f.type.indexOf('image/') === 0; });
+    if(!files.length) return;
+    var dt = new DataTransfer();
+    files.forEach(function(f){ dt.items.add(f); });
+    el.imageFileInput.files = dt.files;
+    el.imageFileInput.dispatchEvent(new Event('change'));
+  });
+
+  // ---------- cleanup before serializing ----------
+  function cleanBodyHtml(){
+    var tmp = document.createElement('div');
+    tmp.innerHTML = el.bodyEditor.innerHTML;
+    tmp.querySelectorAll('.kg-del').forEach(function(n){ n.remove(); });
+    tmp.querySelectorAll('b').forEach(function(n){ renameTag(n, 'strong'); });
+    tmp.querySelectorAll('i').forEach(function(n){ renameTag(n, 'em'); });
+    tmp.querySelectorAll('[contenteditable]').forEach(function(n){ n.removeAttribute('contenteditable'); });
+    tmp.querySelectorAll('[style]').forEach(function(n){ n.removeAttribute('style'); });
+    tmp.querySelectorAll('img[data-src]').forEach(function(n){
+      n.setAttribute('src', n.getAttribute('data-src'));
+      n.removeAttribute('data-src');
+    });
+    tmp.querySelectorAll('div.card-title, div.card-img, div.card-text').forEach(function(n){}); // keep as-is
+    // drop empty trailing <p><br></p> spam is harmless; leave content otherwise untouched
+    return tmp.innerHTML;
+  }
+  function renameTag(node, newTag){
+    var repl = document.createElement(newTag);
+    while(node.firstChild) repl.appendChild(node.firstChild);
+    for(var i=0;i<node.attributes.length;i++) repl.setAttribute(node.attributes[i].name, node.attributes[i].value);
+    node.parentNode.replaceChild(repl, node);
+  }
+
+  function buildSerializedDoc(){
+    var doc = currentDoc;
+    var titleEl = doc.querySelector('title');
+    var tagEl = doc.querySelector('.post-header .tag');
+    var h1El = doc.querySelector('.post-header h1');
+    var metaEl = doc.querySelector('.post-header .meta');
+    var bodyEl = doc.querySelector('.post-body');
+
+    var titleText = el.fieldTitle.value.trim() || 'Untitled Post';
+    if(titleEl) titleEl.textContent = titleText + ' — CARRIER';
+    if(tagEl) tagEl.textContent = el.fieldTag.value.trim();
+    if(h1El) h1El.textContent = titleText;
+    if(metaEl) metaEl.textContent = el.fieldMeta.value.trim();
+    if(bodyEl) bodyEl.innerHTML = cleanBodyHtml();
+
+    return '<!DOCTYPE html>\n' + doc.documentElement.outerHTML + '\n';
+  }
+
+  // ---------- save ----------
+  el.btnSave.addEventListener('click', async function(){
+    if(!currentPostDir) return;
+    try{
+      if(!(await ensureRW(currentPostDir))){ alert('Write permission needed.'); return; }
+      var html = buildSerializedDoc();
+      var fh = await currentPostDir.getFileHandle('index.html', {create:true});
+      var ws = await fh.createWritable();
+      await ws.write(html);
+      await ws.close();
+      dirty = false;
+      setStatus('Saved ' + currentSlug + ' at ' + new Date().toLocaleTimeString(), 'saved');
+    }catch(err){
+      console.error(err);
+      setStatus('Save failed: ' + err.message, 'error');
+      alert('Save failed: ' + err.message);
+    }
+  });
+
+  // ---------- full preview in new tab ----------
+  el.btnPreviewTab.addEventListener('click', function(){
+    var html = buildSerializedDoc();
+    var blob = new Blob([html], {type:'text/html'});
+    var url = URL.createObjectURL(blob);
+    window.open(url, '_blank');
+  });
+
+  // ---------- raw html modal ----------
+  el.btnRaw.addEventListener('click', function(){
+    el.rawFileName.textContent = currentSlug ? ('posts/'+currentSlug+'/index.html') : '';
+    el.rawHtmlArea.value = buildSerializedDoc();
+    el.rawModal.classList.add('active');
+  });
+  el.rawCancel.addEventListener('click', function(){ el.rawModal.classList.remove('active'); });
+  el.rawApply.addEventListener('click', async function(){
+    try{
+      var doc = new DOMParser().parseFromString(el.rawHtmlArea.value, 'text/html');
+      currentDoc = doc;
+      var tagEl = doc.querySelector('.post-header .tag');
+      var h1El = doc.querySelector('.post-header h1');
+      var metaEl = doc.querySelector('.post-header .meta');
+      var bodyEl = doc.querySelector('.post-body');
+      el.fieldTag.value = tagEl ? tagEl.textContent.trim() : '';
+      el.fieldTitle.value = h1El ? h1El.textContent.trim() : '';
+      el.fieldMeta.value = metaEl ? metaEl.textContent.trim() : '';
+      el.bodyEditor.innerHTML = bodyEl ? bodyEl.innerHTML : '';
+      await loadImagePreviews();
+      syncPreviewHeader();
+      attachDeleteHandles();
+      el.rawModal.classList.remove('active');
+      markDirty();
+    }catch(err){
+      alert('Could not parse that HTML: ' + err.message);
+    }
+  });
+
+  // ---------- new post ----------
+  el.btnNewPost.addEventListener('click', function(){
+    el.npTitle.value = ''; el.npSlug.value = ''; el.npTag.value = '// DEV JOURNAL';
+    var today = new Date();
+    var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    el.npMeta.value = months[today.getMonth()]+' '+today.getDate()+', '+today.getFullYear()+' · 3 min read';
+    el.newPostModal.classList.add('active');
+    el.npTitle.focus();
+  });
+  el.npCancel.addEventListener('click', function(){ el.newPostModal.classList.remove('active'); });
+  var slugTouched = false;
+  el.npSlug.addEventListener('input', function(){ slugTouched = true; });
+  el.npTitle.addEventListener('input', function(){
+    if(!slugTouched) el.npSlug.value = slugify(el.npTitle.value);
+  });
+  function slugify(s){
+    return s.toLowerCase().trim().replace(/['’]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'');
+  }
+
+  var NEW_POST_TEMPLATE = [
+'<!DOCTYPE html>',
+'<html lang="en">',
+'<head>',
+'<meta charset="UTF-8">',
+'<meta name="viewport" content="width=device-width, initial-scale=1.0">',
+'<title>__TITLE__ — CARRIER</title>',
+'<link rel="preconnect" href="https://fonts.googleapis.com">',
+'<link href="https://fonts.googleapis.com/css2?family=DotGothic16&family=JetBrains+Mono:wght@400;500;700&family=VT323&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">',
+'<style>',
+'  :root{',
+'    --black:#0a0a0a; --panel:#161616; --panel2:#1c1c1c;',
+'    --red:#c81d1d; --brightred:#e8341f; --darkred:#6e1010;',
+'    --yellow:#f2c14e; --grey:#9a9a9a; --white:#f5f2ea;',
+"    --font-read:'Inter',-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;",
+'  }',
+'  *{box-sizing:border-box;margin:0;padding:0;}',
+'  html{scroll-behavior:smooth;}',
+'  body{ background:var(--black); color:var(--white);',
+"    font-family:'JetBrains Mono','SFMono-Regular',Consolas,'Courier New',monospace; font-size:1.05rem; line-height:1.7; }",
+"  h1,h2,.logo,nav a,.tag{font-family:'DotGothic16',monospace;}",
+'  a{color:inherit;}',
+'  .hazard{height:10px; background:repeating-linear-gradient(45deg, var(--yellow) 0 20px, var(--black) 20px 40px);}',
+'  header{ position:sticky; top:0; z-index:10001; display:flex; align-items:center; justify-content:space-between;',
+'    padding:12px 6%; border-bottom:2px solid var(--darkred); background:rgba(22,22,22,0.92); backdrop-filter:blur(4px); }',
+'  .logo-group{display:flex; align-items:center; gap:14px; cursor:pointer; transition:opacity .15s;}',
+'  .logo-group:hover{opacity:0.85;}',
+'  .logo-group img{height:52px; width:auto; display:block; filter:drop-shadow(3px 3px 0 #000) drop-shadow(0 0 10px rgba(0,0,0,0.6));}',
+'  nav a{ color:var(--grey); text-decoration:none; margin-left:22px; font-size:0.6rem; text-transform:uppercase; border-bottom:2px solid transparent; padding-bottom:4px; }',
+'  nav a:hover{color:var(--yellow); border-bottom:2px solid var(--yellow);}',
+'  .post-header{ padding:70px 6% 40px; text-align:center;',
+'    background:linear-gradient(rgba(8,8,8,0.9),rgba(8,8,8,0.94)), repeating-linear-gradient(135deg,#1a1a1a 0 40px,#141414 40px 80px);',
+'    border-bottom:2px solid var(--darkred); }',
+'  .post-header .tag{ display:block; width:fit-content; margin:0 auto 22px; color:var(--yellow); border:2px solid var(--yellow); padding:8px 14px; font-size:0.65rem; letter-spacing:1px; }',
+'  .post-header h1{font-size:clamp(1.4rem,4vw,2.1rem); color:var(--brightred); text-shadow:3px 3px 0 #000; margin-bottom:18px; line-height:1.5;}',
+'  .post-header .meta{color:var(--grey); font-size:0.9rem;}',
+'  .post-body{max-width:720px; margin:0 auto; padding:60px 6% 40px;}',
+'  .post-body p{color:var(--white); margin-bottom:22px; font-size:1.05rem; line-height:1.75; font-family:var(--font-read);}',
+'  .post-body h2{color:var(--red); font-size:1.2rem; margin:36px 0 16px;}',
+"  .post-body h3{color:var(--yellow); font-size:0.95rem; letter-spacing:0.5px; text-transform:uppercase; margin:28px 0 12px; font-family:'DotGothic16',monospace;}",
+'  .post-body strong{color:var(--yellow); font-weight:700;}',
+'  .post-body ul, .post-body ol{margin:0 0 24px 1.4em; color:var(--white);}',
+'  .post-body li{margin-bottom:10px; font-size:1.05rem;}',
+'  .post-body li::marker{color:var(--red);}',
+'  .steps{list-style:none; margin-left:0; counter-reset:step;}',
+'  .steps li{counter-increment:step; position:relative; padding-left:44px; margin-bottom:14px;}',
+'  .steps li::before{ content:counter(step); position:absolute; left:0; top:2px; width:28px; height:28px; display:flex; align-items:center; justify-content:center;',
+"    background:var(--red); color:#fff; border:2px solid #000; font-family:'DotGothic16',monospace; font-size:0.72rem; }",
+'  .tally{width:100%; border-collapse:collapse; margin:0 0 30px; border:2px solid var(--darkred); font-size:1.05rem;}',
+'  .tally th, .tally td{padding:11px 13px; text-align:left; border-bottom:1px solid #2b2b2b;}',
+"  .tally thead th{ background:var(--panel); color:var(--yellow); font-family:'DotGothic16',monospace; font-size:0.62rem; letter-spacing:1px; text-transform:uppercase; }",
+'  .tally td:not(:first-child){text-align:right; white-space:normal; word-break:break-word;}',
+'  .tally .was{color:var(--grey);}',
+'  .tally .now{color:var(--yellow);}',
+'  .tally tfoot td{background:rgba(200,29,29,0.10); border-top:2px solid var(--darkred); border-bottom:none;}',
+"  .tally tfoot td:first-child{font-family:'DotGothic16',monospace; font-size:0.68rem; letter-spacing:1px; text-transform:uppercase;}",
+'  @media (max-width:560px){ .tally{font-size:0.95rem;} .tally th, .tally td{padding:9px 8px;} }',
+'  .post-header .byline{color:#6f6f6f; font-size:0.82rem; margin-top:6px;}',
+'  .post-body figure{margin:0 0 32px;}',
+'  .post-body figure img{display:block; width:100%; height:auto; border:2px solid var(--darkred); cursor:zoom-in; transition:border-color .2s;}',
+'  .post-body figure img:hover{border-color:var(--yellow);}',
+'  .post-body figcaption{color:var(--grey); font-size:0.9rem; margin-top:10px; line-height:1.5;}',
+'  .card-row{ display:grid; grid-template-columns:220px 1fr; grid-template-areas:"title title" "img text";',
+'    column-gap:28px; row-gap:16px; margin:0 0 32px; background:var(--panel); border:2px solid var(--darkred); padding:22px 26px; }',
+"  .card-row .card-title{ grid-area:title; color:var(--red); font-family:'DotGothic16',monospace; font-size:1.05rem; letter-spacing:0.5px; text-transform:uppercase; }",
+'  .card-row .card-img{grid-area:img; width:220px;}',
+'  .card-row .card-img img{display:block; width:100%; height:auto; cursor:zoom-in; transition:filter .2s;}',
+'  .card-row .card-img img:hover{filter:brightness(1.08);}',
+'  .card-row .card-text{grid-area:text; min-width:0;}',
+'  .card-row .card-text p{color:var(--white); margin-bottom:16px; font-size:1.05rem; line-height:1.6;}',
+'  @media (max-width:560px){ .card-row{grid-template-columns:1fr; grid-template-areas:"title" "img" "text"; text-align:center;} .card-row .card-img{width:100%; max-width:260px; margin:0 auto;} }',
+'  .lightbox{ position:fixed; inset:0; background:rgba(5,5,5,0.94); display:none; align-items:center; justify-content:center; z-index:20000; padding:40px; cursor:zoom-out; }',
+'  .lightbox.active{display:flex;}',
+'  .lightbox img{ max-width:92vw; max-height:88vh; border:2px solid var(--darkred); box-shadow:0 0 40px rgba(0,0,0,0.6); cursor:zoom-in; transition:transform .25s ease; transform-origin:center center; }',
+'  .lightbox img.zoomed{transform:scale(1.9); cursor:zoom-out;}',
+"  .lightbox-close{ position:absolute; top:22px; right:34px; color:var(--yellow); font-size:2.4rem; font-family:'DotGothic16',monospace; cursor:pointer; line-height:1; z-index:20001; }",
+'  .lightbox-close:hover{color:var(--red);}',
+"  .lightbox-hint{ position:absolute; bottom:22px; left:0; right:0; text-align:center; color:var(--grey); font-size:0.7rem; letter-spacing:0.5px; text-transform:uppercase; font-family:'DotGothic16',monospace; pointer-events:none; }",
+'  .back-link{ display:block; max-width:720px; margin:0 auto 80px; padding:0 6%; color:var(--yellow); text-decoration:none; font-size:0.7rem; letter-spacing:1px; font-family:\'DotGothic16\',monospace; }',
+'  .back-link:hover{text-decoration:underline;}',
+'  footer{text-align:center; padding:38px 6%; color:#5a5a5a; font-size:0.85rem; border-top:2px solid var(--darkred);}',
+'  footer .socials a{margin:0 10px; color:var(--grey); text-decoration:none; font-weight:700;}',
+'  footer .socials a:hover{color:var(--red);}',
+'  .crt-overlay{ position:fixed; inset:0; pointer-events:none; z-index:9999;',
+'    background:repeating-linear-gradient(0deg, rgba(0,0,0,0.18) 0px, rgba(0,0,0,0.18) 1px, transparent 1px, transparent 3px); mix-blend-mode:overlay; animation:crtflicker 6s infinite; }',
+'  @keyframes crtflicker{ 0%,100%{opacity:0.85;} 92%{opacity:0.85;} 93%{opacity:0.55;} 94%{opacity:0.85;} 96%{opacity:0.65;} 97%{opacity:0.85;} }',
+'  .post-header .tag::after{ content:"_"; margin-left:3px; animation:cursorblink 1s steps(1) infinite; }',
+'  @keyframes cursorblink{ 50%{ opacity:0; } }',
+'  @media (min-width:900px){',
+'    .post-body{max-width:980px; padding:64px 44px 48px;}',
+'    .post-body p, .post-body li, .post-body figcaption, .post-body .card-row .card-text p{ font-family:var(--font-read); }',
+'    .post-body p{font-size:1.08rem; line-height:1.8; margin-bottom:22px; color:var(--white);}',
+'    .post-body li{font-size:1.05rem; line-height:1.72; margin-bottom:12px;}',
+'    .post-body ul, .post-body ol{margin-bottom:26px;}',
+"    .post-body h2{ font-family:'JetBrains Mono','SFMono-Regular',Consolas,'Courier New',monospace; color:var(--yellow); font-size:1.55rem; letter-spacing:0.2px; margin:48px 0 18px; }",
+"    .post-body h3{ font-family:'JetBrains Mono','SFMono-Regular',Consolas,'Courier New',monospace; font-weight:700; font-size:1.12rem; letter-spacing:0.2px; margin:34px 0 14px; text-transform:none; }",
+'    .post-body strong{color:var(--yellow); font-weight:700;}',
+'    .post-body figure{margin-bottom:40px;}',
+'    .post-body figcaption{font-size:0.95rem; color:#a8a29a; line-height:1.6; margin-top:12px;}',
+'    .post-body .tally{font-size:1rem;}',
+"    .post-body .tally td{font-family:'JetBrains Mono','SFMono-Regular',Consolas,'Courier New',monospace;}",
+'    .post-body .card-row{grid-template-columns:250px 1fr; column-gap:32px; padding:26px 30px;}',
+'    .post-body .card-row .card-img{width:250px;}',
+'    .post-body .card-row .card-text p{font-size:1.03rem; line-height:1.7;}',
+'    .post-header{padding:84px 6% 46px;}',
+'    .post-header h1{font-size:clamp(1.8rem,3vw,2.5rem);}',
+'    .post-header .meta{font-size:1rem;}',
+'    .back-link{max-width:980px; padding:0 44px;}',
+'  }',
+'</style>',
+'</head>',
+'<body>',
+'',
+'<div class="crt-overlay"></div>',
+'<div class="hazard"></div>',
+'<header>',
+'  <a href="../../" class="logo-group">',
+'    <img src="../../images/kodecco-icon.png" alt="Kodecco Games">',
+'  </a>',
+'  <nav>',
+'    <a href="../../#brief">Components</a>',
+'    <a href="../../#album">Album</a>',
+'    <a href="../../#roadmap">Roadmap</a>',
+'    <a href="../../#journal">Dev Journal</a>',
+'    <a href="../../#signal">Send Signal</a>',
+'  </nav>',
+'</header>',
+'',
+'<div class="post-header">',
+'  <span class="tag">__TAG__</span>',
+'  <h1>__TITLE__</h1>',
+'  <div class="meta">__META__</div>',
+'</div>',
+'',
+'<div class="post-body">',
+'  <p>Start writing…</p>',
+'</div>',
+'',
+'<a class="back-link" href="../../#journal">← Back to Dev Journal</a>',
+'',
+'<footer>',
+'  <div class="socials">',
+'    <a href="#">Instagram</a> · <a href="#">BoardGameGeek</a> · <a href="#">Email</a>',
+'  </div>',
+'  <p style="margin-top:12px;">© 2026 CARRIER — a survival board game in development.</p>',
+'</footer>',
+'',
+'<div class="lightbox" id="lightbox">',
+'  <span class="lightbox-close" id="lightboxClose">&times;</span>',
+'  <img id="lightboxImg" src="" alt="">',
+'  <span class="lightbox-hint">Click image to zoom · Click outside or press Esc to close</span>',
+'</div>',
+'',
+'<script>',
+'  (function(){',
+"    var lb = document.getElementById('lightbox');",
+"    var lbImg = document.getElementById('lightboxImg');",
+"    var closeBtn = document.getElementById('lightboxClose');",
+"    document.querySelectorAll('.post-body figure img, .post-body .card-row img').forEach(function(img){",
+"      img.addEventListener('click', function(){",
+"        lbImg.src = img.getAttribute('src');",
+"        lbImg.alt = img.getAttribute('alt') || '';",
+"        lbImg.classList.remove('zoomed');",
+"        lb.classList.add('active');",
+'      });',
+'    });',
+"    lbImg.addEventListener('click', function(e){ e.stopPropagation(); lbImg.classList.toggle('zoomed'); });",
+'    function closeLightbox(){ lb.classList.remove(\'active\'); lbImg.classList.remove(\'zoomed\'); }',
+"    closeBtn.addEventListener('click', closeLightbox);",
+"    lb.addEventListener('click', function(e){ if(e.target === lb) closeLightbox(); });",
+"    document.addEventListener('keydown', function(e){ if(e.key === 'Escape') closeLightbox(); });",
+'  })();',
+'<\/script>',
+'',
+'</body>',
+'</html>',
+''
+  ].join('\n');
+
+  el.npCreate.addEventListener('click', async function(){
+    var title = el.npTitle.value.trim();
+    var slug = slugify(el.npSlug.value || title);
+    if(!title || !slug){ alert('Please enter a title.'); return; }
+    try{
+      var exists = true;
+      try{ await postsHandle.getDirectoryHandle(slug); }catch(e){ exists = false; }
+      if(exists){ alert('A post with that folder name already exists.'); return; }
+
+      var dir = await postsHandle.getDirectoryHandle(slug, {create:true});
+      await dir.getDirectoryHandle('images', {create:true});
+      var html = NEW_POST_TEMPLATE
+        .replace(/__TITLE__/g, title)
+        .replace(/__TAG__/g, el.npTag.value.trim() || '// DEV JOURNAL')
+        .replace(/__META__/g, el.npMeta.value.trim());
+      var fh = await dir.getFileHandle('index.html', {create:true});
+      var ws = await fh.createWritable();
+      await ws.write(html);
+      await ws.close();
+
+      el.newPostModal.classList.remove('active');
+      await refreshPostList();
+      await openPost(slug);
+    }catch(err){
+      alert('Could not create post: ' + err.message);
+    }
+  });
+
+  window.addEventListener('beforeunload', function(e){
+    if(dirty){ e.preventDefault(); e.returnValue = ''; }
+  });
+
+})();
+</script>
+</body>
+</html>
