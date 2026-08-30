@@ -166,6 +166,7 @@
     padding-left:12px; line-height:1.6;
   }
   .rules div:not(.ability-name){display:flex; gap:8px; align-items:flex-start; margin-bottom:4px;}
+  .rules span.kw{color:var(--role-color, var(--red)); font-weight:700;}
   .rules div:not(.ability-name) span.ic{
     flex:0 0 auto; color:var(--role-text,#000); background:var(--role-color, var(--red));
     display:inline-flex; align-items:center; justify-content:center;
@@ -576,81 +577,81 @@
     <img class="mobile-card-img" src="images/05-card.png" alt="Blacksmith — full card" loading="lazy" decoding="async">
     <div class="info">
       <h2>BLACKSMITH</h2>
-      <p>[ACTIVE] Reforge lets the Blacksmith shuffle the discard pile and draw 3 cards. Take a single Supply card drawn this way to either keep for yourself or give away to another player. Any non-Supply cards are returned. Can only be used during Daybreak, but can be used multiple times.</p>
-      <p>Unlike the Forager's bigger but capped haul, the Blacksmith trades scale for repetition — smaller yield, no limit.</p>
+      <p>[ACTIVE] Reforge lets the Blacksmith discard 2 Armament supply cards to take one card of his choice from the discard pile. Can be used during Daybreak, and as many times as he can afford it.</p>
+      <p>Unlike the old version, this is a trade, not a gamble — you pay a real, specific price and get exactly the card you need. No dead activations.</p>
       <div class="rules">
         <div class="ability-name">Reforge</div>
         <div><span class="ic">▲</span>Can only be used during "Daybreak" phase.</div>
         <div><span class="ic">◆</span>Can be used multiple times.</div>
-        <div><span class="ic">?</span>Shuffle the discard pile, draw 3 cards. Take a Supply card to keep or give away. If no Supply is drawn, no card is taken.</div>
+        <div><span class="ic">?</span>Discard 2 <span class="kw">Armament</span> supply cards to take one card of your choice from the discard pile.</div>
       </div>
     </div>
     </div>
   </section>
 
-  <section class="role" data-nav="BR" style="--role-color:var(--role-blue);--card-ratio:827/1241">
+
+  <section class="role" data-nav="BR" style="--role-color:var(--role-orange);--card-ratio:827/1241">
     <div class="role-inner">
-      <div class="card" data-modal-src="images/07.png" data-modal-alt="Brawler — card" data-modal-ratio="900/1221">
-      <img src="images/07-card.png" alt="Brawler — full readout">
+      <div class="card" data-modal-src="images/07.png" data-modal-alt="Warden — card" data-modal-ratio="900/1221">
+      <img src="images/07-card.png" alt="Warden — full readout">
     </div>
-    <img class="mobile-card-img" src="images/07-card.png" alt="Brawler — full card" loading="lazy" decoding="async">
+    <img class="mobile-card-img" src="images/07-card.png" alt="Warden — full card" loading="lazy" decoding="async">
     <div class="info">
-      <h2>BRAWLER</h2>
-      <p>[ACTIVE] When the Brawler confronts an Encounter alone, every card he contributes counts as double value. This can only be triggered during Daybreak, and only once per game.</p>
-      <p>Because it's a single use, save it for an Encounter you're genuinely tackling solo and where the extra value matters, not one you'd have cleared easily anyway.</p>
+      <h2>WARDEN</h2>
+      <p>[ACTIVE] Arrest lets the Warden mark another player, blocking their ability. Can be used during Daybreak or Nightfall.</p>
+      <p>He only holds one mark. Leaving it on the same player all game means he isn't watching anyone else, and moving it costs him his turn to do it.</p>
       <div class="rules">
-        <div class="ability-name">Berserk</div>
+        <div class="ability-name">Arrest</div>
         <div><span class="ic">▲</span>Can be used during "Daybreak" &amp; "Nightfall".</div>
-        <div><span class="ic">◆</span>Can be used once per game.</div>
-        <div><span class="ic">?</span>When confronting an Encounter alone, each card you contribute counts as double value.</div>
+        <div><span class="ic">◆</span>Uses a <span class="kw">Mark</span> — one target at a time.</div>
+        <div><span class="ic">?</span>Mark another player. Their ability is blocked until you move the mark elsewhere.</div>
       </div>
     </div>
     </div>
   </section>
 
-  <section class="role art-wip" data-nav="DE" style="--role-color:var(--role-blue);--card-ratio:827/1241">
+
+  <section class="role" data-nav="DE" style="--role-color:var(--role-blue);--card-ratio:827/1241">
     <div class="role-inner">
-      <div class="card" data-modal-src="images/09.png" data-modal-alt="Deadeye — card" data-modal-ratio="900/1221">
-      <img src="images/09-card.png" alt="Deadeye — full readout">
-      <span class="art-wip-badge">Graphic Redesign<br>In Progress</span>
+      <div class="card" data-modal-src="images/09.png" data-modal-alt="Sentry — card" data-modal-ratio="900/1221">
+      <img src="images/09-card.png" alt="Sentry — full readout">
     </div>
-    <img class="mobile-card-img" src="images/09-card.png" alt="Deadeye — full card" loading="lazy" decoding="async">
-    <span class="art-wip-badge-mobile">Graphic Redesign<br>In Progress</span>
+    <img class="mobile-card-img" src="images/09-card.png" alt="Sentry — full card" loading="lazy" decoding="async">
     <div class="info">
-      <h2>DEADEYE</h2>
-      <p>[ACTIVE] Longshot lets the Deadeye reduce the damage required to beat a drawn Encounter by 2 points. It doesn't matter who drew the Encounter, any player's draw can trigger it, as long as it happens during Daybreak. Can be used up to twice per game.</p>
-      <p>Because it works off anyone's draw, Deadeye doesn't need to be leading or even part of the Encounter to use it.</p>
+      <h2>SENTRY</h2>
+      <p>[ACTIVE] Crossfire lets the Sentry mark another player. Whenever that player takes part in an Encounter, it becomes 1 point less dangerous. Can be used during Daybreak.</p>
+      <p>She's covering that player whether or not she's standing next to them, which is what a sniper is actually for.</p>
       <div class="rules">
-        <div class="ability-name">Longshot</div>
+        <div class="ability-name">Crossfire</div>
         <div><span class="ic">▲</span>Can only be used during "Daybreak" phase.</div>
-        <div><span class="ic">◆</span>Can be used twice per game.</div>
-        <div><span class="ic">?</span>Whenever an Encounter is drawn, use this ability to reduce the damage required by 2 points.</div>
+        <div><span class="ic">◆</span>Uses a <span class="kw">Mark</span> — one target at a time.</div>
+        <div><span class="ic">?</span>Mark another player. Whenever that player takes part in an Encounter, [-1] danger.</div>
       </div>
     </div>
     </div>
   </section>
 
-  <section class="role art-wip" data-nav="DU" style="--role-color:var(--role-blue);--card-ratio:827/1241">
+
+  <section class="role" data-nav="DU" style="--role-color:var(--role-blue);--card-ratio:827/1241">
     <div class="role-inner">
       <div class="card" data-modal-src="images/08.png" data-modal-alt="Duelist — card" data-modal-ratio="900/1221">
       <img src="images/08-card.png" alt="Duelist — full readout">
-      <span class="art-wip-badge">Graphic Redesign<br>In Progress</span>
     </div>
     <img class="mobile-card-img" src="images/08-card.png" alt="Duelist — full card" loading="lazy" decoding="async">
-    <span class="art-wip-badge-mobile">Graphic Redesign<br>In Progress</span>
     <div class="info">
       <h2>DUELIST</h2>
-      <p>[PASSIVE] Whenever the Duelist is chosen to take part in an Encounter, he may choose to contribute either 1 or 2 cards to it, instead of being locked into only giving one. This is a permanent passive ability, active during Daybreak.</p>
-      <p>This flexibility lets him hold back and conserve his hand when the Encounter doesn't need much, or commit an extra card when it's close to failing. Worth factoring into how the party plans its contributions each round.</p>
+      <p>[PASSIVE] Whenever the Duelist takes part in an Encounter, he may contribute 1 or 2 cards. If he contributes 2, he draws 1 card from the discard pile.</p>
+      <p>Committing two cards partially pays for itself, turning what used to be a pure passive into a small engine with a real choice every Encounter.</p>
       <div class="rules">
         <div class="ability-name">Dexterous</div>
         <div><span class="ic">▲</span>Can only be used during "Daybreak" phase.</div>
         <div><span class="ic">◆</span>Permanent passive ability.</div>
-        <div><span class="ic">?</span>When chosen for any Encounters, you choose to contribute 1 or 2 cards.</div>
+        <div><span class="ic">?</span>When you take part in any Encounter, you may contribute 1 or 2 cards. Contributing 2 draws you 1 card from the discard pile.</div>
       </div>
     </div>
     </div>
   </section>
+
 
   <section class="role" data-nav="EN" style="--role-color:var(--red);--role-text:#fff;--card-ratio:827/1241">
     <div class="role-inner">
@@ -660,17 +661,18 @@
     <img class="mobile-card-img" src="images/03-card.png" alt="Enforcer — full card" loading="lazy" decoding="async">
     <div class="info">
       <h2>ENFORCER</h2>
-      <p>[ACTIVE] Investigate triggers after an Escape nomination fails. The Enforcer may then view the secret role of one of the nominated players, but only on his own next turn. Can be used during Daybreak or Nightfall, but only once per game.</p>
-      <p>If the failed nomination happens before his turn, he can investigate that same turn; if it happens after his turn, he has to wait until his next turn comes around.</p>
+      <p>[ACTIVE] Investigate lets the Enforcer mark another player. Whenever that player joins an Encounter, he looks at their hand before they contribute. Can be used during Daybreak or Nightfall.</p>
+      <p>Everyone else at the table only learns what someone had after the fact — he's the one who knew going in.</p>
       <div class="rules">
         <div class="ability-name">Investigate</div>
         <div><span class="ic">▲</span>Can be used during "Daybreak" &amp; "Nightfall".</div>
-        <div><span class="ic">◆</span>Can be used once per game.</div>
-        <div><span class="ic">?</span>After an unsuccessful Escape nomination, you may view the secret role of a nominated player on your next turn.</div>
+        <div><span class="ic">◆</span>Uses a <span class="kw">Mark</span> — one target at a time.</div>
+        <div><span class="ic">?</span>Mark another player. Whenever they join an Encounter, look at their hand before they contribute.</div>
       </div>
     </div>
     </div>
   </section>
+
 
   <section class="role" data-nav="FO" style="--role-color:var(--role-green);--card-ratio:827/1241">
     <div class="role-inner">
@@ -680,17 +682,18 @@
     <img class="mobile-card-img" src="images/04-card.png" alt="Forager — full card" loading="lazy" decoding="async">
     <div class="info">
       <h2>FORAGER</h2>
-      <p>[ACTIVE] Allocate lets the Forager draw 6 cards from the discard pile and hand out Supplies among them to any player(s) of her choice. Any Encounter cards drawn this way are set right back into the discard pile. Can only be used during Daybreak, and up to twice per game.</p>
-      <p>This is one of the few ways to recover resources the party already burned through, so save it for when supplies are genuinely running low rather than early when the discard pile is thin.</p>
+      <p>[ACTIVE] Allocate lets the Forager shuffle the discard pile and draw 4 cards. She keeps any Supply cards she wants, and the rest go into the shared inventory. Can only be used during Daybreak.</p>
+      <p>Faster than before, and it feeds the whole group instead of making her hand out cards one by one.</p>
       <div class="rules">
         <div class="ability-name">Allocate</div>
         <div><span class="ic">▲</span>Can only be used during "Daybreak" phase.</div>
-        <div><span class="ic">◆</span>Can be used twice per game.</div>
-        <div><span class="ic">?</span>Draw 6 cards from the discard pile and give the Supplies to any player(s). Return any Encounter cards to the discard pile.</div>
+        <div><span class="ic">◆</span>Can be used multiple times.</div>
+        <div><span class="ic">?</span>Shuffle the discard pile and draw 4 cards. Keep any Supply cards you want, then place the rest into the shared inventory.</div>
       </div>
     </div>
     </div>
   </section>
+
 
   <section class="role" data-nav="GE" style="--role-color:var(--role-gold);--card-ratio:827/1241">
     <div class="role-inner">
@@ -700,17 +703,18 @@
     <img class="mobile-card-img" src="images/18-card.png" alt="Geneticist — full card" loading="lazy" decoding="async">
     <div class="info">
       <h2>GENETICIST</h2>
-      <p>[ACTIVE] Profile lets the Geneticist ask another player to reveal his secret role to him. If that player agrees, the Geneticist must also reveal his own secret role in return. Can only be used during Daybreak, and only once per game.</p>
-      <p>Unlike other role-checking abilities, this one is mutual and voluntary, the target can simply refuse. It works best on someone you already trust or someone who has just as much reason to want a trade.</p>
+      <p>[ACTIVE] Profile lets the Geneticist ask another player to reveal his secret role to him. If that player agrees, the Geneticist must also reveal his own secret role in return. Can only be used during Daybreak.</p>
+      <p>Unlike other role-checking abilities, this one is mutual and voluntary — the target can simply refuse. A player with something to lose doesn't offer to show their hand first.</p>
       <div class="rules">
         <div class="ability-name">Profile</div>
         <div><span class="ic">▲</span>Can only be used during "Daybreak" phase.</div>
-        <div><span class="ic">◆</span>Can be used once per game.</div>
+        <div><span class="ic">◆</span>Can be used multiple times.</div>
         <div><span class="ic">?</span>Ask a player to reveal his secret role to you. If he agrees, you also reveal your secret role to him.</div>
       </div>
     </div>
     </div>
   </section>
+
 
   <section class="role" data-nav="IN" style="--role-color:var(--red);--role-text:#fff;--card-ratio:827/1241">
     <div class="role-inner">
@@ -720,59 +724,60 @@
     <img class="mobile-card-img" src="images/02-card.png" alt="Inspector — full card" loading="lazy" decoding="async">
     <div class="info">
       <h2>INSPECTOR</h2>
-      <p>[ACTIVE] Choose two other players. You may not choose yourself. Designate one as the Checker and the other as the Target. The Checker takes the Target's secret role and examines it, then it's returned face-down. Only the Checker sees it, no one else at the table.</p>
-      <p>This can only happen once per game, during Nightfall, and both choices — who checks and who's checked — are made in the same turn.</p>
+      <p>[ACTIVE] Select 2 other players. Designate one as the Checker and the other as the Target. The Checker takes the Target's secret role and examines it, then it's returned face-down. Can only be used during Nightfall.</p>
+      <p>He's the strangest Detective in the set — he never learns anything himself. He hands the information to someone else and has to watch what they do with it.</p>
       <div class="rules">
         <div class="ability-name">Delegate</div>
         <div><span class="ic">▲</span>Can only be used during "Nightfall" phase.</div>
-        <div><span class="ic">◆</span>Can be used once per game.</div>
-        <div><span class="ic">?</span>Select 2 players and designate a player to check the secret role of the other.</div>
+        <div><span class="ic">◆</span>Can be used multiple times.</div>
+        <div><span class="ic">?</span>Select 2 other players and designate a player to check the secret role of the other.</div>
       </div>
     </div>
     </div>
   </section>
 
-  <section class="role art-wip" data-nav="OL" style="--role-color:var(--role-orange);--card-ratio:827/1241">
+
+  <section class="role" data-nav="OL" style="--role-color:var(--role-orange);--card-ratio:827/1241">
     <div class="role-inner">
       <div class="card" data-modal-src="images/16.png" data-modal-alt="Outlander — card" data-modal-ratio="900/1221">
       <img src="images/16-card.png" alt="Outlander — full readout">
-      <span class="art-wip-badge">Graphic Redesign<br>In Progress</span>
     </div>
     <img class="mobile-card-img" src="images/16-card.png" alt="Outlander — full card" loading="lazy" decoding="async">
-    <span class="art-wip-badge-mobile">Graphic Redesign<br>In Progress</span>
     <div class="info">
       <h2>OUTLANDER</h2>
-      <p>[PASSIVE] As an Amnesiac, the Outlander is never allowed to look at his own secret role. Once a player receives this character, they must set that role aside without checking it and play the rest of the game not knowing their own identity.</p>
-      <p>[ACTIVE] Flashback makes up for it by learning about others instead. During Daybreak, he may look at one other player's secret role, once per turn, up to 3 times total per game.</p>
+      <p>[PASSIVE] As an Amnesiac, the Outlander may never look at his own secret role. [ACTIVE] Flashback makes up for it — on his turn during Daybreak, he may look at another player's secret role instead.</p>
+      <p>That restriction is carrying the whole card now. He can look at somebody new every Daybreak, all game long. He just can never look at himself.</p>
       <div class="rules">
         <div class="ability-name">Flashback</div>
         <div><span class="ic">▲</span>Can only be used during "Daybreak" phase.</div>
-        <div><span class="ic">◆</span>Can be used twice per game.</div>
-        <div><span class="ic">?</span>You look at another player's secret role.</div>
+        <div><span class="ic">◆</span>You may never look at your own secret role.</div>
+        <div><span class="ic">?</span>On your turn, you may look at another player's secret role.</div>
       </div>
     </div>
     </div>
   </section>
 
+
   <section class="role" data-nav="OU" style="--role-color:var(--role-olive);--card-ratio:827/1241">
     <div class="role-inner">
-      <div class="card" data-modal-src="images/15.png" data-modal-alt="Outrunner — card" data-modal-ratio="900/1221">
-      <img src="images/15-card.png" alt="Outrunner — full readout">
+      <div class="card" data-modal-src="images/15.png" data-modal-alt="Disruptor — card" data-modal-ratio="900/1221">
+      <img src="images/15-card.png" alt="Disruptor — full readout">
     </div>
-    <img class="mobile-card-img" src="images/15-card.png" alt="Outrunner — full card" loading="lazy" decoding="async">
+    <img class="mobile-card-img" src="images/15-card.png" alt="Disruptor — full card" loading="lazy" decoding="async">
     <div class="info">
-      <h2>OUTRUNNER</h2>
-      <p>[ACTIVE] Evade lets the Outrunner dodge a drawn Encounter entirely. Whenever an Encounter is drawn, he may reshuffle it back into the Encounter deck instead of resolving it. Can be used during Daybreak or Nightfall, up to twice per game.</p>
-      <p>This works on any drawn Encounter, not just his own, so it can bail out another player facing something the party isn't ready for. Save both uses for the moments that would genuinely hurt.</p>
+      <h2>DISRUPTOR</h2>
+      <p>[ACTIVE] Decoy lets the Disruptor look at the top 3 Encounter cards. She places 1 on the bottom of the deck and returns the rest in any order. Can be used during Daybreak or Nightfall.</p>
+      <p>She's the only character in the set who can make an Encounter go away for good — Pathfinder and Surveyor can only rearrange or peek, not remove.</p>
       <div class="rules">
-        <div class="ability-name">Evade</div>
+        <div class="ability-name">Decoy</div>
         <div><span class="ic">▲</span>Can be used during "Daybreak" &amp; "Nightfall".</div>
-        <div><span class="ic">◆</span>Can be used twice per game.</div>
-        <div><span class="ic">?</span>Whenever an Encounter is drawn, you may use this ability to reshuffle the card back into the Encounter deck.</div>
+        <div><span class="ic">◆</span>Can be used multiple times.</div>
+        <div><span class="ic">?</span>Look at the top 3 Encounter cards. Place 1 on the bottom of the deck and return the rest in any order.</div>
       </div>
     </div>
     </div>
   </section>
+
 
   <section class="role" data-nav="PA" style="--role-color:var(--role-olive);--card-ratio:827/1241">
     <div class="role-inner">
@@ -782,19 +787,20 @@
     <img class="mobile-card-img" src="images/13-card.png" alt="Pathfinder — full card" loading="lazy" decoding="async">
     <div class="info">
       <h2>PATHFINDER</h2>
-      <p>[ACTIVE] When you activate this ability, you may look at the next 6 Encounter cards from the top of the deck and rearrange them in any order you like, then place them back on top of the deck. This can only be done during Daybreak, and only once per game.</p>
-      <p>Remember, after using your ability, you will draw your card for the turn as normal, so whatever you place on top becomes your draw. Plan your order with that in mind.</p>
+      <p>[ACTIVE] Scout lets the Pathfinder discard 1 Sample supply card to look at the next 6 Encounter cards from the top of the deck and rearrange them in any order. Can only be used during Daybreak.</p>
+      <p>Stacking the next six Encounters is a genuinely powerful play, and now you can do it as often as you can pay for it.</p>
       <div class="rules">
         <div class="ability-name">Scout</div>
         <div><span class="ic">▲</span>Can only be used during "Daybreak" phase.</div>
-        <div><span class="ic">◆</span>Can be used once per game.</div>
-        <div><span class="ic">?</span>Look at and rearrange the next 6 Encounter cards from the top of the deck.</div>
+        <div><span class="ic">◆</span>Can be used multiple times.</div>
+        <div><span class="ic">?</span>Discard 1 <span class="kw">Sample</span> supply card to look at and rearrange the next 6 Encounter cards from the top of the deck.</div>
       </div>
     </div>
     </div>
   </section>
 
-  <section class="role" data-nav="PR" style="--role-color:var(--role-orange);--card-ratio:827/1241">
+
+  <section class="role" data-nav="PR" style="--role-color:var(--role-green);--card-ratio:827/1241">
     <div class="role-inner">
       <div class="card" data-modal-src="images/11.png" data-modal-alt="Prospector — card" data-modal-ratio="900/1221">
       <img src="images/11-card.png" alt="Prospector — full readout">
@@ -802,17 +808,18 @@
     <img class="mobile-card-img" src="images/11-card.png" alt="Prospector — full card" loading="lazy" decoding="async">
     <div class="info">
       <h2>PROSPECTOR</h2>
-      <p>[PASSIVE] Stockpile gives the Prospector a head start. At the start of the game, she searches the deck for 2 Supply cards, adds them to her hand, then shuffles the deck. Her hand limit is 6. This is a permanent passive ability, effective during both Daybreak and Nightfall.</p>
-      <p>Because this only triggers once, at setup, it front-loads her advantage rather than paying off later. She also holds a 6-card hand limit, double the normal limit, so she can keep stockpiling supplies well beyond what other players can carry.</p>
+      <p>[ACTIVE] Gold Rush: whenever you draw a Supply card, you may draw one additional card. If you draw an Encounter card instead, you must face it immediately.</p>
+      <p>She's a push-your-luck character now — every draw is a real decision, all game long, with a genuine downside sitting right there in the text.</p>
       <div class="rules">
-        <div class="ability-name">Stockpile</div>
+        <div class="ability-name">Gold Rush</div>
         <div><span class="ic">▲</span>Effective during "Daybreak" &amp; "Nightfall".</div>
         <div><span class="ic">◆</span>Permanent passive ability.</div>
-        <div><span class="ic">?</span>Hand limit is 6. At the start of the game, search the deck for 2 Supply cards, add them to your hand, then shuffle the deck.</div>
+        <div><span class="ic">?</span>Whenever you draw a Supply card, you may draw one additional card. If you draw an Encounter card instead, you must face it immediately.</div>
       </div>
     </div>
     </div>
   </section>
+
 
   <section class="role" data-nav="ST" style="--role-color:var(--role-orange);--card-ratio:827/1241">
     <div class="role-inner">
@@ -822,41 +829,41 @@
     <img class="mobile-card-img" src="images/12-card.png" alt="Stranger — full card" loading="lazy" decoding="async">
     <div class="info">
       <h2>STRANGER</h2>
-      <p>[PASSIVE] Elude makes the Stranger permanently unreadable. His secret role and inventory can never be checked by any other player's ability, effective during both Daybreak and Nightfall.</p>
-      <p>[ACTIVE] Flashback makes up for it by learning about others instead. During Daybreak, he may look at one other player's secret role, once per turn, up to 3 times total per game.</p>
+      <p>[PASSIVE] Elude makes the Stranger's secret role permanently unreadable — no player's ability can ever check it. Effective during both Daybreak and Nightfall.</p>
+      <p>His hand of cards can still be looked through. What he's carrying can give him away even when what he is can't.</p>
       <div class="rules">
         <div class="ability-name">Elude</div>
         <div><span class="ic">▲</span>Effective during "Daybreak" &amp; "Nightfall".</div>
         <div><span class="ic">◆</span>Permanent passive ability.</div>
-        <div><span class="ic">?</span>Your secret role and inventory can never be checked by any player.</div>
+        <div><span class="ic">?</span>Your secret role can never be checked by any player. Your hand of cards can still be looked through.</div>
       </div>
     </div>
     </div>
   </section>
 
-  <section class="role art-wip" data-nav="SY" style="--role-color:var(--role-olive);--card-ratio:827/1241">
+
+  <section class="role" data-nav="SY" style="--role-color:var(--role-olive);--card-ratio:827/1241">
     <div class="role-inner">
       <div class="card" data-modal-src="images/14.png" data-modal-alt="Surveyor — card" data-modal-ratio="900/1221">
       <img src="images/14-card.png" alt="Surveyor — full readout">
-      <span class="art-wip-badge">Graphic Redesign<br>In Progress</span>
     </div>
     <img class="mobile-card-img" src="images/14-card.png" alt="Surveyor — full card" loading="lazy" decoding="async">
-    <span class="art-wip-badge-mobile">Graphic Redesign<br>In Progress</span>
     <div class="info">
       <h2>SURVEYOR</h2>
-      <p>[ACTIVE] Lookout lets the Surveyor look at the next 3 Encounter cards from the top of the deck, then place them back in the same order. Nothing is rearranged, this is purely information. Can only be used during Daybreak, with no limit on uses.</p>
-      <p>Unlike abilities that let you reorder the deck, this just tells you what's coming so the party can plan around it — brace for a tough Encounter, hold back resources, or push forward knowing an easy one is next.</p>
+      <p>[ACTIVE] Overwatch lets the Surveyor mark another player. Whenever they draw a card, he looks at the top 2 cards of the deck and chooses which one they draw. Can only be used during Daybreak.</p>
+      <p>He only picks between two options instead of arranging six, but he can do it on every draw for as long as he keeps his eye on them.</p>
       <div class="rules">
-        <div class="ability-name">Lookout</div>
+        <div class="ability-name">Overwatch</div>
         <div><span class="ic">▲</span>Can only be used during "Daybreak" phase.</div>
-        <div><span class="ic">◆</span>Can be used multiple times.</div>
-        <div><span class="ic">?</span>Look at the next 3 Encounter cards from the top of the deck, then place them back in the same order.</div>
+        <div><span class="ic">◆</span>Uses a <span class="kw">Mark</span> — one target at a time.</div>
+        <div><span class="ic">?</span>Mark another player. Whenever they draw a card, look at the top 2 cards and choose which one they draw.</div>
       </div>
     </div>
     </div>
   </section>
 
-  <section class="role" data-nav="SU" style="--role-color:var(--role-green);--card-ratio:827/1241">
+
+  <section class="role" data-nav="SU" style="--role-color:var(--role-blue);--card-ratio:827/1241">
     <div class="role-inner">
       <div class="card" data-modal-src="images/06.png" data-modal-alt="Survivalist — card" data-modal-ratio="900/1221">
       <img src="images/06-card.png" alt="Survivalist — full readout">
@@ -864,17 +871,18 @@
     <img class="mobile-card-img" src="images/06-card.png" alt="Survivalist — full card" loading="lazy" decoding="async">
     <div class="info">
       <h2>SURVIVALIST</h2>
-      <p>[PASSIVE] Whenever a Zombie Encounter the Survivalist takes part in succeeds, the Survivalist is refunded a random Supply card. Permanent passive ability, but only in effect during Daybreak.</p>
-      <p>It doesn't matter whether the Survivalist joined by their own choice or someone else's. If another player is leading the Encounter and picks the Survivalist to come along, the refund still triggers on success.</p>
+      <p>[PASSIVE] Whenever the Survivalist takes part in a Zombie Encounter, once the results are revealed, he reshuffles the contributed Supplies and draws one at random — win or lose. Effective during all phases.</p>
+      <p>Losing a fight and pulling something back out of the pile is very on-theme for a Survivalist, and it means he's contributing every round instead of only on good ones.</p>
       <div class="rules">
         <div class="ability-name">Recover</div>
-        <div><span class="ic">▲</span>Can only be used during "Daybreak" phase.</div>
+        <div><span class="ic">▲</span>Effective during all phases.</div>
         <div><span class="ic">◆</span>Permanent passive ability.</div>
-        <div><span class="ic">?</span>Whenever a Zombie Encounter the Survivalist takes part in succeeds, the Survivalist is refunded a random Supply card.</div>
+        <div><span class="ic">?</span>Whenever you take part in a Zombie Encounter, once the results are revealed, reshuffle the contributed Supplies and draw one at random.</div>
       </div>
     </div>
     </div>
   </section>
+
 
   <section class="role" data-nav="TR" style="--role-color:var(--red);--role-text:#fff;--card-ratio:827/1241">
     <div class="role-inner">
@@ -884,17 +892,18 @@
     <img class="mobile-card-img" src="images/01-card.png" alt="Tracer — full card" loading="lazy" decoding="async">
     <div class="info">
       <h2>TRACER</h2>
-      <p>[ACTIVE] Choose the First Player. Take their hand and examine every card in it, then return it to them. Then choose the Second Player, take their hand, examine it, and return it.</p>
-      <p>Both must happen in the same turn. You can't examine the First Player now and save the Second Player for a later Daybreak.</p>
+      <p>[ACTIVE] Intercept lets the Tracer discard 1 card of her choice, then choose a player and take and look through their entire hand of cards. Can only be used during Daybreak.</p>
+      <p>She can go back to the same person on a later turn if she thinks they picked something up. She went from one enormous moment to a constant, ongoing presence.</p>
       <div class="rules">
         <div class="ability-name">Intercept</div>
         <div><span class="ic">▲</span>Can only be used during "Daybreak" phase.</div>
-        <div><span class="ic">◆</span>Can be used once per game.</div>
-        <div><span class="ic">?</span>Take and examine all hand cards of 2 players of your choice.</div>
+        <div><span class="ic">◆</span>Can be used multiple times.</div>
+        <div><span class="ic">?</span>Discard 1 card of your choice. Choose a player, then take and look through their entire hand of cards. You may target the same player again on future turns.</div>
       </div>
     </div>
     </div>
   </section>
+
 
   <section class="role" data-nav="TK" style="--role-color:var(--role-orange);--card-ratio:827/1241">
     <div class="role-inner">
@@ -904,17 +913,18 @@
     <img class="mobile-card-img" src="images/10-card.png" alt="Trickster — full card" loading="lazy" decoding="async">
     <div class="info">
       <h2>TRICKSTER</h2>
-      <p>[ACTIVE] Imitate lets the Trickster swap character cards with another player. Once a swap happens, that player becomes the new Trickster, and whoever used to hold the Trickster card cannot be targeted by Imitate again. This can only be used during Nightfall, and has no limit on total uses, so long as a valid target remains.</p>
-      <p>The Imitate ability does not work on Amnesiacs.</p>
+      <p>[ACTIVE] Imitate lets the Trickster swap character cards with another player. Once a swap happens, that player becomes the new Trickster. Can only be used during Nightfall.</p>
+      <p>Previous Tricksters and Amnesiacs cannot be targeted.</p>
       <div class="rules">
         <div class="ability-name">Imitate</div>
         <div><span class="ic">▲</span>Can only be used during "Nightfall" phase.</div>
         <div><span class="ic">◆</span>Can be used multiple times.</div>
-        <div><span class="ic">?</span>Swap character cards with another player. Previous Tricksters cannot be targeted. This ability does not affect Amnesiacs.</div>
+        <div><span class="ic">?</span>Swap character cards with another player. <span class="kw">Previous Tricksters</span> and <span class="kw">Amnesiacs</span> cannot be targeted.</div>
       </div>
     </div>
     </div>
   </section>
+
 
   <section class="role" data-nav="VI" style="--role-color:var(--role-gold);--card-ratio:827/1241">
     <div class="role-inner">
@@ -924,17 +934,18 @@
     <img class="mobile-card-img" src="images/17-card.png" alt="Virologist — full card" loading="lazy" decoding="async">
     <div class="info">
       <h2>VIROLOGIST</h2>
-      <p>[ACTIVE] Diagnose lets the Virologist discard 3 cards to check a player's secret role card. Can only be used during Daybreak, and up to once per turn.</p>
-      <p>The cost is steep, 3 cards for a single check, so it works best when narrowing down a specific suspicion rather than fishing blind. Since it's once per turn rather than once per game, a well-stocked Virologist can still diagnose multiple players over the course of the game.</p>
+      <p>[ACTIVE] Diagnose lets the Virologist discard 1 Sample supply card to check a player's secret role. Can only be used during Daybreak.</p>
+      <p>Samples are the one thing every escape plan actually needs, so every time she checks someone, she's burning a resource the whole table is short on.</p>
       <div class="rules">
         <div class="ability-name">Diagnose</div>
         <div><span class="ic">▲</span>Can only be used during "Daybreak" phase.</div>
-        <div><span class="ic">◆</span>Can be used once per turn.</div>
-        <div><span class="ic">?</span>Discard 3 cards to check a player's secret role card.</div>
+        <div><span class="ic">◆</span>Can be used multiple times.</div>
+        <div><span class="ic">?</span>Discard 1 <span class="kw">Sample</span> supply card to check a player's secret role.</div>
       </div>
     </div>
     </div>
   </section>
+
 
 </main>
 

@@ -6,7 +6,7 @@ Exports allegiance.html's artwork straight from the source PSDs in this
 folder (and its "[B4][ALLEGIANCES]" subfolder) — no re-typing filenames,
 no rebuilding the page.
 
-allegiance.html shows 5 secret roles, and each one's images are named
+index.html shows 6 secret role tiles (Enthraller and Pacifist added), and each one's images are named
 images/NN.png (desktop card thumbnail + click/tap popup modal) and
 images/NN-card.png (mobile swipe-carousel poster). Because the page only
 shows a curated subset of the available artwork (e.g. Apprentice & Patient
@@ -61,32 +61,43 @@ B4_DIR = SCRIPT_DIR / "[B4][ALLEGIANCES]"
 # Sources with no folder prefix live directly in rules/allegiance/;
 # sources under "[B4][ALLEGIANCES]/" are looked up in that subfolder.
 MAPPING = {
-    # Revivalist — card art is 1 of 3 available portrait variations, mobile
+    # Revivalist — card art is 1 of 5 available portrait variations, mobile
     # poster is the shared "REVIVALISTS" 2x3 poster.
-    "images/05.png":      "[B4][ALLEGIANCES]/SURVIVOR - REVIVALIST VARIATION 1.psd",
-    "images/05-card.png": "[SECRET ROLE] [2x3] REVIVALISTS Copy.psd",
+    "images/05.png":      "[B4][ALLEGIANCES]/[6] SURVIVOR - REVIVALIST VARIATION 1.psd",
+    "images/06.png":      "[B4][ALLEGIANCES]/[6] SURVIVOR - REVIVALIST VARIATION 2.psd",
+    "images/07.png":      "[B4][ALLEGIANCES]/[6] SURVIVOR - REVIVALIST VARIATION 3.psd",
+    "images/11.png":      "[B4][ALLEGIANCES]/[6] SURVIVOR - REVIVALIST VARIATION 4.psd",
+    "images/12.png":      "[B4][ALLEGIANCES]/[6] SURVIVOR - REVIVALIST VARIATION 5.psd",
+    "images/05-card.png": "2. [SECRET ROLE] [2x3] REVIVALISTS Copy.psd",
 
     # Curefinder
-    "images/02.png":      "[B4][ALLEGIANCES]/SURVIVOR - CUREFINDER.psd",
-    "images/02-card.png": "[SECRET ROLE] [2x3] CUREFINDER.psd",
+    "images/02.png":      "[B4][ALLEGIANCES]/[4] SURVIVOR - CUREFINDER.psd",
+    "images/02-card.png": "1. [SECRET ROLE] [2x3] CUREFINDER.psd",
 
-    # Executioner
-    "images/03.png":      "[B4][ALLEGIANCES]/CARRIER - EXECUTIONER.psd",
-    "images/03-card.png": "[SECRET ROLE] [2x3] EXECUTIONER.psd",
+    # Executioner — 2 art variations available in [B4][ALLEGIANCES]; using
+    # Variation 1 by default. Swap the source below to VARIATION 2 if you
+    # want the other pose.
+    "images/03.png":      "[B4][ALLEGIANCES]/[3] CARRIER - EXECUTIONER VARIATION 1.psd",
+    "images/10.png":      "[B4][ALLEGIANCES]/[3] CARRIER - EXECUTIONER VARIATION 2.psd",
+    "images/03-card.png": "6. [SECRET ROLE] [2x3] EXECUTIONER .psd",
 
-    # Saboteur
-    "images/08.png":      "[B4][ALLEGIANCES]/CARRIER - SABOTEUR.psd",
-    "images/08-card.png": "[SECRET ROLE] [2x3] SABOTEUR.psd",
+    # Enthraller (formerly Saboteur)
+    "images/08.png":      "[B4][ALLEGIANCES]/[1] CARRIER - ENTHRALLER.psd",
+    "images/08-card.png": "4. [SECRET ROLE] [2x3] ENTHRALLER.psd",
+
+    # Pacifist (new)
+    "images/09.png":      "[B4][ALLEGIANCES]/[2] CARRIER - PACIFIST.psd",
+    "images/09-card.png": "5. [SECRET ROLE] [2x3] PACIFIST.psd",
 
     # Apprentice & Patient Zero — merged into 1 card. Both the desktop
     # card/modal art AND the mobile poster use the same combined 2x3
     # artwork (it already has both portraits + the shared rules text).
-    "images/01-card.png": "[SECRET ROLE] [2x3] APPRENTICE.psd",
+    "images/01-card.png": "3. [SECRET ROLE] [2x3] APPRENTICE.psd",
 
     # Homepage (index.html) Mission Brief thumbnail — a square (827x827)
     # crop with the rules text hidden, art-only. Point this at whichever
     # square PSD you want representing Allegiance on the homepage.
-    "images/homepage.png": "[SECRET ROLE] [2x3] CUREFINDER [SQUARE].psd",
+    "images/homepage.png": "zz[SECRET ROLE] [2x3] CUREFINDER [SQUARE].psd",
 }
 
 

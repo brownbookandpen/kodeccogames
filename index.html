@@ -8,20 +8,20 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DotGothic16&family=JetBrains+Mono:wght@400;500;700&family=VT323&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 
-<meta name="description" content="CARRIER is a survival board game about outlasting the horde — 5-8 players, 45 minutes. Follow the build: design decisions, prototypes, and playtests.">
+<meta name="description" content="CARRIER is a survival board game about outlasting the horde — 5-12 players, 45 minutes. Follow the build: design decisions, prototypes, and playtests.">
 <link rel="icon" href="favicon.ico" sizes="any">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Kodecco Games">
 <meta property="og:url" content="https://kodeccogames.com/">
 <meta property="og:title" content="CARRIER — A Survival Board Game">
-<meta property="og:description" content="Outlast the horde. 5-8 players, 45 minutes. Follow the build from prototype to table.">
+<meta property="og:description" content="Outlast the horde. 5-12 players, 45 minutes. Follow the build from prototype to table.">
 <meta property="og:image" content="https://kodeccogames.com/images/og-cover.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="CARRIER — A Survival Board Game">
-<meta name="twitter:description" content="Outlast the horde. 5-8 players, 45 minutes. Follow the build from prototype to table.">
+<meta name="twitter:description" content="Outlast the horde. 5-12 players, 45 minutes. Follow the build from prototype to table.">
 <meta name="twitter:image" content="https://kodeccogames.com/images/og-cover.jpg">
 <link rel="stylesheet" href="styles.css">
 <style>
@@ -1013,7 +1013,7 @@
   <span class="tag banner-tag">⚠ DEVELOPMENT LOG — ONGOING</span>
   <h1 class="hero-tagline">A survival board game about <em>outlasting the horde</em>.<br>Trust no one at the table.</h1>
   <div class="stat-bar">
-    <div class="stat"><b>5–8</b><span>Players</span></div>
+    <div class="stat"><b>5–12</b><span>Players</span></div>
     <div class="stat"><b>45m</b><span>Playtime</span></div>
     <div class="stat"><b>v4.0</b><span>Prototype</span></div>
     <div class="stat"><b>60+</b><span>Playtests</span></div>
@@ -1056,6 +1056,38 @@
   <h2 class="section-title">Developer Logs</h2>
   <p class="section-sub">Entries documenting the build — origins, mechanics, art, and playtests. Tap a title to preview it.</p>
   <ol class="entry-list">
+    <li class="entry-item">
+      <button class="entry" type="button" aria-expanded="false" aria-controls="je-one-job-each-the-4-1-character-rework">
+        <span class="entry-title">One Job Each: The 4.1 Character Rework</span>
+        <span class="entry-meta">Aug 30, 2026 &middot; 4 min read</span>
+        <span class="entry-go" aria-hidden="true">&#9662;</span>
+      </button>
+      <div class="entry-panel" id="je-one-job-each-the-4-1-character-rework" role="region">
+        <div class="entry-panel-inner">
+          <img class="entry-cover" src="posts/one-job-each-the-4-1-character-rework/images/01.png" alt="One Job Each: The 4.1 Character Rework — cover art" loading="lazy" decoding="async">
+          <div class="entry-body">
+            <p class="entry-excerpt">Too Many Characters ended with a promise to cut the roster down. Here's the actual rework: eighteen characters, one mechanical job per faction, and abilities that cost something instead of running out.</p>
+            <a class="btn entry-read" href="posts/one-job-each-the-4-1-character-rework/">Read more &rarr;</a>
+          </div>
+        </div>
+      </div>
+    </li>
+    <li class="entry-item">
+      <button class="entry" type="button" aria-expanded="false" aria-controls="je-full-character-rework-notes">
+        <span class="entry-title">Full Character Rework Notes</span>
+        <span class="entry-meta">Aug 30, 2026 &middot; 12 min read</span>
+        <span class="entry-go" aria-hidden="true">&#9662;</span>
+      </button>
+      <div class="entry-panel" id="je-full-character-rework-notes" role="region">
+        <div class="entry-panel-inner">
+          <img class="entry-cover" src="posts/full-character-rework-notes/images/01.png" alt="Full Character Rework Notes — cover art" loading="lazy" decoding="async">
+          <div class="entry-body">
+            <p class="entry-excerpt">The complete 4.1 record: why every character got repainted, the shift from usage counters to cost and timing, the new MARK mechanic, and every ability rewrite for all eighteen characters.</p>
+            <a class="btn entry-read" href="posts/full-character-rework-notes/">Read more &rarr;</a>
+          </div>
+        </div>
+      </div>
+    </li>
     <li class="entry-item">
       <button class="entry" type="button" aria-expanded="false" aria-controls="je-so-you-drew-an-encounter-combat-sabotage-the-math-of-survival">
         <span class="entry-title">Encounters, Combat, Sabotage & Survival</span>
@@ -1567,6 +1599,8 @@
   // Journal cover art, archived in the Album. The entries themselves are read
   // from the Dev Journal list further down the page.
   const journalCoverItems = [
+    { src:'posts/one-job-each-the-4-1-character-rework/images/01.png', alt:'One Job Each: The 4.1 Character Rework — cover art', caption:'One Job Each: The 4.1 Character Rework (Aug 30, 2026) — eighteen characters, one mechanical job per faction, and abilities that cost something instead of running out.' },
+    { src:'posts/full-character-rework-notes/images/01.png', alt:'Full Character Rework Notes — cover art', caption:'Full Character Rework Notes (Aug 30, 2026) — the complete 4.1 record: every character repaint, the shift from usage counters to cost and timing, the new MARK mechanic, and every ability rewrite.' },
     { src:'posts/so-you-drew-an-encounter-combat-sabotage-the-math-of-survival/images/01-landscape.avif', alt:'So You Drew an Encounter — Combat, Sabotage & The Math of Survival — cover art', caption:"So You Drew an Encounter — Combat, Sabotage & The Math of Survival (Aug 23, 2026) — combat now comes down to face-down cards and tiered weapon math, with a hidden Carrier able to slip in a -3 Sample sabotage." },
     { src:'posts/new-shared-inventory-system-turn-orders-and-actions-performed-pre-turn/images/01-landscape.avif', alt:'New Shared Inventory System, Turn Orders, and Actions Performed Pre-Turn — cover art', caption:'New Shared Inventory System, Turn Orders, and Actions Performed Pre-Turn (Aug 23, 2026) — Encounter draws kept colliding with mid-turn trades and surprise Carrier reveals. We rebuilt the turn around a strict Pre-Draw Action Window and a Shared Group Inventory, so every action resolves before a card is drawn.' },
     { src:'posts/cutting-the-bile-zero-friction-setup-the-89-card-overhaul/images/01-landscape.avif', alt:'Cutting the Bile — Zero-Friction Setup & The 89-Card Overhaul — cover art', caption:'Cutting the Bile — Zero-Friction Setup & The 89-Card Overhaul (Aug 22, 2026) — Zero-friction setup and the 89-card overhaul — the box went from 198 cards and minutes of sorting to a 30-second setup.' },
@@ -1581,31 +1615,39 @@
   const componentSets = {
     allegiance: [
         { thumb:'rules/allegiance/images/thumbs/_back.webp', src:'rules/allegiance/images/thumbs/_back.webp', alt:'Secret Role card back', caption:'Secret Role card back', back:true },
-        { thumb:'rules/allegiance/images/thumbs/apprentice.webp', src:'rules/allegiance/images/01-card.png', card:'rules/allegiance/images/01.png', alt:'Apprentice', caption:'Apprentice' },
         { thumb:'rules/allegiance/images/thumbs/curefinder.webp', src:'rules/allegiance/images/02-card.png', card:'rules/allegiance/images/02.png', alt:'Curefinder', caption:'Curefinder' },
-        { thumb:'rules/allegiance/images/thumbs/executioner.webp', src:'rules/allegiance/images/03-card.png', card:'rules/allegiance/images/03.png', alt:'Executioner', caption:'Executioner' },
-        { thumb:'rules/allegiance/images/thumbs/patient-zero.webp', src:'rules/allegiance/images/04-card.png', card:'rules/allegiance/images/04.png', alt:'Patient Zero', caption:'Patient Zero' },
         { thumb:'rules/allegiance/images/thumbs/revivalist-v1.webp', src:'rules/allegiance/images/05-card.png', card:'rules/allegiance/images/05.png', alt:'Revivalist (V1)', caption:'Revivalist (V1)' },
+        { thumb:'rules/allegiance/images/thumbs/apprentice.webp', src:'rules/allegiance/images/01-card.png', card:'rules/allegiance/images/01.png', alt:'Apprentice', caption:'Apprentice' },
+        { thumb:'rules/allegiance/images/thumbs/patient-zero.webp', src:'rules/allegiance/images/04-card.png', card:'rules/allegiance/images/04.png', alt:'Patient Zero', caption:'Patient Zero' },
+        { thumb:'rules/allegiance/images/thumbs/enthraller.webp', src:'rules/allegiance/images/08-card.png', card:'rules/allegiance/images/08.png', alt:'Enthraller', caption:'Enthraller' },
+        { thumb:'rules/allegiance/images/thumbs/executioner.webp', src:'rules/allegiance/images/03-card.png', card:'rules/allegiance/images/03.png', alt:'Executioner', caption:'Executioner' },
+        { thumb:'rules/allegiance/images/thumbs/pacifist.webp', src:'rules/allegiance/images/09-card.png', card:'rules/allegiance/images/09.png', alt:'Pacifist', caption:'Pacifist' },
         { thumb:'rules/allegiance/images/thumbs/revivalist-v2.webp', src:'rules/allegiance/images/06-card.png', card:'rules/allegiance/images/06.png', alt:'Revivalist (V2)', caption:'Revivalist (V2)' },
         { thumb:'rules/allegiance/images/thumbs/revivalist-v3.webp', src:'rules/allegiance/images/07-card.png', card:'rules/allegiance/images/07.png', alt:'Revivalist (V3)', caption:'Revivalist (V3)' },
-        { thumb:'rules/allegiance/images/thumbs/saboteur.webp', src:'rules/allegiance/images/08-card.png', card:'rules/allegiance/images/08.png', alt:'Saboteur', caption:'Saboteur' }
+        { thumb:'rules/allegiance/images/thumbs/revivalist-v4.webp', src:'rules/allegiance/images/05-card.png', card:'rules/allegiance/images/11.png', alt:'Revivalist (V4)', caption:'Revivalist (V4)' },
+        { thumb:'rules/allegiance/images/thumbs/revivalist-v5.webp', src:'rules/allegiance/images/05-card.png', card:'rules/allegiance/images/12.png', alt:'Revivalist (V5)', caption:'Revivalist (V5)' },
+        { thumb:'rules/allegiance/images/thumbs/executioner-v2.webp', src:'rules/allegiance/images/03-card.png', card:'rules/allegiance/images/10.png', alt:'Executioner (V2)', caption:'Executioner (V2)' }
     ],
     character: [
         { thumb:'rules/character/images/thumbs/_back.webp', src:'rules/character/images/thumbs/_back.webp', alt:'Character card back', caption:'Character card back', back:true },
-        { thumb:'rules/character/images/thumbs/blacksmith.webp', src:'rules/character/images/05-card.png', card:'rules/character/images/05.png', alt:'Blacksmith', caption:'Blacksmith' },
-        { thumb:'rules/character/images/thumbs/brawler.webp', src:'rules/character/images/07-card.png', card:'rules/character/images/07.png', alt:'Brawler', caption:'Brawler' },
-        { thumb:'rules/character/images/thumbs/enforcer.webp', src:'rules/character/images/03-card.png', card:'rules/character/images/03.png', alt:'Enforcer', caption:'Enforcer' },
-        { thumb:'rules/character/images/thumbs/forager.webp', src:'rules/character/images/04-card.png', card:'rules/character/images/04.png', alt:'Forager', caption:'Forager' },
         { thumb:'rules/character/images/thumbs/geneticist.webp', src:'rules/character/images/18-card.png', card:'rules/character/images/18.png', alt:'Geneticist', caption:'Geneticist' },
-        { thumb:'rules/character/images/thumbs/inspector.webp', src:'rules/character/images/02-card.png', card:'rules/character/images/02.png', alt:'Inspector', caption:'Inspector' },
-        { thumb:'rules/character/images/thumbs/outrunner.webp', src:'rules/character/images/15-card.png', card:'rules/character/images/15.png', alt:'Outrunner', caption:'Outrunner' },
-        { thumb:'rules/character/images/thumbs/pathfinder.webp', src:'rules/character/images/13-card.png', card:'rules/character/images/13.png', alt:'Pathfinder', caption:'Pathfinder' },
-        { thumb:'rules/character/images/thumbs/prospector.webp', src:'rules/character/images/11-card.png', card:'rules/character/images/11.png', alt:'Prospector', caption:'Prospector' },
-        { thumb:'rules/character/images/thumbs/stranger.webp', src:'rules/character/images/12-card.png', card:'rules/character/images/12.png', alt:'Stranger', caption:'Stranger' },
+        { thumb:'rules/character/images/thumbs/virologist.webp', src:'rules/character/images/17-card.png', card:'rules/character/images/17.png', alt:'Virologist', caption:'Virologist' },
+        { thumb:'rules/character/images/thumbs/outlander.webp', src:'rules/character/images/16-card.png', card:'rules/character/images/16.png', alt:'Outlander', caption:'Outlander' },
+        { thumb:'rules/character/images/thumbs/duelist.webp', src:'rules/character/images/08-card.png', card:'rules/character/images/08.png', alt:'Duelist', caption:'Duelist' },
+        { thumb:'rules/character/images/thumbs/sentry.webp', src:'rules/character/images/09-card.png', card:'rules/character/images/09.png', alt:'Sentry', caption:'Sentry' },
         { thumb:'rules/character/images/thumbs/survivalist.webp', src:'rules/character/images/06-card.png', card:'rules/character/images/06.png', alt:'Survivalist', caption:'Survivalist' },
-        { thumb:'rules/character/images/thumbs/tracer.webp', src:'rules/character/images/01-card.png', card:'rules/character/images/01.png', alt:'Tracer', caption:'Tracer' },
+        { thumb:'rules/character/images/thumbs/stranger.webp', src:'rules/character/images/12-card.png', card:'rules/character/images/12.png', alt:'Stranger', caption:'Stranger' },
         { thumb:'rules/character/images/thumbs/trickster.webp', src:'rules/character/images/10-card.png', card:'rules/character/images/10.png', alt:'Trickster', caption:'Trickster' },
-        { thumb:'rules/character/images/thumbs/virologist.webp', src:'rules/character/images/17-card.png', card:'rules/character/images/17.png', alt:'Virologist', caption:'Virologist' }
+        { thumb:'rules/character/images/thumbs/warden.webp', src:'rules/character/images/07-card.png', card:'rules/character/images/07.png', alt:'Warden', caption:'Warden' },
+        { thumb:'rules/character/images/thumbs/blacksmith.webp', src:'rules/character/images/05-card.png', card:'rules/character/images/05.png', alt:'Blacksmith', caption:'Blacksmith' },
+        { thumb:'rules/character/images/thumbs/forager.webp', src:'rules/character/images/04-card.png', card:'rules/character/images/04.png', alt:'Forager', caption:'Forager' },
+        { thumb:'rules/character/images/thumbs/prospector.webp', src:'rules/character/images/11-card.png', card:'rules/character/images/11.png', alt:'Prospector', caption:'Prospector' },
+        { thumb:'rules/character/images/thumbs/disruptor.webp', src:'rules/character/images/15-card.png', card:'rules/character/images/15.png', alt:'Disruptor', caption:'Disruptor' },
+        { thumb:'rules/character/images/thumbs/pathfinder.webp', src:'rules/character/images/13-card.png', card:'rules/character/images/13.png', alt:'Pathfinder', caption:'Pathfinder' },
+        { thumb:'rules/character/images/thumbs/surveyor.webp', src:'rules/character/images/14-card.png', card:'rules/character/images/14.png', alt:'Surveyor', caption:'Surveyor' },
+        { thumb:'rules/character/images/thumbs/enforcer.webp', src:'rules/character/images/03-card.png', card:'rules/character/images/03.png', alt:'Enforcer', caption:'Enforcer' },
+        { thumb:'rules/character/images/thumbs/inspector.webp', src:'rules/character/images/02-card.png', card:'rules/character/images/02.png', alt:'Inspector', caption:'Inspector' },
+        { thumb:'rules/character/images/thumbs/tracer.webp', src:'rules/character/images/01-card.png', card:'rules/character/images/01.png', alt:'Tracer', caption:'Tracer' }
     ],
     encounters: [
         { thumb:'rules/Encounters/images/thumbs/_back.webp', src:'rules/Encounters/images/thumbs/_back.webp', alt:'Encounter card back', caption:'Encounter card back', back:true },
