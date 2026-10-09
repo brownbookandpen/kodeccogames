@@ -24,6 +24,7 @@
 <meta name="twitter:description" content="Outlast the horde. 5-12 players, 45 minutes. Follow the build from prototype to table.">
 <meta name="twitter:image" content="https://kodeccogames.com/images/og-cover.jpg">
 <link rel="stylesheet" href="../styles.css">
+<link rel="stylesheet" href="../site.css">
 <style>
   *{box-sizing:border-box;margin:0;padding:0;}
   html{scroll-behavior:smooth;}
@@ -929,24 +930,22 @@
   }
 
 </style>
+<link rel="stylesheet" href="theme.css">
 </head>
 <body>
 
-<div class="crt-overlay"></div>
 <div class="hazard"></div>
-<header>
-  <a href="#" class="logo-group" onclick="window.scrollTo({top:0,behavior:'smooth'}); return false;">
-    <img class="kodecco-mark" src="../images/kodecco-icon.png" alt="Kodecco Games">
-  </a>
-  <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">☰</button>
-  <nav id="mainNav">
-    <a href="../">Kodecco Games</a>
-    <a href="../rules/how-to-play/">Mission Brief</a>
-    <a href="#brief">Game Components</a>
-    <a href="#journal">Developer Logs</a>
+<header class="site-header">
+  <a class="mark" href="../" aria-label="Kodecco Games home"><img src="../images/kodecco-icon.png" alt="Kodecco Games"></a>
+  <nav class="site-nav" id="mainNav">
+    <a href="../">Studio</a>
+    <a href="#brief" aria-current="page">Card Game</a>
+    <a href="../game/">Unity Game</a>
+    <a href="../rules/how-to-play/">How to Play</a>
+    <a href="#journal">Dev Logs</a>
     <a href="#album">Album</a>
     <a href="#roadmap">Roadmap</a>
-    <a href="#signal">Send Signal</a>
+    <a class="nav-cta" href="#signal">Send Signal</a>
   </nav>
 </header>
 
@@ -1011,11 +1010,11 @@
 </section>
 
 <div class="hero-copy reveal">
-  <span class="tag banner-tag">⚠ DEVELOPMENT LOG — ONGOING</span>
-  <h1 class="hero-tagline">A survival board game about <em>outlasting the horde</em>.<br>Trust no one at the table.</h1>
+  <span class="chip live banner-tag">In development</span>
+  <h1 class="hero-tagline display">A survival card game about <em>outlasting the horde</em>.<br>Trust no one at the table.</h1>
   <div class="stat-bar">
     <div class="stat"><b>5–12</b><span>Players</span></div>
-    <div class="stat"><b>45m</b><span>Playtime</span></div>
+    <div class="stat"><b>45 min</b><span>Playtime</span></div>
     <div class="stat"><b>v4.0</b><span>Prototype</span></div>
     <div class="stat"><b>60+</b><span>Playtests</span></div>
   </div>
@@ -1023,7 +1022,7 @@
 
 <section class="hero">
   <div class="hero-inner">
-    <div class="mq-caption">// From the workbench</div>
+    <div class="mq-caption">From the workbench</div>
     <div class="hero-marquee">
       <div class="hero-marquee-track" id="heroMarqueeTrack"></div>
     </div>
@@ -1032,8 +1031,8 @@
 </section>
 
 <section id="brief" class="reveal">
-  <div class="eyebrow">// 01</div>
-  <h2 class="section-title">Game Components</h2>
+  <div class="eyebrow">01 · In the box</div>
+  <h2 class="section-title display">What's in the box</h2>
   <p class="section-sub">What comes in the box — secret allegiances, playable characters, and the threats and supplies waiting out in the field.</p>
   <div class="album-list" id="componentList"></div>
 </section>
@@ -1053,8 +1052,8 @@
      Same expand-in-place behaviour as the Roadmap below, so the page only
      asks the reader to learn one interaction. -->
 <section id="journal" class="journal reveal">
-  <div class="eyebrow">// 02</div>
-  <h2 class="section-title">Developer Logs</h2>
+  <div class="eyebrow">02 · Developer logs</div>
+  <h2 class="section-title display">Developer logs</h2>
   <p class="section-sub">Entries documenting the build — origins, mechanics, art, and playtests. Tap a title to preview it.</p>
   <ol class="entry-list">
     <li class="entry-item">
@@ -1224,8 +1223,8 @@
      categories, the journal's cover art, and the Instagram feed. The Developer
      Logs section above carries the writing itself. -->
 <section id="album" class="gallery reveal">
-  <div class="eyebrow">// 03</div>
-  <h2 class="section-title">Album</h2>
+  <div class="eyebrow">03 · Album</div>
+  <h2 class="section-title display">The album</h2>
   <p class="section-sub">The archive — prototype shots, card art, cut characters, table setups from every playtest, and the covers from each journal entry.</p>
   <div class="album-list" id="albumList"></div>
 
@@ -1321,8 +1320,8 @@
 <section id="roadmap" class="reveal">
   <div class="roadmap-bg"></div>
   <div class="roadmap-fade"></div>
-  <div class="eyebrow">// 04</div>
-  <h2 class="section-title">Roadmap</h2>
+  <div class="eyebrow">04 · Roadmap</div>
+  <h2 class="section-title display">The road to print</h2>
   <p class="section-sub">Where the project stands, and what's coming next.</p>
   <div class="timeline">
     <div class="t-item done">
@@ -1404,25 +1403,41 @@
 
 
 <div class="quote reveal">
-  <p>"Every playtest tore the game apart a little more — and a little closer to what it needed to be."</p>
+  <p>Every playtest tore the game apart a little more, and a little closer to what it needed to be.</p>
   <span>— Playtest Notes, Session #7</span>
 </div>
 
-<div class="signal reveal" id="signal">
-  <h2>Stay in the Loop</h2>
-  <p>New journal entries and playtest calls, sent when there's something worth reading.</p>
-  <form action="https://formspree.io/f/mgawvpgj" method="POST">
-    <input type="email" name="email" placeholder="your@email.com" required>
-    <button class="btn" type="submit">Subscribe</button>
-  </form>
-</div>
-
-<footer>
-  <div class="socials">
-    <a href="https://www.instagram.com/kodecco.games/" target="_blank" rel="noopener">Instagram</a> · <a href="#signal">Newsletter</a> · <a href="mailto:hello@kodeccogames.com">Email</a>
+<section class="signal pad reveal" id="signal">
+  <div class="wrap">
+    <div>
+      <div class="eyebrow">Send signal</div>
+      <h2 class="display h-md">Stay in the loop.</h2>
+      <p>New journal entries and playtest calls, sent when there's something worth reading. Never more often than that.</p>
+    </div>
+    <form class="sig-form" action="https://formspree.io/f/mgawvpgj" method="POST">
+      <input type="hidden" name="source" value="card-game">
+      <input type="hidden" name="interest" value="card-game">
+      <div class="row">
+        <input type="email" name="email" placeholder="your@email.com" required aria-label="Email address">
+        <button class="btn" type="submit">Subscribe</button>
+      </div>
+    </form>
   </div>
-  <p style="margin-top:12px;">© 2026 CARRIER — a survival board game in development.</p>
-  <img class="kodecco-footer" src="../images/kodecco-icon.png" alt="Kodecco Games">
+</section>
+
+<footer class="site-footer">
+  <div class="inner">
+    <div>
+      <img src="../images/kodecco-icon.png" alt="Kodecco Games">
+      <div>© 2026 Kodecco Games. Carrier is a card game in development.</div>
+    </div>
+    <nav>
+      <a href="../">Studio</a>
+      <a href="../game/">Unity Game</a>
+      <a href="https://www.instagram.com/kodecco.games/" target="_blank" rel="noopener">Instagram</a>
+      <a href="mailto:hello@kodeccogames.com">Email</a>
+    </nav>
+  </div>
 </footer>
 
 <button id="topBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
