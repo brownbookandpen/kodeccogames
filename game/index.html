@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Carriers: Built in Unity — Kodecco Games</title>
+<meta name="description" content="Developer's log for Carriers: Built in Unity, the 3D survival game set in the Carrier universe.">
+<link rel="icon" href="../favicon.ico" sizes="any">
+<link rel="stylesheet" href="../styles.css">
+<style>
+  :root{ --accent-game:#4fd1b0; }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:#000;color:#eee8dc;font-family:'Inter',-apple-system,'Segoe UI',Roboto,Arial,sans-serif;line-height:1.7;}
+  a{color:inherit;text-decoration:none;}
+  .hazard{height:14px;background:repeating-linear-gradient(45deg,#f2c14e 0 20px,#000 20px 40px);}
+  header{display:flex;align-items:center;justify-content:space-between;padding:14px 6%;background:#0c0c0c;border-bottom:2px solid #0f4a3c;}
+  header img{height:64px;display:block;}
+  header nav a{color:#9a9a9a;font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;margin-left:22px;}
+  header nav a:hover{color:var(--accent-game);}
+  main{max-width:820px;margin:0 auto;padding:56px 6% 80px;}
+  .eyebrow{color:var(--accent-game);font-size:.75rem;letter-spacing:.3em;text-transform:uppercase;margin-bottom:12px;}
+  h1{font-size:clamp(2rem,5vw,3rem);line-height:1.1;margin-bottom:18px;}
+  .lede{color:#cfc9bb;margin-bottom:36px;}
+  h2{font-size:1.1rem;letter-spacing:.14em;text-transform:uppercase;color:var(--accent-game);margin:44px 0 16px;}
+  .systems{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;}
+  .sys{background:#111;border:1px solid #1f2a27;padding:14px 16px;font-size:.9rem;}
+  .sys b{display:block;color:#fff;margin-bottom:4px;}
+  .entry{border-left:3px solid var(--accent-game);padding:4px 0 4px 20px;margin-bottom:34px;}
+  .entry time{font-size:.72rem;letter-spacing:.2em;color:#7d8f8a;text-transform:uppercase;}
+  .entry h3{font-size:1.25rem;margin:4px 0 8px;}
+  .entry p{color:#d6d0c2;font-size:.97rem;}
+  .note{font-size:.8rem;color:#7d8f8a;margin-top:50px;border-top:1px solid #1c1c1c;padding-top:16px;}
+</style>
+</head>
+<body>
+<div class="hazard"></div>
+<header>
+  <a href="../"><img src="../images/kodecco-icon.png" alt="Kodecco Games"></a>
+  <nav><a href="../">Kodecco Games</a><a href="../tabletop/">Card Game</a></nav>
+</header>
+<main>
+  <div class="eyebrow">// Carriers: Built in Unity</div>
+  <h1>Developer's Log</h1>
+  <p class="lede">The same Carrier universe, in 3D. This page tracks the Unity build as it happens: what works, what broke and what is next. Nothing here is final.</p>
+
+  <h2>Systems so far</h2>
+  <div class="systems">
+    <div class="sys"><b>Zombies</b>AI, running styles, lunge attacks, ragdolls and gore.</div>
+    <div class="sys"><b>Loot</b>Zombies drop items on the ground; the player picks them up.</div>
+    <div class="sys"><b>Horseback</b>Mounted travel with a weapon wheel and stamina.</div>
+    <div class="sys"><b>Characters</b>An in-game character creator.</div>
+    <div class="sys"><b>Building</b>A build mode and procedural worlds.</div>
+  </div>
+
+  <h2>Log</h2>
+  <article class="entry">
+    <time>Latest · draft</time>
+    <h3>Zombies now drop loot</h3>
+    <p>Kills now leave loot on the ground, in the style of an action RPG. The corpse then sinks into the terrain and disappears, so nothing is taken from the body. Walk over the drops and press E to collect.</p>
+  </article>
+  <article class="entry">
+    <time>Draft</time>
+    <h3>Riding, and zombies that lunge</h3>
+    <p>The HUD and minimap stay visible on horseback, with gait and stamina shown. Zombies pick a random running style when they spawn, and aggressive ones can lunge at a player who is close and in view.</p>
+  </article>
+  <p class="note">These two entries are placeholders drafted from the project's internal dev notes. Replace them with your own words and screenshots before sharing the link.</p>
+</main>
+</body>
+</html>
