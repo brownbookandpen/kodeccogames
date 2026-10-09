@@ -1,0 +1,40 @@
+/* ===================================================================
+   iOS Safari pass. Loaded on every page after its own styles.
+   - safe-area padding on notched phones (needs viewport-fit=cover)
+   - no page zoom on input focus (text must be >= 16px)
+   - Apple's default control styling removed
+   - comfortable tap targets, no grey tap flash, black overscroll
+   =================================================================== */
+html{background:#000;-webkit-text-size-adjust:100%;}
+body{-webkit-tap-highlight-color:transparent;-webkit-font-smoothing:antialiased;}
+a,button,input{-webkit-tap-highlight-color:transparent;touch-action:manipulation;}
+input,textarea,select,button{-webkit-appearance:none;appearance:none;border-radius:0;}
+input[type=email],input[type=text],textarea,select{font-size:max(16px,1em);}
+img{-webkit-user-drag:none;}
+@supports (padding:max(0px)){
+  .site-header,header{padding-left:max(var(--gutter,6%),env(safe-area-inset-left));padding-right:max(var(--gutter,6%),env(safe-area-inset-right));}
+  .site-footer,footer{padding-left:max(var(--gutter,6%),env(safe-area-inset-left));padding-right:max(var(--gutter,6%),env(safe-area-inset-right));padding-bottom:max(40px,env(safe-area-inset-bottom));}
+  #topBtn{bottom:max(24px,env(safe-area-inset-bottom));right:max(24px,env(safe-area-inset-right));}
+}
+@media (hover:none) and (pointer:coarse){
+  .site-nav a,.site-footer nav a,.chips a,.pn,.dive,.post-card,.file a.more,.feature a.deep{padding-top:10px;padding-bottom:10px;}
+  .site-nav{gap:22px;}
+  .site-nav .nav-cta{padding-top:6px;padding-bottom:6px;}
+  .post-card:hover,.dive:hover,.door:hover .door-art img,.door:hover .door-art .shot{transform:none;}
+}
+@supports not (height:100svh){
+  .doors{height:calc(100vh - 78px);}
+  .door{min-height:78vh;}
+  .theme-unity .hero{height:calc(100vh - 78px);}
+}
+/* older iOS without color-mix(): plain rgba fallbacks */
+@supports not (color:color-mix(in srgb,#000 50%,#fff)){
+  .chip.live{border-color:rgba(242,193,78,.55);}
+  .theme-unity .chip.live{border-color:rgba(111,214,189,.55);}
+  .shot.missing{background:radial-gradient(ellipse 70% 60% at 65% 35%,rgba(111,214,189,.16),transparent 70%),linear-gradient(160deg,#0a1615 0%,#050808 70%);}
+  .shot.missing::after{color:rgba(111,214,189,.6);}
+  .signal{background:radial-gradient(ellipse 60% 120% at 50% 120%,rgba(242,193,78,.12),transparent 70%),#0b0b0b;}
+  .theme-unity .signal{background:radial-gradient(ellipse 60% 120% at 50% 120%,rgba(111,214,189,.12),transparent 70%),#0b0b0b;}
+  .dive:hover,.pn:hover{border-color:rgba(111,214,189,.5);}
+  .step.now::before{box-shadow:0 0 0 6px rgba(111,214,189,.18);}
+}
