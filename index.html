@@ -3,95 +3,278 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Kodecco Games — Carrier</title>
-<meta name="description" content="Kodecco Games is an indie studio making a social deduction card game and an open-world zombie survival game. Follow both builds.">
+<title>Kodecco Games — The Carrier Universe</title>
+<meta name="description" content="Kodecco Games is an independent studio building the Carrier universe: a social deduction card game and an open-world survival game made in Unity. Follow both builds.">
 <link rel="icon" href="favicon.ico" sizes="any">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Kodecco Games">
 <meta property="og:url" content="https://kodeccogames.com/">
-<meta property="og:title" content="Kodecco Games — Carrier">
-<meta property="og:description" content="A social deduction card game and a Unity zombie survival game, built in public.">
+<meta property="og:title" content="Kodecco Games — The Carrier Universe">
+<meta property="og:description" content="One outbreak, two games. A social deduction card game and an open-world survival game, built in public.">
 <meta property="og:image" content="https://kodeccogames.com/images/og-cover.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=VT323&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="site.css">
+<script>function shotMissing(i){var f=i.closest('.shot');if(f)f.classList.add('missing');i.remove();}</script>
 <style>
-  :root{ --accent-game:#4fd1b0; }
-  *{box-sizing:border-box;margin:0;padding:0;}
-  body{background:#000;color:#eee8dc;font-family:'Inter',-apple-system,'Segoe UI',Roboto,Arial,sans-serif;line-height:1.7;}
-  a{color:inherit;text-decoration:none;}
-  .hazard{height:14px;background:repeating-linear-gradient(45deg,#f2c14e 0 20px,#000 20px 40px);}
-  header{display:flex;align-items:center;justify-content:space-between;padding:14px 6%;background:#0c0c0c;border-bottom:2px solid #6e1010;}
-  header img{height:64px;width:auto;display:block;}
-  header nav a{color:#9a9a9a;font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;margin-left:22px;}
-  header nav a:hover{color:#f2c14e;}
-  .intro{max-width:860px;margin:0 auto;padding:56px 6% 36px;text-align:center;}
-  .eyebrow{color:#f2c14e;font-size:.75rem;letter-spacing:.3em;text-transform:uppercase;margin-bottom:14px;}
-  h1{font-size:clamp(2rem,5vw,3.4rem);line-height:1.1;margin-bottom:22px;letter-spacing:.02em;}
-  .intro p{color:#cfc9bb;margin-bottom:14px;font-size:1.05rem;}
-  .doors{display:grid;grid-template-columns:1fr 1fr;gap:0;min-height:62vh;border-top:2px solid #1c1c1c;}
-  .door{position:relative;overflow:hidden;display:flex;align-items:flex-end;min-height:420px;isolation:isolate;}
-  .door .art{position:absolute;inset:0;z-index:-2;background-size:cover;background-position:center;transition:transform .5s ease,filter .5s ease;filter:brightness(.55) saturate(.9);}
-  .door:hover .art,.door:focus-visible .art{transform:scale(1.05);filter:brightness(.85) saturate(1.05);}
-  .door::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(to top,rgba(0,0,0,.92) 8%,rgba(0,0,0,.1) 60%);}
-  .door.tabletop .art{background-image:url('images/[TOP CAROUSEL]/allegiances-wide.webp');image-rendering:pixelated;}
-  .door.game .art{background:
-      radial-gradient(circle at 70% 30%,rgba(79,209,176,.28),transparent 55%),
-      linear-gradient(160deg,#0b1a17,#050b0a 70%);}
-  .door.game .art::before{content:"SCREENSHOT PENDING";position:absolute;top:20px;right:22px;font-size:.62rem;letter-spacing:.25em;color:rgba(79,209,176,.55);}
-  .door .body{padding:36px 8% 40px;max-width:640px;}
-  .door .tag{font-size:.68rem;letter-spacing:.28em;text-transform:uppercase;margin-bottom:8px;}
-  .tabletop .tag{color:#f2c14e;} .game .tag{color:var(--accent-game);}
-  .door h2{font-size:clamp(1.6rem,3vw,2.3rem);line-height:1.1;margin-bottom:10px;}
-  .door p{color:#d6d0c2;font-size:.95rem;margin-bottom:18px;}
-  .cta{display:inline-block;padding:11px 20px;font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;border:2px solid;}
-  .tabletop .cta{background:#c81d1d;border-color:#c81d1d;color:#fff;}
-  .game .cta{border-color:var(--accent-game);color:var(--accent-game);}
-  .door:hover .cta{filter:brightness(1.25);}
+  /* ---------- the two doors ---------- */
+  .doors{display:flex;height:calc(100svh - 78px);min-height:600px;max-height:1000px;position:relative;background:#000;}
+  .door{position:relative;flex:1;overflow:hidden;display:flex;align-items:flex-end;isolation:isolate;transition:flex .7s cubic-bezier(.2,.7,.2,1);}
+  .doors:hover .door{flex:.8;}
+  .doors .door:hover,.doors .door:focus-visible{flex:1.25;}
   .door + .door{border-left:2px solid #000;}
-  footer{padding:30px 6%;text-align:center;color:#6f6f6f;font-size:.8rem;border-top:2px solid #1c1c1c;}
-  @media(max-width:760px){.doors{grid-template-columns:1fr;}.door + .door{border-left:0;}header nav{display:none;}}
+  .door-art{position:absolute;inset:0;z-index:-2;}
+  .door-art img,.door-art .shot{width:100%;height:100%;aspect-ratio:auto;object-fit:cover;transition:transform 1.2s cubic-bezier(.2,.7,.2,1),filter .7s;}
+  .door-tab .door-art img{object-position:50% 30%;image-rendering:pixelated;filter:brightness(.62) saturate(.95);}
+  .door-uni .door-art .shot{filter:brightness(.8);}
+  .door:hover .door-art img,.door:hover .door-art .shot{transform:scale(1.045);}
+  .door:hover .door-tab .door-art img,.door-tab:hover .door-art img{filter:brightness(.92) saturate(1.05);}
+  .door:hover .door-art .shot{filter:brightness(1);}
+  .door::after{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
+    background:linear-gradient(to top,rgba(0,0,0,.95) 0%,rgba(0,0,0,.55) 38%,rgba(0,0,0,0) 70%);}
+  .door-tab{--accent:var(--hazard);}
+  .door-body{padding:0 clamp(22px,4vw,56px) clamp(34px,6vh,64px);max-width:600px;}
+  .door-num{display:block;font-family:var(--f-term);font-size:1.15rem;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:10px;}
+  .door h2{font-size:clamp(3.6rem,8vw,7.4rem);text-shadow:0 4px 30px rgba(0,0,0,.6);}
+  .door-kind{font-family:var(--f-term);font-size:clamp(1.3rem,2vw,1.7rem);text-transform:uppercase;letter-spacing:.08em;color:var(--paper);margin:4px 0 14px;}
+  .door-copy{color:var(--paper-2);max-width:46ch;font-size:1rem;margin-bottom:22px;
+    max-height:0;opacity:0;overflow:hidden;transition:max-height .7s ease,opacity .5s ease;}
+  .door:hover .door-copy,.door:focus-visible .door-copy{max-height:140px;opacity:1;}
+  .door .btn{pointer-events:none;}
+  .door-art .shot.missing::after{align-items:flex-start;padding-top:84px;}
+  .doors-label{position:absolute;top:22px;left:50%;transform:translateX(-50%);z-index:5;pointer-events:none;
+    font-family:var(--f-term);font-size:1.15rem;letter-spacing:.24em;text-transform:uppercase;color:var(--paper-2);
+    padding:3px 14px;background:rgba(0,0,0,.6);border:1px solid var(--line);white-space:nowrap;}
+  @media(hover:none){.door-copy{max-height:none;opacity:1;}}
+  @media(max-width:820px){
+    .doors{flex-direction:column;height:auto;max-height:none;}
+    .door{min-height:78svh;flex:none!important;}
+    .door + .door{border-left:0;border-top:2px solid #000;}
+    .door-copy{max-height:none;opacity:1;}
+    .doors-label{font-size:1rem;letter-spacing:.16em;}
+  }
+
+  /* ---------- studio ---------- */
+  .studio .grid{display:grid;grid-template-columns:1.05fr 1fr;gap:clamp(40px,6vw,90px);align-items:start;margin-top:34px;}
+  .studio .copy p{color:var(--paper-2);margin-bottom:18px;}
+  .studio .copy p strong{color:var(--paper);font-weight:600;}
+  @media(max-width:860px){.studio .grid{grid-template-columns:1fr;}}
+
+  /* ---------- dossier ---------- */
+  .dossier{display:grid;grid-template-columns:1fr 1fr;gap:2px;background:var(--line);border:1px solid var(--line);margin-top:48px;}
+  .file{background:var(--ink-2);padding:clamp(24px,3.4vw,40px);position:relative;}
+  .file.tab{--accent:var(--hazard);} .file.uni{--accent:var(--fog);}
+  .file::before{content:"";position:absolute;top:0;left:0;width:56px;height:3px;background:var(--accent);}
+  .file h3{font-size:clamp(2rem,3.2vw,2.6rem);}
+  .file .kind{font-family:var(--f-term);font-size:1.2rem;text-transform:uppercase;color:var(--accent);letter-spacing:.08em;margin-bottom:22px;}
+  .file dl{display:grid;grid-template-columns:130px 1fr;gap:10px 18px;font-size:.98rem;}
+  .file dt{font-family:var(--f-term);font-size:1.12rem;text-transform:uppercase;letter-spacing:.06em;color:var(--mute);}
+  .file dd{color:var(--paper);}
+  .file a.more{display:inline-block;margin-top:26px;font-family:var(--f-term);font-size:1.2rem;text-transform:uppercase;color:var(--accent);letter-spacing:.06em;}
+  .file a.more:hover{text-decoration:underline;text-underline-offset:4px;}
+  @media(max-width:760px){.dossier{grid-template-columns:1fr;} .file dl{grid-template-columns:110px 1fr;}}
+
+  /* ---------- dispatches ---------- */
+  .head-row{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap;margin-bottom:40px;}
+  .feed{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(18px,2.4vw,30px);}
+  .post-card{display:flex;flex-direction:column;background:var(--ink-2);border:1px solid var(--line);transition:border-color .25s,transform .25s;}
+  .post-card:hover{transform:translateY(-4px);}
+  .post-card.tab:hover{border-color:rgba(242,193,78,.5);} .post-card.uni:hover{border-color:rgba(111,214,189,.5);}
+  .post-card .thumb{aspect-ratio:16/10;overflow:hidden;background:#0b0b0b;}
+  .post-card .thumb img{width:100%;height:100%;object-fit:cover;transition:transform .8s;}
+  .post-card:hover .thumb img{transform:scale(1.04);}
+  .post-card .thumb.shot{aspect-ratio:16/10;}
+  .post-card .body{padding:20px 22px 24px;display:flex;flex-direction:column;gap:10px;flex:1;}
+  .post-card .meta{display:flex;gap:10px;align-items:center;font-family:var(--f-term);font-size:1.05rem;color:var(--mute);text-transform:uppercase;}
+  .post-card h3{font-size:1.18rem;line-height:1.3;font-weight:600;}
+  .post-card p{font-size:.94rem;color:var(--paper-2);line-height:1.6;}
+  @media(max-width:980px){.feed{grid-template-columns:1fr 1fr;}}
+  @media(max-width:620px){.feed{grid-template-columns:1fr;}}
+
+  /* ---------- signal form ---------- */
+  .sig-form{display:flex;flex-direction:column;gap:14px;}
+  .sig-form .row{display:flex;gap:0;}
+  .sig-form input[type=email]{flex:1;min-width:0;background:#000;border:2px solid var(--line);border-right:0;color:var(--paper);padding:12px 16px;font:inherit;font-size:1rem;}
+  .sig-form input[type=email]:focus{outline:none;border-color:var(--hazard);}
+  .sig-form .btn{border-width:2px;}
+  .sig-form .opts{display:flex;gap:22px;flex-wrap:wrap;font-family:var(--f-term);font-size:1.15rem;text-transform:uppercase;color:var(--paper-2);}
+  .sig-form label{display:flex;gap:8px;align-items:center;cursor:pointer;}
+  .sig-form input[type=checkbox]{accent-color:var(--hazard);width:16px;height:16px;}
 </style>
 </head>
 <body>
 <div class="hazard"></div>
-<header>
-  <a href="/"><img src="images/kodecco-icon.png" alt="Kodecco Games"></a>
-  <nav>
+<header class="site-header">
+  <a class="mark" href="./" aria-label="Kodecco Games home"><img src="images/kodecco-icon.png" alt="Kodecco Games"></a>
+  <nav class="site-nav">
     <a href="tabletop/">Card Game</a>
     <a href="game/">Unity Game</a>
-    <a href="tabletop/#signal">Send Signal</a>
+    <a href="#dispatches">Dev Logs</a>
+    <a href="#studio">Studio</a>
+    <a class="nav-cta" href="#signal">Send Signal</a>
   </nav>
 </header>
 
-<section class="intro">
-  <div class="eyebrow">// Kodecco Games</div>
-  <h1>Two games. One studio. No shortage of zombies.</h1>
-  <p>Kodecco Games is a small independent studio making games about surviving the horde.</p>
-  <p><strong>Carrier</strong> is a social deduction card game for 5 to 12 players, where some of the survivors at the table are secretly infected. <strong>Carriers: Built in Unity</strong> is a single-player, open-world zombie survival game that we are building in 3D.</p>
-  <p>We build in public. Pick a door to read the rules, follow the dev logs and see how each game is coming together.</p>
-</section>
+<main>
+<!-- ============ THE TWO DOORS ============ -->
+<section class="doors" aria-label="Choose a game">
+  <div class="doors-label">Choose your way in</div>
 
-<section class="doors">
-  <a class="door tabletop" href="tabletop/">
-    <div class="art" role="img" aria-label="Pixel art of hooded survivors from the Carrier card game"></div>
-    <div class="body">
-      <div class="tag">Tabletop · 5–12 players</div>
-      <h2>Carrier: Card Game</h2>
-      <p>A social deduction survival game. Secret roles, shared supplies and encounters with the horde. Learn the rules, browse the cards and follow the build toward print.</p>
-      <span class="cta">Enter the card game →</span>
+  <a class="door door-tab" href="tabletop/">
+    <div class="door-art"><img src="images/hub/carrier-door.webp" alt="Pixel art of three survivors from the Carrier card game: a scout, a mechanic with a sledgehammer, and a navigator holding a map"></div>
+    <div class="door-body">
+      <span class="door-num">Door 01 · Tabletop</span>
+      <h2 class="display">Carrier</h2>
+      <p class="door-kind">The card game</p>
+      <p class="door-copy">Secret roles, shared supplies and a horde at the door. 5 to 12 players, one of them already infected.</p>
+      <span class="btn solid">Enter <span class="arr">→</span></span>
     </div>
   </a>
-  <a class="door game" href="game/">
-    <div class="art" role="img" aria-label="Carriers: Built in Unity, placeholder art"></div>
-    <div class="body">
-      <div class="tag">Windows PC · In development</div>
-      <h2>Carriers: Built in Unity</h2>
-      <p>A single-player zombie survival game on a huge island. Scavenge, fight, ride and build. Follow the developer's log as each system comes together.</p>
-      <span class="cta">Enter the dev log →</span>
+
+  <a class="door door-uni theme-unity" href="game/">
+    <div class="door-art"><figure class="shot" data-file="01-hero-horde"><img src="images/game/01-hero-horde.webp" alt="A survivor facing a horde in the distance" onerror="shotMissing(this)"></figure></div>
+    <div class="door-body">
+      <span class="door-num">Door 02 · Video game</span>
+      <h2 class="display">Carriers</h2>
+      <p class="door-kind">Built in Unity</p>
+      <p class="door-copy">An open-world survival game on an island after the outbreak. Scavenge, fight, ride and hold out. In development.</p>
+      <span class="btn solid">Enter <span class="arr">→</span></span>
     </div>
   </a>
 </section>
 
-<footer>© Kodecco Games · <a href="tabletop/#signal">Send Signal</a></footer>
+<!-- ============ STUDIO ============ -->
+<section class="studio pad" id="studio">
+  <div class="wrap">
+    <div class="eyebrow reveal">Kodecco Games</div>
+    <h1 class="display h-lg reveal">One outbreak.<br>Two ways to survive it.</h1>
+    <div class="grid">
+      <p class="lede reveal">Kodecco Games is a small independent studio building the <strong style="color:var(--paper)">Carrier universe</strong>: a world after the outbreak, where the horde is the obvious danger and the people beside you are the quiet one.</p>
+      <div class="copy reveal">
+        <p><strong>Carrier</strong>, the card game, puts that world on the table. Five to twelve players, secret roles, and one question that never goes away: who among you is already infected?</p>
+        <p><strong>Carriers</strong>, built in Unity, takes it somewhere you can walk around. A single-player survival game on a large island, where you scavenge, fight, ride and try to make it to the next day.</p>
+        <p>We build both in public. The dev logs are where we show our work, including the parts that didn't work.</p>
+      </div>
+    </div>
+
+    <div class="dossier reveal">
+      <article class="file tab">
+        <h3 class="display">Carrier</h3>
+        <p class="kind">The card game</p>
+        <dl>
+          <dt>Format</dt><dd>Social deduction card game</dd>
+          <dt>Players</dt><dd>5 to 12</dd>
+          <dt>Play time</dt><dd>About 45 minutes</dd>
+          <dt>Status</dt><dd>Balancing and playtesting</dd>
+          <dt>Next</dt><dd>Art and components, then a print run</dd>
+        </dl>
+        <a class="more" href="tabletop/">Rules, cards and roadmap →</a>
+      </article>
+      <article class="file uni">
+        <h3 class="display">Carriers</h3>
+        <p class="kind">Built in Unity</p>
+        <dl>
+          <dt>Format</dt><dd>Open-world survival</dd>
+          <dt>Players</dt><dd>Single player</dd>
+          <dt>Platform</dt><dd>Windows PC</dd>
+          <dt>Status</dt><dd>In development</dd>
+          <dt>Next</dt><dd>Survivors, settlements and the return of the horde</dd>
+        </dl>
+        <a class="more" href="game/">Features, dev log and roadmap →</a>
+      </article>
+    </div>
+  </div>
+</section>
+
+<div class="rule"></div>
+
+<!-- ============ DISPATCHES ============ -->
+<section class="pad" id="dispatches">
+  <div class="wrap">
+    <div class="head-row">
+      <div>
+        <div class="eyebrow reveal">Dev logs</div>
+        <h2 class="display h-md reveal">Latest from the build</h2>
+      </div>
+      <div class="chips reveal"><a class="chip tab" href="tabletop/#journal">All card game logs</a><a class="chip uni" href="game/#log">All Unity logs</a></div>
+    </div>
+
+    <div class="feed">
+      <a class="post-card uni theme-unity reveal" href="game/posts/flooded-city/">
+        <figure class="thumb shot" data-file="03-hero-flooded-city"><img src="images/game/03-hero-flooded-city.webp" alt="The flooded capital" loading="lazy" onerror="shotMissing(this)"></figure>
+        <div class="body"><div class="meta"><span class="chip uni">Unity</span>Deep dive</div>
+          <h3>The flooded city</h3><p>A walled capital that is permanently knee-deep in water, and how we made wading feel right.</p></div>
+      </a>
+      <a class="post-card tab reveal" href="posts/one-job-each-the-4-1-character-rework/">
+        <div class="thumb"><img src="posts/one-job-each-the-4-1-character-rework/images/01.png" alt="" loading="lazy"></div>
+        <div class="body"><div class="meta"><span class="chip tab">Card game</span>Aug 30, 2026</div>
+          <h3>One Job Each: The 4.1 Character Rework</h3><p>Eighteen characters, one mechanical job per faction, and abilities that cost something instead of running out.</p></div>
+      </a>
+      <a class="post-card uni theme-unity reveal" href="game/posts/cutaway-view/">
+        <figure class="thumb shot" data-file="20-cutaway-view"><img src="images/game/20-cutaway-view.webp" alt="The camera cutting away a building around the player" loading="lazy" onerror="shotMissing(this)"></figure>
+        <div class="body"><div class="meta"><span class="chip uni">Unity</span>Deep dive</div>
+          <h3>The cutaway view</h3><p>How a top-down camera keeps you in sight inside buildings, trees and ivy.</p></div>
+      </a>
+      <a class="post-card tab reveal" href="posts/so-you-drew-an-encounter-combat-sabotage-the-math-of-survival/">
+        <div class="thumb"><img src="posts/so-you-drew-an-encounter-combat-sabotage-the-math-of-survival/images/01-landscape.avif" alt="" loading="lazy"></div>
+        <div class="body"><div class="meta"><span class="chip tab">Card game</span>Aug 23, 2026</div>
+          <h3>Encounters, Combat, Sabotage &amp; Survival</h3><p>Face-down cards and tiered weapon math: reveal, tally the damage, and hope no one on the strike team is lying.</p></div>
+      </a>
+      <a class="post-card uni theme-unity reveal" href="game/posts/melee-and-the-weapon-wheel/">
+        <figure class="thumb shot" data-file="05-combat-melee"><img src="images/game/05-combat-melee.webp" alt="A melee swing" loading="lazy" onerror="shotMissing(this)"></figure>
+        <div class="body"><div class="meta"><span class="chip uni">Unity</span>Deep dive</div>
+          <h3>Melee and the weapon wheel</h3><p>Making swings feel solid, and switching weapons without opening a menu.</p></div>
+      </a>
+      <a class="post-card tab reveal" href="posts/cutting-the-bile-zero-friction-setup-the-89-card-overhaul/">
+        <div class="thumb"><img src="posts/cutting-the-bile-zero-friction-setup-the-89-card-overhaul/images/01.jpg" alt="" loading="lazy"></div>
+        <div class="body"><div class="meta"><span class="chip tab">Card game</span>Aug 22, 2026</div>
+          <h3>Cutting the Bile</h3><p>The box went from 198 cards and minutes of sorting to an 89-card, 30-second setup.</p></div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SIGNAL ============ -->
+<section class="signal pad" id="signal">
+  <div class="wrap">
+    <div class="reveal">
+      <div class="eyebrow">Send signal</div>
+      <h2 class="display h-md">Hear it first.</h2>
+      <p>New dev logs, playtest calls and news about either game. Sent when there's something worth reading, and never more often than that.</p>
+    </div>
+    <form class="sig-form reveal" action="https://formspree.io/f/mgawvpgj" method="POST">
+      <input type="hidden" name="source" value="hub">
+      <div class="row">
+        <input type="email" name="email" placeholder="your@email.com" required aria-label="Email address">
+        <button class="btn solid" type="submit">Subscribe</button>
+      </div>
+      <div class="opts">
+        <label><input type="checkbox" name="interest" value="card-game" checked> Card game</label>
+        <label><input type="checkbox" name="interest" value="unity-game" checked> Unity game</label>
+      </div>
+    </form>
+  </div>
+</section>
+</main>
+
+<footer class="site-footer">
+  <div class="inner">
+    <div>
+      <img src="images/kodecco-icon.png" alt="Kodecco Games">
+      <div>© 2026 Kodecco Games. Built in public.</div>
+    </div>
+    <nav>
+      <a href="tabletop/">Card Game</a>
+      <a href="game/">Unity Game</a>
+      <a href="https://www.instagram.com/kodecco.games/" target="_blank" rel="noopener">Instagram</a>
+      <a href="mailto:hello@kodeccogames.com">Email</a>
+    </nav>
+  </div>
+</footer>
+<script src="site.js"></script>
 </body>
 </html>

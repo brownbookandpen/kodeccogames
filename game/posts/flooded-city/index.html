@@ -6,43 +6,78 @@
 <title>The flooded city — Carriers: Built in Unity</title>
 <meta name="description" content="A walled capital that is permanently knee-deep in water, and how we made wading feel right.">
 <link rel="icon" href="../../../favicon.ico" sizes="any">
+<meta property="og:type" content="article">
+<meta property="og:title" content="The flooded city — Carriers dev log">
+<meta property="og:description" content="A walled capital that is permanently knee-deep in water, and how we made wading feel right.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=VT323&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../../../styles.css">
+<link rel="stylesheet" href="../../../site.css">
+<script>function shotMissing(i){var f=i.closest('.shot');if(f)f.classList.add('missing');i.remove();}</script>
 <style>
-  :root{ --accent-game:#4fd1b0; }
-  *{box-sizing:border-box;margin:0;padding:0;}
-  body{background:#000;color:#eee8dc;font-family:'Inter',-apple-system,'Segoe UI',Roboto,Arial,sans-serif;line-height:1.75;font-size:1.05rem;}
-  a{color:inherit;text-decoration:none;}
-  .hazard{height:14px;background:repeating-linear-gradient(45deg,#f2c14e 0 20px,#000 20px 40px);}
-  header{display:flex;align-items:center;justify-content:space-between;padding:14px 6%;background:#0c0c0c;border-bottom:2px solid #0f4a3c;}
-  header img{height:64px;display:block;}
-  header nav a{color:#9a9a9a;font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;margin-left:22px;}
-  header nav a:hover{color:var(--accent-game);}
-  main{max-width:720px;margin:0 auto;padding:56px 6% 90px;}
-  .eyebrow{color:var(--accent-game);font-size:.75rem;letter-spacing:.3em;text-transform:uppercase;margin-bottom:12px;}
-  h1{font-size:clamp(1.9rem,5vw,2.8rem);line-height:1.12;margin-bottom:12px;}
-  .sub{color:#9fb0ab;margin-bottom:34px;}
-  p{margin-bottom:18px;color:#d6d0c2;}
-  .back{display:inline-block;margin-top:30px;color:var(--accent-game);font-size:.8rem;letter-spacing:.14em;text-transform:uppercase;}
-  .shot{margin:30px 0;border:1px dashed #1f2a27;padding:30px;text-align:center;color:#51615d;font-size:.72rem;letter-spacing:.22em;}
+  .post-hero{position:relative;}
+  .post-hero .shot{aspect-ratio:21/9;max-height:62vh;width:100%;}
+  .post-hero .shot.missing::after{align-items:center;}
+  .post-head{margin-top:-90px;position:relative;z-index:2;}
+  .post-head .card{background:var(--ink);padding:36px clamp(20px,4vw,48px) 8px;max-width:820px;}
+  .post-head h1{font-size:clamp(2.8rem,7vw,5.2rem);}
+  .post-head .sub{font-size:clamp(1.1rem,1.7vw,1.3rem);color:var(--paper-2);margin-top:14px;max-width:56ch;}
+  .post-head .meta{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px;}
+  article.prose{max-width:720px;margin:0 auto;padding:30px var(--gutter) 40px;font-size:1.12rem;line-height:1.85;}
+  article.prose p{margin-bottom:24px;color:#ddd7ca;}
+  article.prose p:first-child::first-letter{font-family:var(--f-display);float:left;font-size:4.6rem;line-height:.8;padding:8px 12px 0 0;color:var(--fog);}
+  .pn-row{max-width:var(--max);margin:30px auto 0;padding:0 var(--gutter);display:grid;grid-template-columns:1fr 1fr;gap:2px;}
+  .pn{display:block;background:var(--ink-2);border:1px solid var(--line);padding:22px 24px;transition:border-color .2s;}
+  .pn:hover{border-color:color-mix(in srgb,var(--fog) 50%,transparent);}
+  .pn .term{display:block;color:var(--fog);font-size:1.05rem;}
+  .pn b{font-weight:600;font-size:1.05rem;}
+  .pn.next{text-align:right;}
+  .back-row{max-width:var(--max);margin:0 auto;padding:40px var(--gutter) 90px;}
+  @media(max-width:640px){.pn-row{grid-template-columns:1fr;} .pn.next{text-align:left;} .post-head{margin-top:-40px;}}
 </style>
 </head>
-<body>
+<body class="theme-unity">
 <div class="hazard"></div>
-<header>
-  <a href="../../../"><img src="../../../images/kodecco-icon.png" alt="Kodecco Games"></a>
-  <nav><a href="../../">Dev Log</a><a href="../../../tabletop/">Card Game</a></nav>
+<header class="site-header">
+  <a class="mark" href="../../../" aria-label="Kodecco Games home"><img src="../../../images/kodecco-icon.png" alt="Kodecco Games"></a>
+  <nav class="site-nav">
+    <a href="../../../">Studio</a>
+    <a href="../../../tabletop/">Card Game</a>
+    <a href="../../">Unity Game</a>
+    <a href="../../#log" aria-current="page">Dev Log</a>
+    <a class="nav-cta" href="../../#signal">Get Alerts</a>
+  </nav>
 </header>
 <main>
-  <div class="eyebrow">// Dev log · Deep dive</div>
-  <h1>The flooded city</h1>
-  <p class="sub">A walled capital that is permanently knee-deep in water, and how we made wading feel right.</p>
-  <p>The capital of the island is flooded, and it stays that way. The water sits about knee to waist height on the player. That is deep enough to slow the mood down and shallow enough that walking and fighting still work. There is no swimming.</p>
-  <p>The flood covers roughly 1,344 by 832 metres, enough for the whole connected city core. The water is deliberately calm and murky, a flat brown-green surface with a faint reflection of the buildings. It looks heavy and still, which is the point.</p>
-  <p>Moving through it is where it comes alive. Every step makes a splash and sends ripples out, and running leaves a wider wake that fades after a second or two. Standing still still gives off the occasional tiny ring, as if you were breathing. Footsteps in water are loud, and the stealth system treats them that way.</p>
-  <p>Reeds, lily pads and floating debris dress the surface. At night the water goes almost fully opaque and the reflections dim, so submerged grass does not turn into black spikes.</p>
-  <p>To keep it fast, the water is split into 273 small tiles that are only drawn when you can see them, and grass that is fully underwater is switched off entirely.</p>
-  <div class="shot">SCREENSHOT PENDING</div>
-  <a class="back" href="../../">← Back to the dev log</a>
+  <div class="post-hero"><figure class="shot hero-shot" data-file="03-hero-flooded-city"><img src="../../../images/game/03-hero-flooded-city.webp" alt="The flooded capital, water up to the knees" onerror="shotMissing(this)"></figure></div>
+  <div class="wrap post-head">
+    <div class="card">
+      <div class="eyebrow">Dev log · Deep dive</div>
+      <h1 class="display">The flooded city</h1>
+      <p class="sub">A walled capital that is permanently knee-deep in water, and how we made wading feel right.</p>
+      <div class="meta"><span class="chip uni">Carriers · Unity</span><span class="chip">1 min read</span><span class="chip">Work in progress</span></div>
+    </div>
+  </div>
+  <article class="prose">
+      <p>The capital of the island is flooded, and it stays that way. The water sits about knee to waist height on the player. That is deep enough to slow the mood down and shallow enough that walking and fighting still work. There is no swimming.</p>
+      <p>The flood covers roughly 1,344 by 832 metres, enough for the whole connected city core. The water is deliberately calm and murky, a flat brown-green surface with a faint reflection of the buildings. It looks heavy and still, which is the point.</p>
+      <p>Moving through it is where it comes alive. Every step makes a splash and sends ripples out, and running leaves a wider wake that fades after a second or two. Standing still still gives off the occasional tiny ring, as if you were breathing. Footsteps in water are loud, and the stealth system treats them that way.</p>
+      <p>Reeds, lily pads and floating debris dress the surface. At night the water goes almost fully opaque and the reflections dim, so submerged grass does not turn into black spikes.</p>
+      <p>To keep it fast, the water is split into 273 small tiles that are only drawn when you can see them, and grass that is fully underwater is switched off entirely.</p>
+  </article>
+  <nav class="pn-row" aria-label="More deep dives">
+    <span></span>
+    <a class="pn next" href="../grass-and-the-hunting-view/"><span class="term">Next →</span><b>Grass, and the hunting view</b></a>
+  </nav>
+  <div class="back-row"><a class="btn" href="../../#log">← Back to the dev log</a></div>
 </main>
+<footer class="site-footer">
+  <div class="inner">
+    <div><img src="../../../images/kodecco-icon.png" alt="Kodecco Games"><div>© 2026 Kodecco Games. Carriers is in development; everything shown is work in progress.</div></div>
+    <nav><a href="../../../">Studio</a><a href="../../">Unity Game</a><a href="../../../tabletop/">Card Game</a><a href="https://www.instagram.com/kodecco.games/" target="_blank" rel="noopener">Instagram</a></nav>
+  </div>
+</footer>
+<script src="../../../site.js"></script>
 </body>
 </html>
