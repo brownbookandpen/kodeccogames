@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#050505">
+<title>Carriers: Built in Unity — Kodecco Games</title>
+<meta name="description" content="Carriers is a single-player, open-world survival game set in the Carrier universe, in development in Unity. Features, roadmap and the developer's log.">
+<link rel="icon" href="../favicon.ico" sizes="any">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Kodecco Games">
+<meta property="og:url" content="https://kodeccogames.com/game/">
+<meta property="og:title" content="Carriers: Built in Unity">
+<meta property="og:description" content="An island. A horde. Whatever you can carry. Follow the build.">
+<meta property="og:image" content="https://kodeccogames.com/images/og-cover.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=VT323&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../styles.css">
+<link rel="stylesheet" href="../site.css">
+<script>function shotMissing(i){var f=i.closest('.shot');if(f)f.classList.add('missing');i.remove();}</script>
+<style>
+  /* ---------- hero ---------- */
+  .hero{position:relative;height:calc(100svh - 78px);min-height:620px;max-height:1050px;display:flex;align-items:flex-end;overflow:hidden;isolation:isolate;}
+  .hero .shot{position:absolute;inset:0;aspect-ratio:auto;z-index:-2;}
+  .hero::after{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
+    background:linear-gradient(to top,var(--ink) 0%,rgba(5,5,5,.75) 30%,rgba(5,5,5,0) 65%),
+               linear-gradient(to right,rgba(5,5,5,.7) 0%,rgba(5,5,5,0) 55%);}
+  .hero .wrap{width:100%;padding-bottom:clamp(40px,8vh,90px);}
+  .hero h1{font-size:clamp(4.4rem,15vw,12.5rem);line-height:.82;}
+  .hero .sub{font-family:var(--f-term);font-size:clamp(1.4rem,2.4vw,2rem);text-transform:uppercase;letter-spacing:.1em;color:var(--fog);margin:6px 0 18px;}
+  .hero .tag{font-size:clamp(1.15rem,1.8vw,1.4rem);color:var(--paper);max-width:34ch;margin-bottom:22px;}
+  .scroll-cue{position:absolute;right:var(--gutter);bottom:34px;font-family:var(--f-term);font-size:1.1rem;letter-spacing:.2em;color:var(--mute);writing-mode:vertical-rl;text-transform:uppercase;}
+  @media(max-width:700px){.scroll-cue{display:none;}}
+
+  /* ---------- pitch ---------- */
+  .pitch .grid{display:grid;grid-template-columns:1fr 1.1fr;gap:clamp(40px,6vw,96px);align-items:start;}
+  .pitch .copy p{color:var(--paper-2);margin-bottom:18px;}
+  .pitch .copy p:first-child{color:var(--paper);font-size:1.18rem;}
+  @media(max-width:860px){.pitch .grid{grid-template-columns:1fr;}}
+
+  /* ---------- features ---------- */
+  .feature{display:grid;grid-template-columns:1.35fr 1fr;gap:clamp(28px,5vw,72px);align-items:center;padding:clamp(40px,6vw,70px) 0;}
+  .feature:nth-child(even){grid-template-columns:1fr 1.35fr;}
+  .feature:nth-child(even) .shot{order:2;}
+  .feature .num{font-family:var(--f-term);font-size:1.3rem;color:var(--fog);letter-spacing:.12em;}
+  .feature h3{font-size:clamp(2.4rem,4.6vw,3.8rem);margin:4px 0 14px;}
+  .feature p{color:var(--paper-2);margin-bottom:18px;}
+  .feature .shot{box-shadow:0 30px 80px -30px rgba(0,0,0,.9);}
+  .feature .row{display:flex;gap:14px;align-items:center;flex-wrap:wrap;}
+  .feature a.deep{font-family:var(--f-term);font-size:1.2rem;text-transform:uppercase;letter-spacing:.06em;color:var(--fog);}
+  .feature a.deep:hover{text-decoration:underline;text-underline-offset:4px;}
+  @media(max-width:860px){.feature,.feature:nth-child(even){grid-template-columns:1fr;} .feature:nth-child(even) .shot{order:0;}}
+
+  /* ---------- mosaic ---------- */
+  .mosaic{display:grid;grid-template-columns:2fr 1fr;grid-template-rows:1fr 1fr;gap:10px;margin-top:40px;}
+  .mosaic .shot:first-child{grid-row:1/3;aspect-ratio:auto;height:100%;}
+  .mosaic .wide{grid-column:1/3;aspect-ratio:32/9;}
+  @media(max-width:760px){.mosaic{grid-template-columns:1fr;grid-template-rows:none;} .mosaic .shot:first-child{grid-row:auto;aspect-ratio:16/9;} .mosaic .wide{grid-column:auto;}}
+
+  /* ---------- status board ---------- */
+  .board{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:var(--line);border:1px solid var(--line);margin-top:44px;}
+  .col{background:var(--ink-2);padding:clamp(22px,3vw,34px);}
+  .col h3{font-family:var(--f-term);font-weight:400;font-size:1.45rem;text-transform:uppercase;letter-spacing:.08em;display:flex;align-items:center;gap:10px;margin-bottom:18px;}
+  .col h3 i{width:10px;height:10px;display:inline-block;}
+  .col.ok h3{color:var(--fog);} .col.ok h3 i{background:var(--fog);}
+  .col.wip h3{color:var(--hazard);} .col.wip h3 i{background:var(--hazard);}
+  .col.plan h3{color:var(--mute);} .col.plan h3 i{border:1px solid var(--mute);}
+  .col ul{list-style:none;display:flex;flex-direction:column;gap:12px;}
+  .col li{font-size:.97rem;color:var(--paper-2);padding-left:16px;position:relative;}
+  .col li::before{content:"›";position:absolute;left:0;color:var(--faint);}
+  .col li b{color:var(--paper);font-weight:600;}
+  @media(max-width:900px){.board{grid-template-columns:1fr;}}
+
+  /* ---------- roadmap ---------- */
+  .track{display:grid;grid-template-columns:repeat(7,1fr);margin-top:56px;position:relative;}
+  .track::before{content:"";position:absolute;left:0;right:0;top:9px;height:2px;background:var(--line);}
+  .step{position:relative;padding:34px 14px 0 0;}
+  .step::before{content:"";position:absolute;top:2px;left:0;width:16px;height:16px;border:2px solid var(--faint);background:var(--ink);}
+  .step.now::before{border-color:var(--fog);background:var(--fog);box-shadow:0 0 0 6px color-mix(in srgb,var(--fog) 18%,transparent);}
+  .step.now::after{content:"";position:absolute;left:0;right:0;top:9px;height:2px;background:linear-gradient(90deg,var(--fog),transparent);}
+  .step .ph{font-family:var(--f-term);font-size:1.1rem;color:var(--mute);letter-spacing:.08em;text-transform:uppercase;}
+  .step.now .ph{color:var(--fog);}
+  .step h4{font-size:1.02rem;font-weight:600;line-height:1.3;margin:6px 0 6px;}
+  .step p{font-size:.88rem;color:var(--mute);line-height:1.55;}
+  @media(max-width:980px){
+    .track{grid-template-columns:1fr;gap:0;}
+    .track::before{left:7px;right:auto;top:0;bottom:0;width:2px;height:auto;}
+    .step{padding:0 0 26px 38px;}
+    .step::before{top:4px;}
+    .step.now::after{display:none;}
+  }
+
+  /* ---------- log ---------- */
+  .log-grid{display:grid;grid-template-columns:1fr 1.5fr;gap:clamp(36px,5vw,80px);margin-top:44px;}
+  .entries{display:flex;flex-direction:column;}
+  .entry{padding:22px 0;border-top:1px solid var(--line);}
+  .entry:last-child{border-bottom:1px solid var(--line);}
+  .entry .when{font-family:var(--f-term);font-size:1.05rem;color:var(--fog);text-transform:uppercase;letter-spacing:.08em;}
+  .entry h3{font-size:1.2rem;font-weight:600;margin:2px 0 6px;}
+  .entry p{font-size:.95rem;color:var(--paper-2);line-height:1.6;}
+  .dives{display:grid;grid-template-columns:1fr 1fr;gap:18px;align-content:start;}
+  .dive{display:block;background:var(--ink-2);border:1px solid var(--line);transition:border-color .25s,transform .25s;}
+  .dive:hover{border-color:color-mix(in srgb,var(--fog) 50%,transparent);transform:translateY(-3px);}
+  .dive .shot{aspect-ratio:16/9;}
+  .dive .shot.missing::after{font-size:.9rem;}
+  .dive .b{padding:14px 16px 18px;}
+  .dive h4{font-size:1.02rem;font-weight:600;line-height:1.3;}
+  .dive p{font-size:.86rem;color:var(--mute);line-height:1.5;margin-top:4px;}
+  .side-label{font-family:var(--f-term);font-size:1.2rem;text-transform:uppercase;letter-spacing:.1em;color:var(--mute);margin-bottom:10px;}
+  @media(max-width:980px){.log-grid{grid-template-columns:1fr;}}
+  @media(max-width:560px){.dives{grid-template-columns:1fr;}}
+
+  .sig-form{display:flex;flex-direction:column;gap:14px;}
+  .sig-form .row{display:flex;}
+  .sig-form input[type=email]{flex:1;min-width:0;background:#000;border:2px solid var(--line);border-right:0;color:var(--paper);padding:12px 16px;font:inherit;font-size:1rem;}
+  .sig-form input[type=email]:focus{outline:none;border-color:var(--fog);}
+</style>
+<link rel="stylesheet" href="../ios.css">
+</head>
+<body class="theme-unity">
+<div class="hazard"></div>
+<header class="site-header">
+  <a class="mark" href="../" aria-label="Kodecco Games home"><img src="../images/kodecco-icon.png" alt="Kodecco Games"></a>
+  <nav class="site-nav">
+    <a href="../">Studio</a>
+    <a href="../tabletop/">Card Game</a>
+    <a href="#features" aria-current="page">Unity Game</a>
+    <a href="#roadmap">Roadmap</a>
+    <a href="#log">Dev Log</a>
+    <a class="nav-cta" href="#signal">Get Alerts</a>
+  </nav>
+</header>
+
+<main>
+<!-- ============ HERO ============ -->
+<section class="hero">
+  <figure class="shot hero-shot" data-file="01-hero-horde"><img src="../images/game/01-hero-horde.webp" alt="A lone survivor in the foreground, a horde gathering in the fog beyond" onerror="shotMissing(this)"></figure>
+  <div class="wrap">
+    <div class="eyebrow">Kodecco Games presents</div>
+    <h1 class="display">Carriers</h1>
+    <p class="sub">Built in Unity</p>
+    <p class="tag">An island. A horde. Whatever you can carry.</p>
+    <div class="chips"><span class="chip live">In development</span><span class="chip">Single player</span><span class="chip">Windows PC</span><span class="chip">Open world</span></div>
+    <div class="btn-row">
+      <a class="btn solid" href="#log">Read the dev log <span class="arr">→</span></a>
+      <a class="btn" href="#roadmap">See the roadmap</a>
+    </div>
+  </div>
+  <div class="scroll-cue">Scroll</div>
+</section>
+
+<!-- ============ PITCH ============ -->
+<section class="pitch pad">
+  <div class="wrap">
+    <div class="grid">
+      <div>
+        <div class="eyebrow reveal">The game</div>
+        <h2 class="display h-lg reveal">Scavenge.<br>Fight. Ride.<br>Hold out.</h2>
+      </div>
+      <div class="copy reveal">
+        <p>Carriers is a single-player, open-world survival game set in the Carrier universe. You are on a large island after the outbreak, seen from above through a top-down survival camera.</p>
+        <p>Search town buildings and the dead for supplies. Fight with whatever you find, from a machete to a rifle to a bow. Ride across the island with a white wolf-dog at your heels, and deal with the survivors who got there before you.</p>
+        <p>It is early. Some of what you see on this page works today, and some of it is still being built. We will always say which is which.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="rule"></div>
+
+<!-- ============ FEATURES ============ -->
+<section class="pad" id="features" style="padding-bottom:40px">
+  <div class="wrap">
+    <div class="eyebrow reveal">What's in the build</div>
+    <h2 class="display h-md reveal">What you can do on the island<span style="color:var(--fog)">.</span></h2>
+
+    <div class="features">
+      <article class="feature reveal">
+        <figure class="shot" data-file="15-world-grassland"><img src="../images/game/15-world-grassland.webp" alt="Rolling grassland and forest under a wide sky" loading="lazy" onerror="shotMissing(this)"></figure>
+        <div>
+          <span class="num">01 / The island</span>
+          <h3 class="display">A whole island to cross</h3>
+          <p>Towns, farmland, open fields and a dark spruce forest across the snowy north, joined by long dirt roads. At its heart sits a walled capital that has been permanently under water since the outbreak.</p>
+          <p>Weather moves across all of it. Rain, storms and fog roll in over about a minute, and the ground, roofs and grass get wet, then dry out again when the sky clears.</p>
+          <div class="row"><span class="chip live">Working</span><a class="deep" href="posts/flooded-city/">Read: The flooded city →</a></div>
+        </div>
+      </article>
+
+      <article class="feature reveal">
+        <figure class="shot" data-file="09-loot-drop"><img src="../images/game/09-loot-drop.webp" alt="Loot scattered on the ground beside a fallen zombie" loading="lazy" onerror="shotMissing(this)"></figure>
+        <div>
+          <span class="num">02 / Scavenge</span>
+          <h3 class="display">Take what you can carry</h3>
+          <p>Hold E to search cupboards, crates and lockers in town buildings, and pick through what the dead leave on the ground. Better finds glow in rarer colours.</p>
+          <p>Everything goes in a backpack you have to stop and open. Your survivor crouches while you sort it, and the world does not wait.</p>
+          <div class="row"><span class="chip live">Working</span><a class="deep" href="posts/the-backpack/">Read: The backpack →</a></div>
+        </div>
+      </article>
+
+      <article class="feature reveal">
+        <figure class="shot" data-file="05-combat-melee"><img src="../images/game/05-combat-melee.webp" alt="A survivor mid-swing with a machete" loading="lazy" onerror="shotMissing(this)"></figure>
+        <div>
+          <span class="num">03 / Fight</span>
+          <h3 class="display">Blades, guns and bows</h3>
+          <p>Hold Q to bring up the weapon wheel and pick from a bow, a blade, a sidearm, a rifle, a shotgun, grenades, knives or your fists, without leaving the action.</p>
+          <p>Swings stay locked in your hand, punches chain left and right, rifles fire from prone, and sprinting puts your gun away.</p>
+          <div class="row"><span class="chip live">Working</span><a class="deep" href="posts/melee-and-the-weapon-wheel/">Read: Melee and the weapon wheel →</a></div>
+        </div>
+      </article>
+
+      <article class="feature reveal">
+        <figure class="shot" data-file="02-hero-rider"><img src="../images/game/02-hero-rider.webp" alt="A rider on horseback crossing a ridge" loading="lazy" onerror="shotMissing(this)"></figure>
+        <div>
+          <span class="num">04 / Ride</span>
+          <h3 class="display">Saddle up</h3>
+          <p>Cross the island on horseback with your HUD, minimap and weapon wheel still at hand, and the horse's gait and stamina on screen.</p>
+          <p>A white wolf-dog follows behind, waits while you climb, and comes back when you call.</p>
+          <div class="row"><span class="chip live">Working</span></div>
+        </div>
+      </article>
+
+      <article class="feature reveal">
+        <figure class="shot" data-file="14-character-creator"><img src="../images/game/14-character-creator.webp" alt="The character creator with a survivor on a pedestal" loading="lazy" onerror="shotMissing(this)"></figure>
+        <div>
+          <span class="num">05 / Survivor</span>
+          <h3 class="display">Make your survivor</h3>
+          <p>Build a character from layered clothing, colours and height before you set out. Then save, and play as them.</p>
+          <div class="row"><span class="chip live">Working</span></div>
+        </div>
+      </article>
+
+      <article class="feature reveal">
+        <figure class="shot" data-file="13-build-mode"><img src="../images/game/13-build-mode.webp" alt="Build mode placing props on the ground" loading="lazy" onerror="shotMissing(this)"></figure>
+        <div>
+          <span class="num">06 / Build</span>
+          <h3 class="display">Shape the world</h3>
+          <p>Press B to open build mode, pick from a palette of over a thousand props, from vehicles and barricades to ivy and swamp reeds, and place them by hand.</p>
+          <p>Claiming a base and building it up with the people you recruit is next on the roadmap.</p>
+          <div class="row"><span class="chip">In progress</span><a class="deep" href="posts/building-the-world/">Read: Building the world →</a></div>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ MOSAIC ============ -->
+<section class="pad" style="padding-top:40px">
+  <div class="wrap">
+    <div class="eyebrow reveal">Field photos</div>
+    <h2 class="display h-md reveal">Around the island</h2>
+    <div class="mosaic reveal">
+      <figure class="shot" data-file="03-hero-flooded-city"><img src="../images/game/03-hero-flooded-city.webp" alt="The flooded capital" loading="lazy" onerror="shotMissing(this)"><figcaption>The flooded capital</figcaption></figure>
+      <figure class="shot" data-file="16-world-forest"><img src="../images/game/16-world-forest.webp" alt="Spruce forest with light shafts" loading="lazy" onerror="shotMissing(this)"><figcaption>The northern forest</figcaption></figure>
+      <figure class="shot" data-file="17-world-night"><img src="../images/game/17-world-night.webp" alt="The island at night" loading="lazy" onerror="shotMissing(this)"><figcaption>After dark</figcaption></figure>
+      <figure class="shot wide" data-file="18-wildlife"><img src="../images/game/18-wildlife.webp" alt="Wildlife grazing in a field" loading="lazy" onerror="shotMissing(this)"><figcaption>Not everything here wants to eat you</figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<div class="rule"></div>
+
+<!-- ============ STATUS BOARD ============ -->
+<section class="pad" id="status">
+  <div class="wrap">
+    <div class="eyebrow reveal">Build status</div>
+    <h2 class="display h-md reveal">What works, what doesn't, what's next</h2>
+    <p class="lede reveal" style="margin-top:16px">An honest snapshot. This is a game in development, and the list moves every week.</p>
+    <div class="board reveal">
+      <div class="col ok">
+        <h3><i></i>Working today</h3>
+        <ul>
+          <li><b>The island</b>: towns, forest, fields and the flooded capital</li>
+          <li><b>Weather</b>: rain, storms, fog and snow, day and night</li>
+          <li><b>Movement</b>: run, crouch, crawl, slide, vault and climb ladders</li>
+          <li><b>Combat</b>: melee, firearms and bows</li>
+          <li><b>Riding</b> and a wolf-dog companion</li>
+          <li><b>Scavenging</b>, the backpack and the weapon wheel</li>
+          <li><b>Character creator</b> and <b>build mode</b></li>
+        </ul>
+      </div>
+      <div class="col wip">
+        <h3><i></i>Being rebuilt</h3>
+        <ul>
+          <li><b>The horde</b>: zombies are being reworked in a test scene before they return to the island</li>
+          <li><b>Survivors</b>: rebuilt to live and work in their settlements</li>
+          <li><b>Stealth</b>: a focus mode for moving unseen</li>
+          <li><b>Towns</b>: busier streets and building interiors</li>
+          <li><b>The look</b>: colour grading for each region and time of day</li>
+        </ul>
+      </div>
+      <div class="col plan">
+        <h3><i></i>Planned</h3>
+        <ul>
+          <li><b>A story</b> that opens on the beach</li>
+          <li><b>Factions</b> with their own colours and allegiances</li>
+          <li><b>A base and a gang</b> of survivors to defend it</li>
+          <li><b>Saving</b> your position, inventory and world</li>
+          <li><b>Farming</b>, cold and warmth</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ROADMAP ============ -->
+<section class="pad" id="roadmap" style="padding-top:0">
+  <div class="wrap">
+    <div class="eyebrow reveal">Roadmap</div>
+    <h2 class="display h-md reveal">The road from here</h2>
+    <p class="lede reveal" style="margin-top:16px">Seven phases, in order. No dates yet. We'd rather be late than wrong.</p>
+    <div class="track reveal">
+      <div class="step now"><span class="ph">Phase 1 · Now</span><h4>Stabilise and test</h4><p>Tighten what works, fix what breaks.</p></div>
+      <div class="step"><span class="ph">Phase 2</span><h4>The beach and one town</h4><p>Wash ashore and meet your first survivors.</p></div>
+      <div class="step"><span class="ph">Phase 3</span><h4>Factions and survivors</h4><p>Settlements with routines and allegiances.</p></div>
+      <div class="step"><span class="ph">Phase 4</span><h4>Gang and base</h4><p>Claim a base and recruit people to it.</p></div>
+      <div class="step"><span class="ph">Phase 5</span><h4>Towns and roads</h4><p>Grow the island to around fifteen towns.</p></div>
+      <div class="step"><span class="ph">Phase 6</span><h4>Items and audio</h4><p>A fuller item list, sound and voices.</p></div>
+      <div class="step"><span class="ph">Phase 7</span><h4>Menu, saves and polish</h4><p>A proper menu, saving, and a build people can run.</p></div>
+    </div>
+  </div>
+</section>
+
+<div class="rule"></div>
+
+<!-- ============ DEV LOG ============ -->
+<section class="pad" id="log">
+  <div class="wrap">
+    <div class="eyebrow reveal">Developer's log</div>
+    <h2 class="display h-md reveal">Notes from the build</h2>
+    <div class="log-grid">
+      <div class="reveal">
+        <p class="side-label">Recent changes</p>
+        <div class="entries">
+          <article class="entry"><span class="when">Recent</span><h3>A living weather system</h3><p>Rain, storms and fog now roll in over about a minute. Ground, roofs and grass get wet, then dry out when the sky clears.</p></article>
+          <article class="entry"><span class="when">Recent</span><h3>The island, regrown</h3><p>New stylised grass and flower fields everywhere, with a dark spruce forest across the snowy north.</p></article>
+          <article class="entry"><span class="when">Recent</span><h3>Ladders, crawling and a companion</h3><p>Climb ladders, crawl through tall grass, and see your own outline when you're hidden. A white wolf-dog now follows you.</p></article>
+          <article class="entry"><span class="when">Recent</span><h3>Blood</h3><p>Combat now leaves blood sprays and pools on the ground.</p></article>
+        </div>
+      </div>
+      <div class="reveal">
+        <p class="side-label">Deep dives</p>
+        <!--DIVES-->
+        <div class="dives">
+          <a class="dive" href="posts/flooded-city/"><figure class="shot" data-file="03-hero-flooded-city"><img src="../images/game/03-hero-flooded-city.webp" alt="The flooded capital, water up to the knees" loading="lazy" onerror="shotMissing(this)"></figure><div class="b"><h4>The flooded city</h4><p>A walled capital that is permanently knee-deep in water, and how we made wading feel right.</p></div></a>
+          <a class="dive" href="posts/grass-and-the-hunting-view/"><figure class="shot" data-file="15-world-grassland"><img src="../images/game/15-world-grassland.webp" alt="Grassland stretching to a distant forest" loading="lazy" onerror="shotMissing(this)"></figure><div class="b"><h4>Grass, and the hunting view</h4><p>Why the island&#x27;s grass fades in smoothly, and why you can zoom out without being safe.</p></div></a>
+          <a class="dive" href="posts/building-the-world/"><figure class="shot" data-file="13-build-mode"><img src="../images/game/13-build-mode.webp" alt="Build mode placing props on the ground" loading="lazy" onerror="shotMissing(this)"></figure><div class="b"><h4>Building the world</h4><p>The placement tool we use to dress the island, and the rules built into it.</p></div></a>
+          <a class="dive" href="posts/melee-and-the-weapon-wheel/"><figure class="shot" data-file="11-weapon-wheel"><img src="../images/game/11-weapon-wheel.webp" alt="The weapon wheel open mid-game" loading="lazy" onerror="shotMissing(this)"></figure><div class="b"><h4>Melee and the weapon wheel</h4><p>Making swings feel solid, and switching weapons without opening a menu.</p></div></a>
+          <a class="dive" href="posts/the-backpack/"><figure class="shot" data-file="10-inventory"><img src="../images/game/10-inventory.webp" alt="The backpack inventory screen" loading="lazy" onerror="shotMissing(this)"></figure><div class="b"><h4>The backpack</h4><p>Picking things up, dropping them again, and what is still missing.</p></div></a>
+          <a class="dive" href="posts/cutaway-view/"><figure class="shot" data-file="20-cutaway-view"><img src="../images/game/20-cutaway-view.webp" alt="The camera cutting away a building around the player" loading="lazy" onerror="shotMissing(this)"></figure><div class="b"><h4>The cutaway view</h4><p>How the camera sees you inside buildings, trees and ivy.</p></div></a>
+        </div>
+        <!--/DIVES-->
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SIGNAL ============ -->
+<section class="signal pad" id="signal">
+  <div class="wrap">
+    <div class="reveal">
+      <div class="eyebrow">Get alerts</div>
+      <h2 class="display h-md">Follow the build.</h2>
+      <p>A short email when there's a new dev log or something worth seeing. No release-date hype, because there isn't a release date.</p>
+    </div>
+    <form class="sig-form reveal" action="https://formspree.io/f/mgawvpgj" method="POST">
+      <input type="hidden" name="source" value="unity-game">
+      <input type="hidden" name="interest" value="unity-game">
+      <div class="row">
+        <input type="email" name="email" placeholder="your@email.com" required aria-label="Email address">
+        <button class="btn solid" type="submit">Subscribe</button>
+      </div>
+    </form>
+  </div>
+</section>
+</main>
+
+<footer class="site-footer">
+  <div class="inner">
+    <div>
+      <img src="../images/kodecco-icon.png" alt="Kodecco Games">
+      <div>© 2026 Kodecco Games. Carriers is in development; everything shown is work in progress.</div>
+    </div>
+    <nav>
+      <a href="../">Studio</a>
+      <a href="../tabletop/">Card Game</a>
+      <a href="https://www.instagram.com/kodecco.games/" target="_blank" rel="noopener">Instagram</a>
+      <a href="mailto:hello@kodeccogames.com">Email</a>
+    </nav>
+  </div>
+</footer>
+<script src="../site.js"></script>
+<script src="../local-preview.js"></script>
+</body>
+</html>
