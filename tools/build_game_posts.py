@@ -162,6 +162,7 @@ def page(i):
   </div>
 </footer>
 <script src="../../../site.js"></script>
+<script src="../../../local-preview.js"></script>
 </body>
 </html>
 """
