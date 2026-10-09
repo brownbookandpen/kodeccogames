@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The cutaway view — Carriers: Built in Unity</title>
+<meta name="description" content="How the camera sees you inside buildings, trees and ivy.">
+<link rel="icon" href="../../../favicon.ico" sizes="any">
+<link rel="stylesheet" href="../../../styles.css">
+<style>
+  :root{ --accent-game:#4fd1b0; }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:#000;color:#eee8dc;font-family:'Inter',-apple-system,'Segoe UI',Roboto,Arial,sans-serif;line-height:1.75;font-size:1.05rem;}
+  a{color:inherit;text-decoration:none;}
+  .hazard{height:14px;background:repeating-linear-gradient(45deg,#f2c14e 0 20px,#000 20px 40px);}
+  header{display:flex;align-items:center;justify-content:space-between;padding:14px 6%;background:#0c0c0c;border-bottom:2px solid #0f4a3c;}
+  header img{height:64px;display:block;}
+  header nav a{color:#9a9a9a;font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;margin-left:22px;}
+  header nav a:hover{color:var(--accent-game);}
+  main{max-width:720px;margin:0 auto;padding:56px 6% 90px;}
+  .eyebrow{color:var(--accent-game);font-size:.75rem;letter-spacing:.3em;text-transform:uppercase;margin-bottom:12px;}
+  h1{font-size:clamp(1.9rem,5vw,2.8rem);line-height:1.12;margin-bottom:12px;}
+  .sub{color:#9fb0ab;margin-bottom:34px;}
+  p{margin-bottom:18px;color:#d6d0c2;}
+  .back{display:inline-block;margin-top:30px;color:var(--accent-game);font-size:.8rem;letter-spacing:.14em;text-transform:uppercase;}
+  .shot{margin:30px 0;border:1px dashed #1f2a27;padding:30px;text-align:center;color:#51615d;font-size:.72rem;letter-spacing:.22em;}
+</style>
+</head>
+<body>
+<div class="hazard"></div>
+<header>
+  <a href="../../../"><img src="../../../images/kodecco-icon.png" alt="Kodecco Games"></a>
+  <nav><a href="../../">Dev Log</a><a href="../../../tabletop/">Card Game</a></nav>
+</header>
+<main>
+  <div class="eyebrow">// Dev log · Deep dive</div>
+  <h1>The cutaway view</h1>
+  <p class="sub">How the camera sees you inside buildings, trees and ivy.</p>
+  <p>The game uses a top-down camera, which means buildings and trees constantly block the view of your character. Our answer is a cutaway. A soft, dithered circle opens through any building, tree or ivy between the camera and you, so you can always see where you are.</p>
+  <p>Walk into a building that has been prepared for it and the upper floors and the camera-facing walls fade away, like looking into a dollhouse. The base of the walls stays, and so do the colliders, so the building still feels solid.</p>
+  <p>The ivy on the tall buildings was the hard part. It is drawn in huge batches rather than as separate objects, so ordinary tricks for hiding things did not affect it. We rebuilt the shaders so ivy, concrete and the building materials all follow the same cutaway.</p>
+  <p>The camera can zoom from 9 to 42 metres from the player.</p>
+  <div class="shot">SCREENSHOT PENDING</div>
+  <a class="back" href="../../">← Back to the dev log</a>
+</main>
+</body>
+</html>

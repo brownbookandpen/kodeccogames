@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Building the world — Carriers: Built in Unity</title>
+<meta name="description" content="The placement tool we use to dress the island, and the rules built into it.">
+<link rel="icon" href="../../../favicon.ico" sizes="any">
+<link rel="stylesheet" href="../../../styles.css">
+<style>
+  :root{ --accent-game:#4fd1b0; }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:#000;color:#eee8dc;font-family:'Inter',-apple-system,'Segoe UI',Roboto,Arial,sans-serif;line-height:1.75;font-size:1.05rem;}
+  a{color:inherit;text-decoration:none;}
+  .hazard{height:14px;background:repeating-linear-gradient(45deg,#f2c14e 0 20px,#000 20px 40px);}
+  header{display:flex;align-items:center;justify-content:space-between;padding:14px 6%;background:#0c0c0c;border-bottom:2px solid #0f4a3c;}
+  header img{height:64px;display:block;}
+  header nav a{color:#9a9a9a;font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;margin-left:22px;}
+  header nav a:hover{color:var(--accent-game);}
+  main{max-width:720px;margin:0 auto;padding:56px 6% 90px;}
+  .eyebrow{color:var(--accent-game);font-size:.75rem;letter-spacing:.3em;text-transform:uppercase;margin-bottom:12px;}
+  h1{font-size:clamp(1.9rem,5vw,2.8rem);line-height:1.12;margin-bottom:12px;}
+  .sub{color:#9fb0ab;margin-bottom:34px;}
+  p{margin-bottom:18px;color:#d6d0c2;}
+  .back{display:inline-block;margin-top:30px;color:var(--accent-game);font-size:.8rem;letter-spacing:.14em;text-transform:uppercase;}
+  .shot{margin:30px 0;border:1px dashed #1f2a27;padding:30px;text-align:center;color:#51615d;font-size:.72rem;letter-spacing:.22em;}
+</style>
+</head>
+<body>
+<div class="hazard"></div>
+<header>
+  <a href="../../../"><img src="../../../images/kodecco-icon.png" alt="Kodecco Games"></a>
+  <nav><a href="../../">Dev Log</a><a href="../../../tabletop/">Card Game</a></nav>
+</header>
+<main>
+  <div class="eyebrow">// Dev log · Deep dive</div>
+  <h1>Building the world</h1>
+  <p class="sub">The placement tool we use to dress the island, and the rules built into it.</p>
+  <p>Hand-placing every prop in the editor does not scale to an island this size, so we built a placement tool. Press B, pick something from the panel, click the ground and it is placed. Layouts save themselves a second after every change.</p>
+  <p>The palette holds over a thousand items: swamp plants, ivy and vines, vehicles, debris, barriers, props, trees, plants and rocks. There is a paint mode for dragging out a lot at once, a delete mode, colour variants for most items, and undo. Ivy and vines turn to face out of walls, and swamp scum, lily pads and reeds sit on the water surface.</p>
+  <p>It has a few safety rules. Nothing can be placed below sea level. A God mode and an Invisible mode let us wander and place without being attacked. Combat is switched off while building so that a click places an object instead of swinging a weapon.</p>
+  <p>Saves keep dated backups, and a broken layout refuses to load instead of silently turning into an empty one.</p>
+  <div class="shot">SCREENSHOT PENDING</div>
+  <a class="back" href="../../">← Back to the dev log</a>
+</main>
+</body>
+</html>

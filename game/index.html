@@ -29,6 +29,14 @@
   .entry time{font-size:.72rem;letter-spacing:.2em;color:#7d8f8a;text-transform:uppercase;}
   .entry h3{font-size:1.25rem;margin:4px 0 8px;}
   .entry p{color:#d6d0c2;font-size:.97rem;}
+  .dive{display:block;transition:border-color .15s;}
+  .dive:hover{border-color:var(--accent-game);}
+  .road{list-style:none;}
+  .road li{border-left:3px solid #1f2a27;padding:2px 0 14px 18px;position:relative;}
+  .road li.now{border-color:var(--accent-game);}
+  .road b{display:block;color:#fff;}
+  .road span{font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:#7d8f8a;}
+  .road .now span{color:var(--accent-game);}
   .note{font-size:.8rem;color:#7d8f8a;margin-top:50px;border-top:1px solid #1c1c1c;padding-top:16px;}
 </style>
 </head>
@@ -62,6 +70,30 @@
     <div class="sys"><b>Base and gang</b>Claim a base and recruit survivors.</div>
     <div class="sys"><b>Story and saves</b>A story intro and a full save system.</div>
   </div>
+
+  <!--DIVES-->
+  <h2>Deep dives</h2>
+  <div class="systems">
+    <a class="sys dive" href="posts/flooded-city/"><b>The flooded city</b>A walled capital that is permanently knee-deep in water, and how we made wading feel right.</a>
+    <a class="sys dive" href="posts/grass-and-the-hunting-view/"><b>Grass, and the hunting view</b>Why the island&#x27;s grass fades in smoothly, and why you can zoom out without being safe.</a>
+    <a class="sys dive" href="posts/building-the-world/"><b>Building the world</b>The placement tool we use to dress the island, and the rules built into it.</a>
+    <a class="sys dive" href="posts/melee-and-the-weapon-wheel/"><b>Melee and the weapon wheel</b>Making swings feel solid, and switching weapons without opening a menu.</a>
+    <a class="sys dive" href="posts/the-backpack/"><b>The backpack</b>Picking things up, dropping them again, and what is still missing.</a>
+    <a class="sys dive" href="posts/cutaway-view/"><b>The cutaway view</b>How the camera sees you inside buildings, trees and ivy.</a>
+  </div>
+  <!--/DIVES-->
+
+  <h2>Roadmap</h2>
+  <p class="lede" style="margin-bottom:18px">Where the build is headed, in order. There are no dates yet.</p>
+  <ol class="road">
+    <li class="now"><span>In progress</span><b>1. Stabilise and test</b>Tighten what already works and fix what breaks.</li>
+    <li><span>Planned</span><b>2. Beach intro and one town</b>Wash ashore and meet your first survivors.</li>
+    <li><span>Planned</span><b>3. Factions and survivors</b>Settlements with their own routines and allegiances.</li>
+    <li><span>Planned</span><b>4. Gang and base</b>Claim a base and recruit people to it.</li>
+    <li><span>Planned</span><b>5. More towns and roads</b>Grow the island out to around fifteen towns.</li>
+    <li><span>Planned</span><b>6. Items and audio</b>A fuller item list, sound and voices.</li>
+    <li><span>Planned</span><b>7. Menu, saves and polish</b>A proper menu, saving, and a build people can run.</li>
+  </ol>
 
   <h2>Log</h2>
   <article class="entry">

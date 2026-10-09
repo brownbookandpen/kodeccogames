@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The flooded city — Carriers: Built in Unity</title>
+<meta name="description" content="A walled capital that is permanently knee-deep in water, and how we made wading feel right.">
+<link rel="icon" href="../../../favicon.ico" sizes="any">
+<link rel="stylesheet" href="../../../styles.css">
+<style>
+  :root{ --accent-game:#4fd1b0; }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:#000;color:#eee8dc;font-family:'Inter',-apple-system,'Segoe UI',Roboto,Arial,sans-serif;line-height:1.75;font-size:1.05rem;}
+  a{color:inherit;text-decoration:none;}
+  .hazard{height:14px;background:repeating-linear-gradient(45deg,#f2c14e 0 20px,#000 20px 40px);}
+  header{display:flex;align-items:center;justify-content:space-between;padding:14px 6%;background:#0c0c0c;border-bottom:2px solid #0f4a3c;}
+  header img{height:64px;display:block;}
+  header nav a{color:#9a9a9a;font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;margin-left:22px;}
+  header nav a:hover{color:var(--accent-game);}
+  main{max-width:720px;margin:0 auto;padding:56px 6% 90px;}
+  .eyebrow{color:var(--accent-game);font-size:.75rem;letter-spacing:.3em;text-transform:uppercase;margin-bottom:12px;}
+  h1{font-size:clamp(1.9rem,5vw,2.8rem);line-height:1.12;margin-bottom:12px;}
+  .sub{color:#9fb0ab;margin-bottom:34px;}
+  p{margin-bottom:18px;color:#d6d0c2;}
+  .back{display:inline-block;margin-top:30px;color:var(--accent-game);font-size:.8rem;letter-spacing:.14em;text-transform:uppercase;}
+  .shot{margin:30px 0;border:1px dashed #1f2a27;padding:30px;text-align:center;color:#51615d;font-size:.72rem;letter-spacing:.22em;}
+</style>
+</head>
+<body>
+<div class="hazard"></div>
+<header>
+  <a href="../../../"><img src="../../../images/kodecco-icon.png" alt="Kodecco Games"></a>
+  <nav><a href="../../">Dev Log</a><a href="../../../tabletop/">Card Game</a></nav>
+</header>
+<main>
+  <div class="eyebrow">// Dev log · Deep dive</div>
+  <h1>The flooded city</h1>
+  <p class="sub">A walled capital that is permanently knee-deep in water, and how we made wading feel right.</p>
+  <p>The capital of the island is flooded, and it stays that way. The water sits about knee to waist height on the player. That is deep enough to slow the mood down and shallow enough that walking and fighting still work. There is no swimming.</p>
+  <p>The flood covers roughly 1,344 by 832 metres, enough for the whole connected city core. The water is deliberately calm and murky, a flat brown-green surface with a faint reflection of the buildings. It looks heavy and still, which is the point.</p>
+  <p>Moving through it is where it comes alive. Every step makes a splash and sends ripples out, and running leaves a wider wake that fades after a second or two. Standing still still gives off the occasional tiny ring, as if you were breathing. Footsteps in water are loud, and the stealth system treats them that way.</p>
+  <p>Reeds, lily pads and floating debris dress the surface. At night the water goes almost fully opaque and the reflections dim, so submerged grass does not turn into black spikes.</p>
+  <p>To keep it fast, the water is split into 273 small tiles that are only drawn when you can see them, and grass that is fully underwater is switched off entirely.</p>
+  <div class="shot">SCREENSHOT PENDING</div>
+  <a class="back" href="../../">← Back to the dev log</a>
+</main>
+</body>
+</html>
