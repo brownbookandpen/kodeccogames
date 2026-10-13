@@ -28,7 +28,7 @@ POSTS = [
   [
    "Hand-placing every prop in the editor does not scale to an island this size, so we built a placement tool. Press B, pick something from the panel, click the ground and it is placed. Layouts save themselves a second after every change.",
    "The palette holds over a thousand items: swamp plants, ivy and vines, vehicles, debris, barriers, props, trees, plants and rocks. There is a paint mode for dragging out a lot at once, a delete mode, colour variants for most items, and undo. Ivy and vines turn to face out of walls, and swamp scum, lily pads and reeds sit on the water surface.",
-   "It has a few safety rules. Nothing can be placed below sea level. A God mode and an Invisible mode let us wander and place without being attacked. Combat is switched off while building so that a click places an object instead of swinging a weapon.",
+   "It has a few safety rules. Nothing can be placed below sea level. A God mode and an Invisible mode let us wander and place without being attacked. Combat is switched off while building so that a click places an object instead of swinging a weapon. Since Day 16 the tool also runs inside the standalone build, on F5, as a developer tool.",
    "Saves keep dated backups, and a broken layout refuses to load instead of silently turning into an empty one.",
   ]),
  ("melee-and-the-weapon-wheel", "Melee and the weapon wheel",
@@ -50,7 +50,7 @@ POSTS = [
  ("cutaway-view", "The cutaway view",
   "How the camera sees you inside buildings, trees and ivy.",
   [
-   "The game uses a top-down camera, which means buildings and trees constantly block the view of your character. Our answer is a cutaway. A soft, dithered circle opens through any building, tree or ivy between the camera and you, so you can always see where you are.",
+   "The game uses a top-down camera, which means buildings and trees constantly block the view of your character. The first answer was a cutaway: a soft, dithered circle that opened through any building, tree or ivy between the camera and you. It worked, but it never looked right, and on Day 17 it was replaced by a player silhouette drawn through whatever is in the way. On Day 21 the silhouette became an outline, which is what the game uses now.",
    "Walk into a building that has been prepared for it and the upper floors and the camera-facing walls fade away, like looking into a dollhouse. The base of the walls stays, and so do the colliders, so the building still feels solid.",
    "The ivy on the tall buildings was the hard part. It is drawn in huge batches rather than as separate objects, so ordinary tricks for hiding things did not affect it. We rebuilt the shaders so ivy, concrete and the building materials all follow the same cutaway.",
    "The camera can zoom from 9 to 42 metres from the player.",
