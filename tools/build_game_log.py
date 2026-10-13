@@ -100,7 +100,7 @@ page = f"""<!DOCTYPE html>
     <div class="eyebrow">Carriers · Built in Unity</div>
     <h1 class="display">Development report</h1>
     <div class="facts"><span class="chip live">Updated daily</span><span class="chip">Day 1 to Day {last}</span><span class="chip">About {total_h} hours</span><span class="chip">Since 18 Sep 2026</span></div>
-    <div class="toolbar"><button type="button" onclick="document.querySelectorAll('details.day-detail').forEach(function(d){{d.open=true}})">Expand all</button><button type="button" onclick="document.querySelectorAll('details.day-detail').forEach(function(d){{d.open=false}})">Collapse all</button><button type="button" onclick="var a=document.querySelectorAll('.report h3');a[a.length-1].scrollIntoView({{behavior:'smooth'}})">Latest day ↓</button></div>
+    <div class="toolbar"><button type="button" onclick="document.querySelectorAll('details.day-detail').forEach(function(d){{d.open=true}})">Expand all</button><button type="button" onclick="document.querySelectorAll('details.day-detail').forEach(function(d){{d.open=false}})">Collapse all</button><button type="button" onclick="var a=document.querySelectorAll('.report h3');a[0].scrollIntoView({{behavior:'smooth'}})">Latest day ↓</button><button type="button" onclick="var a=document.querySelectorAll('.report h3');a[a.length-1].scrollIntoView({{behavior:'smooth'}})">Day 1 ↓</button></div>
   </div>
 {body}
   <p class="updated">Page built {built}. Source: the studio's daily development log.</p>
