@@ -20,7 +20,13 @@ def wrap_days(text):
         hours = lines[0] if lines[0].startswith('**Total hours') else ''
         body = '\n'.join(lines[1:]).strip('\n') if hours else rest
         summary, _, detail = body.partition('\n\n')
+        photos = ''
+        if '**Photos**' in detail:
+            detail, _, photos = detail.partition('**Photos**')
+            photos = '**Photos**' + photos
         block = f'{head}\n<p class="hours">{markdown.markdown(hours)[3:-4] if hours else ""}</p>\n\n{summary}\n'
+        if photos.strip():
+            block += f'\n{photos.strip()}\n'
         if detail.strip():
             block += f'\n<details class="day-detail" markdown="1">\n<summary>Full detail</summary>\n\n{detail.strip()}\n\n</details>\n'
         out.append(block)
