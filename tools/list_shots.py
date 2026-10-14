@@ -20,8 +20,6 @@ SPEC = {
  "16-world-forest": ("Clean", "The northern spruce band with snow (F10 cycles snow; the highlands are always snowy). Light shafts or blizzard fog. No player."),
  "17-world-night": ("Clean", "A town street at night (F9 time) with the fog ring and a lit window or two. No player, or a tiny one."),
  "18-wildlife": ("Clean", "Animals grazing or herding in a field with the Quibli look. Very wide: this slot is a letterbox strip, keep the subject in the middle band."),
- "21-weather-storm": ("Clean", "A storm rolling in over a town: lightning, wet roofs and roads (F9 weather)."),
- "22-apartments": ("Clean", "A street of the R01 to R20 apartment blocks, boarded windows, fire-escape balconies, from the gameplay camera."),
  "20-cutaway-view": ("Gameplay camera", "The player inside a Builder house or an R apartment block with the dollhouse view open (upper floors and camera-facing walls hidden) and the player outline visible."),
 }
 OPTIONAL = {
@@ -31,6 +29,8 @@ OPTIONAL = {
  "08-zombie-lunge": "An aged zombie mid-lunge toward the camera.",
  "12-horseback-hud": "Riding with gait, stamina and minimap visible.",
  "19-main-menu": "The Dark UI main menu with the hero slideshow (hide Developer Mode / World Switches first).",
+ "21-weather-storm": "A storm rolling in over a town: lightning, wet roofs and roads (F9 weather).",
+ "22-apartments": "A street of the R01 to R20 apartment blocks, boarded windows, fire-escape balconies, from the gameplay camera.",
  "23-climbing": "The player hanging from a window ledge or mid-ladder on an apartment block.",
  "24-northmarch": "Northmarch (walled base) from above: barracks, homes, lumber yard. NPCs are OFF; empty is fine.",
  "25-quest-journal": "The quest journal (J) open with Running Dry and High Ground listed.",
@@ -60,7 +60,10 @@ have = {os.path.splitext(os.path.basename(p))[0] for p in glob.glob(os.path.join
 # Slots filled with an older or smaller picture as a stand-in. The real capture is still wanted.
 STANDIN = {
  "01-hero-horde": "main-menu painting (the horde at the wall); a real in-game capture is still wanted",
+ "15-world-grassland": "poppy meadow, 1280 px, taken before the colour grade",
+ "16-world-forest": "spruce forest floor, 1000 px, taken before the colour grade",
  "17-world-night": "main-menu painting (farm at night); a real night capture is still wanted",
+ "18-wildlife": "the companion wolf-dog skins at camp, 900 px",
 }
 out = ["# Screenshot manifest",
 "",
