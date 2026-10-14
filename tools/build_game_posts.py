@@ -6,14 +6,14 @@ import os, html, re
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 POSTS = [
- ("flooded-city", "The flooded city",
-  "A walled capital that is permanently knee-deep in water, and how we made wading feel right.",
+ ("flooded-city", "The waterlogged city",
+  "A walled capital swallowed by swamp, with water standing in its streets, and how we made wading feel right.",
   [
-   "The capital of the island is flooded, and it stays that way. The water sits about knee to waist height on the player. That is deep enough to slow the mood down and shallow enough that walking and fighting still work. There is no swimming.",
-   "The flood covers roughly 1,344 by 832 metres, enough for the whole connected city core. The water is deliberately calm and murky, a flat brown-green surface with a faint reflection of the buildings. It looks heavy and still, which is the point.",
-   "Moving through it is where it comes alive. Every step makes a splash and sends ripples out, and running leaves a wider wake that fades after a second or two. Standing still still gives off the occasional tiny ring, as if you were breathing. Footsteps in water are loud, and the stealth system treats them that way.",
-   "Reeds, lily pads and floating debris dress the surface. At night the water goes almost fully opaque and the reflections dim, so submerged grass does not turn into black spikes.",
-   "To keep it fast, the water is split into 273 small tiles that are only drawn when you can see them, and grass that is fully underwater is switched off entirely.",
+   "Since the quarantine city fell, the capital has gone to swamp: grass, reeds and dark mud cover every yard and climb the walls, and the streets hold standing water that never drains.",
+   "The water follows the street layout inside the wall, so the roads read as channels through the overgrowth. It is deliberately calm and murky, a flat brown-green surface with a faint reflection of the buildings. It looks heavy and still, which is the point.",
+   "Moving through it is where it comes alive. Every step makes a splash and sends ripples out, and running leaves a wider wake that fades after a second or two. Standing still still gives off the occasional tiny ring, as if you were breathing. Footsteps in water are loud, and the stealth system treats them that way. There is no swimming.",
+   "Reeds, lily pads and floating debris dress the surface. At night the water goes almost fully opaque and the reflections dim.",
+   "To keep it fast, the street water is split into small chunks that are only drawn when you can see them.",
   ]),
  ("grass-and-the-hunting-view", "Grass, and the hunting view",
   "Why the island's grass fades in smoothly, and why you can zoom out without being safe.",
@@ -59,7 +59,7 @@ POSTS = [
 
 # Hero screenshot for each post: (file in images/game/ without extension, alt text)
 SHOTS = {
-  "flooded-city": ("03-hero-flooded-city", "The flooded capital, water up to the knees"),
+  "flooded-city": ("03-hero-flooded-city", "The waterlogged capital, swamp grass and water in the streets"),
   "grass-and-the-hunting-view": ("15-world-grassland", "Grassland stretching to a distant forest"),
   "building-the-world": ("13-build-mode", "Build mode placing props on the ground"),
   "melee-and-the-weapon-wheel": ("11-weapon-wheel", "The weapon wheel open mid-game"),
