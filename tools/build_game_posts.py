@@ -97,6 +97,7 @@ def page(i):
 <meta property="og:type" content="article">
 <meta property="og:title" content="{esc(title)} — Carriers dev log">
 <meta property="og:description" content="{esc(sub)}">
+<meta property="og:image" content="https://kodeccogames.com/images/og-cover-game.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=VT323&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">

@@ -27,6 +27,20 @@ def wrap_days(text):
     return '\n'.join(out)
 
 md = wrap_days(md)
+
+# Photos: copy each referenced media file next to the page and render as a captioned grid.
+import shutil
+SRC_ROOT = os.path.dirname(os.path.dirname(src))  # the Carriers repo root
+def photo_grid(m):
+    figs = []
+    for cap, rel in re.findall(r'!\[([^\]]*)\]\((media/[^)]+)\)', m.group(0)):
+        dst = os.path.join(ROOT, 'game', 'log', rel)
+        os.makedirs(os.path.dirname(dst), exist_ok=True)
+        srcf = os.path.join(SRC_ROOT, rel)
+        if os.path.exists(srcf): shutil.copyfile(srcf, dst)
+        figs.append(f'<figure><a href="{rel}" target="_blank" rel="noopener"><img src="{rel}" alt="{html.escape(cap)}" loading="lazy"></a><figcaption>{html.escape(cap)}</figcaption></figure>')
+    return '\n<div class="photos">\n' + '\n'.join(figs) + '\n</div>\n'
+md = re.sub(r'\*\*Photos\*\*\n(?:!\[[^\]]*\]\(media/[^)]+\)\n?)+', photo_grid, md)
 body = markdown.markdown(md, extensions=['tables', 'md_in_html', 'sane_lists'])
 title_m = re.search(r'Day 1 to Day (\d+)', md); last = title_m.group(1) if title_m else '?'
 hours_m = re.search(r'about (\d+) hours so far', md); total_h = hours_m.group(1) if hours_m else '?'
@@ -77,6 +91,10 @@ page = f"""<!DOCTYPE html>
   details.day-detail[open] summary::before{{content:"− ";}}
   details.day-detail[open] summary{{border-bottom:1px solid var(--line);margin-bottom:14px;}}
   details.day-detail > p,details.day-detail > ul{{font-size:.95rem;}}
+  .photos{{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px;margin:18px 0 10px;}}
+  .photos figure{{margin:0;background:#070a0a;border:1px solid var(--line);}}
+  .photos img{{width:100%;aspect-ratio:16/9;object-fit:cover;display:block;}}
+  .photos figcaption{{font-family:var(--f-term);font-size:.98rem;letter-spacing:.04em;color:var(--paper-2);padding:8px 10px 10px;line-height:1.35;}}
   .toolbar{{display:flex;gap:12px;flex-wrap:wrap;margin:22px 0 0;}}
   .toolbar button{{font-family:var(--f-term);font-size:1.1rem;letter-spacing:.08em;text-transform:uppercase;background:none;border:1px solid var(--line);color:var(--paper-2);padding:6px 14px;cursor:pointer;}}
   .toolbar button:hover{{border-color:var(--fog);color:var(--fog);}}
