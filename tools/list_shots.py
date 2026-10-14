@@ -20,6 +20,8 @@ SPEC = {
  "16-world-forest": ("Clean", "The northern spruce band with snow (F10 cycles snow; the highlands are always snowy). Light shafts or blizzard fog. No player."),
  "17-world-night": ("Clean", "A town street at night (F9 time) with the fog ring and a lit window or two. No player, or a tiny one."),
  "18-wildlife": ("Clean", "Animals grazing or herding in a field with the Quibli look. Very wide: this slot is a letterbox strip, keep the subject in the middle band."),
+ "21-weather-storm": ("Clean", "A storm rolling in over a town: lightning, wet roofs and roads (F9 weather)."),
+ "22-apartments": ("Clean", "A street of the R01 to R20 apartment blocks, boarded windows, fire-escape balconies, from the gameplay camera."),
  "20-cutaway-view": ("Gameplay camera", "The player inside a Builder house or an R apartment block with the dollhouse view open (upper floors and camera-facing walls hidden) and the player outline visible."),
 }
 OPTIONAL = {
@@ -29,8 +31,6 @@ OPTIONAL = {
  "08-zombie-lunge": "An aged zombie mid-lunge toward the camera.",
  "12-horseback-hud": "Riding with gait, stamina and minimap visible.",
  "19-main-menu": "The Dark UI main menu with the hero slideshow (hide Developer Mode / World Switches first).",
- "21-weather-storm": "A storm rolling in over a town: lightning, wet roofs and roads (F9 weather).",
- "22-apartments": "A street of the R01 to R20 apartment blocks, boarded windows, wood gables, from the gameplay camera.",
  "23-climbing": "The player hanging from a window ledge or mid-ladder on an apartment block.",
  "24-northmarch": "Northmarch (walled base) from above: barracks, homes, lumber yard. NPCs are OFF; empty is fine.",
  "25-quest-journal": "The quest journal (J) open with Running Dry and High Ground listed.",
