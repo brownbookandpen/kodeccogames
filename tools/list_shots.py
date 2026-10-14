@@ -63,6 +63,7 @@ STANDIN = {
  "15-world-grassland": "poppy meadow, 1280 px, taken before the colour grade",
  "16-world-forest": "spruce forest floor, 1000 px, taken before the colour grade",
  "17-world-night": "main-menu painting (farm at night); a real night capture is still wanted",
+ "18-wildlife": "the companion wolf-dog skins at camp, 900 px",
 }
 out = ["# Screenshot manifest",
 "",
