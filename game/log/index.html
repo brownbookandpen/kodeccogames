@@ -5,10 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#050505">
 <title>Development Report — Carriers: Built in Unity</title>
-<meta name="description" content="Day-by-day development report for Carriers, the Unity survival game from Kodecco Games. Day 1 to Day 26, about 476 hours of work, updated daily.">
+<meta name="description" content="Day-by-day development report for Carriers, the Unity survival game from Kodecco Games. Day 1 to Day 27, about 476 hours of work, updated daily.">
 <link rel="icon" href="../../favicon.ico" sizes="any">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Carriers development report, Day 1 to Day 26">
+<meta property="og:title" content="Carriers development report, Day 1 to Day 27">
 <meta property="og:description" content="What was built, what broke and what was decided, every day since 18 September 2026.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -65,13 +65,13 @@
   <div class="report-head">
     <div class="eyebrow">Carriers · Built in Unity</div>
     <h1 class="display">Development report</h1>
-    <div class="facts"><span class="chip live">Updated daily</span><span class="chip">Day 1 to Day 26</span><span class="chip">About 476 hours</span><span class="chip">Since 18 Sep 2026</span></div>
+    <div class="facts"><span class="chip live">Updated daily</span><span class="chip">Day 1 to Day 27</span><span class="chip">About 476 hours</span><span class="chip">Since 18 Sep 2026</span></div>
     <div class="toolbar"><button type="button" onclick="document.querySelectorAll('details.day-detail').forEach(function(d){d.open=true})">Expand all</button><button type="button" onclick="document.querySelectorAll('details.day-detail').forEach(function(d){d.open=false})">Collapse all</button><button type="button" onclick="var a=document.querySelectorAll('.report h3');a[0].scrollIntoView({behavior:'smooth'})">Latest day ↓</button><button type="button" onclick="var a=document.querySelectorAll('.report h3');a[a.length-1].scrollIntoView({behavior:'smooth'})">Day 1 ↓</button></div>
   </div>
-<h1>Carriers: development report, Day 1 to Day 26</h1>
+<h1>Carriers: development report, Day 1 to Day 27</h1>
 <p><strong>Project:</strong> Carriers, a single-player open-world zombie survival game built in Unity 6 (6000.6.1f1, URP), set in the Carrier universe.
 <strong>Studio:</strong> Kodecco Games. One developer directs, tests and makes every decision; AI assistants write most of the code.
-<strong>Period:</strong> 18 September 2026 (Day 1) to 13 October 2026 (Day 26). All dates and times are Singapore time (SGT, UTC+8). Newest day first.
+<strong>Period:</strong> 18 September 2026 (Day 1) to 14 October 2026 (Day 27). All dates and times are Singapore time (SGT, UTC+8). Newest day first.
 <strong>Total hours:</strong> about 476 hours so far. Per-day figures are estimates from file save times in the Unity project and, from Day 19, the running time of each AI thread; earlier days are undercounted.
 <strong>Confidence:</strong> Days 1 to 13 (18 to 30 September) are reconstructed from file timestamps and the project's Devjournal notes; exact session lengths are unknown and the order of work within a day is approximate. Days 14 onward (1 October on) come from chat logs, project threads and the tracker and are confirmed. Note: the source day files were written with UTC dates, so an item done late in the evening SGT may be listed under the day before or after; these will be corrected as they are found.</p>
 <h2>How the game is built</h2>
@@ -85,10 +85,50 @@
 <p>Unity asset packs supply models, terrain generation, animals, animation and effects. Every pack is listed in the Credits at the end of this report.</p>
 <hr />
 <h2>Week 4</h2>
+<h3>Day 27 · Wed 14 Oct (day still in progress)</h3>
+<p class="hours"><strong>Total hours:</strong> not yet recorded.</p>
+
+<p>Day 27 was the climbing day. Every other job was put on standby and all 20 apartment blocks were reworked so that any building climbs the same way: one standard 3 × 2 m fire-escape balcony with a solid deck (442 in total), a metal wall ladder from ground to roof on every block, and 101 wall ledges switched back on. Awnings, fake balconies and every cosmetic exterior stair or walkway were stripped off, under the rule that nothing on a wall may look climbable unless it is. All 20 blocks were climbed to the roof in Play, checked in a new Climb Yard scene and saved into Build 1.0. Alongside that, every bare patch of ground on the island was grassed (about 2 million grass cells over 44 tiles), and the flooded capital became a proper swamp: mud, swamp grass, ferns, moss and reeds inside the wall, with water only on the streets. All 2,291 town buildings now stream as slots and the main scene sits at 93,000 objects. Near the capital apartments the frame rate still drops to 25 to 36 fps, cause not yet found.</p>
+<details class="day-detail">
+<summary>Full detail</summary>
+<p><strong>Done</strong>
+- Focus of the day: "standby all jobs, fix the climbing today". Everything else paused.
+- Climbing overhaul on all 20 apartment blocks (R01 to R20):
+  - One standard 3 × 2 m balcony for every building, fire-escape look, with a solid deck. 442 balconies in total.
+  - Balcony rails show yellow in the climb view (F4) and climb like a window sill: W squats onto the rail and jumps down, Space on the balcony climbs back over to hang outside. Corner turns are faster.
+  - Every block stripped to flat walls, windows and balconies: awnings, old fake balconies, all exterior stairs and walkways gone. Rule: "100% colliders, no weird cosmetics misleading the player". Interior stairs kept.
+  - A metal wall ladder on every block, ground to roof (Space at the foot to get on). All 20 climbed to the roof in Play.
+  - 101 wall ledges switched back on; the dollhouse view no longer pops when standing on a balcony.
+  - New Climb Yard scene with all 20 blocks in two rows for quick checks. All 20 saved into Build 1.0.
+- Optimisation: all 2,291 town buildings are streamed slots; Build 1.0 at 93,000 objects. A helper now records a profile automatically the first time fps drops under 40 in Play.
+- Grass everywhere: all bare ground outside roads, sea, sand and snow grassed (about 2 million cells over 44 terrain tiles). Grass hugs house walls, with a one-player-wide strip of still grass at the wall.
+- Capital turned into a swamp: dark mud ground, swamp grass, ferns, moss and reeds only inside the wall; swamp water only on the streets (the old flood sheet is off). Verdict: the capital grass, mud and water are "perfect".
+- Planning: lasso animal animations (clips gathered for ChatGPT; mounted lasso on the rider's upper body); map planner for new spots.
+<strong>Working at end of day</strong>
+- Climbing on all 20 apartment blocks, balconies and ladders, checked in Play.
+- Start area at 64 fps; Play exit about 24 s.
+- World-wide grass and the swamp capital.
+<strong>Broke or off</strong>
+- Near the capital apartments fps drops to 25 to 36 (scripts take 17 to 29 ms a frame). Cause not named yet; the next Play there will record it.
+- 8 dead-end ledges left in the R06 and R17 courtyards (remove, or add a way up: decision pending).
+- Latest grass and street water not yet saved at the time of writing.
+- Still off: NPCs and zombies.
+<strong>Decisions</strong>
+- One balcony type for every building; rails are yellow and climb like sills.
+- No cosmetic stairs or awnings on apartment exteriors; any stairs added later must be truly climbable.
+- Every apartment block gets one wall ladder.
+- No bare ground anywhere in the world (replaces the earlier "bare under rubble" rule). Swamp only inside the capital wall.
+- No long automated test sweeps unless asked; simple and working beats detailed and broken.
+<strong>Numbers</strong>
+- 442 standard balconies, 20 wall ladders, 101 ledges restored.
+- 2,291 town buildings as slots; Build 1.0 at 93,000 objects.
+- About 2 million grass cells over 44 tiles.
+- Start area 64 fps; capital apartments 25 to 36 fps.</p>
+</details>
 <h3>Day 26 · Tue 13 Oct</h3>
 <p class="hours"><strong>Total hours:</strong> about 36.3 h. Running total: 476 h.</p>
 
-<p>Day 26 brought the performance turnaround and the quest system. Decor became GPU instances and houses load in the background, taking towns from 11 to 18 fps to 60 to 90 and Play exit from minutes to 9.5 seconds. Twenty apartment blocks were built and saved to town, with wood gables, porches and all 3,006 windows boarded. Yard grass, tilt-shift, a sharper shadow, gamepad fixes and climb improvements went in. Quest part 1 was compiled with a journal and two side quests. A farm pack was bought and a capital-filling tool written. The capital was decided to be an overrun quarantine city. NPCs and zombies remain off, and a memory crash set the rule to restart the editor between Play sessions.</p>
+<p>Day 26 brought the performance turnaround and the quest system. Decor became GPU instances and houses load in the background, taking towns from 11 to 18 fps to 60 to 90 and Play exit from minutes to 9.5 seconds. Twenty apartment blocks were built and saved to town, with wood gables, porches and all 3,006 windows boarded. Yard grass, tilt-shift, a sharper shadow, gamepad fixes and climb improvements went in. Quest part 1 was compiled with a journal and two side quests. A farm pack was bought and a capital-filling tool written. The capital was decided to be an overrun quarantine city, and by night it was filled: about 431 apartment blocks inside the wall and 18 outside, with 5,162 old props deleted. One road network now joins all 19 towns, and the decision was made that about 2,100 buildings is enough. NPCs and zombies remain off, and a memory crash set the rule to restart the editor between Play sessions.</p>
 <details class="day-detail">
 <summary>Full detail</summary>
 <p><strong>Done</strong>
@@ -101,9 +141,14 @@
 - Farms: farm pack bought; farm plan written; ageing shader and tool staged.
 - Capital: a tool to fill the inside of the capital wall with apartment blocks, waiting for its Unity turn.
 - Reporting: central progress report set (10 area reports) and this devlog repo started.
+- Later that day and night:
+  - Capital filled: about 431 apartment blocks inside the wall plus 18 outside (replacing the D4 ring houses); 5,162 old props deleted; everything turned into streamed slots; Build 1.0 saved at 93,000 objects.
+  - Roads: one network joins all 19 towns (23 links, 12.7 km, 503 splines; the capital through its one north gate). Old roads hidden; 98 trees moved off the links.
+  - Climbing: ladder audit tool (every apartment, town and capital shell passes); roof landings fixed on H01, H07, H19 and U14; U12 stairs climbable again; 455 usable interior doors; 60 door-step gaps filled. Evening Play check went fine.
+  - Rain no longer shows indoors. Two farms (lived-in and ranch) brought over; spots K10 and K11 chosen, not placed yet.
 <strong>State at end of day:</strong> runs with known issues; several changes compiled but not Play-tested.
 <strong>Broke or off:</strong> Unity ran out of memory on a second Play right after a compile; rule: restart the editor between Play sessions. Walking still hitches 0.3 to 1.3 s from house loading; fix compiled, untested. Still off: NPCs and zombies. Rejected: KWS Water, Flipbook VFX bundle.
-<strong>Decisions:</strong> the capital is a quarantine safe zone that was overrun; apartment blocks fill it. Quest rules: journal on J, 3 side quests at once, quest zombies capped at 10 per zone. Farms use an own "Farm Stamp" tool, not Storm. Zombie slicing: pre-cut limbs recommended, not built. Unity was handed to the threads for the evening; they run one at a time in a queue.
+<strong>Decisions:</strong> the capital is a quarantine safe zone that was overrun; apartment blocks fill it. Quest rules: journal on J, 3 side quests at once, quest zombies capped at 10 per zone. Farms use an own "Farm Stamp" tool, not Storm. About 2,100 buildings is enough: stop building towns. Zombie slicing: pre-cut limbs recommended, not built. Unity was handed to the threads for the evening; they run one at a time in a queue.
 <strong>Numbers:</strong> towns 60 to 90 fps in editor Play (was ~11 to 18); Play exit 9.5 s (was 14 to 20 min); Build 1.0 objects 149,000 → 99,000; 3,006 windows; 20 apartment blocks; overall estimate ~48% (was ~36% on Day 18).</p>
 </details>
 <h3>Day 25 · Mon 12 Oct</h3>
@@ -469,7 +514,7 @@ Verdict: "beautiful, the town is in."</p>
 - First scripts: bow setup, isometric character and camera, stealth setup, prone/slide/traversal animators, training dummy, damage interface, zombie spawn info.
 <strong>State at end of day:</strong> unknown.</p>
 <hr />
-<h2>Status at Day 26</h2>
+<h2>Status at Day 27</h2>
 <p><strong>Total hours to date:</strong> about 476. Busiest day: Day 21 (8 Oct) at about 58 h.</p>
 <table>
 <thead>
@@ -574,7 +619,7 @@ Verdict: "beautiful, the town is in."</p>
 - Claude (Anthropic), ChatGPT (OpenAI) and Antigravity, as described at the top of this report.</p>
 <p>The building models called "Opus buildings" in this report are the studio's own Blender exports, not a store pack.</p>
 </details>
-  <p class="updated">Page built 13 October 2026. Source: the studio's daily development log.</p>
+  <p class="updated">Page built 14 October 2026. Source: the studio's daily development log.</p>
 </main>
 <footer class="site-footer">
   <div class="inner">
