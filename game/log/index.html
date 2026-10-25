@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#050505">
 <title>Development Report — Carriers: Built in Unity</title>
-<meta name="description" content="Day-by-day development report for Carriers, the Unity survival game from Kodecco Games. Day 1 to Day 38, about 633 hours of work, updated daily.">
+<meta name="description" content="Day-by-day development report for Carriers, the Unity survival game from Kodecco Games. Day 1 to Day 38, about 687 hours of work, updated daily.">
 <link rel="icon" href="../../favicon.ico" sizes="any">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Carriers development report, Day 1 to Day 38">
@@ -71,14 +71,14 @@
   <div class="report-head">
     <div class="eyebrow">Carriers · Built in Unity</div>
     <h1 class="display">Development report</h1>
-    <div class="facts"><span class="chip live">Updated daily</span><span class="chip">Day 1 to Day 38</span><span class="chip">About 633 hours</span><span class="chip">Since 18 Sep 2026</span></div>
+    <div class="facts"><span class="chip live">Updated daily</span><span class="chip">Day 1 to Day 38</span><span class="chip">About 687 hours</span><span class="chip">Since 18 Sep 2026</span></div>
     <div class="toolbar"><button type="button" onclick="document.querySelectorAll('details.day-detail').forEach(function(d){d.open=true})">Expand all</button><button type="button" onclick="document.querySelectorAll('details.day-detail').forEach(function(d){d.open=false})">Collapse all</button><button type="button" onclick="var a=document.querySelectorAll('.report h3');a[0].scrollIntoView({behavior:'smooth'})">Latest day ↓</button><button type="button" onclick="var a=document.querySelectorAll('.report h3');a[a.length-1].scrollIntoView({behavior:'smooth'})">Day 1 ↓</button></div>
   </div>
 <h1>Carriers: development report, Day 1 to Day 38</h1>
 <p><strong>Project:</strong> Carriers, a single-player open-world zombie survival game built in Unity 6 (6000.6.1f1, URP), set in the Carrier universe.
 <strong>Studio:</strong> Kodecco Games. One developer directs, tests and makes every decision; AI assistants write most of the code.
 <strong>Period:</strong> 18 September 2026 (Day 1) to 25 October 2026 (Day 38). All dates and times are Singapore time (SGT, UTC+8). Newest day first.
-<strong>Total hours:</strong> about 633 hours so far. Per-day figures are estimates from file save times in the Unity project and, from Day 19, the running time of each AI thread; earlier days are undercounted.
+<strong>Total hours:</strong> about 687 hours so far. Per-day figures are estimates from file save times in the Unity project and, from Day 19, the running time of each AI thread; earlier days are undercounted.
 <strong>Confidence:</strong> Days 1 to 13 (18 to 30 September) are reconstructed from file timestamps and the project's Devjournal notes; exact session lengths are unknown and the order of work within a day is approximate. Days 14 onward (1 October on) come from chat logs, project threads and the tracker and are confirmed. Note: the source day files were written with UTC dates, so an item done late in the evening SGT may be listed under the day before or after; these will be corrected as they are found.</p>
 <h2>How the game is built</h2>
 <p>Most of the code in Carriers is written by AI assistants under the developer's direction. The developer sets the goals, tests in Unity, approves or rejects the results and makes every design decision. The tools used, as recorded:</p>
@@ -92,7 +92,7 @@
 <hr />
 <h2>Week 6</h2>
 <h3>Day 38 · Sun 25 Oct</h3>
-<p class="hours"><strong>Total hours:</strong> at least 0.2 h (AI thread time only, partial). Running total: 633 h.</p>
+<p class="hours"><strong>Total hours:</strong> about 2 h. Running total: 687 h.</p>
 
 <p>Day 38 was about how weapons sit in the hand. An overnight auto-fit had tried to place every one-handed weapon in the character's grip, but its scoring only measured how close the hand was, never which end was the handle. So it held the hoe by its head and the pickaxe at a wild angle, and still rated them 9 or 10 out of 10. The developer switched the auto-fit off and is now setting each grip by hand in the Rig Test scene: the grip point, the size and the hand angle. By the end of the day 21 of the 71 one-handed weapons were done; the clip below shows that work. Alongside the grips, the developer is going through every house adding the standard porch and refining the roof ivy. Other jobs keep out of Unity while the developer edits live.</p>
 <div class="photos">
@@ -113,8 +113,30 @@
 <strong>Numbers</strong>
 - Weapon grips done: 21 of 71 one-handed.</p>
 </details>
+<h3>Day 37 · Sat 24 Oct</h3>
+<p class="hours"><strong>Total hours:</strong> about 22.2 h. Running total: 685 h.</p>
+
+<p>Day 37 was porches, roof ivy and one lost porch. A Standard Porch prefab was built with a Lakefell-style roof, ivy and bushes inside and dirty steps, and the developer places porches by hand rather than rolling them out automatically. Roof ivy went onto all 20 H houses, and gable ivy onto 12 of them, snapped to the roof beams and split into left and right pieces so each side can be adjusted by hand. Ivy level-of-detail distances were cut to save frame time. Late in the day a bake step moved loose porches into the wrong house, including the developer's new H01 front porch, and recovery started. From then on nothing is baked or saved while the developer is editing live. Overnight, an automatic fitter tried to set every weapon grip; how that went is in the next day's entry.</p>
+<details class="day-detail">
+<summary>Full detail</summary>
+<p><strong>Done</strong>
+- Standard Porch prefab built (Lakefell-style roof, ivy and bushes inside, dirty steps). No automatic rollout: the developer places porches by hand.
+- Roof ivy added to H01 to H20; ivy level-of-detail distances cut for performance; roof-ivy hide patched.
+- Gable ivy rolled out to 12 H houses, snapped onto the roof beams and split into left and right pieces so each can be adjusted by hand.
+- The developer began a hand pass through all H houses (roof ivy and porches). A separate job was started to bake porches and ivy into the building prefabs.
+- Overnight auto-fit for weapon grips ran (WeaponFit).
+<strong>Working at end of day</strong>
+- Finish the hand pass; copy the developer's gable ivy offsets to all gables.
+<strong>Broke or off</strong>
+- Lost work: the bake step moved loose porches, including the developer's new H01 front porch, into H02. Recovery was started.
+<strong>Decisions</strong>
+- Original roof shapes dropped; any look change needs a render and the developer's approval before saving.
+- Nothing is baked or saved while the developer is editing live.
+<strong>Numbers</strong>
+- 12 H houses with gable ivy; roof ivy on H01-H20.</p>
+</details>
 <h3>Day 36 · Fri 23 Oct</h3>
-<p class="hours"><strong>Total hours:</strong> at least 6.9 h (AI thread time only, partial). Running total: 633 h.</p>
+<p class="hours"><strong>Total hours:</strong> about 15.7 h. Running total: 663 h.</p>
 
 <p>Day 36 kept fixing the buildings and started a full review of them. Gable textures and the trim over upper doors on the apartment blocks were corrected, and hollow stairs were filled. Stairwells got corner posts and railings, and crouching through a window now climbs properly. The developer then began going through all 92 workshop buildings one by one with photos. A survey of the main build found that its 2,291 town houses still use older copies, not the workshop prefabs, so the next big step is getting the finished buildings into the towns. A test apartment block of 8 flats was also assembled from 446 pieces on the second machine. Old files were archived to free up space. This entry was rebuilt from project notes afterwards, so the date is approximate.</p>
 <details class="day-detail">
@@ -133,7 +155,7 @@
 <h2>Week 5</h2>
 </details>
 <h3>Day 35 · Thu 22 Oct</h3>
-<p class="hours"><strong>Total hours:</strong> at least 12 h (AI thread time only, partial). Running total: 626 h.</p>
+<p class="hours"><strong>Total hours:</strong> about 18.8 h. Running total: 647 h.</p>
 
 <p>Day 35 was a run of fixes in the building workshop. Ivy stems were taken out because they cost too much frame time, and dark rooms the player can never see into were sorted out. The stilts under settlement piece S04 were fixed, and old ramp colliders left over from earlier stair work were switched off. Looking further ahead, the lighting plan leans towards ray-traced global illumination, with unseen rooms left dark. This entry was rebuilt from project notes afterwards, so the date is approximate.</p>
 <details class="day-detail">
@@ -144,7 +166,7 @@
 - Lean towards ray-traced global illumination later, with unseen rooms staying dark.</p>
 </details>
 <h3>Day 34 · Wed 21 Oct</h3>
-<p class="hours"><strong>Total hours:</strong> at least 12.9 h (AI thread time only, partial). Running total: 614 h.</p>
+<p class="hours"><strong>Total hours:</strong> about 22.2 h. Running total: 628 h.</p>
 
 <p>Day 34 settled what the houses should look like. The houses had come from different sources and looked it, so the developer committed to one building style for every house: a fantasy-cottage kit with chunky timber and plaster, so a whole town reads as one place. Time went into studying how the kit's houses are put together, so each rebuild follows the kit's rules instead of fighting them. The kit has limits: it has no police station or hospital pieces, so those buildings still need their own answer. Work also covered breakable windows and a list of lessons for the realistic ivy on the walls. A final check of every house was set up to run last, once all the changes have landed. The developer also changed how the AI threads work: technical fixes go ahead without asking first, while anything that changes the look still needs approval. This entry was rebuilt from project notes afterwards, so the date is approximate.</p>
 <details class="day-detail">
@@ -159,6 +181,35 @@
 <p><strong>Decisions</strong>
 - Technical fixes go ahead without approval requests; design or look changes still need the developer's approval first.
 - The kit has no police, hospital or motel pieces; those buildings stay open for now.</p>
+</details>
+<h3>Day 33 · Tue 20 Oct</h3>
+<p class="hours"><strong>Total hours:</strong> at least 4.9 h (AI thread time only, partial). Running total: 606 h.</p>
+
+<p>Day 33 was a change of direction for the houses. All 92 workshop buildings were turned into prefabs, each with its own model, ivy, interior and yard, which shrank the test scene from 2.3 GB to 24 MB and means every building is now edited on its own. The fire station got an approved look first: small natural clumps of bushes, roof ivy at 30 to 40 percent and runners over the concrete edges, and the police station followed the same recipe. The developer then restarted the house look around one kit, Lakefell, so every house shares one style. A+ Grass became the default grass, with a one-click button to play-test any building prefab in a dense-grass scene. The first Lakefell wall rendered flat navy because the kit's shader would not compile on this Unity version, so a fixed copy of the shader is being made that will also carry the wall cutaway.</p>
+<details class="day-detail">
+<summary>Full detail</summary>
+<p><strong>Done</strong>
+- All 92 buildings are now prefabs (done with ChatGPT): the test scene went from 2.3 GB to 24 MB. Each prefab has Model, Ivy, Interior and Yard children. Prefab Mode on a grass backdrop works.
+- U01 Fire Station look approved by the developer: small natural clumps of bushes, roof ivy at 30-40 percent, runners over concrete edges, no flowers (they render teal). U02 Police Station done with the same recipe; U03 Hospital started but not saved.
+- The developer stopped the "U buildings look" job and restarted the house look with one kit: Lakefell. ChatGPT moved to the laptop for H, R and S. A recipe and handover note for ChatGPT were written.
+- A+ Grass (URP) became the default grass: a Play Test button was built (Carriers &gt; Play Test This Prefab, Ctrl+Alt+P) using a play scene with dense A+ grass. H01's Prefab Mode yard and the backdrop use A+ grass.
+- H01 rebuild with the Lakefell kit: one wall placed and rendered. The kit shader fails to compile in its deferred-lighting pass on this Unity version, so the wall renders flat navy. The fix goes into our own copy of the shader, which will also get the cutaway clip. Test wall removed, H01 backed up.
+- Earlier in the day the developer compared ChatGPT's work: H01 and H02 look good, the rest of the rollout has flat yellow shrub discs.
+<strong>Working at end of day</strong>
+- A+ Grass: rework of the Play Test button so it never touches the developer's scenes.
+- H01 Lakefell rebuild, overnight, once the grass thread hands over Unity.
+<strong>Broke or off</strong>
+- The grass thread's test left Play running and the PlayTest button switched off objects in SearchTest_H01. Restore needs window focus, so it is being rebuilt.
+- 53 ivy objects have empty meshes (existed before the prefab conversion) and 4 scene objects were left over.
+- Houses into Build 1.0 are held until the developer says go; FPS not yet measured for the 92 prefabs.
+<strong>Decisions</strong>
+- Work only in individual building prefabs, in Prefab Mode; the old Builder scene is retired.
+- A+ Grass is the default grass; Purple Sky grass is no longer the reference because its bend deforms the blades badly.
+- One Unity job at a time; no tool may raise a Unity dialog; tests that enter Play must exit Play.
+- Lakefell is a fantasy kit with no police, hospital or motel pieces; this is the known risk.
+<strong>Numbers</strong>
+- 92 prefabs; scene 2.3 GB to 24 MB; A+ grass: 2,306 patches in the H01 yard and 3,057 in the backdrop ring.
+- Lakefell modules are 2 m wide with about 4 m storeys (ours: 3 m and 3.6 m).</p>
 </details>
 <h3>Day 32 · Mon 19 Oct</h3>
 <p class="hours"><strong>Total hours:</strong> at least 20.9 h (AI thread time only, partial). Running total: 601 h.</p>
@@ -793,7 +844,7 @@ Verdict: "beautiful, the town is in."</p>
 <strong>State at end of day:</strong> unknown.</p>
 <hr />
 <h2>Status at Day 38</h2>
-<p><strong>Total hours to date:</strong> about 633. Busiest day: Day 21 (8 Oct) at about 58 h.</p>
+<p><strong>Total hours to date:</strong> about 687. Busiest day: Day 21 (8 Oct) at about 58 h.</p>
 <table>
 <thead>
 <tr>
