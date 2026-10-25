@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#050505">
 <title>Development Report — Carriers: Built in Unity</title>
-<meta name="description" content="Day-by-day development report for Carriers, the Unity survival game from Kodecco Games. Day 1 to Day 38, about 601 hours of work, updated daily.">
+<meta name="description" content="Day-by-day development report for Carriers, the Unity survival game from Kodecco Games. Day 1 to Day 38, about 633 hours of work, updated daily.">
 <link rel="icon" href="../../favicon.ico" sizes="any">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Carriers development report, Day 1 to Day 38">
@@ -71,14 +71,14 @@
   <div class="report-head">
     <div class="eyebrow">Carriers · Built in Unity</div>
     <h1 class="display">Development report</h1>
-    <div class="facts"><span class="chip live">Updated daily</span><span class="chip">Day 1 to Day 38</span><span class="chip">About 601 hours</span><span class="chip">Since 18 Sep 2026</span></div>
+    <div class="facts"><span class="chip live">Updated daily</span><span class="chip">Day 1 to Day 38</span><span class="chip">About 633 hours</span><span class="chip">Since 18 Sep 2026</span></div>
     <div class="toolbar"><button type="button" onclick="document.querySelectorAll('details.day-detail').forEach(function(d){d.open=true})">Expand all</button><button type="button" onclick="document.querySelectorAll('details.day-detail').forEach(function(d){d.open=false})">Collapse all</button><button type="button" onclick="var a=document.querySelectorAll('.report h3');a[0].scrollIntoView({behavior:'smooth'})">Latest day ↓</button><button type="button" onclick="var a=document.querySelectorAll('.report h3');a[a.length-1].scrollIntoView({behavior:'smooth'})">Day 1 ↓</button></div>
   </div>
 <h1>Carriers: development report, Day 1 to Day 38</h1>
 <p><strong>Project:</strong> Carriers, a single-player open-world zombie survival game built in Unity 6 (6000.6.1f1, URP), set in the Carrier universe.
 <strong>Studio:</strong> Kodecco Games. One developer directs, tests and makes every decision; AI assistants write most of the code.
 <strong>Period:</strong> 18 September 2026 (Day 1) to 25 October 2026 (Day 38). All dates and times are Singapore time (SGT, UTC+8). Newest day first.
-<strong>Total hours:</strong> about 601 hours so far. Per-day figures are estimates from file save times in the Unity project and, from Day 19, the running time of each AI thread; earlier days are undercounted.
+<strong>Total hours:</strong> about 633 hours so far. Per-day figures are estimates from file save times in the Unity project and, from Day 19, the running time of each AI thread; earlier days are undercounted.
 <strong>Confidence:</strong> Days 1 to 13 (18 to 30 September) are reconstructed from file timestamps and the project's Devjournal notes; exact session lengths are unknown and the order of work within a day is approximate. Days 14 onward (1 October on) come from chat logs, project threads and the tracker and are confirmed. Note: the source day files were written with UTC dates, so an item done late in the evening SGT may be listed under the day before or after; these will be corrected as they are found.</p>
 <h2>How the game is built</h2>
 <p>Most of the code in Carriers is written by AI assistants under the developer's direction. The developer sets the goals, tests in Unity, approves or rejects the results and makes every design decision. The tools used, as recorded:</p>
@@ -92,7 +92,7 @@
 <hr />
 <h2>Week 6</h2>
 <h3>Day 38 · Sun 25 Oct</h3>
-<p class="hours"><strong>Total hours:</strong> not yet recorded.</p>
+<p class="hours"><strong>Total hours:</strong> at least 0.2 h (AI thread time only, partial). Running total: 633 h.</p>
 
 <p>Day 38 was about how weapons sit in the hand. An overnight auto-fit had tried to place every one-handed weapon in the character's grip, but its scoring only measured how close the hand was, never which end was the handle. So it held the hoe by its head and the pickaxe at a wild angle, and still rated them 9 or 10 out of 10. The developer switched the auto-fit off and is now setting each grip by hand in the Rig Test scene: the grip point, the size and the hand angle. By the end of the day 21 of the 71 one-handed weapons were done; the clip below shows that work. Alongside the grips, the developer is going through every house adding the standard porch and refining the roof ivy. Other jobs keep out of Unity while the developer edits live.</p>
 <div class="photos">
@@ -114,24 +114,26 @@
 - Weapon grips done: 21 of 71 one-handed.</p>
 </details>
 <h3>Day 36 · Fri 23 Oct</h3>
-<p class="hours"><strong>Total hours:</strong> not yet recorded.</p>
+<p class="hours"><strong>Total hours:</strong> at least 6.9 h (AI thread time only, partial). Running total: 633 h.</p>
 
-<p>Day 36 kept fixing the buildings and started a full review of them. Gable textures and the trim over upper doors on the apartment blocks were corrected, and hollow stairs were filled. Stairwells got corner posts and railings, and crouching through a window now climbs properly. The developer then began going through all 92 workshop buildings one by one with photos. A survey of the main build found that its 2,291 town houses still use older copies, not the workshop prefabs, so the next big step is getting the finished buildings into the towns. Old files were archived to free up space. This entry was rebuilt from project notes afterwards, so the date is approximate.</p>
+<p>Day 36 kept fixing the buildings and started a full review of them. Gable textures and the trim over upper doors on the apartment blocks were corrected, and hollow stairs were filled. Stairwells got corner posts and railings, and crouching through a window now climbs properly. The developer then began going through all 92 workshop buildings one by one with photos. A survey of the main build found that its 2,291 town houses still use older copies, not the workshop prefabs, so the next big step is getting the finished buildings into the towns. A test apartment block of 8 flats was also assembled from 446 pieces on the second machine. Old files were archived to free up space. This entry was rebuilt from project notes afterwards, so the date is approximate.</p>
 <details class="day-detail">
 <summary>Full detail</summary>
 <p><strong>Done</strong>
 - Workshop fixes: gable texture, upper-door trim on R buildings, hollow R stairs, stairwell corner posts, crouch window climb, stair railings.
 - The developer began reviewing all 92 buildings one by one with photos.
+- Test apartment block (PGG): 8 flats, 446 pieces. The POLYGON City apartment pieces turned out to be solid skyline boxes with no inside, so the block uses Synty Town weatherboard walls for now.
 - Project cleanup: old files moved to an archive.
 - Survey of Build 1.0: all 2,291 town houses use older town copies, not the 92 workshop prefabs.
 <strong>Decisions</strong>
 - No new work threads unless the developer asks for them.
+- The second machine makes finished prefabs; only the main PC edits the game, and nothing is handed over until the developer approves it.
 <strong>Numbers</strong>
-- 2,291 town houses in Build 1.0; 92 workshop prefabs.</p>
+- 2,291 town houses in Build 1.0; 92 workshop prefabs; test block of 8 flats from 446 pieces.</p>
 <h2>Week 5</h2>
 </details>
 <h3>Day 35 · Thu 22 Oct</h3>
-<p class="hours"><strong>Total hours:</strong> not yet recorded.</p>
+<p class="hours"><strong>Total hours:</strong> at least 12 h (AI thread time only, partial). Running total: 626 h.</p>
 
 <p>Day 35 was a run of fixes in the building workshop. Ivy stems were taken out because they cost too much frame time, and dark rooms the player can never see into were sorted out. The stilts under settlement piece S04 were fixed, and old ramp colliders left over from earlier stair work were switched off. Looking further ahead, the lighting plan leans towards ray-traced global illumination, with unseen rooms left dark. This entry was rebuilt from project notes afterwards, so the date is approximate.</p>
 <details class="day-detail">
@@ -142,17 +144,21 @@
 - Lean towards ray-traced global illumination later, with unseen rooms staying dark.</p>
 </details>
 <h3>Day 34 · Wed 21 Oct</h3>
-<p class="hours"><strong>Total hours:</strong> not yet recorded.</p>
+<p class="hours"><strong>Total hours:</strong> at least 12.9 h (AI thread time only, partial). Running total: 614 h.</p>
 
-<p>Day 34 was a quieter day in the building workshop, the set of 92 house, apartment and shop prefabs that every town will draw from. Work continued on those prefabs, and the new Lakefell house kit started going across the house, apartment and utility buildings. The developer also changed how the AI threads work: purely technical fixes now go ahead without asking first, while anything that changes the look still needs the developer's approval. This entry was rebuilt from project notes afterwards, so the date is approximate.</p>
+<p>Day 34 settled what the houses should look like. The houses had come from different sources and looked it, so the developer committed to one building style for every house: a fantasy-cottage kit with chunky timber and plaster, so a whole town reads as one place. Time went into studying how the kit's houses are put together, so each rebuild follows the kit's rules instead of fighting them. The kit has limits: it has no police station or hospital pieces, so those buildings still need their own answer. Work also covered breakable windows and a list of lessons for the realistic ivy on the walls. A final check of every house was set up to run last, once all the changes have landed. The developer also changed how the AI threads work: technical fixes go ahead without asking first, while anything that changes the look still needs approval. This entry was rebuilt from project notes afterwards, so the date is approximate.</p>
 <details class="day-detail">
 <summary>Full detail</summary>
 <p><strong>Done</strong>
-- Building workshop work continued on the 92 house, apartment and shop prefabs.
-<strong>Working at end of day</strong>
-- Lakefell house kit rollout across the H, R and U buildings.
-<strong>Decisions</strong>
-- Technical fixes go ahead without approval requests; design or look changes still need the developer's approval first.</p>
+- One building style for every house: the Lakefell fantasy-cottage kit (chunky timber and plaster).
+- Studied how the kit's houses are built, so each house rebuild follows the kit's rules.
+- Breakable windows and a lesson list for the realistic wall ivy.
+- A final check of every house set up, to run once all changes have landed.</p>
+<p><strong>Working at end of day</strong>
+- Rebuilding the houses with the new kit.</p>
+<p><strong>Decisions</strong>
+- Technical fixes go ahead without approval requests; design or look changes still need the developer's approval first.
+- The kit has no police, hospital or motel pieces; those buildings stay open for now.</p>
 </details>
 <h3>Day 32 · Mon 19 Oct</h3>
 <p class="hours"><strong>Total hours:</strong> at least 20.9 h (AI thread time only, partial). Running total: 601 h.</p>
@@ -787,7 +793,7 @@ Verdict: "beautiful, the town is in."</p>
 <strong>State at end of day:</strong> unknown.</p>
 <hr />
 <h2>Status at Day 38</h2>
-<p><strong>Total hours to date:</strong> about 601. Busiest day: Day 21 (8 Oct) at about 58 h.</p>
+<p><strong>Total hours to date:</strong> about 633. Busiest day: Day 21 (8 Oct) at about 58 h.</p>
 <table>
 <thead>
 <tr>
