@@ -5,10 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#050505">
 <title>Development Report — Carriers: Built in Unity</title>
-<meta name="description" content="Day-by-day development report for Carriers, the Unity survival game from Kodecco Games. Day 1 to Day 32, about 601 hours of work, updated daily.">
+<meta name="description" content="Day-by-day development report for Carriers, the Unity survival game from Kodecco Games. Day 1 to Day 38, about 601 hours of work, updated daily.">
 <link rel="icon" href="../../favicon.ico" sizes="any">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Carriers development report, Day 1 to Day 32">
+<meta property="og:title" content="Carriers development report, Day 1 to Day 38">
 <meta property="og:description" content="What was built, what broke and what was decided, every day since 18 September 2026.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -45,7 +45,9 @@
   details.day-detail > p,details.day-detail > ul{font-size:.95rem;}
   .photos{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px;margin:18px 0 10px;}
   .photos figure{margin:0;background:#070a0a;border:1px solid var(--line);}
-  .photos img{width:100%;aspect-ratio:16/9;object-fit:cover;display:block;}
+  .photos img,.photos video{width:100%;aspect-ratio:16/9;object-fit:cover;display:block;background:#000;}
+  .photos .clip{grid-column:1/-1;}
+  .photos .clip video{object-fit:contain;}
   .photos figcaption{font-family:var(--f-term);font-size:.98rem;letter-spacing:.04em;color:var(--paper-2);padding:8px 10px 10px;line-height:1.35;}
   .toolbar{display:flex;gap:12px;flex-wrap:wrap;margin:22px 0 0;}
   .toolbar button{font-family:var(--f-term);font-size:1.1rem;letter-spacing:.08em;text-transform:uppercase;background:none;border:1px solid var(--line);color:var(--paper-2);padding:6px 14px;cursor:pointer;}
@@ -69,13 +71,13 @@
   <div class="report-head">
     <div class="eyebrow">Carriers · Built in Unity</div>
     <h1 class="display">Development report</h1>
-    <div class="facts"><span class="chip live">Updated daily</span><span class="chip">Day 1 to Day 32</span><span class="chip">About 601 hours</span><span class="chip">Since 18 Sep 2026</span></div>
+    <div class="facts"><span class="chip live">Updated daily</span><span class="chip">Day 1 to Day 38</span><span class="chip">About 601 hours</span><span class="chip">Since 18 Sep 2026</span></div>
     <div class="toolbar"><button type="button" onclick="document.querySelectorAll('details.day-detail').forEach(function(d){d.open=true})">Expand all</button><button type="button" onclick="document.querySelectorAll('details.day-detail').forEach(function(d){d.open=false})">Collapse all</button><button type="button" onclick="var a=document.querySelectorAll('.report h3');a[0].scrollIntoView({behavior:'smooth'})">Latest day ↓</button><button type="button" onclick="var a=document.querySelectorAll('.report h3');a[a.length-1].scrollIntoView({behavior:'smooth'})">Day 1 ↓</button></div>
   </div>
-<h1>Carriers: development report, Day 1 to Day 32</h1>
+<h1>Carriers: development report, Day 1 to Day 38</h1>
 <p><strong>Project:</strong> Carriers, a single-player open-world zombie survival game built in Unity 6 (6000.6.1f1, URP), set in the Carrier universe.
 <strong>Studio:</strong> Kodecco Games. One developer directs, tests and makes every decision; AI assistants write most of the code.
-<strong>Period:</strong> 18 September 2026 (Day 1) to 19 October 2026 (Day 32). All dates and times are Singapore time (SGT, UTC+8). Newest day first.
+<strong>Period:</strong> 18 September 2026 (Day 1) to 25 October 2026 (Day 38). All dates and times are Singapore time (SGT, UTC+8). Newest day first.
 <strong>Total hours:</strong> about 601 hours so far. Per-day figures are estimates from file save times in the Unity project and, from Day 19, the running time of each AI thread; earlier days are undercounted.
 <strong>Confidence:</strong> Days 1 to 13 (18 to 30 September) are reconstructed from file timestamps and the project's Devjournal notes; exact session lengths are unknown and the order of work within a day is approximate. Days 14 onward (1 October on) come from chat logs, project threads and the tracker and are confirmed. Note: the source day files were written with UTC dates, so an item done late in the evening SGT may be listed under the day before or after; these will be corrected as they are found.</p>
 <h2>How the game is built</h2>
@@ -88,7 +90,70 @@
 </ul>
 <p>Unity asset packs supply models, terrain generation, animals, animation and effects. Every pack is listed in the Credits at the end of this report.</p>
 <hr />
+<h2>Week 6</h2>
+<h3>Day 38 · Sun 25 Oct</h3>
+<p class="hours"><strong>Total hours:</strong> not yet recorded.</p>
+
+<p>Day 38 was about how weapons sit in the hand. An overnight auto-fit had tried to place every one-handed weapon in the character's grip, but its scoring only measured how close the hand was, never which end was the handle. So it held the hoe by its head and the pickaxe at a wild angle, and still rated them 9 or 10 out of 10. The developer switched the auto-fit off and is now setting each grip by hand in the Rig Test scene: the grip point, the size and the hand angle. By the end of the day 21 of the 71 one-handed weapons were done; the clip below shows that work. Alongside the grips, the developer is going through every house adding the standard porch and refining the roof ivy. Other jobs keep out of Unity while the developer edits live.</p>
+<div class="photos">
+<figure class="clip"><video src="media/2026-10-25/blog/weapon-grips-rig-test.mp4" controls muted playsinline preload="metadata" aria-label="Setting weapon grips by hand in the Rig Test scene (70 s, no sound)."></video><figcaption>Setting weapon grips by hand in the Rig Test scene (70 s, no sound).</figcaption></figure>
+</div>
+
+<details class="day-detail">
+<summary>Full detail</summary>
+<p><strong>Done</strong>
+- Weapon grips: the developer is hand-adjusting how each weapon sits in the character's hand in the Rig Test scene. 21 of 71 one-handed weapons are done so far. A 70-second clip is below.
+<strong>Working at end of day</strong>
+- Remaining 50 one-handed grips, by hand.
+- House pass: the developer is going through every H house adding the standard porch and refining roof ivy.
+<strong>Broke or off</strong>
+- Nothing new today. Unity is not touched by other jobs while the developer edits live.
+<strong>Decisions</strong>
+- Grips are set by hand. On 24 Oct the overnight auto-fit (WeaponFit) held tools backwards or by the head (the hoe by its head, the pickaxe at a wild angle). Its scoring measured hand distance but never checked which end was the handle, so it rated these 9-10. The developer switched off Auto Fit Live In Game and now sets each grip point, size and hand angle by hand in Rig Test.
+<strong>Numbers</strong>
+- Weapon grips done: 21 of 71 one-handed.</p>
+</details>
+<h3>Day 36 · Fri 23 Oct</h3>
+<p class="hours"><strong>Total hours:</strong> not yet recorded.</p>
+
+<p>Day 36 kept fixing the buildings and started a full review of them. Gable textures and the trim over upper doors on the apartment blocks were corrected, and hollow stairs were filled. Stairwells got corner posts and railings, and crouching through a window now climbs properly. The developer then began going through all 92 workshop buildings one by one with photos. A survey of the main build found that its 2,291 town houses still use older copies, not the workshop prefabs, so the next big step is getting the finished buildings into the towns. Old files were archived to free up space. This entry was rebuilt from project notes afterwards, so the date is approximate.</p>
+<details class="day-detail">
+<summary>Full detail</summary>
+<p><strong>Done</strong>
+- Workshop fixes: gable texture, upper-door trim on R buildings, hollow R stairs, stairwell corner posts, crouch window climb, stair railings.
+- The developer began reviewing all 92 buildings one by one with photos.
+- Project cleanup: old files moved to an archive.
+- Survey of Build 1.0: all 2,291 town houses use older town copies, not the 92 workshop prefabs.
+<strong>Decisions</strong>
+- No new work threads unless the developer asks for them.
+<strong>Numbers</strong>
+- 2,291 town houses in Build 1.0; 92 workshop prefabs.</p>
 <h2>Week 5</h2>
+</details>
+<h3>Day 35 · Thu 22 Oct</h3>
+<p class="hours"><strong>Total hours:</strong> not yet recorded.</p>
+
+<p>Day 35 was a run of fixes in the building workshop. Ivy stems were taken out because they cost too much frame time, and dark rooms the player can never see into were sorted out. The stilts under settlement piece S04 were fixed, and old ramp colliders left over from earlier stair work were switched off. Looking further ahead, the lighting plan leans towards ray-traced global illumination, with unseen rooms left dark. This entry was rebuilt from project notes afterwards, so the date is approximate.</p>
+<details class="day-detail">
+<summary>Full detail</summary>
+<p><strong>Done</strong>
+- Workshop fixes: ivy stems removed (they were costly for performance), unseen dark rooms, S04 stilts, old ramp colliders switched off.
+<strong>Decisions</strong>
+- Lean towards ray-traced global illumination later, with unseen rooms staying dark.</p>
+</details>
+<h3>Day 34 · Wed 21 Oct</h3>
+<p class="hours"><strong>Total hours:</strong> not yet recorded.</p>
+
+<p>Day 34 was a quieter day in the building workshop, the set of 92 house, apartment and shop prefabs that every town will draw from. Work continued on those prefabs, and the new Lakefell house kit started going across the house, apartment and utility buildings. The developer also changed how the AI threads work: purely technical fixes now go ahead without asking first, while anything that changes the look still needs the developer's approval. This entry was rebuilt from project notes afterwards, so the date is approximate.</p>
+<details class="day-detail">
+<summary>Full detail</summary>
+<p><strong>Done</strong>
+- Building workshop work continued on the 92 house, apartment and shop prefabs.
+<strong>Working at end of day</strong>
+- Lakefell house kit rollout across the H, R and U buildings.
+<strong>Decisions</strong>
+- Technical fixes go ahead without approval requests; design or look changes still need the developer's approval first.</p>
+</details>
 <h3>Day 32 · Mon 19 Oct</h3>
 <p class="hours"><strong>Total hours:</strong> at least 20.9 h (AI thread time only, partial). Running total: 601 h.</p>
 
@@ -721,7 +786,7 @@ Verdict: "beautiful, the town is in."</p>
 - First scripts: bow setup, isometric character and camera, stealth setup, prone/slide/traversal animators, training dummy, damage interface, zombie spawn info.
 <strong>State at end of day:</strong> unknown.</p>
 <hr />
-<h2>Status at Day 32</h2>
+<h2>Status at Day 38</h2>
 <p><strong>Total hours to date:</strong> about 601. Busiest day: Day 21 (8 Oct) at about 58 h.</p>
 <table>
 <thead>
@@ -831,7 +896,7 @@ Verdict: "beautiful, the town is in."</p>
 - Claude (Anthropic), ChatGPT (OpenAI) and Antigravity, as described at the top of this report.</p>
 <p>The building models called "Opus buildings" in this report are the studio's own Blender exports, not a store pack.</p>
 </details>
-  <p class="updated">Page built 20 October 2026. Source: the studio's daily development log.</p>
+  <p class="updated">Page built 25 October 2026. Source: the studio's daily development log.</p>
 </main>
 <footer class="site-footer">
   <div class="inner">
