@@ -94,7 +94,7 @@
 <h3>Day 38 · Sun 25 Oct</h3>
 <p class="hours"><strong>Total hours:</strong> about 2 h. Running total: 687 h.</p>
 
-<p>Day 38 was about how weapons sit in the hand. An overnight auto-fit had tried to place every one-handed weapon in the character's grip, but its scoring only measured how close the hand was, never which end was the handle. So it held the hoe by its head and the pickaxe at a wild angle, and still rated them 9 or 10 out of 10. The developer switched the auto-fit off and is now setting each grip by hand in the Rig Test scene: the grip point, the size and the hand angle. By the end of the day 21 of the 71 one-handed weapons were done; the clip below shows that work. Alongside the grips, the developer is going through every house adding the standard porch and refining the roof ivy. Other jobs keep out of Unity while the developer edits live.</p>
+<p>Day 38 was about how weapons sit in the hand. An overnight auto-fit had tried to place every one-handed weapon in the character's grip, but its scoring only measured how close the hand was, never which end was the handle. So it held the hoe by its head and the pickaxe at a wild angle, and still rated them 9 or 10 out of 10. The developer switched the auto-fit off and is now setting each grip by hand in the Rig Test scene: the grip point, the size and the hand angle. By the end of the day 21 of the 71 one-handed weapons were done; the clip below shows that work. Alongside the grips, the developer is going through every house adding the standard porch and refining the roof ivy. Two smaller fixes landed too: a thin cyan outline that showed around the player's cape is gone, and the scattered debug keys moved into one in-game dev tools panel. Other jobs keep out of Unity while the developer edits live.</p>
 <div class="photos">
 <figure class="clip"><video src="media/2026-10-25/blog/weapon-grips-rig-test.mp4" controls muted playsinline preload="metadata" aria-label="Setting weapon grips by hand in the Rig Test scene (70 s, no sound)."></video><figcaption>Setting weapon grips by hand in the Rig Test scene (70 s, no sound).</figcaption></figure>
 </div>
@@ -103,7 +103,9 @@
 <summary>Full detail</summary>
 <p><strong>Done</strong>
 - Weapon grips: the developer is hand-adjusting how each weapon sits in the character's hand in the Rig Test scene. 21 of 71 one-handed weapons are done so far. A 70-second clip is below.
-<strong>Working at end of day</strong>
+- Cape outline fixed: the "player hidden behind something" outline was also drawn on the cape, which hangs behind the backpack, leaving a thin cyan line. The cape is now left out and the line is gone in a play test.
+- Debug keys cleaned up: F10 kicked the developer out of Play mode (Windows treats it as a menu key). F6, F7, F8, F10, F11 and F12 became buttons on a new DEV TOOLS tab in the F9 Hacks panel, and keys that did two things at once were separated.</p>
+<p><strong>Working at end of day</strong>
 - Remaining 50 one-handed grips, by hand.
 - House pass: the developer is going through every H house adding the standard porch and refining roof ivy.
 <strong>Broke or off</strong>
@@ -111,6 +113,7 @@
 <strong>Decisions</strong>
 - Grips are set by hand. On 24 Oct the overnight auto-fit (WeaponFit) held tools backwards or by the head (the hoe by its head, the pickaxe at a wild angle). Its scoring measured hand distance but never checked which end was the handle, so it rated these 9-10. The developer switched off Auto Fit Live In Game and now sets each grip point, size and hand angle by hand in Rig Test.
 <strong>Numbers</strong>
+- Debug keys moved to buttons: 6.
 - Weapon grips done: 21 of 71 one-handed.</p>
 </details>
 <h3>Day 37 · Sat 24 Oct</h3>
