@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#050505">
 <title>Development Report — Carriers: Built in Unity</title>
-<meta name="description" content="Day-by-day development report for Carriers, the Unity survival game from Kodecco Games. Day 1 to Day 38, about 687 hours of work, updated daily.">
+<meta name="description" content="Day-by-day development report for Carriers, the Unity survival game from Kodecco Games. Day 1 to Day 38, about 693 hours of work, updated daily.">
 <link rel="icon" href="../../favicon.ico" sizes="any">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Carriers development report, Day 1 to Day 38">
@@ -71,14 +71,14 @@
   <div class="report-head">
     <div class="eyebrow">Carriers · Built in Unity</div>
     <h1 class="display">Development report</h1>
-    <div class="facts"><span class="chip live">Updated daily</span><span class="chip">Day 1 to Day 38</span><span class="chip">About 687 hours</span><span class="chip">Since 18 Sep 2026</span></div>
+    <div class="facts"><span class="chip live">Updated daily</span><span class="chip">Day 1 to Day 38</span><span class="chip">About 693 hours</span><span class="chip">Since 18 Sep 2026</span></div>
     <div class="toolbar"><button type="button" onclick="document.querySelectorAll('details.day-detail').forEach(function(d){d.open=true})">Expand all</button><button type="button" onclick="document.querySelectorAll('details.day-detail').forEach(function(d){d.open=false})">Collapse all</button><button type="button" onclick="var a=document.querySelectorAll('.report h3');a[0].scrollIntoView({behavior:'smooth'})">Latest day ↓</button><button type="button" onclick="var a=document.querySelectorAll('.report h3');a[a.length-1].scrollIntoView({behavior:'smooth'})">Day 1 ↓</button></div>
   </div>
 <h1>Carriers: development report, Day 1 to Day 38</h1>
 <p><strong>Project:</strong> Carriers, a single-player open-world zombie survival game built in Unity 6 (6000.6.1f1, URP), set in the Carrier universe.
 <strong>Studio:</strong> Kodecco Games. One developer directs, tests and makes every decision; AI assistants write most of the code.
 <strong>Period:</strong> 18 September 2026 (Day 1) to 25 October 2026 (Day 38). All dates and times are Singapore time (SGT, UTC+8). Newest day first.
-<strong>Total hours:</strong> about 687 hours so far. Per-day figures are estimates from file save times in the Unity project and, from Day 19, the running time of each AI thread; earlier days are undercounted.
+<strong>Total hours:</strong> about 693 hours so far. Per-day figures are estimates from file save times in the Unity project and, from Day 19, the running time of each AI thread; earlier days are undercounted.
 <strong>Confidence:</strong> Days 1 to 13 (18 to 30 September) are reconstructed from file timestamps and the project's Devjournal notes; exact session lengths are unknown and the order of work within a day is approximate. Days 14 onward (1 October on) come from chat logs, project threads and the tracker and are confirmed. Note: the source day files were written with UTC dates, so an item done late in the evening SGT may be listed under the day before or after; these will be corrected as they are found.</p>
 <h2>How the game is built</h2>
 <p>Most of the code in Carriers is written by AI assistants under the developer's direction. The developer sets the goals, tests in Unity, approves or rejects the results and makes every design decision. The tools used, as recorded:</p>
@@ -92,9 +92,9 @@
 <hr />
 <h2>Week 6</h2>
 <h3>Day 38 · Sun 25 Oct</h3>
-<p class="hours"><strong>Total hours:</strong> about 2 h. Running total: 687 h.</p>
+<p class="hours"><strong>Total hours:</strong> about 7.5 h. Running total: 693 h.</p>
 
-<p>Day 38 was about how weapons sit in the hand. An overnight auto-fit had tried to place every one-handed weapon in the character's grip, but its scoring only measured how close the hand was, never which end was the handle. So it held the hoe by its head and the pickaxe at a wild angle, and still rated them 9 or 10 out of 10. The developer switched the auto-fit off and is now setting each grip by hand in the Rig Test scene: the grip point, the size and the hand angle. By the end of the day 21 of the 71 one-handed weapons were done; the clip below shows that work. Alongside the grips, the developer is going through every house adding the standard porch and refining the roof ivy. Two smaller fixes landed too: a thin cyan outline that showed around the player's cape is gone, and the scattered debug keys moved into one in-game dev tools panel. Other jobs keep out of Unity while the developer edits live.</p>
+<p>Day 38 was about how weapons sit in the hand. An overnight auto-fit had tried to place every one-handed weapon in the character's grip, but its scoring only measured how close the hand was, never which end was the handle. So it held the hoe by its head and the pickaxe at a wild angle, and still rated them 9 or 10 out of 10. The developer switched the auto-fit off and is now setting each grip by hand in the Rig Test scene: the grip point, the size and the hand angle. By the end of the day 21 of the 71 one-handed weapons were done; the clip below shows that work. Alongside the grips, the developer is going through every house adding the standard porch and refining the roof ivy. Overnight, combat got finishing moves: press F near a zombie for a paired kill animation, with different pairs for knife, axe, bat and bare hands, from the front or from behind. A first live test had zombies floating about 0.8 m up mid-move, because several clips keep the body at standing hip height while it lies flat; the zombie is now slid down each frame so it rests on the ground. Dodge gained a brief invulnerability window and a shoving roll, and crouching now makes the player harder for zombies to see, especially in the dark. Two smaller fixes landed too: a thin cyan outline that showed around the player's cape is gone, and the scattered debug keys moved into one in-game dev tools panel. Other jobs keep out of Unity while the developer edits live.</p>
 <div class="photos">
 <figure class="clip"><video src="media/2026-10-25/blog/weapon-grips-rig-test.mp4" controls muted playsinline preload="metadata" aria-label="Setting weapon grips by hand in the Rig Test scene (70 s, no sound)."></video><figcaption>Setting weapon grips by hand in the Rig Test scene (70 s, no sound).</figcaption></figure>
 </div>
@@ -104,16 +104,25 @@
 <p><strong>Done</strong>
 - Weapon grips: the developer is hand-adjusting how each weapon sits in the character's hand in the Rig Test scene. 21 of 71 one-handed weapons are done so far. A 70-second clip is below.
 - Cape outline fixed: the "player hidden behind something" outline was also drawn on the cape, which hangs behind the backpack, leaving a thin cyan line. The cape is now left out and the line is gone in a play test.
-- Debug keys cleaned up: F10 kicked the developer out of Play mode (Windows treats it as a menu key). F6, F7, F8, F10, F11 and F12 became buttons on a new DEV TOOLS tab in the F9 Hacks panel, and keys that did two things at once were separated.</p>
+- Debug keys cleaned up: F10 kicked the developer out of Play mode (Windows treats it as a menu key). F6, F7, F8, F10, F11 and F12 became buttons on a new DEV TOOLS tab in the F9 Hacks panel, and keys that did two things at once were separated.
+- Finishers: a finisher key (F) plays a paired kill animation, with separate pairs for knife, axe, bat and bare hands, from the front or behind. 15 pairs tested in Play.
+- Finisher fixes after the first live test: the zombie is set on the real ground; the body no longer flies 5 m after a kill (the damage value that also set the push was cut to just enough); zombies no longer hover mid-move (react clips held the hips at standing height, so the body is now slid down each frame until its lowest point rests on the ground).
+- Dodge has brief invulnerability and a roll that shoves. Crouching or lying prone darkens the screen edges, and zombies see a crouched player less well, especially in the dark.
+- Zombies that cannot reach a player on a roof give up after about 6 seconds.
+- Torch and lantern: the holding arm was missing and the cape outline returned when the body was rebuilt; both fixed. The torch points forward and back-stowed blades point down.
+- More toggles in the DEV TOOLS tab: workshop panel, zombie sight view and sight lines.</p>
 <p><strong>Working at end of day</strong>
 - Remaining 50 one-handed grips, by hand.
 - House pass: the developer is going through every H house adding the standard porch and refining roof ivy.
 <strong>Broke or off</strong>
-- Nothing new today. Unity is not touched by other jobs while the developer edits live.
+- Unity closed once at the end of a Play test (a crash while leaving Play mode); nothing was lost. Since then, only one Play stop at a time and no code compile in the same minute.
+- The lying-down smash finisher is switched off.
+- The lantern waits for its grip in Rig Test before it is re-wired.
 <strong>Decisions</strong>
 - Grips are set by hand. On 24 Oct the overnight auto-fit (WeaponFit) held tools backwards or by the head (the hoe by its head, the pickaxe at a wild angle). Its scoring measured hand distance but never checked which end was the handle, so it rated these 9-10. The developer switched off Auto Fit Live In Game and now sets each grip point, size and hand angle by hand in Rig Test.
 <strong>Numbers</strong>
 - Debug keys moved to buttons: 6.
+- Finisher pairs tested: 15. Body travel after a kill: 5.0 m before, 0.84 m after. Hover during a finisher: about 0.8 m before, within 0.05 m of the ground after.
 - Weapon grips done: 21 of 71 one-handed.</p>
 </details>
 <h3>Day 37 · Sat 24 Oct</h3>
@@ -847,7 +856,7 @@ Verdict: "beautiful, the town is in."</p>
 <strong>State at end of day:</strong> unknown.</p>
 <hr />
 <h2>Status at Day 38</h2>
-<p><strong>Total hours to date:</strong> about 687. Busiest day: Day 21 (8 Oct) at about 58 h.</p>
+<p><strong>Total hours to date:</strong> about 693. Busiest day: Day 21 (8 Oct) at about 58 h.</p>
 <table>
 <thead>
 <tr>
@@ -956,7 +965,7 @@ Verdict: "beautiful, the town is in."</p>
 - Claude (Anthropic), ChatGPT (OpenAI) and Antigravity, as described at the top of this report.</p>
 <p>The building models called "Opus buildings" in this report are the studio's own Blender exports, not a store pack.</p>
 </details>
-  <p class="updated">Page built 25 October 2026. Source: the studio's daily development log.</p>
+  <p class="updated">Page built 26 October 2026. Source: the studio's daily development log.</p>
 </main>
 <footer class="site-footer">
   <div class="inner">
