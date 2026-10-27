@@ -5,10 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#050505">
 <title>Development Report — Carriers: Built in Unity</title>
-<meta name="description" content="Day-by-day development report for Carriers, the Unity survival game from Kodecco Games. Day 1 to Day 39, about 693 hours of work, updated daily.">
+<meta name="description" content="Day-by-day development report for Carriers, the Unity survival game from Kodecco Games. Day 1 to Day 40, about 703 hours of work, updated daily.">
 <link rel="icon" href="../../favicon.ico" sizes="any">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Carriers development report, Day 1 to Day 39">
+<meta property="og:title" content="Carriers development report, Day 1 to Day 40">
 <meta property="og:description" content="What was built, what broke and what was decided, every day since 18 September 2026.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -67,14 +67,14 @@
   <div class="report-head">
     <div class="eyebrow">Carriers · Built in Unity</div>
     <h1 class="display">Development report</h1>
-    <div class="facts"><span class="chip live">Updated daily</span><span class="chip">Day 1 to Day 39</span><span class="chip">About 693 hours</span><span class="chip">Since 18 Sep 2026</span></div>
+    <div class="facts"><span class="chip live">Updated daily</span><span class="chip">Day 1 to Day 40</span><span class="chip">About 703 hours</span><span class="chip">Since 18 Sep 2026</span></div>
     <div class="toolbar"><button type="button" onclick="var a=document.querySelectorAll('.report h3');a[0].scrollIntoView({behavior:'smooth'})">Latest day ↓</button><button type="button" onclick="var a=document.querySelectorAll('.report h3');a[a.length-1].scrollIntoView({behavior:'smooth'})">Day 1 ↓</button></div>
   </div>
-<h1>Carriers: development report, Day 1 to Day 39</h1>
+<h1>Carriers: development report, Day 1 to Day 40</h1>
 <p><strong>Project:</strong> Carriers, a single-player open-world zombie survival game built in Unity 6 (6000.6.1f1, URP), set in the Carrier universe.
 <strong>Studio:</strong> Kodecco Games. One developer directs, tests and makes every decision; AI assistants write most of the code.
-<strong>Period:</strong> 18 September 2026 (Day 1) to 26 October 2026 (Day 39). All dates and times are Singapore time (SGT, UTC+8). Newest day first.
-<strong>Total hours:</strong> about 693 hours so far. Per-day figures are estimates from file save times in the Unity project and, from Day 19, the running time of each AI thread; earlier days are undercounted.
+<strong>Period:</strong> 18 September 2026 (Day 1) to 27 October 2026 (Day 40). All dates and times are Singapore time (SGT, UTC+8). Newest day first.
+<strong>Total hours:</strong> about 703 hours so far. Per-day figures are estimates from file save times in the Unity project and, from Day 19, the running time of each AI thread; earlier days are undercounted.
 <strong>Confidence:</strong> Days 1 to 13 (18 to 30 September) are reconstructed from file timestamps and the project's Devjournal notes; exact session lengths are unknown and the order of work within a day is approximate. Days 14 onward (1 October on) come from chat logs, project threads and the tracker and are confirmed. Note: the source day files were written with UTC dates, so an item done late in the evening SGT may be listed under the day before or after; these will be corrected as they are found.</p>
 <h2>How the game is built</h2>
 <p>Most of the code in Carriers is written by AI assistants under the developer's direction. The developer sets the goals, tests in Unity, approves or rejects the results and makes every design decision. The tools used, as recorded:</p>
@@ -87,8 +87,35 @@
 <p>Unity asset packs supply models, terrain generation, animals, animation and effects. Every pack is listed in the Credits at the end of this report.</p>
 <hr />
 <h2>Week 6</h2>
+<h3>Day 40 · Tue 27 Oct</h3>
+<p class="hours"><strong>Total hours:</strong> about 6.8 h. Running total: 703 h.</p>
+
+<div class="day-points">
+<ul>
+<li>Window sill climbing eased, 1.5x faster, and no build-up when sprinting.</li>
+<li>Upstairs windows give one "Lunge out" action: dive and roll over drops up to 2.6 m, grab the sill and hang over longer ones.</li>
+<li>One central E system for doors, pickups, searching, talking, mounting, plank kicks and window entry; 14 scripts moved onto it.</li>
+<li>Two or more actions in reach open a small choice list; two list bugs found in testing and fixed.</li>
+<li>Climbing in through an open window works standing or crouched, and "Climb in and search" walks to furniture just inside.</li>
+<li>Big bushes hide the player: zombie sight drops to under half inside one.</li>
+<li>Binoculars raise once and hold, pan up to 45 m, with a real model.</li>
+<li>Standing animations for eating, drinking, pills and bandaging.</li>
+<li>Recoil capped: rifle groups from about 2 m to 46 cm at 10 m. The sniper is bolt-action.</li>
+<li>Rifle aim pose fixed (it was 140 degrees off); reloading plays fully and continues while sprinting.</li>
+<li>Torch lights the floor below from upstairs. Roof-edge shooting hit 6 of 7 targets, up from 0.</li>
+<li>Bow rebuilt as a straight charge shot; a full draw kills.</li>
+<li>30 missing gable colliders added on one house.</li>
+<li>Unity crashed once in the full world; nothing was lost.</li>
+<li>Not yet tested on the new E system: quad bike, NPC talk, quests, plank kick.</li>
+</ul>
+</div>
+<p>Day 40 was about moving through buildings and how combat feels. Window climbing got eased jumps and a single "Lunge out" action that picks a dive or a sill hang from the height of the drop. Every E action now goes through one hub that acts at once or offers a short choice list, and testing found and fixed two list bugs. Big bushes now hide the player, binoculars hold steady and pan, and eating, drinking and bandaging play standing animations. On the gun side, recoil, the sniper, the rifle aim pose, reloading, torch light and roof-edge shooting were all reworked, and the bow became a straight charge shot. The quad bike, NPC talk, quests and plank kick still need testing on the new E system.</p>
+<div class="photos">
+<figure class="clip"><video src="media/2026-10-27/blog/progress-20261027-074401.mp4" controls muted playsinline preload="metadata" aria-label="Setting a weapon&#x27;s handle line and grip in the Rig Test scene."></video><figcaption>Setting a weapon&#x27;s handle line and grip in the Rig Test scene.</figcaption></figure>
+</div>
+
 <h3>Day 39 · Mon 26 Oct</h3>
-<p class="hours"><strong>Total hours:</strong> not yet recorded.</p>
+<p class="hours"><strong>Total hours:</strong> about 3.3 h. Running total: 696 h.</p>
 
 <div class="day-points">
 <ul>
@@ -809,8 +836,8 @@
 </ul>
 </div>
 <h2>Day 1 was the start of the Unity project. A single world scene was created and the first scripts went in. They covered a bow, an isometric character and camera, and a stealth setup. Animators for going prone, sliding and climbing were added, along with a training dummy, a damage system and zombie spawn data. Nothing was playable yet, but fighting, an angled camera and hiding, the three ideas that define the game, were all there from the first day.</h2>
-<h2>Status at Day 39</h2>
-<p><strong>Total hours to date:</strong> about 693. Busiest day: Day 21 (8 Oct) at about 58 h.
+<h2>Status at Day 40</h2>
+<p><strong>Total hours to date:</strong> about 703. Busiest day: Day 21 (8 Oct) at about 58 h.
 | Area | Estimate | State |
 |---|---|---|
 | World, terrain, look | 75% | Island, biomes, weather, snow, fog ring, tilt-shift in |
