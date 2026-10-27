@@ -19,16 +19,20 @@ def wrap_days(text):
         lines = rest.split('\n')
         hours = lines[0] if lines[0].startswith('**Total hours') else ''
         body = '\n'.join(lines[1:]).strip('\n') if hours else rest
-        summary, _, detail = body.partition('\n\n')
         photos = ''
-        if '**Photos**' in detail:
-            detail, _, photos = detail.partition('**Photos**')
+        if '**Photos**' in body:
+            body, _, photos = body.partition('**Photos**')
             photos = '**Photos**' + photos
-        block = f'{head}\n<p class="hours">{markdown.markdown(hours)[3:-4] if hours else ""}</p>\n\n{summary}\n'
+        lines = body.strip('\n').split('\n')
+        bullets = '\n'.join(l for l in lines if l.startswith('- ') or l.startswith('  '))
+        summary = '\n'.join(l for l in lines if l.strip() and not (l.startswith('- ') or l.startswith('  '))).strip()
+        block = f'{head}\n<p class="hours">{markdown.markdown(hours)[3:-4] if hours else ""}</p>\n'
+        if bullets:
+            block += f'\n<div class="day-points" markdown="1">\n\n{bullets}\n\n</div>\n'
+        if summary:
+            block += f'\n{summary}\n'
         if photos.strip():
             block += f'\n{photos.strip()}\n'
-        if detail.strip():
-            block += f'\n<div class="day-points" markdown="1">\n\n{detail.strip()}\n\n</div>\n'
         out.append(block)
     return '\n'.join(out)
 

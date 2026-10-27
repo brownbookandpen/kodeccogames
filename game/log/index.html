@@ -90,13 +90,6 @@
 <h3>Day 39 · Mon 26 Oct</h3>
 <p class="hours"><strong>Total hours:</strong> not yet recorded.</p>
 
-<p>Day 39 went deeper into how characters hold weapons. The Rig Test scene gained a fine-detail screen to set each finger's bend and where the off hand sits on a weapon, saved per weapon with a default for each weapon class. The game reads that data, so the lantern hand now closes round its handle instead of staying open. A new adjustment screen rolls a weapon about its handle so a blade faces the right way, but the first versions guessed the axis and the weapon swung away from the hand. On the combat axe the handle is tilted about 27 degrees from the model's own up axis, so the developer now clicks the bottom and top of each handle once and the roll follows exactly that line. Eleven weapons shared a name with another pack's copy, so their saved grips kept overwriting each other; the copies were renamed and each kept its grip. Weapons can now be switched off without deleting them, which removed the shotgun and the rigged crossbow from play.</p>
-<div class="photos">
-<figure class="clip"><video src="media/2026-10-26/blog/finishers-before.mp4" controls muted playsinline preload="metadata" aria-label="Finisher kills, first pass: the zombie hovers above the ground mid-move."></video><figcaption>Finisher kills, first pass: the zombie hovers above the ground mid-move.</figcaption></figure>
-<figure class="clip"><video src="media/2026-10-26/blog/finishers-grounded.mp4" controls muted playsinline preload="metadata" aria-label="The same finishers after the fix: the zombie stays on the ground."></video><figcaption>The same finishers after the fix: the zombie stays on the ground.</figcaption></figure>
-<figure class="clip"><video src="media/2026-10-26/blog/torch-forward.mp4" controls muted playsinline preload="metadata" aria-label="The torch held forward after the arm and cape fixes."></video><figcaption>The torch held forward after the arm and cape fixes.</figcaption></figure>
-</div>
-
 <div class="day-points">
 <ul>
 <li>Finger editor: per-finger bend and off-hand placement, saved per weapon with class defaults.</li>
@@ -111,13 +104,15 @@
 <li>Remaining one-handed grips continue by hand.</li>
 </ul>
 </div>
+<p>Day 39 went deeper into how characters hold weapons. The Rig Test scene gained a fine-detail screen to set each finger's bend and where the off hand sits on a weapon, saved per weapon with a default for each weapon class. The game reads that data, so the lantern hand now closes round its handle instead of staying open. A new adjustment screen rolls a weapon about its handle so a blade faces the right way, but the first versions guessed the axis and the weapon swung away from the hand. On the combat axe the handle is tilted about 27 degrees from the model's own up axis, so the developer now clicks the bottom and top of each handle once and the roll follows exactly that line. Eleven weapons shared a name with another pack's copy, so their saved grips kept overwriting each other; the copies were renamed and each kept its grip. Weapons can now be switched off without deleting them, which removed the shotgun and the rigged crossbow from play.</p>
+<div class="photos">
+<figure class="clip"><video src="media/2026-10-26/blog/finishers-before.mp4" controls muted playsinline preload="metadata" aria-label="Finisher kills, first pass: the zombie hovers above the ground mid-move."></video><figcaption>Finisher kills, first pass: the zombie hovers above the ground mid-move.</figcaption></figure>
+<figure class="clip"><video src="media/2026-10-26/blog/finishers-grounded.mp4" controls muted playsinline preload="metadata" aria-label="The same finishers after the fix: the zombie stays on the ground."></video><figcaption>The same finishers after the fix: the zombie stays on the ground.</figcaption></figure>
+<figure class="clip"><video src="media/2026-10-26/blog/torch-forward.mp4" controls muted playsinline preload="metadata" aria-label="The torch held forward after the arm and cape fixes."></video><figcaption>The torch held forward after the arm and cape fixes.</figcaption></figure>
+</div>
+
 <h3>Day 38 · Sun 25 Oct</h3>
 <p class="hours"><strong>Total hours:</strong> about 7.5 h. Running total: 693 h.</p>
-
-<p>Day 38 brought finishing moves and hand-set weapon grips. Pressing F near a zombie now plays a paired kill animation, with different pairs for knife, axe, bat and bare hands, from the front or from behind. In the first live test the zombies floated about 0.8 m up mid-move, because several clips hold the hips at standing height, so the body is now slid down each frame to rest on the ground. The overnight grip fitter only scored how close the hand was, never which end was the handle, so it held the hoe by its head and still rated itself 9 out of 10. The developer switched it off and is setting each grip by hand, with 21 of 71 one-handed weapons done; the clip below shows that work. Dodge gained a brief invulnerability window and a shoving roll, and crouching makes the player harder for zombies to see, especially in the dark. A cyan outline on the cape was fixed, and the scattered debug keys moved into one in-game panel.</p>
-<div class="photos">
-<figure class="clip"><video src="media/2026-10-25/blog/weapon-grips-rig-test.mp4" controls muted playsinline preload="metadata" aria-label="Setting weapon grips by hand in the Rig Test scene (70 s, no sound)."></video><figcaption>Setting weapon grips by hand in the Rig Test scene (70 s, no sound).</figcaption></figure>
-</div>
 
 <div class="day-points">
 <ul>
@@ -135,10 +130,14 @@
 <li>The lying-down smash finisher is switched off for now.</li>
 </ul>
 </div>
+<p>Day 38 brought finishing moves and hand-set weapon grips. Pressing F near a zombie now plays a paired kill animation, with different pairs for knife, axe, bat and bare hands, from the front or from behind. In the first live test the zombies floated about 0.8 m up mid-move, because several clips hold the hips at standing height, so the body is now slid down each frame to rest on the ground. The overnight grip fitter only scored how close the hand was, never which end was the handle, so it held the hoe by its head and still rated itself 9 out of 10. The developer switched it off and is setting each grip by hand, with 21 of 71 one-handed weapons done; the clip below shows that work. Dodge gained a brief invulnerability window and a shoving roll, and crouching makes the player harder for zombies to see, especially in the dark. A cyan outline on the cape was fixed, and the scattered debug keys moved into one in-game panel.</p>
+<div class="photos">
+<figure class="clip"><video src="media/2026-10-25/blog/weapon-grips-rig-test.mp4" controls muted playsinline preload="metadata" aria-label="Setting weapon grips by hand in the Rig Test scene (70 s, no sound)."></video><figcaption>Setting weapon grips by hand in the Rig Test scene (70 s, no sound).</figcaption></figure>
+</div>
+
 <h3>Day 37 · Sat 24 Oct</h3>
 <p class="hours"><strong>Total hours:</strong> about 22.2 h. Running total: 685 h.</p>
 
-<p>Day 37 was porches, roof ivy and one lost porch. A standard porch was built with a Lakefell-style roof, ivy and bushes and dirty steps, and the developer places porches by hand rather than rolling them out automatically. Roof ivy went onto all 20 houses, and gable ivy onto 12 of them, split into left and right pieces so each side can be adjusted by hand. Ivy detail distances were cut to save frame time. Late in the day a bake step moved loose porches into the wrong house, including the developer's new front porch on the first house, and recovery started. From then on nothing is baked or saved while the developer is editing live. Overnight, an automatic fitter tried to set every weapon grip; the next day shows how that went.</p>
 <div class="day-points">
 <ul>
 <li>Standard porch built: Lakefell-style roof, ivy, bushes, dirty steps.</li>
@@ -152,10 +151,10 @@
 <li>Overnight: automatic weapon-grip fitting ran.</li>
 </ul>
 </div>
+<p>Day 37 was porches, roof ivy and one lost porch. A standard porch was built with a Lakefell-style roof, ivy and bushes and dirty steps, and the developer places porches by hand rather than rolling them out automatically. Roof ivy went onto all 20 houses, and gable ivy onto 12 of them, split into left and right pieces so each side can be adjusted by hand. Ivy detail distances were cut to save frame time. Late in the day a bake step moved loose porches into the wrong house, including the developer's new front porch on the first house, and recovery started. From then on nothing is baked or saved while the developer is editing live. Overnight, an automatic fitter tried to set every weapon grip; the next day shows how that went.</p>
 <h3>Day 36 · Fri 23 Oct</h3>
 <p class="hours"><strong>Total hours:</strong> about 15.7 h. Running total: 663 h.</p>
 
-<p>Day 36 kept fixing the buildings and started a full review of them. Gable textures and the trim over upper doors on the apartment blocks were corrected, and hollow stairs were filled in. Stairwells got corner posts and railings, and crouching through a window now climbs properly. The developer began going through all 92 workshop buildings one by one with photos. A survey of the main build found its 2,291 town houses still use older copies, not the workshop prefabs, so getting the finished buildings into the towns is the next big step. A test apartment block of 8 flats was assembled from 446 pieces on a second machine. This entry was rebuilt from project notes afterwards, so the date is approximate.</p>
 <div class="day-points">
 <ul>
 <li>Fixed gable textures and upper-door trim on apartment blocks.</li>
@@ -168,12 +167,12 @@
 <li>Decision: the second machine makes prefabs; only the main PC edits the game, after the developer approves.</li>
 <li>Old project files archived.</li>
 </ul>
-<h2>Week 5</h2>
 </div>
+<p>Day 36 kept fixing the buildings and started a full review of them. Gable textures and the trim over upper doors on the apartment blocks were corrected, and hollow stairs were filled in. Stairwells got corner posts and railings, and crouching through a window now climbs properly. The developer began going through all 92 workshop buildings one by one with photos. A survey of the main build found its 2,291 town houses still use older copies, not the workshop prefabs, so getting the finished buildings into the towns is the next big step. A test apartment block of 8 flats was assembled from 446 pieces on a second machine. This entry was rebuilt from project notes afterwards, so the date is approximate.</p>
+<h2>Week 5</h2>
 <h3>Day 35 · Thu 22 Oct</h3>
 <p class="hours"><strong>Total hours:</strong> about 18.8 h. Running total: 647 h.</p>
 
-<p>Day 35 was a run of fixes in the building workshop. Ivy stems were taken out because they cost too much frame time, while the leaves keep the look. Rooms the player can never see into now stay properly dark instead of being lit for nobody. The stilts under one of the settlement shacks were fixed. Old ramp colliders left over from earlier stair work were switched off, so they no longer catch players on invisible slopes. The lighting plan leans towards ray-traced global illumination later, with unseen rooms left dark. This entry was rebuilt from project notes afterwards, so the date is approximate.</p>
 <div class="day-points">
 <ul>
 <li>Ivy stems removed for performance; the leaves carry the look.</li>
@@ -183,10 +182,10 @@
 <li>Lighting plan: ray-traced global illumination later, unseen rooms stay dark.</li>
 </ul>
 </div>
+<p>Day 35 was a run of fixes in the building workshop. Ivy stems were taken out because they cost too much frame time, while the leaves keep the look. Rooms the player can never see into now stay properly dark instead of being lit for nobody. The stilts under one of the settlement shacks were fixed. Old ramp colliders left over from earlier stair work were switched off, so they no longer catch players on invisible slopes. The lighting plan leans towards ray-traced global illumination later, with unseen rooms left dark. This entry was rebuilt from project notes afterwards, so the date is approximate.</p>
 <h3>Day 34 · Wed 21 Oct</h3>
 <p class="hours"><strong>Total hours:</strong> about 22.2 h. Running total: 628 h.</p>
 
-<p>Day 34 settled what the houses should look like. The houses had come from different sources and looked it, so the developer committed to one building style for every house: the Lakefell fantasy-cottage kit, with chunky timber and plaster. Time went into studying how the kit's houses are put together, so each rebuild follows the kit's rules instead of fighting them. The kit has no police station or hospital pieces, so those buildings still need their own answer. Work also covered breakable windows and a list of lessons for the ivy on the walls. The developer changed how the AI threads work: technical fixes now go ahead without asking, while look changes still need approval. This entry was rebuilt from project notes afterwards, so the date is approximate.</p>
 <div class="day-points">
 <ul>
 <li>One building style for every house: the Lakefell fantasy-cottage kit.</li>
@@ -198,10 +197,10 @@
 <li>Known gap: the kit has no police, hospital or motel pieces.</li>
 </ul>
 </div>
+<p>Day 34 settled what the houses should look like. The houses had come from different sources and looked it, so the developer committed to one building style for every house: the Lakefell fantasy-cottage kit, with chunky timber and plaster. Time went into studying how the kit's houses are put together, so each rebuild follows the kit's rules instead of fighting them. The kit has no police station or hospital pieces, so those buildings still need their own answer. Work also covered breakable windows and a list of lessons for the ivy on the walls. The developer changed how the AI threads work: technical fixes now go ahead without asking, while look changes still need approval. This entry was rebuilt from project notes afterwards, so the date is approximate.</p>
 <h3>Day 33 · Tue 20 Oct</h3>
 <p class="hours"><strong>Total hours:</strong> at least 4.9 h (AI thread time only, partial). Running total: 606 h.</p>
 
-<p>Day 33 was a change of direction for the houses. All 92 workshop buildings were turned into prefabs, each with its own model, ivy, interior and yard, which shrank the test scene from 2.3 GB to 24 MB and lets each building be edited on its own. The fire station got the first approved look, with small natural clumps of bushes, roof ivy at 30 to 40 percent and runners over the concrete edges, and the police station followed the same recipe. The developer then restarted the house look around one kit, Lakefell, so every house shares one style. A+ Grass became the default grass, with a one-click button to play-test any building in a dense-grass scene. The first Lakefell wall rendered flat navy because the kit's shader would not compile on this Unity version, so a fixed copy of the shader is being made that will also carry the wall cutaway.</p>
 <div class="day-points">
 <ul>
 <li>All 92 buildings are now prefabs (done with ChatGPT); the test scene went from 2.3 GB to 24 MB.</li>
@@ -216,10 +215,10 @@
 <li>Known risk: Lakefell has no police, hospital or motel pieces.</li>
 </ul>
 </div>
+<p>Day 33 was a change of direction for the houses. All 92 workshop buildings were turned into prefabs, each with its own model, ivy, interior and yard, which shrank the test scene from 2.3 GB to 24 MB and lets each building be edited on its own. The fire station got the first approved look, with small natural clumps of bushes, roof ivy at 30 to 40 percent and runners over the concrete edges, and the police station followed the same recipe. The developer then restarted the house look around one kit, Lakefell, so every house shares one style. A+ Grass became the default grass, with a one-click button to play-test any building in a dense-grass scene. The first Lakefell wall rendered flat navy because the kit's shader would not compile on this Unity version, so a fixed copy of the shader is being made that will also carry the wall cutaway.</p>
 <h3>Day 32 · Mon 19 Oct</h3>
 <p class="hours"><strong>Total hours:</strong> at least 20.9 h (AI thread time only, partial). Running total: 601 h.</p>
 
-<p>Day 32 was the grass and colour day. Grass now grows right up to every wall and through the yards, with no square clear patches, a short strip at the 112 doorways and dirt left as natural patches. It uses the developer's moodier palette of moss, sage, olive and rust, and all 92 buildings were checked by screenshot. A "Meadow Day" colour grade matching the main build was added, so the test houses no longer look like a different game. Ledge climbing was switched off everywhere for now, clearing 12,255 ledges from 42 buildings, until the climbing design settles. A reference look made with ChatGPT for the first house, with new roofs, plaster, concrete fragments and saplings, was rolled out to all 92 buildings; the first house reads well, but wide shots show flat shrub discs. A working rule was set: one Unity job at a time, and every job checks its own screenshots first.</p>
 <div class="day-points">
 <ul>
 <li>Grass grown up to every wall and through yards; dirt as natural patches; 92 buildings checked.</li>
@@ -234,10 +233,10 @@
 <li>Rule: one Unity job at a time, run one after another.</li>
 </ul>
 </div>
+<p>Day 32 was the grass and colour day. Grass now grows right up to every wall and through the yards, with no square clear patches, a short strip at the 112 doorways and dirt left as natural patches. It uses the developer's moodier palette of moss, sage, olive and rust, and all 92 buildings were checked by screenshot. A "Meadow Day" colour grade matching the main build was added, so the test houses no longer look like a different game. Ledge climbing was switched off everywhere for now, clearing 12,255 ledges from 42 buildings, until the climbing design settles. A reference look made with ChatGPT for the first house, with new roofs, plaster, concrete fragments and saplings, was rolled out to all 92 buildings; the first house reads well, but wide shots show flat shrub discs. A working rule was set: one Unity job at a time, and every job checks its own screenshots first.</p>
 <h3>Day 31 · Sun 18 Oct</h3>
 <p class="hours"><strong>Total hours:</strong> at least 20.7 h (AI thread time only, partial). Running total: 580 h.</p>
 
-<p>Day 31 put ivy and moss on the houses. Real Ivy 2 was made to render in the game's pipeline and grown over the first house with the doors kept clear, then merged into one mesh per house without changing the look. A moss, damp and grime layer was added to the walls, and the same treatment went onto all 20 house designs. The wall flicker and the gap in the cutaway on newly added rooms were fixed, and the ivy now follows the cutaway too. Old doors became open frames, so nothing can ever be shut on the player. Stair ramps were refitted on 11 houses and solid fill added under every stair. The developer decided to check one finished house in the builder scene before any finished house goes into the towns.</p>
 <div class="day-points">
 <ul>
 <li>Real Ivy 2 grown on the houses, doors kept clear, merged into one mesh per house.</li>
@@ -252,10 +251,10 @@
 <li>Decision: builder scene only, no towns, until the developer has checked one house.</li>
 </ul>
 </div>
+<p>Day 31 put ivy and moss on the houses. Real Ivy 2 was made to render in the game's pipeline and grown over the first house with the doors kept clear, then merged into one mesh per house without changing the look. A moss, damp and grime layer was added to the walls, and the same treatment went onto all 20 house designs. The wall flicker and the gap in the cutaway on newly added rooms were fixed, and the ivy now follows the cutaway too. Old doors became open frames, so nothing can ever be shut on the player. Stair ramps were refitted on 11 houses and solid fill added under every stair. The developer decided to check one finished house in the builder scene before any finished house goes into the towns.</p>
 <h3>Day 30 · Sat 17 Oct</h3>
 <p class="hours"><strong>Total hours:</strong> at least 13.4 h (AI thread time only, partial). Running total: 560 h.</p>
 
-<p>Day 30 was about filling the houses. 3,175 aged Synty props were imported across seven packs and gathered into one list in a new in-game placing mode. The developer furnished the first house by hand with 54 aged pieces, and ten more houses got a first pass of around 40 pieces each. That house also gained a two-room side wing under a lean-to roof, with a tool to add wings to others. The flashlight was widened and given more range, and a warm storm lantern was carried through a dark house. Planning began on an in-house town planner to replace a licensed one, and on two climb-ready tall buildings for the capital.</p>
 <div class="day-points">
 <ul>
 <li>3,175 aged props imported across 7 packs.</li>
@@ -269,10 +268,10 @@
 <li>Plans: own town planner; office tower and condo for the capital.</li>
 </ul>
 </div>
+<p>Day 30 was about filling the houses. 3,175 aged Synty props were imported across seven packs and gathered into one list in a new in-game placing mode. The developer furnished the first house by hand with 54 aged pieces, and ten more houses got a first pass of around 40 pieces each. That house also gained a two-room side wing under a lean-to roof, with a tool to add wings to others. The flashlight was widened and given more range, and a warm storm lantern was carried through a dark house. Planning began on an in-house town planner to replace a licensed one, and on two climb-ready tall buildings for the capital.</p>
 <h3>Day 29 · Fri 16 Oct</h3>
 <p class="hours"><strong>Total hours:</strong> at least 21.9 h (AI thread time only, partial). Running total: 546 h.</p>
 
-<p>Day 29 changed how houses look from inside. Instead of lifting the whole roof, the camera now cuts away only the walls nearest to it, with solid wall ends and joined wall tops, much like Project Zomboid. The 20 settlement pieces were brought into the builder, stripped of furniture and given wall ladders, though 10 of them still fail a climb check. Aged, open and broken versions of 25 lootable furniture pieces arrived from Blender. The icon set grew to 1,130 items, weapons and clothing parts. A roof toggle was added so the developer can look into every house from above without changing anything.</p>
 <div class="day-points">
 <ul>
 <li>Near-wall cutaway: only walls close to the camera are cut away.</li>
@@ -285,16 +284,11 @@
 <li>Materials on all 69 house designs scanned for a texture swap.</li>
 <li>Roof toggle hides all 1,186 roof pieces on screen only.</li>
 </ul>
-<h2>Week 4</h2>
 </div>
+<p>Day 29 changed how houses look from inside. Instead of lifting the whole roof, the camera now cuts away only the walls nearest to it, with solid wall ends and joined wall tops, much like Project Zomboid. The 20 settlement pieces were brought into the builder, stripped of furniture and given wall ladders, though 10 of them still fail a climb check. Aged, open and broken versions of 25 lootable furniture pieces arrived from Blender. The icon set grew to 1,130 items, weapons and clothing parts. A roof toggle was added so the developer can look into every house from above without changing anything.</p>
+<h2>Week 4</h2>
 <h3>Day 28 · Thu 15 Oct</h3>
 <p class="hours"><strong>Total hours:</strong> at least 23.1 h (AI thread time only, partial). Running total: 524 h.</p>
-
-<p>Day 28 made the towns look ruined and overgrown instead of clean. A layered ruined-ground look with cracked concrete, mud, rubble and burned patches was tested on one road, approved, and rolled out to all 17 towns. Under the grass, the ground was painted to match the grass colour so gaps between blades no longer show pale patches. Loose furniture and parked vehicles were taken out of the main build on purpose, ahead of a new looting system. That system had its first test: hover over a fridge or bedside table, press E, and the player walks over, searches and takes the loot. Alongside that, 164 new item icons were made and the farm herd and chicken yard were photographed from the gameplay camera.</p>
-<div class="photos">
-<figure><a href="media/2026-10-15/blog/gameplay__18-wildlife.jpg" target="_blank" rel="noopener"><img src="media/2026-10-15/blog/gameplay__18-wildlife.jpg" alt="A dirt track through the cattle herd, from the gameplay camera." loading="lazy"></a><figcaption>A dirt track through the cattle herd, from the gameplay camera.</figcaption></figure>
-<figure><a href="media/2026-10-15/blog/gameplay__farm-chicken-yard.jpg" target="_blank" rel="noopener"><img src="media/2026-10-15/blog/gameplay__farm-chicken-yard.jpg" alt="The ranch chicken yard." loading="lazy"></a><figcaption>The ranch chicken yard.</figcaption></figure>
-</div>
 
 <div class="day-points">
 <ul>
@@ -310,19 +304,14 @@
 <li>Town fps not measured properly yet: Unity was in the background.</li>
 </ul>
 </div>
+<p>Day 28 made the towns look ruined and overgrown instead of clean. A layered ruined-ground look with cracked concrete, mud, rubble and burned patches was tested on one road, approved, and rolled out to all 17 towns. Under the grass, the ground was painted to match the grass colour so gaps between blades no longer show pale patches. Loose furniture and parked vehicles were taken out of the main build on purpose, ahead of a new looting system. That system had its first test: hover over a fridge or bedside table, press E, and the player walks over, searches and takes the loot. Alongside that, 164 new item icons were made and the farm herd and chicken yard were photographed from the gameplay camera.</p>
+<div class="photos">
+<figure><a href="media/2026-10-15/blog/gameplay__18-wildlife.jpg" target="_blank" rel="noopener"><img src="media/2026-10-15/blog/gameplay__18-wildlife.jpg" alt="A dirt track through the cattle herd, from the gameplay camera." loading="lazy"></a><figcaption>A dirt track through the cattle herd, from the gameplay camera.</figcaption></figure>
+<figure><a href="media/2026-10-15/blog/gameplay__farm-chicken-yard.jpg" target="_blank" rel="noopener"><img src="media/2026-10-15/blog/gameplay__farm-chicken-yard.jpg" alt="The ranch chicken yard." loading="lazy"></a><figcaption>The ranch chicken yard.</figcaption></figure>
+</div>
+
 <h3>Day 27 · Wed 14 Oct</h3>
 <p class="hours"><strong>Total hours:</strong> at least 25.8 h (AI thread time only, partial). Running total: 501 h.</p>
-
-<p>Day 27 was the climbing day, with every other job paused. All 20 apartment blocks were reworked so any building climbs the same way: one standard fire-escape balcony, a metal ladder from ground to roof, and wall ledges switched back on. Awnings, fake balconies and cosmetic outside stairs were stripped off, so nothing on a wall looks climbable unless it is. All 20 blocks were climbed to the roof in Play and saved into the main build. Every bare patch of ground on the island was grassed, and the flooded capital became a swamp with water only on the streets. Near the capital apartments the frame rate still drops to 25 to 36 fps, cause not yet found.</p>
-<div class="photos">
-<figure><a href="media/2026-10-14/blog/worldgrass__tones-overview.jpg" target="_blank" rel="noopener"><img src="media/2026-10-14/blog/worldgrass__tones-overview.jpg" alt="Grass tones across a town, overview." loading="lazy"></a><figcaption>Grass tones across a town, overview.</figcaption></figure>
-<figure><a href="media/2026-10-14/blog/climb-overhaul__sheet_R02_Tenement.jpg" target="_blank" rel="noopener"><img src="media/2026-10-14/blog/climb-overhaul__sheet_R02_Tenement.jpg" alt="Climb sheet: R02 Tenement, all four sides." loading="lazy"></a><figcaption>Climb sheet: R02 Tenement, all four sides.</figcaption></figure>
-<figure><a href="media/2026-10-14/blog/climb-overhaul__sheet_R08_HousingSlab.jpg" target="_blank" rel="noopener"><img src="media/2026-10-14/blog/climb-overhaul__sheet_R08_HousingSlab.jpg" alt="Climb sheet: R08 Housing Slab." loading="lazy"></a><figcaption>Climb sheet: R08 Housing Slab.</figcaption></figure>
-<figure><a href="media/2026-10-14/blog/worldgrass__tones-house.jpg" target="_blank" rel="noopener"><img src="media/2026-10-14/blog/worldgrass__tones-house.jpg" alt="Grass tone test around a house." loading="lazy"></a><figcaption>Grass tone test around a house.</figcaption></figure>
-<figure><a href="media/2026-10-14/blog/climb-overhaul__sheet_R15_TwinStairBlock.jpg" target="_blank" rel="noopener"><img src="media/2026-10-14/blog/climb-overhaul__sheet_R15_TwinStairBlock.jpg" alt="Climb sheet: R15 Twin Stair Block." loading="lazy"></a><figcaption>Climb sheet: R15 Twin Stair Block.</figcaption></figure>
-<figure><a href="media/2026-10-14/blog/worldgrass__debris-shorter-1.jpg" target="_blank" rel="noopener"><img src="media/2026-10-14/blog/worldgrass__debris-shorter-1.jpg" alt="World grass with shorter debris around a house." loading="lazy"></a><figcaption>World grass with shorter debris around a house.</figcaption></figure>
-<figure><a href="media/2026-10-14/blog/worldgrass__green-ground-1.jpg" target="_blank" rel="noopener"><img src="media/2026-10-14/blog/worldgrass__green-ground-1.jpg" alt="Green ground pass: no bare earth left." loading="lazy"></a><figcaption>Green ground pass: no bare earth left.</figcaption></figure>
-</div>
 
 <div class="day-points">
 <ul>
@@ -338,15 +327,19 @@
 <li>8 dead-end ledges left in two courtyards, decision pending.</li>
 </ul>
 </div>
+<p>Day 27 was the climbing day, with every other job paused. All 20 apartment blocks were reworked so any building climbs the same way: one standard fire-escape balcony, a metal ladder from ground to roof, and wall ledges switched back on. Awnings, fake balconies and cosmetic outside stairs were stripped off, so nothing on a wall looks climbable unless it is. All 20 blocks were climbed to the roof in Play and saved into the main build. Every bare patch of ground on the island was grassed, and the flooded capital became a swamp with water only on the streets. Near the capital apartments the frame rate still drops to 25 to 36 fps, cause not yet found.</p>
+<div class="photos">
+<figure><a href="media/2026-10-14/blog/worldgrass__tones-overview.jpg" target="_blank" rel="noopener"><img src="media/2026-10-14/blog/worldgrass__tones-overview.jpg" alt="Grass tones across a town, overview." loading="lazy"></a><figcaption>Grass tones across a town, overview.</figcaption></figure>
+<figure><a href="media/2026-10-14/blog/climb-overhaul__sheet_R02_Tenement.jpg" target="_blank" rel="noopener"><img src="media/2026-10-14/blog/climb-overhaul__sheet_R02_Tenement.jpg" alt="Climb sheet: R02 Tenement, all four sides." loading="lazy"></a><figcaption>Climb sheet: R02 Tenement, all four sides.</figcaption></figure>
+<figure><a href="media/2026-10-14/blog/climb-overhaul__sheet_R08_HousingSlab.jpg" target="_blank" rel="noopener"><img src="media/2026-10-14/blog/climb-overhaul__sheet_R08_HousingSlab.jpg" alt="Climb sheet: R08 Housing Slab." loading="lazy"></a><figcaption>Climb sheet: R08 Housing Slab.</figcaption></figure>
+<figure><a href="media/2026-10-14/blog/worldgrass__tones-house.jpg" target="_blank" rel="noopener"><img src="media/2026-10-14/blog/worldgrass__tones-house.jpg" alt="Grass tone test around a house." loading="lazy"></a><figcaption>Grass tone test around a house.</figcaption></figure>
+<figure><a href="media/2026-10-14/blog/climb-overhaul__sheet_R15_TwinStairBlock.jpg" target="_blank" rel="noopener"><img src="media/2026-10-14/blog/climb-overhaul__sheet_R15_TwinStairBlock.jpg" alt="Climb sheet: R15 Twin Stair Block." loading="lazy"></a><figcaption>Climb sheet: R15 Twin Stair Block.</figcaption></figure>
+<figure><a href="media/2026-10-14/blog/worldgrass__debris-shorter-1.jpg" target="_blank" rel="noopener"><img src="media/2026-10-14/blog/worldgrass__debris-shorter-1.jpg" alt="World grass with shorter debris around a house." loading="lazy"></a><figcaption>World grass with shorter debris around a house.</figcaption></figure>
+<figure><a href="media/2026-10-14/blog/worldgrass__green-ground-1.jpg" target="_blank" rel="noopener"><img src="media/2026-10-14/blog/worldgrass__green-ground-1.jpg" alt="Green ground pass: no bare earth left." loading="lazy"></a><figcaption>Green ground pass: no bare earth left.</figcaption></figure>
+</div>
+
 <h3>Day 26 · Tue 13 Oct</h3>
 <p class="hours"><strong>Total hours:</strong> about 36.3 h. Running total: 476 h.</p>
-
-<p>Day 26 brought the performance turnaround and the first quests. Decor is now drawn as GPU instances and distant houses load in the background, which took towns from 11 to 18 fps up to 60 to 90 and cut leaving Play from minutes to under ten seconds. Twenty apartment blocks were built and placed in town, and all 3,006 windows were boarded. Part 1 of the quest system was built with a journal and two side quests, though not yet played. The capital became an overrun quarantine city and was filled overnight with about 450 apartment blocks. One road network now joins all 19 towns, and about 2,100 buildings was judged to be enough.</p>
-<div class="photos">
-<figure><a href="media/2026-10-13/blog/capital-apartments__capital-r-blocks.jpg" target="_blank" rel="noopener"><img src="media/2026-10-13/blog/capital-apartments__capital-r-blocks.jpg" alt="Apartment blocks filling the capital, from above." loading="lazy"></a><figcaption>Apartment blocks filling the capital, from above.</figcaption></figure>
-<figure><a href="media/2026-10-13/blog/townyardgrass__03_trailer_back.jpg" target="_blank" rel="noopener"><img src="media/2026-10-13/blog/townyardgrass__03_trailer_back.jpg" alt="Yard grass around a trailer, back." loading="lazy"></a><figcaption>Yard grass around a trailer, back.</figcaption></figure>
-<figure><a href="media/2026-10-13/blog/townyardgrass__01_trailer_front.jpg" target="_blank" rel="noopener"><img src="media/2026-10-13/blog/townyardgrass__01_trailer_front.jpg" alt="Yard grass around a trailer, front." loading="lazy"></a><figcaption>Yard grass around a trailer, front.</figcaption></figure>
-</div>
 
 <div class="day-points">
 <ul>
@@ -364,10 +357,16 @@
 <li>NPCs and zombies still switched off.</li>
 </ul>
 </div>
+<p>Day 26 brought the performance turnaround and the first quests. Decor is now drawn as GPU instances and distant houses load in the background, which took towns from 11 to 18 fps up to 60 to 90 and cut leaving Play from minutes to under ten seconds. Twenty apartment blocks were built and placed in town, and all 3,006 windows were boarded. Part 1 of the quest system was built with a journal and two side quests, though not yet played. The capital became an overrun quarantine city and was filled overnight with about 450 apartment blocks. One road network now joins all 19 towns, and about 2,100 buildings was judged to be enough.</p>
+<div class="photos">
+<figure><a href="media/2026-10-13/blog/capital-apartments__capital-r-blocks.jpg" target="_blank" rel="noopener"><img src="media/2026-10-13/blog/capital-apartments__capital-r-blocks.jpg" alt="Apartment blocks filling the capital, from above." loading="lazy"></a><figcaption>Apartment blocks filling the capital, from above.</figcaption></figure>
+<figure><a href="media/2026-10-13/blog/townyardgrass__03_trailer_back.jpg" target="_blank" rel="noopener"><img src="media/2026-10-13/blog/townyardgrass__03_trailer_back.jpg" alt="Yard grass around a trailer, back." loading="lazy"></a><figcaption>Yard grass around a trailer, back.</figcaption></figure>
+<figure><a href="media/2026-10-13/blog/townyardgrass__01_trailer_front.jpg" target="_blank" rel="noopener"><img src="media/2026-10-13/blog/townyardgrass__01_trailer_front.jpg" alt="Yard grass around a trailer, front." loading="lazy"></a><figcaption>Yard grass around a trailer, front.</figcaption></figure>
+</div>
+
 <h3>Day 25 · Mon 12 Oct</h3>
 <p class="hours"><strong>Total hours:</strong> about 41.7 h. Running total: 439 h.</p>
 
-<p>Day 25 was the big optimisation push. Profiling showed where the cost was, and about 12,000 debris pieces and 58,000 hidden leftover objects were removed. A house streamer was added and editor-only tools were switched off in the scene. Town frame rate rose from about 11 to 18, and the object count fell from 1.47 million to 950,000. Districts D1 to D8, about 1,550 buildings, were built around the capital. Work also started on a fog ring, furniture, a quest plan, a cheat toolkit and a sharper player shadow. Two editor freezes set the rule that no scripts are written to disk during Play.</p>
 <div class="day-points">
 <ul>
 <li>About 12,000 debris pieces and 58,000 hidden leftovers removed.</li>
@@ -381,13 +380,9 @@
 <li>Unity froze twice and exiting Play took 14.5 minutes; rule: no scripts to disk during Play.</li>
 </ul>
 </div>
+<p>Day 25 was the big optimisation push. Profiling showed where the cost was, and about 12,000 debris pieces and 58,000 hidden leftover objects were removed. A house streamer was added and editor-only tools were switched off in the scene. Town frame rate rose from about 11 to 18, and the object count fell from 1.47 million to 950,000. Districts D1 to D8, about 1,550 buildings, were built around the capital. Work also started on a fog ring, furniture, a quest plan, a cheat toolkit and a sharper player shadow. Two editor freezes set the rule that no scripts are written to disk during Play.</p>
 <h3>Day 24 · Sun 11 Oct</h3>
 <p class="hours"><strong>Total hours:</strong> about 31.4 h. Running total: 398 h.</p>
-
-<p>Day 24 polished climbing and began the optimisation work. Wall running came back, boarded windows can be kicked in, and only empty walls can be climbed. Doors now open with one key, and window planks were set to cover almost every window. The first optimisation passes merged distant meshes and removed about 24,000 fake window lamps, and a loading screen was added. A tool to save Builder houses into the towns was finished. The developer took over compiling and play-testing, with the AI threads only writing code, and the town generator work was set to finish before its licence ran out.</p>
-<div class="photos">
-<figure><a href="media/2026-10-11/blog/plans-arden__arden-towns-annotated.jpg" target="_blank" rel="noopener"><img src="media/2026-10-11/blog/plans-arden__arden-towns-annotated.jpg" alt="Arden Island town plan, annotated." loading="lazy"></a><figcaption>Arden Island town plan, annotated.</figcaption></figure>
-</div>
 
 <div class="day-points">
 <ul>
@@ -402,16 +397,13 @@
 <li>Frame rate roughly 6 to 8 up to about 12 (uncertain).</li>
 </ul>
 </div>
+<p>Day 24 polished climbing and began the optimisation work. Wall running came back, boarded windows can be kicked in, and only empty walls can be climbed. Doors now open with one key, and window planks were set to cover almost every window. The first optimisation passes merged distant meshes and removed about 24,000 fake window lamps, and a loading screen was added. A tool to save Builder houses into the towns was finished. The developer took over compiling and play-testing, with the AI threads only writing code, and the town generator work was set to finish before its licence ran out.</p>
+<div class="photos">
+<figure><a href="media/2026-10-11/blog/plans-arden__arden-towns-annotated.jpg" target="_blank" rel="noopener"><img src="media/2026-10-11/blog/plans-arden__arden-towns-annotated.jpg" alt="Arden Island town plan, annotated." loading="lazy"></a><figcaption>Arden Island town plan, annotated.</figcaption></figure>
+</div>
+
 <h3>Day 23 · Sat 10 Oct</h3>
 <p class="hours"><strong>Total hours:</strong> about 38.8 h. Running total: 366 h.</p>
-
-<p>Day 23 produced the house builder. Fully dark house interiors lit only by a flashlight were tried and parked as good enough for now. The Carriers Builder Tool was made to build houses from modular walls on a grid, all with wooden floors. The Opus houses looked good outside but were hard to work with inside, so their interiors were stripped and rebuilt with the grid tool. Planks can now be pried off windows. Two Unity hangs, one from a forced refresh and one from code running during Play, set a new rule: no live code runs while the game is playing.</p>
-<div class="photos">
-<figure><a href="media/2026-10-10/blog/builder__gable_plaster.jpg" target="_blank" rel="noopener"><img src="media/2026-10-10/blog/builder__gable_plaster.jpg" alt="Plaster gables on Builder houses." loading="lazy"></a><figcaption>Plaster gables on Builder houses.</figcaption></figure>
-<figure><a href="media/2026-10-10/blog/builder__facade_all_H01.jpg" target="_blank" rel="noopener"><img src="media/2026-10-10/blog/builder__facade_all_H01.jpg" alt="Builder house H01, full facade pass." loading="lazy"></a><figcaption>Builder house H01, full facade pass.</figcaption></figure>
-<figure><a href="media/2026-10-10/blog/builder__wrap_outside.jpg" target="_blank" rel="noopener"><img src="media/2026-10-10/blog/builder__wrap_outside.jpg" alt="Building wrapping test, from outside." loading="lazy"></a><figcaption>Building wrapping test, from outside.</figcaption></figure>
-<figure><a href="media/2026-10-10/blog/builder__facade_all_H11.jpg" target="_blank" rel="noopener"><img src="media/2026-10-10/blog/builder__facade_all_H11.jpg" alt="Builder house H11." loading="lazy"></a><figcaption>Builder house H11.</figcaption></figure>
-</div>
 
 <div class="day-points">
 <ul>
@@ -424,19 +416,17 @@
 <li>Unity hung twice; rule: a heads-up before any Unity work and no live code during Play.</li>
 </ul>
 </div>
+<p>Day 23 produced the house builder. Fully dark house interiors lit only by a flashlight were tried and parked as good enough for now. The Carriers Builder Tool was made to build houses from modular walls on a grid, all with wooden floors. The Opus houses looked good outside but were hard to work with inside, so their interiors were stripped and rebuilt with the grid tool. Planks can now be pried off windows. Two Unity hangs, one from a forced refresh and one from code running during Play, set a new rule: no live code runs while the game is playing.</p>
+<div class="photos">
+<figure><a href="media/2026-10-10/blog/builder__gable_plaster.jpg" target="_blank" rel="noopener"><img src="media/2026-10-10/blog/builder__gable_plaster.jpg" alt="Plaster gables on Builder houses." loading="lazy"></a><figcaption>Plaster gables on Builder houses.</figcaption></figure>
+<figure><a href="media/2026-10-10/blog/builder__facade_all_H01.jpg" target="_blank" rel="noopener"><img src="media/2026-10-10/blog/builder__facade_all_H01.jpg" alt="Builder house H01, full facade pass." loading="lazy"></a><figcaption>Builder house H01, full facade pass.</figcaption></figure>
+<figure><a href="media/2026-10-10/blog/builder__wrap_outside.jpg" target="_blank" rel="noopener"><img src="media/2026-10-10/blog/builder__wrap_outside.jpg" alt="Building wrapping test, from outside." loading="lazy"></a><figcaption>Building wrapping test, from outside.</figcaption></figure>
+<figure><a href="media/2026-10-10/blog/builder__facade_all_H11.jpg" target="_blank" rel="noopener"><img src="media/2026-10-10/blog/builder__facade_all_H11.jpg" alt="Builder house H11." loading="lazy"></a><figcaption>Builder house H11.</figcaption></figure>
+</div>
+
 <h3>Day 22 · Fri 9 Oct (order within the day uncertain)</h3>
 <p class="hours"><strong>Total hours:</strong> about 36.8 h. Running total: 327 h.</p>
 
-<p>Day 22 focused on stealth and colour. A stealth Focus mode was built and fixed so doors and quiet actions no longer break it, and a greyscale stealth look was planned. Colour grading started, with a grade per biome. Buildings generated in Blender with Claude Opus were tested, 50 were exported, and a Storm run placed 310 of them across seven areas. Combat gained melee combos for every weapon and a kick finisher. Settlements got area loot, rooms and stealing, and the main menu gained a slideshow and a Kodecco Games intro.</p>
-<div class="photos">
-<figure><a href="media/2026-10-09/blog/mainmenu__Hero_LanternHold.jpg" target="_blank" rel="noopener"><img src="media/2026-10-09/blog/mainmenu__Hero_LanternHold.jpg" alt="Main menu painting: the farm at night." loading="lazy"></a><figcaption>Main menu painting: the farm at night.</figcaption></figure>
-<figure><a href="media/2026-10-09/blog/mainmenu__Hero_Main.jpg" target="_blank" rel="noopener"><img src="media/2026-10-09/blog/mainmenu__Hero_Main.jpg" alt="Main menu painting: survivor and wolf at sunset." loading="lazy"></a><figcaption>Main menu painting: survivor and wolf at sunset.</figcaption></figure>
-<figure><a href="media/2026-10-09/blog/mainmenu__Hero_Motherflesh.jpg" target="_blank" rel="noopener"><img src="media/2026-10-09/blog/mainmenu__Hero_Motherflesh.jpg" alt="Main menu painting: the red city." loading="lazy"></a><figcaption>Main menu painting: the red city.</figcaption></figure>
-<figure><a href="media/2026-10-09/blog/mainmenu__Hero_RidgePost.jpg" target="_blank" rel="noopener"><img src="media/2026-10-09/blog/mainmenu__Hero_RidgePost.jpg" alt="Main menu painting: the horde at the wall." loading="lazy"></a><figcaption>Main menu painting: the horde at the wall.</figcaption></figure>
-<figure><a href="media/2026-10-09/blog/mainmenu__Logo_Carriers.jpg" target="_blank" rel="noopener"><img src="media/2026-10-09/blog/mainmenu__Logo_Carriers.jpg" alt="The Carriers logo." loading="lazy"></a><figcaption>The Carriers logo.</figcaption></figure>
-</div>
-
-<h2>Week 3</h2>
 <div class="day-points">
 <ul>
 <li>Stealth Focus mode; doors and quiet actions no longer break it.</li>
@@ -449,16 +439,18 @@
 <li>Main menu slideshow and a "Kodecco Games presents" intro.</li>
 </ul>
 </div>
+<p>Day 22 focused on stealth and colour. A stealth Focus mode was built and fixed so doors and quiet actions no longer break it, and a greyscale stealth look was planned. Colour grading started, with a grade per biome. Buildings generated in Blender with Claude Opus were tested, 50 were exported, and a Storm run placed 310 of them across seven areas. Combat gained melee combos for every weapon and a kick finisher. Settlements got area loot, rooms and stealing, and the main menu gained a slideshow and a Kodecco Games intro.</p>
+<div class="photos">
+<figure><a href="media/2026-10-09/blog/mainmenu__Hero_LanternHold.jpg" target="_blank" rel="noopener"><img src="media/2026-10-09/blog/mainmenu__Hero_LanternHold.jpg" alt="Main menu painting: the farm at night." loading="lazy"></a><figcaption>Main menu painting: the farm at night.</figcaption></figure>
+<figure><a href="media/2026-10-09/blog/mainmenu__Hero_Main.jpg" target="_blank" rel="noopener"><img src="media/2026-10-09/blog/mainmenu__Hero_Main.jpg" alt="Main menu painting: survivor and wolf at sunset." loading="lazy"></a><figcaption>Main menu painting: survivor and wolf at sunset.</figcaption></figure>
+<figure><a href="media/2026-10-09/blog/mainmenu__Hero_Motherflesh.jpg" target="_blank" rel="noopener"><img src="media/2026-10-09/blog/mainmenu__Hero_Motherflesh.jpg" alt="Main menu painting: the red city." loading="lazy"></a><figcaption>Main menu painting: the red city.</figcaption></figure>
+<figure><a href="media/2026-10-09/blog/mainmenu__Hero_RidgePost.jpg" target="_blank" rel="noopener"><img src="media/2026-10-09/blog/mainmenu__Hero_RidgePost.jpg" alt="Main menu painting: the horde at the wall." loading="lazy"></a><figcaption>Main menu painting: the horde at the wall.</figcaption></figure>
+<figure><a href="media/2026-10-09/blog/mainmenu__Logo_Carriers.jpg" target="_blank" rel="noopener"><img src="media/2026-10-09/blog/mainmenu__Logo_Carriers.jpg" alt="The Carriers logo." loading="lazy"></a><figcaption>The Carriers logo.</figcaption></figure>
+</div>
+
+<h2>Week 3</h2>
 <h3>Day 21 · Thu 8 Oct</h3>
 <p class="hours"><strong>Total hours:</strong> about 57.6 h. Running total: 291 h.</p>
-
-<p>Day 21 was a big overnight batch of about fifteen AI threads, each on its own feature. Climbing gained ladders, the player can now crawl prone, and binoculars and body searching were added. A blood system, a player outline when hidden behind objects, and a tool for placing weapons in the hand went in. On the art side, 83 animals got a stylised look and all 70 zombie types were aged with mud and grime. The walled base at Northmarch was populated with 40 Emerald NPCs on a day and night routine, play-tested, and copied to the six other walled bases. A Dark UI main menu with a Developer Mode was built, and the island map and capital district plan were drawn up with ChatGPT.</p>
-<div class="photos">
-<figure><a href="media/2026-10-08/blog/quibli__horse-game-camera.jpg" target="_blank" rel="noopener"><img src="media/2026-10-08/blog/quibli__horse-game-camera.jpg" alt="Horse look test from the game camera: realistic, Quibli, Quibli variant, poly art." loading="lazy"></a><figcaption>Horse look test from the game camera: realistic, Quibli, Quibli variant, poly art.</figcaption></figure>
-<figure><a href="media/2026-10-08/blog/yangs-island-companions__cream-wolf-skin.jpg" target="_blank" rel="noopener"><img src="media/2026-10-08/blog/yangs-island-companions__cream-wolf-skin.jpg" alt="The companion wolf-dog skins; the cream one was chosen." loading="lazy"></a><figcaption>The companion wolf-dog skins; the cream one was chosen.</figcaption></figure>
-<figure><a href="media/2026-10-08/blog/yangs-island-wallring__northmarch-wallring-connected.jpg" target="_blank" rel="noopener"><img src="media/2026-10-08/blog/yangs-island-wallring__northmarch-wallring-connected.jpg" alt="The wall ring connected all the way round, map view." loading="lazy"></a><figcaption>The wall ring connected all the way round, map view.</figcaption></figure>
-<figure><a href="media/2026-10-08/blog/yangs-island-wallring__northmarch-wallring.jpg" target="_blank" rel="noopener"><img src="media/2026-10-08/blog/yangs-island-wallring__northmarch-wallring.jpg" alt="The wooden wall ring behind Northmarch&#x27;s fences." loading="lazy"></a><figcaption>The wooden wall ring behind Northmarch&#x27;s fences.</figcaption></figure>
-</div>
 
 <div class="day-points">
 <ul>
@@ -475,15 +467,16 @@
 <li>Goal set: finish one settlement, then copy it to the others.</li>
 </ul>
 </div>
+<p>Day 21 was a big overnight batch of about fifteen AI threads, each on its own feature. Climbing gained ladders, the player can now crawl prone, and binoculars and body searching were added. A blood system, a player outline when hidden behind objects, and a tool for placing weapons in the hand went in. On the art side, 83 animals got a stylised look and all 70 zombie types were aged with mud and grime. The walled base at Northmarch was populated with 40 Emerald NPCs on a day and night routine, play-tested, and copied to the six other walled bases. A Dark UI main menu with a Developer Mode was built, and the island map and capital district plan were drawn up with ChatGPT.</p>
+<div class="photos">
+<figure><a href="media/2026-10-08/blog/quibli__horse-game-camera.jpg" target="_blank" rel="noopener"><img src="media/2026-10-08/blog/quibli__horse-game-camera.jpg" alt="Horse look test from the game camera: realistic, Quibli, Quibli variant, poly art." loading="lazy"></a><figcaption>Horse look test from the game camera: realistic, Quibli, Quibli variant, poly art.</figcaption></figure>
+<figure><a href="media/2026-10-08/blog/yangs-island-companions__cream-wolf-skin.jpg" target="_blank" rel="noopener"><img src="media/2026-10-08/blog/yangs-island-companions__cream-wolf-skin.jpg" alt="The companion wolf-dog skins; the cream one was chosen." loading="lazy"></a><figcaption>The companion wolf-dog skins; the cream one was chosen.</figcaption></figure>
+<figure><a href="media/2026-10-08/blog/yangs-island-wallring__northmarch-wallring-connected.jpg" target="_blank" rel="noopener"><img src="media/2026-10-08/blog/yangs-island-wallring__northmarch-wallring-connected.jpg" alt="The wall ring connected all the way round, map view." loading="lazy"></a><figcaption>The wall ring connected all the way round, map view.</figcaption></figure>
+<figure><a href="media/2026-10-08/blog/yangs-island-wallring__northmarch-wallring.jpg" target="_blank" rel="noopener"><img src="media/2026-10-08/blog/yangs-island-wallring__northmarch-wallring.jpg" alt="The wooden wall ring behind Northmarch&#x27;s fences." loading="lazy"></a><figcaption>The wooden wall ring behind Northmarch&#x27;s fences.</figcaption></figure>
+</div>
+
 <h3>Day 20 · Wed 7 Oct</h3>
 <p class="hours"><strong>Total hours:</strong> about 30.5 h. Running total: 233 h.</p>
-
-<p>Day 20 opened the gang base and then switched the NPCs off. Homes were hand-built inside all seven fortresses, and NPC performance was improved with body reuse and a staggered update. A Rig Test tool was made to check items in hands across 131 actions and 70 zombie types, and a code audit counted 475 scripts. The gang base went live in the farm barn, where the player can claim it, recruit by talking and build. The player also got a cloth cloak under the backpack, and a new executable was made. Lag freezes were then blamed on the 1,000-NPC world, so the NPCs were switched off with their code kept, and a revamp on Emerald AI began. Zombie work was parked, and the dev journal started.</p>
-<div class="photos">
-<figure><a href="media/2026-10-07/blog/emerald__northmarch-fields.jpg" target="_blank" rel="noopener"><img src="media/2026-10-07/blog/emerald__northmarch-fields.jpg" alt="Northmarch: fields outside the walls, watchtower behind." loading="lazy"></a><figcaption>Northmarch: fields outside the walls, watchtower behind.</figcaption></figure>
-<figure><a href="media/2026-10-07/blog/emerald__emerald-test-npc.jpg" target="_blank" rel="noopener"><img src="media/2026-10-07/blog/emerald__emerald-test-npc.jpg" alt="A test NPC on the new Emerald AI, on a gravel path." loading="lazy"></a><figcaption>A test NPC on the new Emerald AI, on a gravel path.</figcaption></figure>
-<figure><a href="media/2026-10-07/blog/emerald__northmarch-workers.jpg" target="_blank" rel="noopener"><img src="media/2026-10-07/blog/emerald__northmarch-workers.jpg" alt="Northmarch workers at the camp fire." loading="lazy"></a><figcaption>Northmarch workers at the camp fire.</figcaption></figure>
-</div>
 
 <div class="day-points">
 <ul>
@@ -497,9 +490,28 @@
 <li>Zombie work parked; dev journal started.</li>
 </ul>
 </div>
+<p>Day 20 opened the gang base and then switched the NPCs off. Homes were hand-built inside all seven fortresses, and NPC performance was improved with body reuse and a staggered update. A Rig Test tool was made to check items in hands across 131 actions and 70 zombie types, and a code audit counted 475 scripts. The gang base went live in the farm barn, where the player can claim it, recruit by talking and build. The player also got a cloth cloak under the backpack, and a new executable was made. Lag freezes were then blamed on the 1,000-NPC world, so the NPCs were switched off with their code kept, and a revamp on Emerald AI began. Zombie work was parked, and the dev journal started.</p>
+<div class="photos">
+<figure><a href="media/2026-10-07/blog/emerald__northmarch-fields.jpg" target="_blank" rel="noopener"><img src="media/2026-10-07/blog/emerald__northmarch-fields.jpg" alt="Northmarch: fields outside the walls, watchtower behind." loading="lazy"></a><figcaption>Northmarch: fields outside the walls, watchtower behind.</figcaption></figure>
+<figure><a href="media/2026-10-07/blog/emerald__emerald-test-npc.jpg" target="_blank" rel="noopener"><img src="media/2026-10-07/blog/emerald__emerald-test-npc.jpg" alt="A test NPC on the new Emerald AI, on a gravel path." loading="lazy"></a><figcaption>A test NPC on the new Emerald AI, on a gravel path.</figcaption></figure>
+<figure><a href="media/2026-10-07/blog/emerald__northmarch-workers.jpg" target="_blank" rel="noopener"><img src="media/2026-10-07/blog/emerald__northmarch-workers.jpg" alt="Northmarch workers at the camp fire." loading="lazy"></a><figcaption>Northmarch workers at the camp fire.</figcaption></figure>
+</div>
+
 <h3>Day 19 · Tue 6 Oct</h3>
 <p class="hours"><strong>Total hours:</strong> about 48.1 h. Running total: 202 h.</p>
 
+<div class="day-points">
+<ul>
+<li>World named Yangs Island.</li>
+<li>Stylised grass and fields; all 7,369 cypress removed; 15,500 spruce in the north.</li>
+<li>Weather Director: clear, cloudy, rain, storm, fog, lightning and a wet look.</li>
+<li>Regional snow: always in the highlands, never in the south.</li>
+<li>Painted town roads; 152 doors fitted into 76 buildings.</li>
+<li>19 types of searchable loot container in buildings.</li>
+<li>1,000 NPCs in 7 fortresses, 14 outposts and 91 camps.</li>
+<li>Horror stingers removed; zombies switched off for now.</li>
+</ul>
+</div>
 <p>Day 19 remade the island's look and filled it with people. Work moved into a Claude Project, with many threads running in parallel from here on. The world was named Yangs Island, every one of its 7,369 cypress trees was replaced by stylised grass and wildflower fields, and 15,500 spruce were planted in the north. A Weather Director brought clear skies, rain, storms, fog and lightning with a wet look, plus regional snow; the developer said "I LOVEEE the weather system." Town roads became painted tracks, 152 doors were fitted and searchable loot containers went into buildings. By night the island held 1,000 NPCs across 112 places, with reputation, raids, trade and morale. Zombies were switched off so the game could be played without them first.</p>
 <div class="photos">
 <figure><a href="media/2026-10-06/blog/yangs-island-spruce__1-forest-floor.jpg" target="_blank" rel="noopener"><img src="media/2026-10-06/blog/yangs-island-spruce__1-forest-floor.jpg" alt="The northern spruce band at floor level." loading="lazy"></a><figcaption>The northern spruce band at floor level.</figcaption></figure>
@@ -516,22 +528,9 @@
 <figure><a href="media/2026-10-06/blog/yangs-island__orchard-fruit-trees.jpg" target="_blank" rel="noopener"><img src="media/2026-10-06/blog/yangs-island__orchard-fruit-trees.jpg" alt="Orchard with pluckable fruit trees." loading="lazy"></a><figcaption>Orchard with pluckable fruit trees.</figcaption></figure>
 </div>
 
-<div class="day-points">
-<ul>
-<li>World named Yangs Island.</li>
-<li>Stylised grass and fields; all 7,369 cypress removed; 15,500 spruce in the north.</li>
-<li>Weather Director: clear, cloudy, rain, storm, fog, lightning and a wet look.</li>
-<li>Regional snow: always in the highlands, never in the south.</li>
-<li>Painted town roads; 152 doors fitted into 76 buildings.</li>
-<li>19 types of searchable loot container in buildings.</li>
-<li>1,000 NPCs in 7 fortresses, 14 outposts and 91 camps.</li>
-<li>Horror stingers removed; zombies switched off for now.</li>
-</ul>
-</div>
 <h3>Day 18 · Mon 5 Oct</h3>
 <p class="hours"><strong>Total hours:</strong> about 5.2 h. Running total: 154 h.</p>
 
-<p>Day 18 cleared the capital and organised the project. About 550 towers and 3,366 floating vines were switched off, while the swamp inside the wall was kept. The military site became 58 prefabs with interiors, and a library of 285 buildings was assembled for Storm to draw from. A progress review put the game at roughly 30% of a full game, and a 7-phase, 12-week tracker was created with the rule "one focus at a time". The Weathering studio can now apply wear to every building of a type, cut doors and windows and add searchable furniture; the developer called it "actually really good." The game's world switched to the Build 1.0 scene. Unity hung for about five hours on a Storm bug, and since then Claude restarts Unity itself.</p>
 <div class="day-points">
 <ul>
 <li>Capital cleared: about 550 towers and 3,366 floating vines off.</li>
@@ -544,10 +543,10 @@
 <li>Unity hung for about five hours on a Storm bug.</li>
 </ul>
 </div>
+<p>Day 18 cleared the capital and organised the project. About 550 towers and 3,366 floating vines were switched off, while the swamp inside the wall was kept. The military site became 58 prefabs with interiors, and a library of 285 buildings was assembled for Storm to draw from. A progress review put the game at roughly 30% of a full game, and a 7-phase, 12-week tracker was created with the rule "one focus at a time". The Weathering studio can now apply wear to every building of a type, cut doors and windows and add searchable furniture; the developer called it "actually really good." The game's world switched to the Build 1.0 scene. Unity hung for about five hours on a Storm bug, and since then Claude restarts Unity itself.</p>
 <h3>Day 17 · Sun 4 Oct</h3>
 <p class="hours"><strong>Total hours:</strong> about 8.3 h. Running total: 149 h.</p>
 
-<p>Day 17 was the day version control was dropped. The project had grown so large that its Git history filled the disk, so the history was removed, the repo archived and backups moved to another drive. The see-through tunnel around the player was replaced by a player silhouette, with the dollhouse view kept for interiors, and zombies gained an attention span. ChatGPT drafted three NPC brains from Claude's framework, Claude reviewed them, and all passed their tests. Storm's licence arrived, but its own houses looked wrong, so Storm now lays the streets and a custom filler drops whole apocalypse buildings into the lots. Six towns were built, and overnight the capital wall became an organic oval, the flood gained a tide and 797 skyscrapers were switched off. The developer's verdict: "beautiful, the town is in."</p>
 <div class="day-points">
 <ul>
 <li>Git dropped after its history filled the disk; repo archived, backups moved to another drive.</li>
@@ -560,10 +559,10 @@
 <li>Storm's road tool froze Unity twice.</li>
 </ul>
 </div>
+<p>Day 17 was the day version control was dropped. The project had grown so large that its Git history filled the disk, so the history was removed, the repo archived and backups moved to another drive. The see-through tunnel around the player was replaced by a player silhouette, with the dollhouse view kept for interiors, and zombies gained an attention span. ChatGPT drafted three NPC brains from Claude's framework, Claude reviewed them, and all passed their tests. Storm's licence arrived, but its own houses looked wrong, so Storm now lays the streets and a custom filler drops whole apocalypse buildings into the lots. Six towns were built, and overnight the capital wall became an organic oval, the flood gained a tide and 797 skyscrapers were switched off. The developer's verdict: "beautiful, the town is in."</p>
 <h3>Day 16 · Sat 3 Oct</h3>
 <p class="hours"><strong>Total hours:</strong> about 9.5 h. Running total: 141 h.</p>
 
-<p>Day 16 planned the roads and the opening of the game, and brought in a town generator. The beach intro, where the player washes ashore, was planned. A gravel path network grew to 337 links and was painted across 43 terrain tiles, about 123 km of paths in total. The character creator gained layered clothing, colour picking and faction buttons, doors started opening, and a main menu arrived. Build Mode and the Weathering tool were both brought into the game executable, and a test barn was given 79 pieces of wear. An NPC simulation was rebuilt at real scale, and an evolution lab that simulated 3,000 people over 20 years produced a roster of 110 NPCs. The Storm town generator was licensed, a Build 1.0 scene was created to test it, and the project was backed up overnight.</p>
 <div class="day-points">
 <ul>
 <li>Beach intro planned: the player washes ashore.</li>
@@ -576,10 +575,10 @@
 <li>Storm town generator licensed; Build 1.0 created as its test scene.</li>
 </ul>
 </div>
+<p>Day 16 planned the roads and the opening of the game, and brought in a town generator. The beach intro, where the player washes ashore, was planned. A gravel path network grew to 337 links and was painted across 43 terrain tiles, about 123 km of paths in total. The character creator gained layered clothing, colour picking and faction buttons, doors started opening, and a main menu arrived. Build Mode and the Weathering tool were both brought into the game executable, and a test barn was given 79 pieces of wear. An NPC simulation was rebuilt at real scale, and an evolution lab that simulated 3,000 people over 20 years produced a roster of 110 NPCs. The Storm town generator was licensed, a Build 1.0 scene was created to test it, and the project was backed up overnight.</p>
 <h3>Day 15 · Fri 2 Oct</h3>
 <p class="hours"><strong>Total hours:</strong> about 12.5 h. Running total: 131 h.</p>
 
-<p>Day 15 gave the NPCs a personality and a voice. Stranger NPCs, survivors with no faction, were built on one shared survivor brain with camps, needs and moods. Each one carries a hostility meter from 0 to 100 that warns at 50 and opens fire at 90, with a ladder of warnings and a warning shot before an attack. The player can calm them down with a gesture or by giving food and water, and at 20 or below they will join the player's gang; visiting too often makes them suspicious, then paranoid. A death screen and respawn were added, and animals learned to graze, drink, rest, herd and flee from zombies. 111 voice lines were written in a hardened-survivor tone, voiced with ElevenLabs and wired into the game, with six voice sets prepared.</p>
 <div class="day-points">
 <ul>
 <li>Stranger NPCs on one survivor brain with camps, needs and moods.</li>
@@ -591,12 +590,12 @@
 <li>Animals graze, drink, rest, herd and flee zombies.</li>
 <li>111 voice clips generated with ElevenLabs; six voice sets prepared.</li>
 </ul>
-<h2>Week 2</h2>
 </div>
+<p>Day 15 gave the NPCs a personality and a voice. Stranger NPCs, survivors with no faction, were built on one shared survivor brain with camps, needs and moods. Each one carries a hostility meter from 0 to 100 that warns at 50 and opens fire at 90, with a ladder of warnings and a warning shot before an attack. The player can calm them down with a gesture or by giving food and water, and at 20 or below they will join the player's gang; visiting too often makes them suspicious, then paranoid. A death screen and respawn were added, and animals learned to graze, drink, rest, herd and flee from zombies. 111 voice lines were written in a hardened-survivor tone, voiced with ElevenLabs and wired into the game, with six voice sets prepared.</p>
+<h2>Week 2</h2>
 <h3>Day 14 · Thu 1 Oct</h3>
 <p class="hours"><strong>Total hours:</strong> about 9.3 h. Running total: 119 h.</p>
 
-<p>Day 14 added a companion and some life to the countryside. A companion dog arrived that follows the player and takes orders. Fruit trees were planted, and their fruit can be picked by hand. A pilot for building interiors started, to test how the inside of houses would work. Ageing the military site was planned in a Cowork session. Claude could not reach Unity from Cowork, so it wrote a ready-made prompt for a fresh chat to do the work instead.</p>
 <div class="day-points">
 <ul>
 <li>Companion dog that follows the player and takes orders.</li>
@@ -606,10 +605,10 @@
 <li>Claude could not reach Unity from Cowork, so it handed the job on as a prompt.</li>
 </ul>
 </div>
+<p>Day 14 added a companion and some life to the countryside. A companion dog arrived that follows the player and takes orders. Fruit trees were planted, and their fruit can be picked by hand. A pilot for building interiors started, to test how the inside of houses would work. Ageing the military site was planned in a Cowork session. Claude could not reach Unity from Cowork, so it wrote a ready-made prompt for a fresh chat to do the work instead.</p>
 <h3>Day 13 · Wed 30 Sep (approximate)</h3>
 <p class="hours"><strong>Total hours:</strong> about 2.2 h. Running total: 110 h.</p>
 
-<p>Day 13 finished the flooded capital. Puddles now ripple, and moving through water throws up splashes. The swamp city was closed in by a perimeter wall, dressed with rust and climbing vines. With those pieces done, the waterlogged city was moved out of its test scene and installed in the main world. It was a short working day, but it turned the flood from a test into part of the island.</p>
 <div class="day-points">
 <ul>
 <li>Puddle ripples and water splashes.</li>
@@ -617,10 +616,10 @@
 <li>Waterlogged city installed in the main world.</li>
 </ul>
 </div>
+<p>Day 13 finished the flooded capital. Puddles now ripple, and moving through water throws up splashes. The swamp city was closed in by a perimeter wall, dressed with rust and climbing vines. With those pieces done, the waterlogged city was moved out of its test scene and installed in the main world. It was a short working day, but it turned the flood from a test into part of the island.</p>
 <h3>Day 12 · Tue 29 Sep (approximate)</h3>
 <p class="hours"><strong>Total hours:</strong> about 4 h. Running total: 107 h.</p>
 
-<p>Day 12 was the city's big visual day. 1,531 building facades were re-textured with a ten-tone concrete that wraps evenly over any shape, along with new rooftops, steps and apartment detail. A hybrid occlusion system went in: a see-through tunnel opens around the player outside, and a dollhouse view cuts open the building the player is in. The capital was flooded permanently, knee-deep across an area of 1,344 by 832 metres. The flood is made of 273 water tiles dressed with reeds, lily pads and floating debris. A day and night cycle was added the same day.</p>
 <div class="day-points">
 <ul>
 <li>1,531 facades re-textured with a ten-tone concrete, plus rooftops, steps and apartment detail.</li>
@@ -630,10 +629,10 @@
 <li>Day and night cycle.</li>
 </ul>
 </div>
+<p>Day 12 was the city's big visual day. 1,531 building facades were re-textured with a ten-tone concrete that wraps evenly over any shape, along with new rooftops, steps and apartment detail. A hybrid occlusion system went in: a see-through tunnel opens around the player outside, and a dollhouse view cuts open the building the player is in. The capital was flooded permanently, knee-deep across an area of 1,344 by 832 metres. The flood is made of 273 water tiles dressed with reeds, lily pads and floating debris. A day and night cycle was added the same day.</p>
 <h3>Day 11 · Mon 28 Sep (approximate)</h3>
 <p class="hours"><strong>Total hours:</strong> about 8.3 h. Running total: 103 h.</p>
 
-<p>Day 11 was about tools for making characters. Three NPC creator scenes were built, one for each character set in the project: Sidekick, Low Poly and Synty Low Poly. Each creator can build characters in batches, and the creators were packaged as their own separate executable. A combat demo arena was set up for testing fights away from the main world. Low-hanging mist was added to give the ground some atmosphere. Build Mode also gained safety checks so placing things is less likely to break a scene.</p>
 <div class="day-points">
 <ul>
 <li>Three NPC creator scenes: Sidekick, Low Poly and Synty Low Poly.</li>
@@ -643,10 +642,10 @@
 <li>Safety checks added to Build Mode.</li>
 </ul>
 </div>
+<p>Day 11 was about tools for making characters. Three NPC creator scenes were built, one for each character set in the project: Sidekick, Low Poly and Synty Low Poly. Each creator can build characters in batches, and the creators were packaged as their own separate executable. A combat demo arena was set up for testing fights away from the main world. Low-hanging mist was added to give the ground some atmosphere. Build Mode also gained safety checks so placing things is less likely to break a scene.</p>
 <h3>Day 10 · Sun 27 Sep (approximate)</h3>
 <p class="hours"><strong>Total hours:</strong> about 6.2 h. Running total: 95 h.</p>
 
-<p>Day 10 added Build Mode, the tool used to dress the island ever since. In Play, it opens a palette of 1,049 props that can be placed straight into the world. Each area saves automatically and can be imported into the scene, with a paint mode, delete, God mode and invisibility for working without interruption. A noise system with noise rings and listeners was built alongside zombie sight. Player vitals and ivy coverage were also added.</p>
 <div class="day-points">
 <ul>
 <li>Build Mode: place props in Play from a palette of 1,049 items.</li>
@@ -656,10 +655,10 @@
 <li>Player vitals and ivy coverage.</li>
 </ul>
 </div>
+<p>Day 10 added Build Mode, the tool used to dress the island ever since. In Play, it opens a palette of 1,049 props that can be placed straight into the world. Each area saves automatically and can be imported into the scene, with a paint mode, delete, God mode and invisibility for working without interruption. A noise system with noise rings and listeners was built alongside zombie sight. Player vitals and ivy coverage were also added.</p>
 <h3>Day 9 · Sat 26 Sep (approximate)</h3>
 <p class="hours"><strong>Total hours:</strong> about 12 h. Running total: 89 h.</p>
 
-<p>Day 9 began the city. A town generator was written and later handed to Antigravity to continue. A second tool filled the capital with tall buildings. Biome bands were painted, the ground was given a more natural pass, and ivy was drawn with overgrowth instancing. The capital's blocks were mapped out and a muted colour scheme for the city was tested.</p>
 <div class="day-points">
 <ul>
 <li>Town generator written, then handed to Antigravity.</li>
@@ -669,10 +668,10 @@
 <li>Capital blocks mapped; muted city colours tested.</li>
 </ul>
 </div>
+<p>Day 9 began the city. A town generator was written and later handed to Antigravity to continue. A second tool filled the capital with tall buildings. Biome bands were painted, the ground was given a more natural pass, and ivy was drawn with overgrowth instancing. The capital's blocks were mapped out and a muted colour scheme for the city was tested.</p>
 <h3>Day 8 · Fri 25 Sep (approximate)</h3>
 <p class="hours"><strong>Total hours:</strong> about 11.2 h. Running total: 77 h.</p>
 
-<p>Day 8 was about loot. Zombies now drop items where they fall, the corpse sinks into the ground, and the player walks over to pick things up. Behind that sit loot tables, rarity colours, consumables and saving. The item catalog is fed by a small web app made to cull the item list. Player noise, a minimap, a quad bike driver, a slide, and player and zombie audio were added. A world planning tool produced the plan of towns, zones and roads for the island.</p>
 <div class="day-points">
 <ul>
 <li>Zombies drop loot where they fall; the corpse sinks away.</li>
@@ -682,12 +681,12 @@
 <li>Player voice and zombie audio.</li>
 <li>World plan of towns, zones and roads.</li>
 </ul>
-<h2>Week 1</h2>
 </div>
+<p>Day 8 was about loot. Zombies now drop items where they fall, the corpse sinks into the ground, and the player walks over to pick things up. Behind that sit loot tables, rarity colours, consumables and saving. The item catalog is fed by a small web app made to cull the item list. Player noise, a minimap, a quad bike driver, a slide, and player and zombie audio were added. A world planning tool produced the plan of towns, zones and roads for the island.</p>
+<h2>Week 1</h2>
 <h3>Day 7 · Thu 24 Sep (approximate)</h3>
 <p class="hours"><strong>Total hours:</strong> about 10.5 h. Running total: 66 h.</p>
 
-<p>Day 7 turned the project into a playable game. A backpack inventory and an eight-slot weapon wheel were added, with guns aiming at the cursor and checking for cover. Melee and pistol grips were retuned and unarmed punches now chain. Zombies got mocap walking and running, death gore, ragdolls, a readable lunge attack and two running styles. The HUD and weapon wheel kept working on horseback. The character creator became the game's front door, with Save &amp; Play opening the island, and the first standalone build of Carriers was made. Claude and Antigravity both worked on it, and with 41 scripts saved it was the busiest day of the first week.</p>
 <div class="day-points">
 <ul>
 <li>Backpack inventory and an 8-slot weapon wheel.</li>
@@ -700,10 +699,10 @@
 <li>41 scripts saved, the busiest day of week 1.</li>
 </ul>
 </div>
+<p>Day 7 turned the project into a playable game. A backpack inventory and an eight-slot weapon wheel were added, with guns aiming at the cursor and checking for cover. Melee and pistol grips were retuned and unarmed punches now chain. Zombies got mocap walking and running, death gore, ragdolls, a readable lunge attack and two running styles. The HUD and weapon wheel kept working on horseback. The character creator became the game's front door, with Save &amp; Play opening the island, and the first standalone build of Carriers was made. Claude and Antigravity both worked on it, and with 41 scripts saved it was the busiest day of the first week.</p>
 <h3>Day 6 · Wed 23 Sep (approximate)</h3>
 <p class="hours"><strong>Total hours:</strong> about 7.7 h. Running total: 55 h.</p>
 
-<p>Day 6 fixed two things the game still relies on. Grass streaming was rebuilt around 16 m cells with GPU culling, three detail levels and fade-in, so turning the camera no longer reloads the grass. The top-down survival camera was set at a 38° pitch, 45° yaw, 30° field of view and a 22 m arm, with the right mouse button to aim. That angled camera is the one the game still uses. Animals were placed per biome, and a companion horse that can be ridden was added. Combat blood, military weapons, throwables and pickups in the world also went in.</p>
 <div class="day-points">
 <ul>
 <li>Grass streaming rebuilt: 16 m cells, GPU culling, 3 detail levels with fade-in.</li>
@@ -714,10 +713,10 @@
 <li>Combat blood, military weapons, throwables and world pickups.</li>
 </ul>
 </div>
+<p>Day 6 fixed two things the game still relies on. Grass streaming was rebuilt around 16 m cells with GPU culling, three detail levels and fade-in, so turning the camera no longer reloads the grass. The top-down survival camera was set at a 38° pitch, 45° yaw, 30° field of view and a 22 m arm, with the right mouse button to aim. That angled camera is the one the game still uses. Animals were placed per biome, and a companion horse that can be ridden was added. Combat blood, military weapons, throwables and pickups in the world also went in.</p>
 <h3>Day 5 · Tue 22 Sep (approximate)</h3>
 <p class="hours"><strong>Total hours:</strong> about 5.8 h. Running total: 48 h.</p>
 
-<p>Day 5 was a pass over the whole world. The game was tried in a third-person view and the camera tuned for forests. Grass was blended into the soil so it no longer sat on top like a carpet. The north of the map got an alpine layout. The first dirt paths were laid, the coastline was redone, and the bow received its own animator.</p>
 <div class="day-points">
 <ul>
 <li>Third-person world pass and forest camera pass.</li>
@@ -727,10 +726,10 @@
 <li>Bow animator.</li>
 </ul>
 </div>
+<p>Day 5 was a pass over the whole world. The game was tried in a third-person view and the camera tuned for forests. Grass was blended into the soil so it no longer sat on top like a carpet. The north of the map got an alpine layout. The first dirt paths were laid, the coastline was redone, and the bow received its own animator.</p>
 <h3>Day 4 · Mon 21 Sep (approximate)</h3>
 <p class="hours"><strong>Total hours:</strong> about 10.5 h. Running total: 42 h.</p>
 
-<p>Day 4 is when the island came into being. The open world was generated with a terrain tool as 64 tiles of 1,024 m each, about 75 km², and those same tiles are still the world today. The scene was then migrated, audited for performance and gameplay, and its sea level levelled out. Wildlife arrived with hearing and hunting behaviour, including animals along the coast. Stealth gained player scent and cover from tall grass. Zombies got better vision, tuned chase speeds and the ability to vault fences, and the first inventory items were defined.</p>
 <div class="day-points">
 <ul>
 <li>Open world generated: 64 tiles of 1,024 m, about 75 km², still in use.</li>
@@ -741,10 +740,10 @@
 <li>First inventory item definitions.</li>
 </ul>
 </div>
+<p>Day 4 is when the island came into being. The open world was generated with a terrain tool as 64 tiles of 1,024 m each, about 75 km², and those same tiles are still the world today. The scene was then migrated, audited for performance and gameplay, and its sea level levelled out. Wildlife arrived with hearing and hunting behaviour, including animals along the coast. Stealth gained player scent and cover from tall grass. Zombies got better vision, tuned chase speeds and the ability to vault fences, and the first inventory items were defined.</p>
 <h3>Day 3 · Sun 20 Sep (approximate)</h3>
 <p class="hours"><strong>Total hours:</strong> about 11.2 h. Running total: 31 h.</p>
 
-<p>Day 3 was about terrain tools. A painter for coastline sand, a sea-level fix and a terrain smoother were written. Biome maps were painted by hand, and a tool for painting grass in boxes was added. Tall meadow grass with trampling went in, the first grass that reacts to the player walking through it. A slope fix was then applied across the world scene.</p>
 <div class="day-points">
 <ul>
 <li>Coastline sand painter, sea-level fix and terrain smoother.</li>
@@ -753,10 +752,10 @@
 <li>Slope fix applied to the world scene.</li>
 </ul>
 </div>
+<p>Day 3 was about terrain tools. A painter for coastline sand, a sea-level fix and a terrain smoother were written. Biome maps were painted by hand, and a tool for painting grass in boxes was added. Tall meadow grass with trampling went in, the first grass that reacts to the player walking through it. A slope fix was then applied across the world scene.</p>
 <h3>Day 2 · Sat 19 Sep (approximate)</h3>
 <p class="hours"><strong>Total hours:</strong> about 12.8 h. Running total: 20 h.</p>
 
-<p>Day 2 built the backdrop and the first enemies. An ocean and sky were made to follow the camera. Tools for painting meadow grass and scattering ground detail were written, and tree colliders were fixed. Melee was set up and the bow repaired. The first zombies were generated from a character pack and given a faint glow, and a quad bike was placed in the world. The first performance captures were also taken, an early sign that frame rate would need watching.</p>
 <div class="day-points">
 <ul>
 <li>Ocean and sky that follow the camera.</li>
@@ -768,10 +767,10 @@
 <li>First profiler captures.</li>
 </ul>
 </div>
+<p>Day 2 built the backdrop and the first enemies. An ocean and sky were made to follow the camera. Tools for painting meadow grass and scattering ground detail were written, and tree colliders were fixed. Melee was set up and the bow repaired. The first zombies were generated from a character pack and given a faint glow, and a quad bike was placed in the world. The first performance captures were also taken, an early sign that frame rate would need watching.</p>
 <h3>Day 1 · Fri 18 Sep 2026 (approximate)</h3>
 <p class="hours"><strong>Total hours:</strong> about 7.2 h. Running total: 7 h.</p>
 
-<p>Day 1 was the start of the Unity project. A single world scene was created and the first scripts went in. They covered a bow, an isometric character and camera, and a stealth setup. Animators for going prone, sliding and climbing were added, along with a training dummy, a damage system and zombie spawn data. Nothing was playable yet, but fighting, an angled camera and hiding, the three ideas that define the game, were all there from the first day.</p>
 <div class="day-points">
 <ul>
 <li>Unity project created with its first world scene.</li>
@@ -779,118 +778,69 @@
 <li>Animators for prone, slide and traversal.</li>
 <li>Training dummy, damage system and zombie spawn data.</li>
 <li>Nothing playable yet.</li>
+<li>Unity 6 (6000.6.1f1) with the Universal Render Pipeline, ProBuilder, Cinemachine, Animation Rigging, AI Navigation, Splines, FBX Exporter, Input System, Shader Graph and VFX Graph.</li>
+<li>Fast Script Reload. Unity MCP (CoplayDev), which lets Claude drive the Unity editor.</li>
+<li>Procedural Worlds: Gaia, GTS and Storm (town and city generator with its Building Generator, City Generator, Area Populator and Terrain plugins).</li>
+<li>Purple Sky: Stylized Cypress Valley (the earlier grass, ground and field look).</li>
+<li>A+ Grass (URP), the default grass from 20 October.</li>
+<li>Real Ivy 2 (ivy, vines and moss on the houses).</li>
+<li>Poly Haven: CC0 ground textures used for the ruined town roads.</li>
+<li>Spruce Forest. Global Snow and Global Snow 2. Pure Volumetric Fog (BK). SnowStarGames Gaia Spawner.</li>
+<li>Biomass, Biomass Webs, Mossy Piles and Roots Constructor (overgrowth and decor).</li>
+<li>Lakefell modular building kit (house rebuild from 20 October).</li>
+<li>Apocalypse, City, City Zombies, Construction, Dog, Fantasy Village, Farm, Generic, Military, Nature, Nature Biomes, Palm City, Particle FX, Pirate Realm, Quad Bike, Samurai Empire, Shops, Street Racer, Town, Western Frontier, and the Military Warehouse, Plaza, Prison and Woodland Apocalypse maps.</li>
+<li>Sidekick Characters, Interface Apocalypse HUD, Interface Core.</li>
+<li>Animation packs: Base Locomotion, Bow Combat, Emotes and Taunts, Goblin Locomotion, Idles, Sword Combat.</li>
+<li>Polygon-Mega: Survival, Survival Construction, Survival Tools, Medical Kit, Weapon Kit.</li>
+<li>Animpic Studio: Poly-Survival Food, Poly-Survival Melee Weapons, POLY-Survival Character.</li>
+<li>Toon Series: Toon Farm Pack.</li>
+<li>janpec: Animal Pack Deluxe v1 and v2.</li>
+<li>Malbers Animations: Animal Controller, Animals Packs, Horse AnimSet Pro.</li>
+<li>Emerald AI. Advanced Zombie AI Pro.</li>
+<li>Yummy Games: Zombie Animations Mocap.</li>
+<li>Universal Traversal Anims (Ultimate Traversal).</li>
+<li>Kevin Iglesias: Human Animations and IK Helper Tool.</li>
+<li>Advanced Crawling Animation. Deadly Kombat (free version). Moto Interaction Anims (free).</li>
+<li>Mixamo (Adobe): Kicks, Pistol and Parkour Actions clips.</li>
+<li>Quibli (stylised shader). RVFX Blood Effects Pack. Vefects Wind VFX URP (free). VFX Pack Impact Wall Coeur (free version).</li>
+<li>Dark: Complete Horror UI.</li>
+<li>ElevenLabs for NPC voice lines.</li>
+<li>Claude (Anthropic), ChatGPT (OpenAI) and Antigravity, as described at the top of this report.</li>
 </ul>
-<hr />
+</div>
+<h2>Day 1 was the start of the Unity project. A single world scene was created and the first scripts went in. They covered a bow, an isometric character and camera, and a stealth setup. Animators for going prone, sliding and climbing were added, along with a training dummy, a damage system and zombie spawn data. Nothing was playable yet, but fighting, an angled camera and hiding, the three ideas that define the game, were all there from the first day.</h2>
 <h2>Status at Day 39</h2>
-<p><strong>Total hours to date:</strong> about 693. Busiest day: Day 21 (8 Oct) at about 58 h.</p>
-<table>
-<thead>
-<tr>
-<th>Area</th>
-<th>Estimate</th>
-<th>State</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>World, terrain, look</td>
-<td>75%</td>
-<td>Island, biomes, weather, snow, fog ring, tilt-shift in</td>
-</tr>
-<tr>
-<td>Towns and generation</td>
-<td>55%</td>
-<td>Districts D1 to D8 built; capital apartment run queued</td>
-</tr>
-<tr>
-<td>Buildings and interiors</td>
-<td>55%</td>
-<td>~50 Builder houses + R01 to R20; saving to town</td>
-</tr>
-<tr>
-<td>Player, climbing, controls</td>
-<td>75%</td>
-<td>Push-off and band run-up compiled, not played</td>
-</tr>
-<tr>
-<td>Performance</td>
-<td>n/a</td>
-<td>Towns 60 to 90 fps; hitch fix untested</td>
-</tr>
-<tr>
-<td>Quests and story</td>
-<td>15%</td>
-<td>Part 1 compiled</td>
-</tr>
-<tr>
-<td>Farms</td>
-<td>5%</td>
-<td>Plan done, tool staged</td>
-</tr>
-<tr>
-<td>NPCs, zombies, animals</td>
-<td>55 to 60%</td>
-<td>Both NPCs and zombies OFF; Emerald NPCs at 7 bases</td>
-</tr>
-<tr>
-<td>Audio, VFX, combat feel</td>
-<td>30%</td>
-<td>Weather and kick sounds compiled, not heard</td>
-</tr>
-<tr>
-<td>Menus, saves, build, tools</td>
-<td>25%</td>
-<td>Dark menu, F9 hacks; no full save system; no fresh EXE since 7 Oct</td>
-</tr>
-</tbody>
-</table>
-<p><strong>Switched off in the current build:</strong> NPCs (since Day 20), zombies (since Day 19).
+<p><strong>Total hours to date:</strong> about 693. Busiest day: Day 21 (8 Oct) at about 58 h.
+| Area | Estimate | State |
+|---|---|---|
+| World, terrain, look | 75% | Island, biomes, weather, snow, fog ring, tilt-shift in |
+| Towns and generation | 55% | Districts D1 to D8 built; capital apartment run queued |
+| Buildings and interiors | 55% | ~50 Builder houses + R01 to R20; saving to town |
+| Player, climbing, controls | 75% | Push-off and band run-up compiled, not played |
+| Performance | n/a | Towns 60 to 90 fps; hitch fix untested |
+| Quests and story | 15% | Part 1 compiled |
+| Farms | 5% | Plan done, tool staged |
+| NPCs, zombies, animals | 55 to 60% | Both NPCs and zombies OFF; Emerald NPCs at 7 bases |
+| Audio, VFX, combat feel | 30% | Weather and kick sounds compiled, not heard |
+| Menus, saves, build, tools | 25% | Dark menu, F9 hacks; no full save system; no fresh EXE since 7 Oct |
+<strong>Switched off in the current build:</strong> NPCs (since Day 20), zombies (since Day 19).
 <strong>Standing rules learned:</strong> one focus at a time; no scripts to disk during Play; restart the editor between Play sessions; one Storm iterate per area per session; keep Gaia "Unload Assets Runtime" on; no GPU Resident Drawer, no Deferred+.
 <strong>Risks:</strong> no version control since Day 17 (Build 1.0 lives on one machine, plus backups); the generator licence lapses soon; Unity memory; a lot of compiled-but-unplayed work.
 <strong>Not yet in this record:</strong> screenshots. None exist in the repo yet.</p>
 <hr />
 <h2>Credits</h2>
-<p>Carriers is built on the Unity engine and a large number of third-party asset packs, bought and free. The list below is by publisher, as recorded in the project on 13 October 2026 and updated as new packs arrive. All packs remain the property of their publishers and are used under their store licences.</p>
-<p><strong>Engine and tools</strong>
-- Unity 6 (6000.6.1f1) with the Universal Render Pipeline, ProBuilder, Cinemachine, Animation Rigging, AI Navigation, Splines, FBX Exporter, Input System, Shader Graph and VFX Graph.
-- Fast Script Reload. Unity MCP (CoplayDev), which lets Claude drive the Unity editor.</p>
-<p><strong>World, terrain and nature</strong>
-- Procedural Worlds: Gaia, GTS and Storm (town and city generator with its Building Generator, City Generator, Area Populator and Terrain plugins).
-- Purple Sky: Stylized Cypress Valley (the earlier grass, ground and field look).
-- A+ Grass (URP), the default grass from 20 October.
-- Real Ivy 2 (ivy, vines and moss on the houses).
-- Poly Haven: CC0 ground textures used for the ruined town roads.
-- Spruce Forest. Global Snow and Global Snow 2. Pure Volumetric Fog (BK). SnowStarGames Gaia Spawner.
-- Biomass, Biomass Webs, Mossy Piles and Roots Constructor (overgrowth and decor).</p>
-<p><strong>Buildings</strong>
-- Lakefell modular building kit (house rebuild from 20 October).</p>
-<p><strong>Synty Studios (POLYGON)</strong>
-- Apocalypse, City, City Zombies, Construction, Dog, Fantasy Village, Farm, Generic, Military, Nature, Nature Biomes, Palm City, Particle FX, Pirate Realm, Quad Bike, Samurai Empire, Shops, Street Racer, Town, Western Frontier, and the Military Warehouse, Plaza, Prison and Woodland Apocalypse maps.
-- Sidekick Characters, Interface Apocalypse HUD, Interface Core.
-- Animation packs: Base Locomotion, Bow Combat, Emotes and Taunts, Goblin Locomotion, Idles, Sword Combat.</p>
-<p><strong>Other art packs</strong>
-- Polygon-Mega: Survival, Survival Construction, Survival Tools, Medical Kit, Weapon Kit.
-- Animpic Studio: Poly-Survival Food, Poly-Survival Melee Weapons, POLY-Survival Character.
-- Toon Series: Toon Farm Pack.
-- janpec: Animal Pack Deluxe v1 and v2.</p>
-<p><strong>Characters, animals and AI</strong>
-- Malbers Animations: Animal Controller, Animals Packs, Horse AnimSet Pro.
-- Emerald AI. Advanced Zombie AI Pro.</p>
-<p><strong>Animation</strong>
-- Yummy Games: Zombie Animations Mocap.
-- Universal Traversal Anims (Ultimate Traversal).
-- Kevin Iglesias: Human Animations and IK Helper Tool.
-- Advanced Crawling Animation. Deadly Kombat (free version). Moto Interaction Anims (free).
-- Mixamo (Adobe): Kicks, Pistol and Parkour Actions clips.</p>
-<p><strong>VFX, shaders and UI</strong>
-- Quibli (stylised shader). RVFX Blood Effects Pack. Vefects Wind VFX URP (free). VFX Pack Impact Wall Coeur (free version).
-- Dark: Complete Horror UI.</p>
-<p><strong>Voice</strong>
-- ElevenLabs for NPC voice lines.</p>
-<p><strong>AI assistants</strong>
-- Claude (Anthropic), ChatGPT (OpenAI) and Antigravity, as described at the top of this report.</p>
-<p>The building models called "Opus buildings" in this report are the studio's own Blender exports, not a store pack.</p>
-</div>
+<p>Carriers is built on the Unity engine and a large number of third-party asset packs, bought and free. The list below is by publisher, as recorded in the project on 13 October 2026 and updated as new packs arrive. All packs remain the property of their publishers and are used under their store licences.
+<strong>Engine and tools</strong>
+<strong>World, terrain and nature</strong>
+<strong>Buildings</strong>
+<strong>Synty Studios (POLYGON)</strong>
+<strong>Other art packs</strong>
+<strong>Characters, animals and AI</strong>
+<strong>Animation</strong>
+<strong>VFX, shaders and UI</strong>
+<strong>Voice</strong>
+<strong>AI assistants</strong>
+The building models called "Opus buildings" in this report are the studio's own Blender exports, not a store pack.</p>
   <p class="updated">Page built 27 October 2026. Source: the studio's daily development log.</p>
 </main>
 <footer class="site-footer">
