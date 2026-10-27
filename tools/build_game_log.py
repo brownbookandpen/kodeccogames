@@ -28,7 +28,7 @@ def wrap_days(text):
         if photos.strip():
             block += f'\n{photos.strip()}\n'
         if detail.strip():
-            block += f'\n<details class="day-detail" markdown="1">\n<summary>Full detail</summary>\n\n{detail.strip()}\n\n</details>\n'
+            block += f'\n<div class="day-points" markdown="1">\n\n{detail.strip()}\n\n</div>\n'
         out.append(block)
     return '\n'.join(out)
 
@@ -93,13 +93,9 @@ page = f"""<!DOCTYPE html>
   .report table{{border-collapse:collapse;width:100%;font-size:.92rem;margin:14px 0 24px;}}
   .report th,.report td{{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top;}}
   .report th{{font-family:var(--f-term);font-weight:400;letter-spacing:.08em;text-transform:uppercase;color:var(--mute);font-size:1.05rem;}}
-  details.day-detail{{border:1px solid var(--line);background:var(--ink-2);padding:0 18px;margin:6px 0 10px;}}
-  details.day-detail summary{{cursor:pointer;list-style:none;font-family:var(--f-term);font-size:1.15rem;letter-spacing:.1em;text-transform:uppercase;color:var(--fog);padding:12px 0;}}
-  details.day-detail summary::-webkit-details-marker{{display:none;}}
-  details.day-detail summary::before{{content:"+ ";}}
-  details.day-detail[open] summary::before{{content:"− ";}}
-  details.day-detail[open] summary{{border-bottom:1px solid var(--line);margin-bottom:14px;}}
-  details.day-detail > p,details.day-detail > ul{{font-size:.95rem;}}
+  .day-points{{margin:6px 0 10px;}}
+  .day-points ul{{font-size:.95rem;margin:0;padding-left:1.2em;}}
+  .day-points li{{margin:.25em 0;}}
   .photos{{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px;margin:18px 0 10px;}}
   .photos figure{{margin:0;background:#070a0a;border:1px solid var(--line);}}
   .photos img,.photos video{{width:100%;aspect-ratio:16/9;object-fit:cover;display:block;background:#000;}}
@@ -129,7 +125,7 @@ page = f"""<!DOCTYPE html>
     <div class="eyebrow">Carriers · Built in Unity</div>
     <h1 class="display">Development report</h1>
     <div class="facts"><span class="chip live">Updated daily</span><span class="chip">Day 1 to Day {last}</span><span class="chip">About {total_h} hours</span><span class="chip">Since 18 Sep 2026</span></div>
-    <div class="toolbar"><button type="button" onclick="document.querySelectorAll('details.day-detail').forEach(function(d){{d.open=true}})">Expand all</button><button type="button" onclick="document.querySelectorAll('details.day-detail').forEach(function(d){{d.open=false}})">Collapse all</button><button type="button" onclick="var a=document.querySelectorAll('.report h3');a[0].scrollIntoView({{behavior:'smooth'}})">Latest day ↓</button><button type="button" onclick="var a=document.querySelectorAll('.report h3');a[a.length-1].scrollIntoView({{behavior:'smooth'}})">Day 1 ↓</button></div>
+    <div class="toolbar"><button type="button" onclick="var a=document.querySelectorAll('.report h3');a[0].scrollIntoView({{behavior:'smooth'}})">Latest day ↓</button><button type="button" onclick="var a=document.querySelectorAll('.report h3');a[a.length-1].scrollIntoView({{behavior:'smooth'}})">Day 1 ↓</button></div>
   </div>
 {body}
   <p class="updated">Page built {built}. Source: the studio's daily development log.</p>
