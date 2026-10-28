@@ -5,10 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#050505">
 <title>Development Report — Carriers: Built in Unity</title>
-<meta name="description" content="Day-by-day development report for Carriers, the Unity survival game from Kodecco Games. Day 1 to Day 40, about 703 hours of work, updated daily.">
+<meta name="description" content="Day-by-day development report for Carriers, the Unity survival game from Kodecco Games. Day 1 to Day 41, about 703 hours of work, updated daily.">
 <link rel="icon" href="../../favicon.ico" sizes="any">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Carriers development report, Day 1 to Day 40">
+<meta property="og:title" content="Carriers development report, Day 1 to Day 41">
 <meta property="og:description" content="What was built, what broke and what was decided, every day since 18 September 2026.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -67,13 +67,13 @@
   <div class="report-head">
     <div class="eyebrow">Carriers · Built in Unity</div>
     <h1 class="display">Development report</h1>
-    <div class="facts"><span class="chip live">Updated daily</span><span class="chip">Day 1 to Day 40</span><span class="chip">About 703 hours</span><span class="chip">Since 18 Sep 2026</span></div>
+    <div class="facts"><span class="chip live">Updated daily</span><span class="chip">Day 1 to Day 41</span><span class="chip">About 703 hours</span><span class="chip">Since 18 Sep 2026</span></div>
     <div class="toolbar"><button type="button" onclick="var a=document.querySelectorAll('.report h3');a[0].scrollIntoView({behavior:'smooth'})">Latest day ↓</button><button type="button" onclick="var a=document.querySelectorAll('.report h3');a[a.length-1].scrollIntoView({behavior:'smooth'})">Day 1 ↓</button></div>
   </div>
-<h1>Carriers: development report, Day 1 to Day 40</h1>
+<h1>Carriers: development report, Day 1 to Day 41</h1>
 <p><strong>Project:</strong> Carriers, a single-player open-world zombie survival game built in Unity 6 (6000.6.1f1, URP), set in the Carrier universe.
 <strong>Studio:</strong> Kodecco Games. One developer directs, tests and makes every decision; AI assistants write most of the code.
-<strong>Period:</strong> 18 September 2026 (Day 1) to 27 October 2026 (Day 40). All dates and times are Singapore time (SGT, UTC+8). Newest day first.
+<strong>Period:</strong> 18 September 2026 (Day 1) to 28 October 2026 (Day 41). All dates and times are Singapore time (SGT, UTC+8). Newest day first.
 <strong>Total hours:</strong> about 703 hours so far. Per-day figures are estimates from file save times in the Unity project and, from Day 19, the running time of each AI thread; earlier days are undercounted.
 <strong>Confidence:</strong> Days 1 to 13 (18 to 30 September) are reconstructed from file timestamps and the project's Devjournal notes; exact session lengths are unknown and the order of work within a day is approximate. Days 14 onward (1 October on) come from chat logs, project threads and the tracker and are confirmed. Note: the source day files were written with UTC dates, so an item done late in the evening SGT may be listed under the day before or after; these will be corrected as they are found.</p>
 <h2>How the game is built</h2>
@@ -87,6 +87,23 @@
 <p>Unity asset packs supply models, terrain generation, animals, animation and effects. Every pack is listed in the Credits at the end of this report.</p>
 <hr />
 <h2>Week 6</h2>
+<h3>Day 41 · Wed 28 Oct</h3>
+<p class="hours"><strong>Total hours:</strong> not yet recorded.</p>
+
+<div class="day-points">
+<ul>
+<li>Destroying a ridden horse no longer leaves the player's parts disabled; the rider now follows the saddle instead of being attached to the horse.</li>
+<li>The spawn-horse dev tool makes a ready brown horse with wander, bond and riding built in.</li>
+<li>Low-visibility domes are saved per scene in their own file and keep their size, stretch and rotation.</li>
+<li>Dome stealth: crouched or prone and still inside a dome, zombies see the player from about 3 m instead of 20.</li>
+<li>Tested with a zombie 8 m away: a crouched player in a dome was never noticed, 4 of 4.</li>
+<li>Standing in a dome delays an attack from about 4 s to about 6 s; a zombie already chasing keeps chasing.</li>
+<li>Automated tests were overwriting the real loot save, piling up 49 test drops.</li>
+<li>Every automated run now saves to a separate test folder, and the real save is backed up before each Play.</li>
+<li>Still open: the kick leg snap, sill grab timing, grenade throw speed and the torch floor-below check.</li>
+</ul>
+</div>
+<p>Day 41 ran without the developer at the PC, with a second Claude directing the threads and critiquing each one's output. The horse bug from the evening before was fixed: the rider now follows the saddle each frame, so destroying a ridden horse leaves nothing switched off. The horse and low-visibility dome tools were finished and now survive scene reloads. Domes gained the developer's stealth rule, so a player crouched and still inside one goes unseen beyond a few metres, and it held up in tests from two directions and at the edges. The biggest fix was making tests safe: automated runs had been writing into the real loot save, so every test now saves to its own folder and the real save is backed up before each Play. Next up are the kick that snaps the leg and the checks that are still untested.</p>
 <h3>Day 40 · Tue 27 Oct</h3>
 <p class="hours"><strong>Total hours:</strong> about 6.8 h. Running total: 703 h.</p>
 
@@ -107,9 +124,14 @@
 <li>30 missing gable colliders added on one house.</li>
 <li>Unity crashed once in the full world; nothing was lost.</li>
 <li>Not yet tested on the new E system: quad bike, NPC talk, quests, plank kick.</li>
+<li>Evening check graded every change from two camera angles: 7 of 22 passed.</li>
+<li>Main open bug: the fist kick chain snaps the right leg about 165 degrees in one frame.</li>
+<li>A dropped grenade rolled 5 m ahead; it now stays at the feet.</li>
+<li>Destroying a ridden horse left about 34 player parts disabled (fixed next day). The bow clips through the cape.</li>
+<li>New dev tools: spawn a rideable horse, and place low-visibility domes over bushes that hide the player like a big bush.</li>
 </ul>
 </div>
-<p>Day 40 was about moving through buildings and how combat feels. Window climbing got eased jumps and a single "Lunge out" action that picks a dive or a sill hang from the height of the drop. Every E action now goes through one hub that acts at once or offers a short choice list, and testing found and fixed two list bugs. Big bushes now hide the player, binoculars hold steady and pan, and eating, drinking and bandaging play standing animations. On the gun side, recoil, the sniper, the rifle aim pose, reloading, torch light and roof-edge shooting were all reworked, and the bow became a straight charge shot. The quad bike, NPC talk, quests and plank kick still need testing on the new E system.</p>
+<p>Day 40 was about moving through buildings and how combat feels. Window climbing got eased jumps and a single "Lunge out" action that picks a dive or a sill hang from the height of the drop. Every E action now goes through one hub that acts at once or offers a short choice list, and testing found and fixed two list bugs. Big bushes now hide the player, binoculars hold steady and pan, and eating, drinking and bandaging play standing animations. On the gun side, recoil, the sniper, the rifle aim pose, reloading, torch light and roof-edge shooting were all reworked, and the bow became a straight charge shot. An evening check graded every change, passed 7 of 22, fixed a rolling grenade and flagged a kick that snaps the leg as the main open bug. The quad bike, NPC talk, quests and plank kick still need testing on the new E system.</p>
 <div class="photos">
 <figure class="clip"><video src="media/2026-10-27/blog/progress-20261027-074401.mp4" controls muted playsinline preload="metadata" aria-label="Setting a weapon&#x27;s handle line and grip in the Rig Test scene."></video><figcaption>Setting a weapon&#x27;s handle line and grip in the Rig Test scene.</figcaption></figure>
 </div>
@@ -836,7 +858,7 @@
 </ul>
 </div>
 <h2>Day 1 was the start of the Unity project. A single world scene was created and the first scripts went in. They covered a bow, an isometric character and camera, and a stealth setup. Animators for going prone, sliding and climbing were added, along with a training dummy, a damage system and zombie spawn data. Nothing was playable yet, but fighting, an angled camera and hiding, the three ideas that define the game, were all there from the first day.</h2>
-<h2>Status at Day 40</h2>
+<h2>Status at Day 41</h2>
 <p><strong>Total hours to date:</strong> about 703. Busiest day: Day 21 (8 Oct) at about 58 h.
 | Area | Estimate | State |
 |---|---|---|
@@ -868,7 +890,7 @@
 <strong>Voice</strong>
 <strong>AI assistants</strong>
 The building models called "Opus buildings" in this report are the studio's own Blender exports, not a store pack.</p>
-  <p class="updated">Page built 27 October 2026. Source: the studio's daily development log.</p>
+  <p class="updated">Page built 28 October 2026. Source: the studio's daily development log.</p>
 </main>
 <footer class="site-footer">
   <div class="inner">
