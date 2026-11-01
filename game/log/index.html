@@ -5,10 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#050505">
 <title>Development Report — Carriers: Built in Unity</title>
-<meta name="description" content="Day-by-day development report for Carriers, the Unity survival game from Kodecco Games. Day 1 to Day 41, about 703 hours of work, updated daily.">
+<meta name="description" content="Day-by-day development report for Carriers, the Unity survival game from Kodecco Games. Day 1 to Day 45, about 703 hours of work, updated daily.">
 <link rel="icon" href="../../favicon.ico" sizes="any">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Carriers development report, Day 1 to Day 41">
+<meta property="og:title" content="Carriers development report, Day 1 to Day 45">
 <meta property="og:description" content="What was built, what broke and what was decided, every day since 18 September 2026.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -67,13 +67,13 @@
   <div class="report-head">
     <div class="eyebrow">Carriers · Built in Unity</div>
     <h1 class="display">Development report</h1>
-    <div class="facts"><span class="chip live">Updated daily</span><span class="chip">Day 1 to Day 41</span><span class="chip">About 703 hours</span><span class="chip">Since 18 Sep 2026</span></div>
+    <div class="facts"><span class="chip live">Updated daily</span><span class="chip">Day 1 to Day 45</span><span class="chip">About 703 hours</span><span class="chip">Since 18 Sep 2026</span></div>
     <div class="toolbar"><button type="button" onclick="var a=document.querySelectorAll('.report h3');a[0].scrollIntoView({behavior:'smooth'})">Latest day ↓</button><button type="button" onclick="var a=document.querySelectorAll('.report h3');a[a.length-1].scrollIntoView({behavior:'smooth'})">Day 1 ↓</button></div>
   </div>
-<h1>Carriers: development report, Day 1 to Day 41</h1>
+<h1>Carriers: development report, Day 1 to Day 45</h1>
 <p><strong>Project:</strong> Carriers, a single-player open-world zombie survival game built in Unity 6 (6000.6.1f1, URP), set in the Carrier universe.
 <strong>Studio:</strong> Kodecco Games. One developer directs, tests and makes every decision; AI assistants write most of the code.
-<strong>Period:</strong> 18 September 2026 (Day 1) to 28 October 2026 (Day 41). All dates and times are Singapore time (SGT, UTC+8). Newest day first.
+<strong>Period:</strong> 18 September 2026 (Day 1) to 1 November 2026 (Day 45). All dates and times are Singapore time (SGT, UTC+8). Newest day first.
 <strong>Total hours:</strong> about 703 hours so far. Per-day figures are estimates from file save times in the Unity project and, from Day 19, the running time of each AI thread; earlier days are undercounted.
 <strong>Confidence:</strong> Days 1 to 13 (18 to 30 September) are reconstructed from file timestamps and the project's Devjournal notes; exact session lengths are unknown and the order of work within a day is approximate. Days 14 onward (1 October on) come from chat logs, project threads and the tracker and are confirmed. Note: the source day files were written with UTC dates, so an item done late in the evening SGT may be listed under the day before or after; these will be corrected as they are found.</p>
 <h2>How the game is built</h2>
@@ -86,7 +86,80 @@
 </ul>
 <p>Unity asset packs supply models, terrain generation, animals, animation and effects. Every pack is listed in the Credits at the end of this report.</p>
 <hr />
+<h2>Week 7</h2>
+<h3>Day 45 · Sun 1 Nov</h3>
+<p class="hours"><strong>Total hours:</strong> not yet recorded.</p>
+
+<div class="day-points">
+<ul>
+<li>Guns can now take limbs off: head, waist, arms and legs, on kill shots and on shots into corpses.</li>
+<li>Melee keeps only head and waist cuts, which looked best; arm and leg cuts were dropped for blades.</li>
+<li>Guns now hit zombies at point-blank range instead of passing through them.</li>
+<li>Binoculars mark zombies with a skull and distance in feet, up to 5 at once.</li>
+<li>Marks stay until the zombie dies or the player is 250 m away; off-screen marks sit on the screen edge with an arrow.</li>
+<li>Scoped guns let the view slide out by scope tier: x2 to 30 m, x4 to 50 m, x8 to 70 m.</li>
+<li>Melee against crowds is more fluid: a heavy swing can be cancelled into a dodge or shove, and cleaves up to 3 zombies.</li>
+<li>Found why staggered zombies still hit back: their attack never checked the stagger. Hits now hold them off for 0.8 s.</li>
+<li>New defensive guard for two-handed weapons: V toggles a crouched overhead guard, front blocks, click to shove, 4 hits break it.</li>
+<li>One-handed, dagger and unarmed get an evasive stance instead: an automatic hop back and a timed parry for a bonus hit.</li>
+<li>Every bag item now has an icon, made with Gemini.</li>
+<li>SMG5 and AR10 were recoloured; capes tested in a crouch, and weapon regrips and back-stow positions set.</li>
+<li>Still open: the two-handed guard pose and testing the scope tiers in Play.</li>
+</ul>
+</div>
+<p>Day 45 was mostly about combat feel. Guns gained full dismemberment while melee kept only the head and waist cuts the developer liked, and close-range shots now land. The biggest melee fix came from finding that staggered zombies could still swing back, so hits now hold them off and heavy swings can be cancelled into a dodge or shove when a crowd closes in. Two new stances followed: a crouched overhead guard for two-handed weapons and an evasive hop and parry for everything lighter. Binoculars and scopes became scouting tools, marking zombies with distance and letting the view reach further the stronger the scope. Next up is finishing the guard pose and testing the scopes in Play.</p>
+<h3>Day 44 · Sat 31 Oct</h3>
+<p class="hours"><strong>Total hours:</strong> not yet recorded.</p>
+
+<div class="day-points">
+<ul>
+<li>New guns: the Apocalypse Weapons pack (54 modular guns) will replace all 75 old guns, including magazine-swap reloads. Old guns are retired, not deleted.</li>
+<li>A gun setup menu was built, and each gun now has its own scope and aim adjuster; a nose-down tilt on the new guns was fixed.</li>
+<li>Pistol: a locked-forward hold with stiff arms, where the body turns to aim.</li>
+<li>Capes: Magica Cloth 2 now drives the cloak motion. A code-built stylised cape was accepted, with 5 zombie variants, and the Marvelous Designer cloaks were retired.</li>
+<li>A capelet and a circle poncho were added for in-game trials.</li>
+<li>Two-handed melee now uses Malbers axe animations: a combo, a lunge and a back roll. Found that the test player had no melee component at all.</li>
+<li>145 melee weapons sorted into 7 categories: Daggers 32, Blades 29, Axes 21, Light blunt 35, Heavy blunt 19, Polearms 4, Fist 2. Bats, clubs and planks stay two-handed; daggers get real stabs.</li>
+<li>Back-stowed items: the positions the developer set by hand are now the defaults. It looks messy on purpose, like a heavily loaded nomad.</li>
+<li>Melee review against zombies: random knockdowns, every hit landing at the same height, no wall check and no stamina. A fix order was proposed.</li>
+<li>New rule: anything new must retire the old system it replaces, so nothing conflicts.</li>
+<li>PSX asset review: keep the audio and small props, skip the buildings and characters.</li>
+</ul>
+</div>
+<p>Day 44 was a big systems day. The developer chose a modular gun pack to replace every old gun, and the setup tools, per-gun aim adjuster and a new pistol hold went in the same day. Cloth simulation finally gave the cloaks motion, and a simpler code-built cape replaced the heavier cloak experiments. Two-handed melee moved to proper axe animations after it turned out the test player had no melee component. All 145 melee weapons were sorted into seven categories, and a review of melee against zombies listed what makes fights feel random. The developer also set a rule that new systems must retire the old ones they replace. Next up is fixing those melee problems in order.</p>
+<h3>Day 43 · Fri 30 Oct</h3>
+<p class="hours"><strong>Total hours:</strong> not yet recorded.</p>
+
+<div class="day-points">
+<ul>
+<li>Equipment system planned and started: five wearable layers built from Sidekick outfit slices, on a fixed base body.</li>
+<li>The developer picked a long poncho; the neck wrap became its own separate piece.</li>
+<li>Cloak re-drape with the arms down now works, which removes the stiff T-pose shape.</li>
+<li>The developer asked for five very high quality cloaks in the F9 clothes menu, with natural torn edges, no odd folds and a snug scarf.</li>
+<li>Feedback: the cloaks were "lacking any kind of motion"; the Drifter cloak was the favourite.</li>
+<li>Cloth simulation options were researched to give the cloaks real movement.</li>
+<li>Still open: cloak motion.</li>
+</ul>
+</div>
+<p>Day 43 was mostly clothing. The equipment system was laid out as five wearable layers on a fixed base body, using outfit slices from the Sidekick character kit. Cloak work continued from the day before: the developer chose a long poncho, the neck wrap was split off as its own piece, and a new way of draping with the arms down fixed the stiff shape. Five higher quality cloaks were asked for and built, but they did not move at all, which the developer called out. The Drifter cloak was the one worth keeping. Next up is real cloth motion.</p>
 <h2>Week 6</h2>
+<h3>Day 42 · Thu 29 Oct</h3>
+<p class="hours"><strong>Total hours:</strong> not yet recorded.</p>
+
+<div class="day-points">
+<ul>
+<li>Quick wheel: the mouse wheel now flips between the weapons and items pages (it used to be right click); right click on a hovered weapon toggles its attachment.</li>
+<li>Lantern: while lit, the glass glows warm white, and the lantern is held out by the left arm only, so the right arm keeps walking.</li>
+<li>Jump gravity made heavier everywhere after the developer's jump test, with a cleaner hand-over from jump to fall.</li>
+<li>Rifle carry was "too static, stiff": the run now blends in a motion-captured upper-body carry, and the shotgun gets a pump.</li>
+<li>Strafe fix: aiming one way while walking another no longer twists the waist out of shape.</li>
+<li>Prone aim catch-up: aiming behind while prone lowers the rifle, turns the body by crawling, then raises the aim again.</li>
+<li>Shoulder pads removed from the saved player character at the developer's suggestion.</li>
+<li>Cloaks: the long cape is being replaced by a short ragged cloak over the left shoulder; a shawl built in Marvelous Designer was liked, and variations of it were started.</li>
+<li>Still open: cloak flicker and the vest poking through.</li>
+</ul>
+</div>
+<p>Day 42 was about how the player feels to move and hold things. The developer jump-tested the character and asked for heavier gravity, which went in everywhere. The rifle carry looked stiff, so the run now blends in a motion-captured carry, and two aiming bugs were fixed: the twisted waist when strafing and the rifle snapping round when aiming behind while prone. The quick wheel and lantern got small control and look changes. Late in the day the cloak work began, with a short shawl the developer liked and variations built from it. Next up is a cloak that moves and does not clip through clothing.</p>
 <h3>Day 41 · Wed 28 Oct</h3>
 <p class="hours"><strong>Total hours:</strong> not yet recorded.</p>
 
@@ -833,6 +906,7 @@
 <li>Purple Sky: Stylized Cypress Valley (the earlier grass, ground and field look).</li>
 <li>A+ Grass (URP), the default grass from 20 October.</li>
 <li>Real Ivy 2 (ivy, vines and moss on the houses).</li>
+<li>Magica Cloth 2 (cloth motion for capes and cloaks, from 31 October).</li>
 <li>Poly Haven: CC0 ground textures used for the ruined town roads.</li>
 <li>Spruce Forest. Global Snow and Global Snow 2. Pure Volumetric Fog (BK). SnowStarGames Gaia Spawner.</li>
 <li>Biomass, Biomass Webs, Mossy Piles and Roots Constructor (overgrowth and decor).</li>
@@ -840,6 +914,7 @@
 <li>Apocalypse, City, City Zombies, Construction, Dog, Fantasy Village, Farm, Generic, Military, Nature, Nature Biomes, Palm City, Particle FX, Pirate Realm, Quad Bike, Samurai Empire, Shops, Street Racer, Town, Western Frontier, and the Military Warehouse, Plaza, Prison and Woodland Apocalypse maps.</li>
 <li>Sidekick Characters, Interface Apocalypse HUD, Interface Core.</li>
 <li>Animation packs: Base Locomotion, Bow Combat, Emotes and Taunts, Goblin Locomotion, Idles, Sword Combat.</li>
+<li>Apocalypse Weapons (54 modular guns, replacing the old guns from 31 October).</li>
 <li>Polygon-Mega: Survival, Survival Construction, Survival Tools, Medical Kit, Weapon Kit.</li>
 <li>Animpic Studio: Poly-Survival Food, Poly-Survival Melee Weapons, POLY-Survival Character.</li>
 <li>Toon Series: Toon Farm Pack.</li>
@@ -854,11 +929,11 @@
 <li>Quibli (stylised shader). RVFX Blood Effects Pack. Vefects Wind VFX URP (free). VFX Pack Impact Wall Coeur (free version).</li>
 <li>Dark: Complete Horror UI.</li>
 <li>ElevenLabs for NPC voice lines.</li>
-<li>Claude (Anthropic), ChatGPT (OpenAI) and Antigravity, as described at the top of this report.</li>
+<li>Claude (Anthropic), ChatGPT (OpenAI), Gemini (Google, item icons) and Antigravity, as described at the top of this report.</li>
 </ul>
 </div>
 <h2>Day 1 was the start of the Unity project. A single world scene was created and the first scripts went in. They covered a bow, an isometric character and camera, and a stealth setup. Animators for going prone, sliding and climbing were added, along with a training dummy, a damage system and zombie spawn data. Nothing was playable yet, but fighting, an angled camera and hiding, the three ideas that define the game, were all there from the first day.</h2>
-<h2>Status at Day 41</h2>
+<h2>Status at Day 45</h2>
 <p><strong>Total hours to date:</strong> about 703. Busiest day: Day 21 (8 Oct) at about 58 h.
 | Area | Estimate | State |
 |---|---|---|
@@ -890,7 +965,7 @@
 <strong>Voice</strong>
 <strong>AI assistants</strong>
 The building models called "Opus buildings" in this report are the studio's own Blender exports, not a store pack.</p>
-  <p class="updated">Page built 28 October 2026. Source: the studio's daily development log.</p>
+  <p class="updated">Page built 1 November 2026. Source: the studio's daily development log.</p>
 </main>
 <footer class="site-footer">
   <div class="inner">
