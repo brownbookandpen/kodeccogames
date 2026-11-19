@@ -5,10 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#050505">
 <title>Development Report — Carriers: Built in Unity</title>
-<meta name="description" content="Day-by-day development report for Carriers, the Unity survival game from Kodecco Games. Day 1 to Day 45, about 924 hours of work, updated daily.">
+<meta name="description" content="Day-by-day development report for Carriers, the Unity survival game from Kodecco Games. Day 1 to Day 63, about 1090 hours of work, updated daily.">
 <link rel="icon" href="../../favicon.ico" sizes="any">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Carriers development report, Day 1 to Day 45">
+<meta property="og:title" content="Carriers development report, Day 1 to Day 63">
 <meta property="og:description" content="What was built, what broke and what was decided, every day since 18 September 2026.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -67,14 +67,14 @@
   <div class="report-head">
     <div class="eyebrow">Carriers · Built in Unity</div>
     <h1 class="display">Development report</h1>
-    <div class="facts"><span class="chip live">Updated daily</span><span class="chip">Day 1 to Day 45</span><span class="chip">About 924 hours</span><span class="chip">Since 18 Sep 2026</span></div>
+    <div class="facts"><span class="chip live">Updated daily</span><span class="chip">Day 1 to Day 63</span><span class="chip">About 1090 hours</span><span class="chip">Since 18 Sep 2026</span></div>
     <div class="toolbar"><button type="button" onclick="var a=document.querySelectorAll('.report h3');a[0].scrollIntoView({behavior:'smooth'})">Latest day ↓</button><button type="button" onclick="var a=document.querySelectorAll('.report h3');a[a.length-1].scrollIntoView({behavior:'smooth'})">Day 1 ↓</button></div>
   </div>
-<h1>Carriers: development report, Day 1 to Day 45</h1>
+<h1>Carriers: development report, Day 1 to Day 63</h1>
 <p><strong>Project:</strong> Carriers, a single-player open-world zombie survival game built in Unity 6 (6000.6.1f1, URP), set in the Carrier universe.
 <strong>Studio:</strong> Kodecco Games. One developer directs, tests and makes every decision; AI assistants write most of the code.
-<strong>Period:</strong> 18 September 2026 (Day 1) to 1 November 2026 (Day 45). All dates and times are Singapore time (SGT, UTC+8). Newest day first.
-<strong>Total hours:</strong> about 924 hours so far. Each day counts a 4-hour base, the developer's minimum working day, plus the hours measured from file save times in the Unity project and, from Day 19, the running time of each AI thread. Days without measured hours show the 4-hour base.
+<strong>Period:</strong> 18 September 2026 (Day 1) to 19 November 2026 (Day 63). All dates and times are Singapore time (SGT, UTC+8). Newest day first.
+<strong>Total hours:</strong> about 1090 hours so far. Each day counts a 4-hour base, the developer's minimum working day, plus the hours measured from file save times in the Unity project and, from Day 19, the running time of each AI thread. Days without measured hours show the 4-hour base.
 <strong>Confidence:</strong> Days 1 to 13 (18 to 30 September) are reconstructed from file timestamps and the project's Devjournal notes; exact session lengths are unknown and the order of work within a day is approximate. Days 14 onward (1 October on) come from chat logs, project threads and the tracker and are confirmed. Note: the source day files were written with UTC dates, so an item done late in the evening SGT may be listed under the day before or after; these will be corrected as they are found.</p>
 <h2>How the game is built</h2>
 <p>Most of the code in Carriers is written by AI assistants under the developer's direction. The developer sets the goals, tests in Unity, approves or rejects the results and makes every design decision. The tools used, as recorded:</p>
@@ -86,7 +86,349 @@
 </ul>
 <p>Unity asset packs supply models, terrain generation, animals, animation and effects. Every pack is listed in the Credits at the end of this report.</p>
 <hr />
+<h2>Week 9</h2>
+<h3>Day 63 · Thu 19 Nov</h3>
+<p class="hours"><strong>Total hours:</strong> about 8.5 h. Running total: 1090 h.</p>
+
+<div class="day-points">
+<ul>
+<li>NPC dialogue writing tool built: 16 NPCs ready, three replies per line, one for each honour level.</li>
+<li>New NPC voices chosen in ElevenLabs, including a more neutral female voice and a second female voice.</li>
+<li>Rule set: every NPC interaction depends on the player's honour, with three versions always; the player starts Pragmatic.</li>
+<li>Climbing polish: kip up onto a sill, feet planted on the beam, a feet-first drop from the roof edge, and hands pinned to the ledge.</li>
+<li>The developer posed a sill-to-window-top climb in Blender, now in the game.</li>
+<li>A crouch-and-spring climb onto the roof edge was tried.</li>
+<li>Houses: the old houses were parked; work moved to the new workshop houses, starting with H02.</li>
+<li>Unity editor memory cut further.</li>
+<li>A meeting mode for scared NPCs was staged: the player walks and the camera frames both people.</li>
+</ul>
+</div>
+<p>Day 63 put words and climbing in focus. A new tool for writing NPC dialogue went live, with every line written three ways to match the player's honour. New voices were picked for the male and female NPCs. Climbing got a polish pass, including a clip the developer posed by hand in Blender that now plays in game. The old houses were set aside and work moved to the new workshop houses. A calmer way of meeting frightened NPCs was staged, with the camera framing both people.</p>
+<h3>Day 62 · Wed 18 Nov</h3>
+<p class="hours"><strong>Total hours:</strong> about 10.7 h. Running total: 1082 h.</p>
+
+<div class="day-points">
+<ul>
+<li>Locomotion rebuilt with root motion and foot phase, and a combat stance set: a lifted weapon arm standing, a full crouch with a weapon.</li>
+<li>Right mouse dodges automatically with one-handed weapons, knives and fists, and blocks with two-handed weapons.</li>
+<li>Tackle remapped and persuade added on Shift plus E.</li>
+<li>NPC talk reset: old NPC dialogue removed, strangers are scared but can be calmed, and lines will be written fresh.</li>
+<li>Honour system designed: the player is Notorious, Pragmatic or Honourable based on their actions, and it changes their lines and how NPCs react.</li>
+<li>Eight NPC archetypes defined for writing lines and behaviour.</li>
+<li>Ghillie hood picked and a stealth bonus staged: harder to see when low and still in grass.</li>
+<li>Hood up or down added to the self menu.</li>
+<li>Unity editor memory use cut.</li>
+</ul>
+</div>
+<p>Day 62 rebuilt movement and reset how NPCs talk. The player's walk and run now come from root motion, and the combat stance and right-mouse dodge and block were settled. The developer judged NPC conversations fake, so the old dialogue was cleared to start again with scared strangers who can be talked down. A new honour system will track whether the player is Notorious, Pragmatic or Honourable and change how people react. Work on lines will follow eight archetypes, from loners to faction fighters. The ghillie hood was chosen, with a stealth bonus in grass.</p>
+<h3>Day 61 · Tue 17 Nov</h3>
+<p class="hours"><strong>Total hours:</strong> about 8.7 h. Running total: 1071 h.</p>
+
+<div class="day-points">
+<ul>
+<li>The scavenged HUD went live and was reviewed from a play recording, with three polish fixes noted.</li>
+<li>Stencil damage numbers mocked up; decided they show only the player's own hits.</li>
+<li>181 melee, bow and throwable weapon icons rendered for the bag; gloves now show as worn.</li>
+<li>Head items split from their glasses, masks and respirators.</li>
+<li>Inventory: NPC clothing loot, small and big game, a head torch and NPC quivers installed.</li>
+<li>Zombies now get knocked back on hit; melee no longer swings while looting.</li>
+<li>Melee fight stance and unused transition animations wired in.</li>
+<li>Player locomotion animator rebuild started.</li>
+<li>Large old files were moved off the shared folder.</li>
+</ul>
+</div>
+<p>Day 61 finished the HUD and filled the inventory. The new scavenged HUD went live and was checked against a recorded play session. Damage numbers were mocked up in a stencil style and limited to the player's own hits. Weapon icons for the bag were rendered in one pass, and head gear was split from face gear. The inventory gained NPC clothes, game animals, a head torch and quivers. Combat felt more physical with zombie knockback and a proper fight stance.</p>
+<h3>Day 60 · Mon 16 Nov</h3>
+<p class="hours"><strong>Total hours:</strong> about 12 h. Running total: 1062 h.</p>
+
+<div class="day-points">
+<ul>
+<li>Overgrown roads baked onto all 22 road tiles, with frame rate unchanged at about 83 fps.</li>
+<li>Body-search panel tints mocked up for the inventory.</li>
+<li>Off-screen gunshots now show as bursts on the screen edge, red near and amber far.</li>
+<li>Archer movement: no running while drawn, a 5.3 m/s sneak run, and a crouch sprint.</li>
+<li>Arrows left in the world get pickup markers.</li>
+<li>Dropped pistol magazines can be picked up; casing pickup 40% faster.</li>
+<li>A hooded grass ghillie cloak was mocked up in three versions.</li>
+<li>F8 worn and stowed positions refined; terrain tools and lag reviewed.</li>
+<li>First inventory and menu packages installed; one failed to compile and was rolled back.</li>
+</ul>
+</div>
+<p>Day 60 locked in the world look and tuned the archer. The overgrown road look was baked into every road tile with no cost to frame rate. Gunshots from off screen now show where they came from on the screen edge. The bow got calmer movement rules, a sneak run and a crouch sprint, and spent arrows are marked for pickup. A grass ghillie cloak was mocked up for stealth play. The first inventory packages went in, with one rolled back after a compile error.</p>
+<h3>Day 59 · Sun 15 Nov</h3>
+<p class="hours"><strong>Total hours:</strong> about 13.7 h. Running total: 1050 h.</p>
+
+<div class="day-points">
+<ul>
+<li>Three more towns installed: west (114 houses), north east (30) and south (27), each with its own road.</li>
+<li>Watering holes got dark, murky water; trails turned into worn brown dirt paths with boot prints.</li>
+<li>Soft ground: boot prints press into muddy streets.</li>
+<li>Roads now get overgrown: grass reaching the asphalt and creeping across it.</li>
+<li>HUD redesign: three directions mocked up; the developer picked a mix of a scavenged tape-and-canvas look with a round stencil minimap.</li>
+<li>Inventory look C chosen: bag on the right, body or loot panel on the left; twelve screens mocked up.</li>
+<li>Equipment icons re-rendered from the real models, one item per icon, with fixed worn colourways.</li>
+<li>A review round: about twenty focused threads checked the last three days of work, lag and runtime cost.</li>
+<li>Grey building shells, boulder colours, camera blur and the minimap were reviewed.</li>
+</ul>
+</div>
+<p>Day 59 was the busiest day of the period. Three more towns went into the world, and the roads and trails were dressed to look old: grass creeping over asphalt, muddy prints in the streets and murky watering holes. The developer chose a new HUD direction, mixing a scavenged tape-and-canvas look with a clean round minimap. A full inventory layout was picked and mocked up across twelve screens. Item icons were rebuilt from the real models with one item each. A large review round checked recent work for bugs and lag.</p>
+<div class="photos">
+<figure><a href="media/2026-11-15/blog/soft-ground-mud-prints.jpg" target="_blank" rel="noopener"><img src="media/2026-11-15/blog/soft-ground-mud-prints.jpg" alt="Boot prints pressed into a muddy town street." loading="lazy"></a><figcaption>Boot prints pressed into a muddy town street.</figcaption></figure>
+<figure><a href="media/2026-11-15/blog/town-west-homes.jpg" target="_blank" rel="noopener"><img src="media/2026-11-15/blog/town-west-homes.jpg" alt="Homes and yards in the new west town." loading="lazy"></a><figcaption>Homes and yards in the new west town.</figcaption></figure>
+<figure><a href="media/2026-11-15/blog/trail-brown-dirt-worn-path.jpg" target="_blank" rel="noopener"><img src="media/2026-11-15/blog/trail-brown-dirt-worn-path.jpg" alt="Trails now read as worn brown dirt paths." loading="lazy"></a><figcaption>Trails now read as worn brown dirt paths.</figcaption></figure>
+</div>
+
+<h3>Day 58 · Sat 14 Nov</h3>
+<p class="hours"><strong>Total hours:</strong> about 10.2 h. Running total: 1037 h.</p>
+
+<div class="day-points">
+<ul>
+<li>World plan for Build 1.1 drawn from the developer's sketch: a river from a mountain lake to the coast, 6 watering holes, 9 bridges, 10 fords.</li>
+<li>New roads: four-lane highways and two-lane roads with worn asphalt, plus about 35 km of dirt trails.</li>
+<li>A wreck checkpoint on the long highway bridge, with a jack-knifed bus and one way through on foot.</li>
+<li>First new town built in the north, 140 houses; three more towns planned.</li>
+<li>Pixel UI kit redrawn, with the first 48 item icons cleaned to pixel art.</li>
+<li>Every in-game menu exported for a redesign.</li>
+<li>Military outfits converted onto the main character body: soldier colourways, bomb suit, pilot, riot, hazmat and ghillie.</li>
+<li>Horse stamina reworked; animal butchering for meat started.</li>
+<li>Equipment slots and wardrobe overhauled; dog companion and Listen mode work wrapped up.</li>
+</ul>
+</div>
+<p>Day 58 reshaped the world map. The developer sketched rivers and the team turned them into a plan with watering holes, bridges and fords, then added highways, roads and trails. The highways, trails and the first new town went into the world the same day, with a wrecked bus blocking the long bridge. The interface got a cleaner pixel kit and every menu was exported for a redesign. Military outfits were converted onto the shared character body in several colourways. Horse stamina and butchering moved forward too.</p>
+<div class="photos">
+<figure><a href="media/2026-11-14/blog/town-i4-north-centre.jpg" target="_blank" rel="noopener"><img src="media/2026-11-14/blog/town-i4-north-centre.jpg" alt="The centre crossing of the first new town in the north." loading="lazy"></a><figcaption>The centre crossing of the first new town in the north.</figcaption></figure>
+<figure><a href="media/2026-11-14/blog/trails-footpath-to-ford.jpg" target="_blank" rel="noopener"><img src="media/2026-11-14/blog/trails-footpath-to-ford.jpg" alt="A footpath leads down to a river ford with stepping stones." loading="lazy"></a><figcaption>A footpath leads down to a river ford with stepping stones.</figcaption></figure>
+</div>
+
+<h3>Day 57 · Fri 13 Nov</h3>
+<p class="hours"><strong>Total hours:</strong> about 11 h. Running total: 1026 h.</p>
+
+<div class="day-points">
+<ul>
+<li>Plan for a full seven-day survival beta in Build 1.1, with NPCs, zombies and animals live and food from hunting.</li>
+<li>Hostile factions built; the first clash was fought out in a test.</li>
+<li>NPCs now walk round tents, barrels and cars and vault fences instead of walking over props.</li>
+<li>NPC hunting got sneaking, longer trips and sleeping rough.</li>
+<li>Gun inspect moved to hold R; tap R reloads.</li>
+<li>Back-stowed weapons now sit around the worn backpack.</li>
+<li>Zombie finishers: tap F in range, a quick weapon swap and a stealth-only rule; 17 finisher pairs set up for posing in Blender.</li>
+<li>Hit stagger and parry fixed for NPCs.</li>
+<li>Per-frame memory garbage measured and cut; dog companion and Focus mode redesigns drafted.</li>
+</ul>
+</div>
+<p>Day 57 pointed everything at a seven-day survival beta. Hostile factions were built and fought their first test clash. NPCs stopped walking through props and learned to sneak while hunting and to sleep out on long trips. Guns gained a hold-to-inspect, and weapons on the back now sit neatly around the backpack. Zombie finishers were reworked so a tap of F in range does the job, with each pair ready to be posed by hand. Memory waste per frame was cut, and the dog companion and night Focus mode got design drafts.</p>
+<h2>Week 8</h2>
+<h3>Day 56 · Thu 12 Nov</h3>
+<p class="hours"><strong>Total hours:</strong> about 9.2 h. Running total: 1015 h.</p>
+
+<div class="day-points">
+<ul>
+<li>NPC layer 1 fixes installed: talk or order someone down when aiming, NPCs walk and watch, corpses are noticed and fled from.</li>
+<li>Dead-body reaction playtest passed.</li>
+<li>NPC layer 3 rescoped: a wandering band of four, each with their own tent, pitching around one fire.</li>
+<li>Recruited NPCs (up to three) follow and protect the player; band-mates share food with those in need.</li>
+<li>Band-mates only fight back if they see a member get hurt.</li>
+<li>Scrap suppressors finished: soda can, bottle and oil filter; a flashlight is now the gun torch.</li>
+<li>A brass marker shows dropped casings.</li>
+<li>NPC voice line writing, radio calls and grass concealment work continued.</li>
+<li>Free space was cleared on the main drive.</li>
+</ul>
+</div>
+<p>Day 56 shaped how groups of survivors behave. Layer 1 fixes went in, so NPCs react sensibly when a gun is pointed at them and run from bodies. The developer rescoped layer 3 into a wandering band of four with their own tents, which the player can recruit into a protective team. Bands share food among themselves and only join a fight they actually witness. On the gun side, scrap suppressors and a gun torch were finished and dropped brass got its own marker. Voice lines, radio calls and hiding in grass moved forward in parallel.</p>
+<h3>Day 55 · Wed 11 Nov</h3>
+<p class="hours"><strong>Total hours:</strong> about 9.5 h. Running total: 1006 h.</p>
+
+<div class="day-points">
+<ul>
+<li>Nature pass across the world: dark grass-green ground under every grass patch instead of brown mud, on all 64 tiles.</li>
+<li>Grass got height and colour drifts and off-grid clumps.</li>
+<li>Flowers, trees and bushes now follow nature rules: drifts of poppies, size variety and saplings, bushes by rocks, clearings in dense forest.</li>
+<li>A crisscross look in the grass was traced to the camera-facing bend; with it off, blades stand upright.</li>
+<li>Snow: footprints under each foot, ruts behind vehicles and animals, snow on rock tops, blood showing on white ground.</li>
+<li>Drafted a zombie danger map: density rises toward the capital, plains stay light, sleepers lie in tall grass.</li>
+<li>Long-press F opens a new self menu; the player can sit anywhere to rest.</li>
+<li>Four hide-level icons show how hidden the player is in grass.</li>
+<li>Night lighting, moonlight and NPC survival tests began.</li>
+</ul>
+</div>
+<p>Day 55 was the big nature day. Every terrain tile got green ground under its grass, and the grass itself gained natural drifts in height and colour. Flowers, trees and bushes were re-placed by simple nature rules, so poppies gather in patches and forests open into clearings. The snowy north got footprints, tracks and blood that shows against the white. A first zombie danger map set where the dead gather, thickest around the capital. The player also gained a self menu for sitting and resting, and icons that show how well they are hidden.</p>
+<div class="photos">
+<figure><a href="media/2026-11-11/blog/nature_meadow_morning_vs_now_sheet.jpg" target="_blank" rel="noopener"><img src="media/2026-11-11/blog/nature_meadow_morning_vs_now_sheet.jpg" alt="The start meadow in the morning (left) and after a day of nature passes (right)." loading="lazy"></a><figcaption>The start meadow in the morning (left) and after a day of nature passes (right).</figcaption></figure>
+<figure class="clip"><video src="media/2026-11-11/blog/nature_snow_footprints_walk_v3.mp4" controls muted playsinline preload="metadata" aria-label="Each foot presses a print into the highland snow."></video><figcaption>Each foot presses a print into the highland snow.</figcaption></figure>
+</div>
+
+<h3>Day 54 · Tue 10 Nov</h3>
+<p class="hours"><strong>Total hours:</strong> about 8.7 h. Running total: 997 h.</p>
+
+<div class="day-points">
+<ul>
+<li>Camp kit: pitch a tent and a fire pit, light the fire with fuel, crawl in, sleep, and wake at the door.</li>
+<li>NPC layer 2 (body): survivors pitch their own tents around a fire, fetch water, hunt and carry game back to camp.</li>
+<li>A label view shows each NPC's need and current task.</li>
+<li>NPC layers 1 to 5 planned; layer 1 dialogue made more believable.</li>
+<li>Two Synty demo landscapes, an alpine lake and a meadow forest, were cut, flattened and joined to the test map on a 400 m grid.</li>
+<li>The capital's pavements were restored in the world build, 519 road and sidewalk pieces with grass cleared.</li>
+<li>Ten generic clothing icons made.</li>
+<li>Beta V2 planned.</li>
+</ul>
+</div>
+<p>Day 54 made camps real for both the player and NPCs. The player can now pitch a tent and fire pit, light it, crawl inside and sleep until morning. NPCs do the same on their own, pitching tents around a fire, then heading out for water and game and carrying it back. A label view shows what each NPC needs and what it is doing about it. The test map grew with an alpine lake and a meadow forest fitted to its edges. In the main world, the capital got its streets back.</p>
+<div class="photos">
+<figure><a href="media/2026-11-10/blog/npc-layer2-tents-camp.jpg" target="_blank" rel="noopener"><img src="media/2026-11-10/blog/npc-layer2-tents-camp.jpg" alt="Survivors pitch their own tents around a camp fire, doors facing the fire." loading="lazy"></a><figcaption>Survivors pitch their own tents around a camp fire, doors facing the fire.</figcaption></figure>
+</div>
+
+<h3>Day 53 · Mon 9 Nov</h3>
+<p class="hours"><strong>Total hours:</strong> about 12.3 h. Running total: 988 h.</p>
+
+<div class="day-points">
+<ul>
+<li>Shirts merged with their sleeves: sleeves match the top's colour, with torn-sleeve variants.</li>
+<li>Eight Modern Thugs outfits added to the wardrobe.</li>
+<li>NPCs can be looted down to their underwear.</li>
+<li>Dead NPCs rise as zombies; one with a leg cut off rose as a crawler three minutes later.</li>
+<li>Risen NPCs get cold grey skin, and blood splats are round instead of square.</li>
+<li>Shot NPCs show wound blood; NPCs react to gunshot wounds.</li>
+<li>The first camp in the test map: a tent and a bonfire.</li>
+<li>Inventory V2 designed in mock-ups: survival, weapons, wear, mods and craft tabs, plus a character screen and Q wheel.</li>
+<li>Point-blank shots fixed, item inspect moved to E, a spinning-in-place bug fixed, and a perks list for gun charms filled.</li>
+</ul>
+</div>
+<p>Day 53 joined clothing, death and inventory. Shirts and sleeves were merged so outfits read as one piece, and a gang outfit set was added. Dead survivors can now be stripped of everything, and if left alone they rise again as zombies, even as crawlers if they lost a leg. A first camp with a tent and fire went into the test map. The new inventory was laid out across a full set of mock-ups, from the bag and wear tabs to a character screen with an injury chart. Smaller fixes covered point-blank shots, inspecting items and a character spinning on the spot.</p>
+<h3>Day 52 · Sun 8 Nov</h3>
+<p class="hours"><strong>Total hours:</strong> about 11 h. Running total: 976 h.</p>
+
+<div class="day-points">
+<ul>
+<li>Survivors got cloth physics on long hair, so hair hangs over capes, falls when lying down and droops when carried.</li>
+<li>A new tarp wrap cape in eight colours keeps one shape whatever weapon is on the back.</li>
+<li>Cloaks limited to a few NPCs.</li>
+<li>Every control and key conflict was mapped.</li>
+<li>A search animation for downed NPCs was found.</li>
+<li>New NPC look and feel work and the NPC layer 1 danger and talk thread began.</li>
+<li>The Blender animation workflow was set up for fixing clips by hand.</li>
+<li>A master item spreadsheet was started.</li>
+</ul>
+</div>
+<p>Day 52 turned to how survivors look. Long hair now behaves like cloth, resting on capes, falling to the floor when an NPC lies down and hanging properly when someone is carried on the shoulders. A new tarp wrap gives survivors a cape that keeps its shape over any weapon, in eight colours. All controls were mapped to catch key clashes before more features land. Work began on how NPCs sense danger and talk, and a master spreadsheet of every item was started. The day set up the big NPC push that followed.</p>
+<div class="photos">
+<figure><a href="media/2026-11-08/blog/npccloth-tarp-row-iso.jpg" target="_blank" rel="noopener"><img src="media/2026-11-08/blog/npccloth-tarp-row-iso.jpg" alt="Eight survivors in their own tarp wraps, long hair now hanging with cloth physics." loading="lazy"></a><figcaption>Eight survivors in their own tarp wraps, long hair now hanging with cloth physics.</figcaption></figure>
+</div>
+
+<h3>Day 51 · Sat 7 Nov</h3>
+<p class="hours"><strong>Total hours:</strong> about 9.2 h. Running total: 965 h.</p>
+
+<div class="day-points">
+<ul>
+<li>Every glowing or fantasy part was deleted from the animals; they are plain animals now.</li>
+<li>Human lasso fixes: silent deaths, tackle range, the walk-up before a kick and tie, and NPCs stowing or dropping bows.</li>
+<li>New moves on captured people: a front kick, a leg grip, kick out cold, a limp cuff, and a punch that pins.</li>
+<li>One lasso coil on the back, with equip and put-back.</li>
+<li>Holding right mouse unarmed no longer plays a boxing loop.</li>
+<li>Eight new motion-capture clips arrived and were cut for carrying and tying people.</li>
+<li>Rule agreed: every exported clip starts with the hips over the origin.</li>
+<li>Rule agreed: every F8 tuning panel previews the whole clip on a loop with both bodies moving.</li>
+<li>Fixing the pin and knockout poses took about two hours, longer than hoped.</li>
+</ul>
+</div>
+<p>Day 51 kept refining how the player deals with captured people. The animals lost every glowing or fantasy part, because the developer wants them to look like normal animals. The human lasso gained kicks, grips, a knockout, a limp cuff and a pinning punch, with a single coil now carried on the back. Eight new motion-capture clips came in for carrying and tying people. Two working rules came out of a slow session on poses: clips must start centred on the hips, and every tuning panel must preview the whole move with both people animating. The pose fixes ran long, and the developer asked for faster turnarounds.</p>
+<h3>Day 50 · Fri 6 Nov</h3>
+<p class="hours"><strong>Total hours:</strong> about 6.5 h. Running total: 955 h.</p>
+
+<div class="day-points">
+<ul>
+<li>Lights: tap F turns a torch or lantern on or off, hold F moves it between hip and hand.</li>
+<li>Guns: fire rates stay as they are, with ammo use as the trade-off; scrap suppressors (bottle, soda can, tin) are lightly craftable.</li>
+<li>Corpses no longer deform or float when hauled; dragged corpses push grass aside like the player does.</li>
+<li>Lasso hotfixes in three rounds, including a single-stab kill that leads straight into butchering.</li>
+<li>Fireman carry: a tied animal can be lifted onto the shoulders, put down, laid on a horse, and carried dead.</li>
+<li>Each animal's carry pose and pickup can now be tuned in the F8 tool.</li>
+<li>29 animal voices were wired to the lasso.</li>
+<li>Lassoing humans started: a lassoed survivor is yanked face down, can be knocked out, cuffed, carried and laid across a horse.</li>
+<li>A rough feature tracker with completion percentages was started.</li>
+</ul>
+</div>
+<p>Day 50 spread across lights, guns, animals and people. Torches and lanterns now switch with one key and move between hip and hand. Hauled corpses stopped bending and floating, and the lasso got three rounds of fixes, including a clean kill that leads into butchering. Animals can now be carried on the shoulders and laid across a horse, each with its own tuned pose. The biggest new feature was lassoing humans: survivors can be roped, pulled down, knocked out, cuffed and ridden off with across the saddle. The developer also asked for a rough tracker to see how complete each feature is.</p>
 <h2>Week 7</h2>
+<h3>Day 49 · Thu 5 Nov</h3>
+<p class="hours"><strong>Total hours:</strong> about 5 h. Running total: 949 h.</p>
+
+<div class="day-points">
+<ul>
+<li>All 16 test animals passed the new rope stages loop with no errors, from a goat to a 700 kg bull.</li>
+<li>Fine-tuning approved: a 5 m haul for big animals, a floor on drag damage, faster pets, and rope creak, twang and shake sounds.</li>
+<li>Animals now build trust: petting and feeding calm them over time.</li>
+<li>A playtest found the lasso loop too complicated with poor results.</li>
+<li>New plan: predators fight back like bears, prey runs like the boar, and the lasso keeps only three scripts.</li>
+<li>Prey over 40 kg now use a timing-bar minigame instead of a tire-and-run loop.</li>
+<li>All 67 non-bird animals can now be lassoed, with foxes, rabbits and raccoons added.</li>
+<li>Ropes can be tied round a tree or thrown over a branch, for example to hang a roped zombie as a noise lure.</li>
+<li>Grass now bends around all live animals as well as corpses, and dragged corpses leave a pressed trail.</li>
+</ul>
+</div>
+<p>Day 49 tested and then simplified the lasso. Every animal passed the new rope stages, and a batch of fine-tuning on hauling, drag damage, petting and rope sounds was approved. A real playtest, though, showed the loop was too complicated and did not feel good. The developer split lassoable animals into two simple groups: predators that fight and prey that flee. Heavy prey got a timing-bar minigame, and the number of animals that can be roped grew to 67. Grass also learned to bend around every living animal and to show a trail where corpses are dragged.</p>
+<div class="photos">
+<figure><a href="media/2026-11-05/blog/grass-corpse-drag-trail.jpg" target="_blank" rel="noopener"><img src="media/2026-11-05/blog/grass-corpse-drag-trail.jpg" alt="A dragged boar corpse leaves a pressed trail through the grass." loading="lazy"></a><figcaption>A dragged boar corpse leaves a pressed trail through the grass.</figcaption></figure>
+</div>
+
+<h3>Day 48 · Wed 4 Nov</h3>
+<p class="hours"><strong>Total hours:</strong> at least 4 h (measured hours not yet recorded). Running total: 944 h.</p>
+
+<div class="day-points">
+<ul>
+<li>Eleven farm animals were re-rigged onto the same skeleton system as the wild animals, with no stretching in any clip.</li>
+<li>A wolf and dog version of the rope fight was built.</li>
+<li>The 40 kg rule: heavy catches drag the player, who digs in and skids toward the animal.</li>
+<li>Calming: hold E close to a roped animal to raise both hands and say whoa, then pet it when it settles.</li>
+<li>Two animations drive calming: a reach for the approach and a pat for success.</li>
+<li>Decided the calm animations play near the animal, not glued to it, because pinned hands looked wrong.</li>
+<li>The full loop was set for testing: lasso, struggle, reel in, calm, pet, or the animal bolts and drags you.</li>
+<li>The F9 test menu now spawns the re-rigged farm animals.</li>
+</ul>
+</div>
+<p>Day 48 brought the farm animals into the lasso system. Cows, pigs, goats and the rest were moved onto the same skeletons as the wild animals so they share the rope fight, and a wolf and dog version followed. Heavy animals now drag the player, who digs in their heels and slides. Calming became a hands-on moment: get close, hold E to soothe the animal, then pet it when it gives in. The developer kept the animation simple, with two clips and no hands glued to the animal. The complete lasso loop was ready to test the next day.</p>
+<h3>Day 47 · Tue 3 Nov</h3>
+<p class="hours"><strong>Total hours:</strong> about 5.2 h. Running total: 940 h.</p>
+
+<div class="day-points">
+<ul>
+<li>Lassoing on foot: a roped boar now fights in a fixed routine, backing away, whipping left and right, jumping and slipping head down.</li>
+<li>The developer's first reaction to the boar routine was very positive, so it became the template for other animals.</li>
+<li>The player now always faces a roped animal while it fights, and reels it in hand over hand.</li>
+<li>The left hand now grips the rope line, so the rope rests in both hands.</li>
+<li>A new rope-pull clip was brought in and tuned by hand in the F8 tool, with feet planted and knees bent.</li>
+<li>A taut-rope hold now uses an upper-body pose only, so the legs can still walk.</li>
+<li>Antlers on deer and moose were floating; they now follow the head.</li>
+<li>Unity ran out of memory and crashed while reimporting two clips; it came back with no lasting damage.</li>
+<li>Overnight, every animal got the struggle routine, failed calms on big animals drag the player about 20 m, and bears, cougars and tigers attack the player when roped.</li>
+</ul>
+</div>
+<p>Day 47 was about lassoing animals on foot. A boar on the rope now puts up a proper fight, backing off, whipping and jumping, and it looked good enough to roll out to the rest. Reeling in turned into a hand-over-hand pull with the player facing the catch and both hands on the rope. A rope-pull animation was tuned by hand, and a lighter upper-body hold lets the player keep walking on a taut line. One memory crash interrupted the work but nothing was lost. By the end of the night every animal had the routine, big animals could drag the player, and predators would turn on them.</p>
+<div class="photos">
+<figure class="clip"><video src="media/2026-11-03/blog/lasso-on-foot.mp4" controls muted playsinline preload="metadata" aria-label="Lassoing on foot at night: the player holds a roped animal in tall grass."></video><figcaption>Lassoing on foot at night: the player holds a roped animal in tall grass.</figcaption></figure>
+</div>
+
+<h3>Day 46 · Mon 2 Nov</h3>
+<p class="hours"><strong>Total hours:</strong> about 11 h. Running total: 935 h.</p>
+
+<div class="day-points">
+<ul>
+<li>Binocular marks now work on animals too: a bear icon with the distance in feet.</li>
+<li>Loot now shows small pointers tinted by rarity, with the item's icon, instead of light beams.</li>
+<li>Tall grass presses down under corpses and dropped items, so bodies sit in the grass instead of floating on top.</li>
+<li>New Animal View in the F8 tool: pick any animal, scrub through its clips, play, pause and step.</li>
+<li>Found that most world animals render too dark because of a shader bug; tested baked replacement skins in three grimier palettes.</li>
+<li>Set out an animal roadmap: smoother movement, shared behaviours, lasso uses and hunting, built in the test map first.</li>
+<li>The test map gained a lab corner where the player can drive a sedan and ride a motorbike.</li>
+<li>The lasso throw, spin, flight and cinch were checked frame by frame and the horse look fixed.</li>
+<li>Unused project files were archived to a second drive to free space.</li>
+</ul>
+</div>
+<p>Day 46 opened the animal push. Marks from the binoculars now cover animals as well as zombies, and loot got cleaner pointers with item icons in place of glowing beams. Grass now flattens under corpses and dropped gear, which makes kills and loot read much better in tall fields. A new Animal View lets the developer inspect every animal clip, and it showed that most world animals were rendering far too dark because of a shader bug. Replacement skins were baked and compared, and a roadmap was agreed for how animals should move, behave, get lassoed and get hunted.</p>
+<div class="photos">
+<figure><a href="media/2026-11-02/blog/grass-corpse-flatten-before-after.jpg" target="_blank" rel="noopener"><img src="media/2026-11-02/blog/grass-corpse-flatten-before-after.jpg" alt="Tall grass now presses down under a corpse: before (top) and after (bottom)." loading="lazy"></a><figcaption>Tall grass now presses down under a corpse: before (top) and after (bottom).</figcaption></figure>
+<figure><a href="media/2026-11-02/blog/marks-animals-loot-pointers.jpg" target="_blank" rel="noopener"><img src="media/2026-11-02/blog/marks-animals-loot-pointers.jpg" alt="Marks now work on animals too (bear icon and distance), and loot shows small pointers with item icons." loading="lazy"></a><figcaption>Marks now work on animals too (bear icon and distance), and loot shows small pointers with item icons.</figcaption></figure>
+</div>
+
 <h3>Day 45 · Sun 1 Nov</h3>
 <p class="hours"><strong>Total hours:</strong> about 7.9 h. Running total: 924 h.</p>
 
@@ -933,8 +1275,8 @@
 </ul>
 </div>
 <h2>Day 1 was the start of the Unity project. A single world scene was created and the first scripts went in. They covered a bow, an isometric character and camera, and a stealth setup. Animators for going prone, sliding and climbing were added, along with a training dummy, a damage system and zombie spawn data. Nothing was playable yet, but fighting, an angled camera and hiding, the three ideas that define the game, were all there from the first day.</h2>
-<h2>Status at Day 45</h2>
-<p><strong>Total hours to date:</strong> about 924. Busiest day: Day 21 (8 Oct) at about 58 h.
+<h2>Status at Day 63</h2>
+<p><strong>Total hours to date:</strong> about 1090. Busiest day: Day 21 (8 Oct) at about 58 h.
 | Area | Estimate | State |
 |---|---|---|
 | World, terrain, look | 75% | Island, biomes, weather, snow, fog ring, tilt-shift in |
@@ -965,7 +1307,7 @@
 <strong>Voice</strong>
 <strong>AI assistants</strong>
 The building models called "Opus buildings" in this report are the studio's own Blender exports, not a store pack.</p>
-  <p class="updated">Page built 1 November 2026. Source: the studio's daily development log.</p>
+  <p class="updated">Page built 19 November 2026. Source: the studio's daily development log.</p>
 </main>
 <footer class="site-footer">
   <div class="inner">
