@@ -5,10 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#050505">
 <title>Development Report — Carriers: Built in Unity</title>
-<meta name="description" content="Day-by-day development report for Carriers, the Unity survival game from Kodecco Games. Day 1 to Day 63, about 1090 hours of work, updated daily.">
+<meta name="description" content="Day-by-day development report for Carriers, the Unity survival game from Kodecco Games. Day 1 to Day 72, about 1214 hours of work, updated daily.">
 <link rel="icon" href="../../favicon.ico" sizes="any">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Carriers development report, Day 1 to Day 63">
+<meta property="og:title" content="Carriers development report, Day 1 to Day 72">
 <meta property="og:description" content="What was built, what broke and what was decided, every day since 18 September 2026.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -67,14 +67,14 @@
   <div class="report-head">
     <div class="eyebrow">Carriers · Built in Unity</div>
     <h1 class="display">Development report</h1>
-    <div class="facts"><span class="chip live">Updated daily</span><span class="chip">Day 1 to Day 63</span><span class="chip">About 1090 hours</span><span class="chip">Since 18 Sep 2026</span></div>
+    <div class="facts"><span class="chip live">Updated daily</span><span class="chip">Day 1 to Day 72</span><span class="chip">About 1214 hours</span><span class="chip">Since 18 Sep 2026</span></div>
     <div class="toolbar"><button type="button" onclick="var a=document.querySelectorAll('.report h3');a[0].scrollIntoView({behavior:'smooth'})">Latest day ↓</button><button type="button" onclick="var a=document.querySelectorAll('.report h3');a[a.length-1].scrollIntoView({behavior:'smooth'})">Day 1 ↓</button></div>
   </div>
-<h1>Carriers: development report, Day 1 to Day 63</h1>
+<h1>Carriers: development report, Day 1 to Day 72</h1>
 <p><strong>Project:</strong> Carriers, a single-player open-world zombie survival game built in Unity 6 (6000.6.1f1, URP), set in the Carrier universe.
 <strong>Studio:</strong> Kodecco Games. One developer directs, tests and makes every decision; AI assistants write most of the code.
-<strong>Period:</strong> 18 September 2026 (Day 1) to 19 November 2026 (Day 63). All dates and times are Singapore time (SGT, UTC+8). Newest day first.
-<strong>Total hours:</strong> about 1090 hours so far. Each day counts a 4-hour base, the developer's minimum working day, plus the hours measured from file save times in the Unity project and, from Day 19, the running time of each AI thread. Days without measured hours show the 4-hour base.
+<strong>Period:</strong> 18 September 2026 (Day 1) to 28 November 2026 (Day 72). All dates and times are Singapore time (SGT, UTC+8). Newest day first.
+<strong>Total hours:</strong> about 1214 hours so far. Each day counts a 4-hour base, the developer's minimum working day, plus the hours measured from file save times in the Unity project and, from Day 19, the running time of each AI thread. Days without measured hours show the 4-hour base.
 <strong>Confidence:</strong> Days 1 to 13 (18 to 30 September) are reconstructed from file timestamps and the project's Devjournal notes; exact session lengths are unknown and the order of work within a day is approximate. Days 14 onward (1 October on) come from chat logs, project threads and the tracker and are confirmed. Note: the source day files were written with UTC dates, so an item done late in the evening SGT may be listed under the day before or after; these will be corrected as they are found.</p>
 <h2>How the game is built</h2>
 <p>Most of the code in Carriers is written by AI assistants under the developer's direction. The developer sets the goals, tests in Unity, approves or rejects the results and makes every design decision. The tools used, as recorded:</p>
@@ -86,6 +86,165 @@
 </ul>
 <p>Unity asset packs supply models, terrain generation, animals, animation and effects. Every pack is listed in the Credits at the end of this report.</p>
 <hr />
+<h2>Week 11</h2>
+<h3>Day 72 · Sat 28 Nov (partial day)</h3>
+<p class="hours"><strong>Total hours:</strong> about 10.3 h. Running total: 1214 h.</p>
+
+<div class="day-points">
+<ul>
+<li>Every gun's left mouse button is now a close-range combo: a hook, a high kick and a side kick that knocks down.</li>
+<li>Gun damage now depends on the class: a zombie has 100 health, a pistol does 25, an assault rifle 38, a shotgun 75 a shell, a sniper rifle 150 and a full-draw bow 75.</li>
+<li>Holding the mark ring on a zombie raises damage up to double, and a full mark pops the head. Taking a hit or sprinting cools every mark.</li>
+<li>Mark and Execute: fully marked zombies get a red crosshair lock, up to five at a time. V fires an automatic headshot at each one, costing one shield and one round per target.</li>
+<li>Item Creator: build a new clothing piece from character parts on a bare body, colour it, layer a second piece over it and save it straight into the clothes list.</li>
+<li>A two-handed SMG aim was posed in Blender after a one-handed version was rejected.</li>
+<li>Reloading while moving, with a jog lock, was set up.</li>
+<li>Zombie eye icons and loot pins now only show in line of sight, not through buildings.</li>
+</ul>
+</div>
+<p>Day 72 is a partial day, up to the early afternoon. Gunplay took a big step: damage now depends on the gun, and holding a mark on a zombie makes the shot count for more. Marked zombies can then be taken down together with V, one automatic headshot each, paid for with shields. Every gun also gained a close-range punch-and-kick combo. A new Item Creator lets new clothing be built from parts and saved straight into the game. Markers no longer give away zombies hidden behind buildings.</p>
+<div class="photos">
+<figure><a href="media/2026-11-28/blog/mark-execute-red-locks.jpg" target="_blank" rel="noopener"><img src="media/2026-11-28/blog/mark-execute-red-locks.jpg" alt="Mark and Execute: fully marked zombies get a red lock, ready for V." loading="lazy"></a><figcaption>Mark and Execute: fully marked zombies get a red lock, ready for V.</figcaption></figure>
+</div>
+
+<h3>Day 71 · Fri 27 Nov</h3>
+<p class="hours"><strong>Total hours:</strong> about 14.2 h. Running total: 1204 h.</p>
+
+<div class="day-points">
+<ul>
+<li>Weapon carry reworked: one long gun on the left of the back (a bow counts as one), short guns on the back hip, a pistol on the right hip, a knife on the left hip and other melee weapons on the right of the back.</li>
+<li>The Q weapon wheel now has seven wedges, and the fake generated quiver was removed.</li>
+<li>Long guns now draw with a sling roll posed in Blender, play-tested in game.</li>
+<li>Gun stow poses were refined in Blender.</li>
+<li>All 48 guns were named, in three classes: Primary, Compact and Sidearm.</li>
+<li>Pipes in build mode: place gutters and down pipes while playing; pieces snap end to end and round corners, and a joined run becomes one climb line. A self-test passed on the first house.</li>
+<li>A revolver reload was posed in Blender with the developer: the crane swings open and rounds go in by hand.</li>
+</ul>
+</div>
+<p>Day 71 sorted out how the survivor carries weapons. Every weapon now has one place on the body, with a single long gun across the back and pistols and knives on the hips. Long guns come off the back with a sling roll the developer posed in Blender. Every gun in the game got a name and a class. Build mode can now place pipes that join into climbable runs, tested on a real house. A hand-loaded revolver reload was posed and reviewed.</p>
+<div class="photos">
+<figure><a href="media/2026-11-27/blog/pipes-hang-round-corner.jpg" target="_blank" rel="noopener"><img src="media/2026-11-27/blog/pipes-hang-round-corner.jpg" alt="Hanging from a pipe run placed in build mode, past the corner of a house." loading="lazy"></a><figcaption>Hanging from a pipe run placed in build mode, past the corner of a house.</figcaption></figure>
+<figure><a href="media/2026-11-27/blog/pipes-run-round-corner.jpg" target="_blank" rel="noopener"><img src="media/2026-11-27/blog/pipes-run-round-corner.jpg" alt="A gutter pipe run placed in build mode, joined round the corner of a house." loading="lazy"></a><figcaption>A gutter pipe run placed in build mode, joined round the corner of a house.</figcaption></figure>
+</div>
+
+<h2>Week 10</h2>
+<h3>Day 70 · Thu 26 Nov</h3>
+<p class="hours"><strong>Total hours:</strong> about 15.7 h. Running total: 1190 h.</p>
+
+<div class="day-points">
+<ul>
+<li>Clothing clipping: an audit ranked the causes, and the developer chose a new approach that removes covered cloth using a baked body cover map. Limb armour now always sits over the cloth.</li>
+<li>A general layer fit pulls every worn piece inside the pieces drawn over it, on the player and on NPCs.</li>
+<li>New clothing rules: one item per category, trousers roll up under knee or shin guards, and rolled sleeves show bare forearms.</li>
+<li>A face desk replaced the old character creator: edit face, hair and beard, then save the face and outfit together as one NPC. 285 face part icons were rendered.</li>
+<li>NPC Studio, a separate small app for designing NPCs, was reviewed and gained a design desk, a face and body page and an in-game walk view.</li>
+<li>A gold hip tasset now swings with cloth physics.</li>
+<li>Animals now share the humans' matte lighting, and glossy animal materials were fixed.</li>
+<li>Animations were fixed from the developer's play videos.</li>
+</ul>
+</div>
+<p>Day 70 went after clothes clipping at the root. After an audit of the whole equipment system, the developer chose a method that removes hidden cloth using a baked map of what covers what. Every worn piece now tucks inside the layer above it, on the player and on NPCs. A new face desk lets a survivor's face, hair and beard be designed and saved with their outfit. NPC Studio, a small separate app for building survivors, got its main pages. Animals were brought in line with the look of the people.</p>
+<div class="photos">
+<figure><a href="media/2026-11-26/blog/wayfarers-lineup.jpg" target="_blank" rel="noopener"><img src="media/2026-11-26/blog/wayfarers-lineup.jpg" alt="Wayfarer survivors built in the new NPC Studio, lined up in the field." loading="lazy"></a><figcaption>Wayfarer survivors built in the new NPC Studio, lined up in the field.</figcaption></figure>
+</div>
+
+<h3>Day 69 · Wed 25 Nov</h3>
+<p class="hours"><strong>Total hours:</strong> about 16.2 h. Running total: 1174 h.</p>
+
+<div class="day-points">
+<ul>
+<li>Pipe climbing: fat down pipes became climb lines, and the pole climb on them was polished (hand placement, pipe size, entry clip, bent pipes) with clipping fixed.</li>
+<li>A pipe climb rail system was started, after a review of its risks.</li>
+<li>Pipe transition clips and a pipe-to-porch side jump were posed in Blender with the developer.</li>
+<li>Two-handed weapons are now stowed while sprinting.</li>
+<li>Every wearable icon was regenerated: 304 replaced and 198 new.</li>
+<li>Helmets no longer sit low over the face, and underwear no longer shows through trousers.</li>
+<li>More cloaks were built with cloth movement, and a rebuild glitch on the tattered cloak was fixed.</li>
+<li>A reset character button was added to the developer tools.</li>
+</ul>
+</div>
+<p>Day 69 turned the island's drain pipes into climbing routes. The pole climb on down pipes was polished until the hands sit on the pipe and the body clears it. The developer posed new transition clips in Blender, including a side jump from a pipe onto a porch. Two-handed weapons now go on your back when you sprint. Every wearable icon in the game was rendered again in one pass. Helmets, underwear and cloaks all got fixes.</p>
+<h3>Day 68 · Tue 24 Nov</h3>
+<p class="hours"><strong>Total hours:</strong> about 6.2 h. Running total: 1158 h.</p>
+
+<div class="day-points">
+<ul>
+<li>The Climb Lines tool was finished: gutter pipes now make the roof climb lines, and down pipes are marked separately.</li>
+<li>A tattered poncho was built as a wearable, with real cloth movement from Magica Cloth 2, and given to a Wayfarer NPC.</li>
+<li>The visual pass on the workshop houses continued.</li>
+<li>Red briefs showing through all trousers were traced to a draw-order clash; a fix was prepared.</li>
+</ul>
+</div>
+<p>Day 68 was a short day. The climb line tool was finished, with gutter pipes now driving where the player can climb along a roof. A tattered poncho went in as the first cloak with real cloth movement. Work on the look of the workshop houses carried on. A bug where underwear showed through trousers was tracked down and a fix prepared.</p>
+<h3>Day 67 · Mon 23 Nov</h3>
+<p class="hours"><strong>Total hours:</strong> about 11.2 h. Running total: 1152 h.</p>
+
+<div class="day-points">
+<ul>
+<li>The base layer is now hidden under outfits, and the base tank top and briefs were recoloured to a light brown.</li>
+<li>Speckled see-through noise on cleaned chest pieces fixed: 45 parts sunk under the cloth and 62 parts given fixed UVs.</li>
+<li>A per-item "puff" setting pushes a garment out so it covers what is worn under it.</li>
+<li>A climb line editor was built, then rebuilt the same day as a cleaner Climb Lines tool with points, lines, gable and porch copies and automatic ledge finding.</li>
+<li>Stray green roof lines were removed from the houses.</li>
+</ul>
+</div>
+<p>Day 67 cleaned up clothes and climbing data. Underwear and base layers now stay hidden under outfits, and a speckled see-through look on chest pieces was fixed part by part. A new per-item setting lets a garment sit slightly proud of what is under it. Climbing got a proper editing tool for the lines the player can climb along. The first version was replaced the same day by a cleaner one with copy and ledge-finding tools.</p>
+<h3>Day 66 · Sun 22 Nov</h3>
+<p class="hours"><strong>Total hours:</strong> about 19.2 h. Running total: 1140 h.</p>
+
+<div class="day-points">
+<ul>
+<li>Rifles and shotguns now block with the right mouse button; pistols, one-handed weapons, knives and fists dodge.</li>
+<li>HUD rebuilt: five shields, health, an emerald stamina bar and a dark visibility box. The round stamina bar was removed.</li>
+<li>Every hold or loading indicator now uses the same smooth white ring.</li>
+<li>Zombies got fair weaknesses: crouching can cancel a grab, a short tell before a leap, two attackers at most, and a missed leap leaves them open.</li>
+<li>A new slide (Sprint and C) trips zombies and people.</li>
+<li>Close-range gun melee on V was started.</li>
+<li>Aiming inside houses fixed, aiming at zombies on lower roofs improved, and ammo and arrow pickups made faster.</li>
+<li>Punches now cost stamina.</li>
+<li>Clothes: every item sorted into a category, a colour variant studio built with 1,185 colour-set icons, and a rule that every wearable must appear in some NPC's outfit.</li>
+<li>Hats and caps fall off when you land a big drop.</li>
+<li>Layered clothes: the lines and cuts were diagnosed; underwear, scarves, a high collar mask and backpack straps were cleaned up.</li>
+<li>Tied-up NPCs now go limp in the legs.</li>
+<li>A standalone NPC creator app was started.</li>
+</ul>
+</div>
+<p>Day 66 was the busiest day of the week for combat and clothes. Blocking and dodging were split by weapon type, and the HUD was rebuilt around five shields and an emerald stamina bar. Zombies were given fair tells and weaknesses so fights can be read and won. A new slide that trips enemies went in, and punches now cost stamina. The clothing system got a full sort, a colour variant studio and a rule that nothing goes unworn by NPCs. A standalone app for building NPCs was started.</p>
+<h3>Day 65 · Sat 21 Nov</h3>
+<p class="hours"><strong>Total hours:</strong> about 21.5 h. Running total: 1121 h.</p>
+
+<div class="day-points">
+<ul>
+<li>Zombies can now climb: an arm-drag climb was approved (jump, dead hang, haul up, flop over the lip, crawl away), and a version was built in Unity.</li>
+<li>Zombies no longer stick to walls.</li>
+<li>Gunfire now breaks the planks on boarded windows, and house doors can be shot through.</li>
+<li>Holding R refills a magazine with the left hand, four rounds per press.</li>
+<li>Aiming down from a rooftop no longer jitters.</li>
+<li>Human NPC melee slowed down: proper wind-ups, cooldowns and at most two attackers at once.</li>
+<li>A plan was made for blood, gunfire and fire effects.</li>
+<li>A plan was made to give human NPCs the same movement and weapon holds as the player.</li>
+<li>Every scene got one job: one for characters, one for buildings, one for the game.</li>
+<li>All clothing icons moved to the new Blender render style, with 118 new armour icons; feet were split so you can wear two different shoes.</li>
+<li>Grass no longer bends under the player in mid-air, and a roof climb on the burned house was fixed.</li>
+</ul>
+</div>
+<p>Day 65 gave the zombies new reach. They can now climb walls with a heavy arm-drag haul, and they no longer get stuck against them. Guns became part of the world, breaking window planks and shooting through doors. Reloading got a hands-on magazine refill, and aiming down from roofs was steadied. Human NPCs were made fairer in melee, and a plan was drawn up to give them the player's own movement. The inventory icons moved to one consistent rendered style.</p>
+<h3>Day 64 · Fri 20 Nov</h3>
+<p class="hours"><strong>Total hours:</strong> about 9.5 h. Running total: 1100 h.</p>
+
+<div class="day-points">
+<ul>
+<li>Climbing polish continued, both directly in Unity and in Blender: climbing down, and climb positions refined while playing.</li>
+<li>The cause of a hand flicker during climb moves was traced and a fix planned.</li>
+<li>Climbing sounds now follow the body, and a new roof contact sound was made in ElevenLabs.</li>
+<li>One- and two-handed melee sprints swayed because they borrowed the bow's sneak-sprint spine; they were rebuilt on the right spine.</li>
+<li>The sprint clip was exported to Blender for the developer's pose fixes.</li>
+<li>Inventory: look B, a "lit slot" that shows what is visible on you, was picked for the bag.</li>
+<li>A drivable quad bike was set up in the developer tools.</li>
+<li>A free video motion capture tool was tested: fine for rough previews, but its licence rules it out for the shipped game.</li>
+</ul>
+</div>
+<p>Day 64 was a climbing and movement day. Climbing got another polish pass, in Unity and in Blender, with climbing down and the hand positions as the main targets. Sounds now follow the body as it climbs, and a roof contact sound was generated. The melee sprint was fixed after its sway was traced to the wrong spine animation. A bag layout that lights up what you are wearing was chosen. A free video motion capture tool was tried and set aside for licence reasons.</p>
 <h2>Week 9</h2>
 <h3>Day 63 · Thu 19 Nov</h3>
 <p class="hours"><strong>Total hours:</strong> about 8.5 h. Running total: 1090 h.</p>
@@ -1275,24 +1434,21 @@
 </ul>
 </div>
 <h2>Day 1 was the start of the Unity project. A single world scene was created and the first scripts went in. They covered a bow, an isometric character and camera, and a stealth setup. Animators for going prone, sliding and climbing were added, along with a training dummy, a damage system and zombie spawn data. Nothing was playable yet, but fighting, an angled camera and hiding, the three ideas that define the game, were all there from the first day.</h2>
-<h2>Status at Day 63</h2>
-<p><strong>Total hours to date:</strong> about 1090. Busiest day: Day 21 (8 Oct) at about 58 h.
-| Area | Estimate | State |
-|---|---|---|
-| World, terrain, look | 75% | Island, biomes, weather, snow, fog ring, tilt-shift in |
-| Towns and generation | 55% | Districts D1 to D8 built; capital apartment run queued |
-| Buildings and interiors | 55% | ~50 Builder houses + R01 to R20; saving to town |
-| Player, climbing, controls | 75% | Push-off and band run-up compiled, not played |
-| Performance | n/a | Towns 60 to 90 fps; hitch fix untested |
-| Quests and story | 15% | Part 1 compiled |
-| Farms | 5% | Plan done, tool staged |
-| NPCs, zombies, animals | 55 to 60% | Both NPCs and zombies OFF; Emerald NPCs at 7 bases |
-| Audio, VFX, combat feel | 30% | Weather and kick sounds compiled, not heard |
-| Menus, saves, build, tools | 25% | Dark menu, F9 hacks; no full save system; no fresh EXE since 7 Oct |
-<strong>Switched off in the current build:</strong> NPCs (since Day 20), zombies (since Day 19).
-<strong>Standing rules learned:</strong> one focus at a time; no scripts to disk during Play; restart the editor between Play sessions; one Storm iterate per area per session; keep Gaia "Unload Assets Runtime" on; no GPU Resident Drawer, no Deferred+.
-<strong>Risks:</strong> no version control since Day 17 (Build 1.0 lives on one machine, plus backups); the generator licence lapses soon; Unity memory; a lot of compiled-but-unplayed work.
-<strong>Not yet in this record:</strong> screenshots. None exist in the repo yet.</p>
+<h2>Status at Day 72</h2>
+<p><strong>Total hours to date:</strong> about 1214. Percent estimates were dropped at this update; the table now gives the state of each area only.
+| Area | State |
+|---|---|
+| World, terrain, look | Island, biomes, weather, snow; overgrown roads baked into every road tile; nature reclaiming towns |
+| Towns and buildings | 19 towns with roads; work moved to the new workshop houses; pipes can be placed in build mode |
+| Player, climbing, controls | Root-motion movement; wall, ledge, roof and pipe climbing with hand-posed Blender clips; slide trip |
+| Combat | Melee, bow and guns; block or dodge by weapon type; gun damage by class; mark ring and Mark and Execute; gun kick combo |
+| Weapons and carry | One long gun on the back, short gun on the back hip, pistol and knife on the hips; seven-wedge Q wheel; 48 named guns |
+| Inventory and clothing | Bag and equipment rebuilt; clipping fix chosen and in testing; Item Creator for new clothing |
+| NPCs, zombies, animals | Zombies climb walls and have readable tells; NPC talk being rewritten around honour; NPC Studio and face desk for designing survivors |
+| HUD and UI | Scavenged HUD with five shields, health, stamina and a visibility box; markers only show what you can see |
+| Menus, saves, build | Developer menu only; no full save system; no public build |
+<strong>Many recent features are installed but still being play-tested.</strong> Things on this page can change or be cut.
+<strong>Risks:</strong> a lot of new combat and clothing work landed in one week and needs a full play-through together; Unity editor memory.</p>
 <hr />
 <h2>Credits</h2>
 <p>Carriers is built on the Unity engine and a large number of third-party asset packs, bought and free. The list below is by publisher, as recorded in the project on 13 October 2026 and updated as new packs arrive. All packs remain the property of their publishers and are used under their store licences.
@@ -1307,7 +1463,7 @@
 <strong>Voice</strong>
 <strong>AI assistants</strong>
 The building models called "Opus buildings" in this report are the studio's own Blender exports, not a store pack.</p>
-  <p class="updated">Page built 19 November 2026. Source: the studio's daily development log.</p>
+  <p class="updated">Page built 28 November 2026. Source: the studio's daily development log.</p>
 </main>
 <footer class="site-footer">
   <div class="inner">
