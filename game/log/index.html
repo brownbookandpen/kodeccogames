@@ -1401,68 +1401,104 @@
 <li>Animators for prone, slide and traversal.</li>
 <li>Training dummy, damage system and zombie spawn data.</li>
 <li>Nothing playable yet.</li>
-<li>Unity 6 (6000.6.1f1) with the Universal Render Pipeline, ProBuilder, Cinemachine, Animation Rigging, AI Navigation, Splines, FBX Exporter, Input System, Shader Graph and VFX Graph.</li>
-<li>Fast Script Reload. Unity MCP (CoplayDev), which lets Claude drive the Unity editor.</li>
-<li>Procedural Worlds: Gaia, GTS and Storm (town and city generator with its Building Generator, City Generator, Area Populator and Terrain plugins).</li>
-<li>Purple Sky: Stylized Cypress Valley (the earlier grass, ground and field look).</li>
-<li>A+ Grass (URP), the default grass from 20 October.</li>
-<li>Real Ivy 2 (ivy, vines and moss on the houses).</li>
-<li>Magica Cloth 2 (cloth motion for capes and cloaks, from 31 October).</li>
-<li>Poly Haven: CC0 ground textures used for the ruined town roads.</li>
-<li>Spruce Forest. Global Snow and Global Snow 2. Pure Volumetric Fog (BK). SnowStarGames Gaia Spawner.</li>
-<li>Biomass, Biomass Webs, Mossy Piles and Roots Constructor (overgrowth and decor).</li>
-<li>Lakefell modular building kit (house rebuild from 20 October).</li>
-<li>Apocalypse, City, City Zombies, Construction, Dog, Fantasy Village, Farm, Generic, Military, Nature, Nature Biomes, Palm City, Particle FX, Pirate Realm, Quad Bike, Samurai Empire, Shops, Street Racer, Town, Western Frontier, and the Military Warehouse, Plaza, Prison and Woodland Apocalypse maps.</li>
-<li>Sidekick Characters, Interface Apocalypse HUD, Interface Core.</li>
-<li>Animation packs: Base Locomotion, Bow Combat, Emotes and Taunts, Goblin Locomotion, Idles, Sword Combat.</li>
-<li>Apocalypse Weapons (54 modular guns, replacing the old guns from 31 October).</li>
-<li>Polygon-Mega: Survival, Survival Construction, Survival Tools, Medical Kit, Weapon Kit.</li>
-<li>Animpic Studio: Poly-Survival Food, Poly-Survival Melee Weapons, POLY-Survival Character.</li>
-<li>Toon Series: Toon Farm Pack.</li>
-<li>janpec: Animal Pack Deluxe v1 and v2.</li>
-<li>Malbers Animations: Animal Controller, Animals Packs, Horse AnimSet Pro.</li>
-<li>Emerald AI. Advanced Zombie AI Pro.</li>
-<li>Yummy Games: Zombie Animations Mocap.</li>
-<li>Universal Traversal Anims (Ultimate Traversal).</li>
-<li>Kevin Iglesias: Human Animations and IK Helper Tool.</li>
-<li>Advanced Crawling Animation. Deadly Kombat (free version). Moto Interaction Anims (free).</li>
-<li>Mixamo (Adobe): Kicks, Pistol and Parkour Actions clips.</li>
-<li>Quibli (stylised shader). RVFX Blood Effects Pack. Vefects Wind VFX URP (free). VFX Pack Impact Wall Coeur (free version).</li>
-<li>Dark: Complete Horror UI.</li>
-<li>ElevenLabs for NPC voice lines.</li>
-<li>Claude (Anthropic), ChatGPT (OpenAI), Gemini (Google, item icons) and Antigravity, as described at the top of this report.</li>
 </ul>
 </div>
-<h2>Day 1 was the start of the Unity project. A single world scene was created and the first scripts went in. They covered a bow, an isometric character and camera, and a stealth setup. Animators for going prone, sliding and climbing were added, along with a training dummy, a damage system and zombie spawn data. Nothing was playable yet, but fighting, an angled camera and hiding, the three ideas that define the game, were all there from the first day.</h2>
+<p>Day 1 was the start of the Unity project. A single world scene was created and the first scripts went in. They covered a bow, an isometric character and camera, and a stealth setup. Animators for going prone, sliding and climbing were added, along with a training dummy, a damage system and zombie spawn data. Nothing was playable yet, but fighting, an angled camera and hiding, the three ideas that define the game, were all there from the first day.</p>
+<hr />
 <h2>Status at Day 72</h2>
-<p><strong>Total hours to date:</strong> about 1214. Percent estimates were dropped at this update; the table now gives the state of each area only.
-| Area | State |
-|---|---|
-| World, terrain, look | Island, biomes, weather, snow; overgrown roads baked into every road tile; nature reclaiming towns |
-| Towns and buildings | 19 towns with roads; work moved to the new workshop houses; pipes can be placed in build mode |
-| Player, climbing, controls | Root-motion movement; wall, ledge, roof and pipe climbing with hand-posed Blender clips; slide trip |
-| Combat | Melee, bow and guns; block or dodge by weapon type; gun damage by class; mark ring and Mark and Execute; gun kick combo |
-| Weapons and carry | One long gun on the back, short gun on the back hip, pistol and knife on the hips; seven-wedge Q wheel; 48 named guns |
-| Inventory and clothing | Bag and equipment rebuilt; clipping fix chosen and in testing; Item Creator for new clothing |
-| NPCs, zombies, animals | Zombies climb walls and have readable tells; NPC talk being rewritten around honour; NPC Studio and face desk for designing survivors |
-| HUD and UI | Scavenged HUD with five shields, health, stamina and a visibility box; markers only show what you can see |
-| Menus, saves, build | Developer menu only; no full save system; no public build |
-<strong>Many recent features are installed but still being play-tested.</strong> Things on this page can change or be cut.
+<p><strong>Total hours to date:</strong> about 1214. Percent estimates were dropped at this update; the table now gives the state of each area only.</p>
+<table>
+<thead>
+<tr>
+<th>Area</th>
+<th>State</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>World, terrain, look</td>
+<td>Island, biomes, weather, snow; overgrown roads baked into every road tile; nature reclaiming towns</td>
+</tr>
+<tr>
+<td>Towns and buildings</td>
+<td>19 towns with roads; work moved to the new workshop houses; pipes can be placed in build mode</td>
+</tr>
+<tr>
+<td>Player, climbing, controls</td>
+<td>Root-motion movement; wall, ledge, roof and pipe climbing with hand-posed Blender clips; slide trip</td>
+</tr>
+<tr>
+<td>Combat</td>
+<td>Melee, bow and guns; block or dodge by weapon type; gun damage by class; mark ring and Mark and Execute; gun kick combo</td>
+</tr>
+<tr>
+<td>Weapons and carry</td>
+<td>One long gun on the back, short gun on the back hip, pistol and knife on the hips; seven-wedge Q wheel; 48 named guns</td>
+</tr>
+<tr>
+<td>Inventory and clothing</td>
+<td>Bag and equipment rebuilt; clipping fix chosen and in testing; Item Creator for new clothing</td>
+</tr>
+<tr>
+<td>NPCs, zombies, animals</td>
+<td>Zombies climb walls and have readable tells; NPC talk being rewritten around honour; NPC Studio and face desk for designing survivors</td>
+</tr>
+<tr>
+<td>HUD and UI</td>
+<td>Scavenged HUD with five shields, health, stamina and a visibility box; markers only show what you can see</td>
+</tr>
+<tr>
+<td>Menus, saves, build</td>
+<td>Developer menu only; no full save system; no public build</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Many recent features are installed but still being play-tested.</strong> Things on this page can change or be cut.
 <strong>Risks:</strong> a lot of new combat and clothing work landed in one week and needs a full play-through together; Unity editor memory.</p>
 <hr />
 <h2>Credits</h2>
-<p>Carriers is built on the Unity engine and a large number of third-party asset packs, bought and free. The list below is by publisher, as recorded in the project on 13 October 2026 and updated as new packs arrive. All packs remain the property of their publishers and are used under their store licences.
-<strong>Engine and tools</strong>
-<strong>World, terrain and nature</strong>
-<strong>Buildings</strong>
-<strong>Synty Studios (POLYGON)</strong>
-<strong>Other art packs</strong>
-<strong>Characters, animals and AI</strong>
-<strong>Animation</strong>
-<strong>VFX, shaders and UI</strong>
-<strong>Voice</strong>
-<strong>AI assistants</strong>
-The building models called "Opus buildings" in this report are the studio's own Blender exports, not a store pack.</p>
+<p>Carriers is built on the Unity engine and a large number of third-party asset packs, bought and free. The list below is by publisher, as recorded in the project on 13 October 2026 and updated as new packs arrive. All packs remain the property of their publishers and are used under their store licences.</p>
+<p><strong>Engine and tools</strong>
+- Unity 6 (6000.6.1f1) with the Universal Render Pipeline, ProBuilder, Cinemachine, Animation Rigging, AI Navigation, Splines, FBX Exporter, Input System, Shader Graph and VFX Graph.
+- Fast Script Reload. Unity MCP (CoplayDev), which lets Claude drive the Unity editor.</p>
+<p><strong>World, terrain and nature</strong>
+- Procedural Worlds: Gaia, GTS and Storm (town and city generator with its Building Generator, City Generator, Area Populator and Terrain plugins).
+- Purple Sky: Stylized Cypress Valley (the earlier grass, ground and field look).
+- A+ Grass (URP), the default grass from 20 October.
+- Real Ivy 2 (ivy, vines and moss on the houses).
+- Magica Cloth 2 (cloth motion for capes and cloaks, from 31 October).
+- Poly Haven: CC0 ground textures used for the ruined town roads.
+- Spruce Forest. Global Snow and Global Snow 2. Pure Volumetric Fog (BK). SnowStarGames Gaia Spawner.
+- Biomass, Biomass Webs, Mossy Piles and Roots Constructor (overgrowth and decor).</p>
+<p><strong>Buildings</strong>
+- Lakefell modular building kit (house rebuild from 20 October).</p>
+<p><strong>Synty Studios (POLYGON)</strong>
+- Apocalypse, City, City Zombies, Construction, Dog, Fantasy Village, Farm, Generic, Military, Nature, Nature Biomes, Palm City, Particle FX, Pirate Realm, Quad Bike, Samurai Empire, Shops, Street Racer, Town, Western Frontier, and the Military Warehouse, Plaza, Prison and Woodland Apocalypse maps.
+- Sidekick Characters, Interface Apocalypse HUD, Interface Core.
+- Animation packs: Base Locomotion, Bow Combat, Emotes and Taunts, Goblin Locomotion, Idles, Sword Combat.</p>
+<p><strong>Other art packs</strong>
+- Apocalypse Weapons (54 modular guns, replacing the old guns from 31 October).
+- Polygon-Mega: Survival, Survival Construction, Survival Tools, Medical Kit, Weapon Kit.
+- Animpic Studio: Poly-Survival Food, Poly-Survival Melee Weapons, POLY-Survival Character.
+- Toon Series: Toon Farm Pack.
+- janpec: Animal Pack Deluxe v1 and v2.</p>
+<p><strong>Characters, animals and AI</strong>
+- Malbers Animations: Animal Controller, Animals Packs, Horse AnimSet Pro.
+- Emerald AI. Advanced Zombie AI Pro.</p>
+<p><strong>Animation</strong>
+- Yummy Games: Zombie Animations Mocap.
+- Universal Traversal Anims (Ultimate Traversal).
+- Kevin Iglesias: Human Animations and IK Helper Tool.
+- Advanced Crawling Animation. Deadly Kombat (free version). Moto Interaction Anims (free).
+- Mixamo (Adobe): Kicks, Pistol and Parkour Actions clips.</p>
+<p><strong>VFX, shaders and UI</strong>
+- Quibli (stylised shader). RVFX Blood Effects Pack. Vefects Wind VFX URP (free). VFX Pack Impact Wall Coeur (free version).
+- Dark: Complete Horror UI.</p>
+<p><strong>Voice</strong>
+- ElevenLabs for NPC voice lines.</p>
+<p><strong>AI assistants</strong>
+- Claude (Anthropic), ChatGPT (OpenAI), Gemini (Google, item icons) and Antigravity, as described at the top of this report.</p>
+<p>The building models called "Opus buildings" in this report are the studio's own Blender exports, not a store pack.</p>
   <p class="updated">Page built 28 November 2026. Source: the studio's daily development log.</p>
 </main>
 <footer class="site-footer">
