@@ -36,7 +36,9 @@ def wrap_days(text):
         out.append(block)
     return '\n'.join(out)
 
-md = wrap_days(md)
+# Keep the status and credits sections out of the last day's block (otherwise they merge into Day 1's summary).
+_cut = md.find('\n---\n\n## Status')
+md = wrap_days(md) if _cut < 0 else wrap_days(md[:_cut]) + '\n\n' + md[_cut:].lstrip('\n')
 
 # Photos: copy each referenced media file next to the page and render as a captioned grid.
 import shutil
